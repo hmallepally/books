@@ -1,18 +1,18 @@
 # AI, Machine Learning, and Data Science Book Series
 
-Welcome to a comprehensive, hands-on book series for learning Natural Language Processing, Machine Learning, Advanced ML, Python for AI/ML/Data Science, and Neural Networks. Each book is self-contained, includes code, exercises, and interactive notebooks, and is designed for progressive, practical learning.
+Welcome to a comprehensive, hands-on book series for learning Python for AI/ML/Data Science, Machine Learning, Advanced ML, Neural Networks, and Natural Language Processing. Each book is self-contained, includes code, exercises, and interactive notebooks, and is designed for progressive, practical learning.
 
 ---
 
-## 1. NLP: A Comprehensive Primer
-- **Directory:** `book/` (with supporting `code/`, `exercises/`, `notebooks/`)
+## 1. Python Primer for AI/ML/Data Science
+- **Directory:** `python/`
 - **Description:**
-  - Covers NLP fundamentals to advanced topics: text processing, embeddings, transformers, LLMs, RAG, and more.
-  - Includes code examples, exercises, and Jupyter notebooks.
+  - Python essentials for data science, ML, and AI: syntax, data structures, environment setup, best practices, and tools.
+  - Includes code, exercises, and a Jupyter notebook for hands-on learning.
 - **Getting Started:**
-  - See `book/nlp-comprehensive-primer.md` (if present)
-  - Install requirements: `pip install -r requirements.txt`
-  - Run notebooks in `notebooks/`
+  - See `python/book/` for main content
+  - Install requirements: `pip install -r python/requirements.txt`
+  - Run `python/setup.py` to set up and launch the main notebook
 
 ---
 
@@ -28,19 +28,7 @@ Welcome to a comprehensive, hands-on book series for learning Natural Language P
 
 ---
 
-## 3. Python Primer for AI/ML/Data Science
-- **Directory:** `python/`
-- **Description:**
-  - Python essentials for data science, ML, and AI: syntax, data structures, environment setup, best practices, and tools.
-  - Includes code, exercises, and a Jupyter notebook for hands-on learning.
-- **Getting Started:**
-  - See `python/book/` for main content
-  - Install requirements: `pip install -r python/requirements.txt`
-  - Run `python/setup.py` to set up and launch the main notebook
-
----
-
-## 4. Neural Networks: A Comprehensive Guide
+## 3. Neural Networks: A Comprehensive Guide
 - **Directory:** `nn/`
 - **Description:**
   - Complete guide to neural networks: perceptrons, MLPs, activation functions, CNNs, RNNs, LSTMs, transformers, GANs, autoencoders, transfer learning, interpretability, and more.
@@ -49,6 +37,18 @@ Welcome to a comprehensive, hands-on book series for learning Natural Language P
   - See `nn/book/neural-networks-comprehensive-guide.md`
   - Install requirements: `pip install -r nn/requirements.txt`
   - Run `nn/setup.py` to set up and launch the main notebook
+
+---
+
+## 4. NLP: A Comprehensive Primer
+- **Directory:** `book/` (with supporting `code/`, `exercises/`, `notebooks/`)
+- **Description:**
+  - Covers NLP fundamentals to advanced topics: text processing, embeddings, transformers, LLMs, RAG, and more.
+  - Includes code examples, exercises, and Jupyter notebooks.
+- **Getting Started:**
+  - See `book/nlp-comprehensive-primer.md` (if present)
+  - Install requirements: `pip install -r requirements.txt`
+  - Run notebooks in `notebooks/`
 
 ---
 
