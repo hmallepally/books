@@ -2363,284 +2363,899 @@ RAG systems face several practical challenges.
 
 ---
 
-## Conclusion: The Future of Language AI
+## Chapter 6: Practical NLP Implementation
 
-As we reach the end of this comprehensive journey through Natural Language Processing, it's worth reflecting on how far we've come and where we're headed. From the early rule-based systems of the 1950s to the sophisticated RAG systems of today, the field has undergone a remarkable transformation that has fundamentally changed how humans interact with machines.
+### 6.1 Text Preprocessing Pipeline
 
-### Recap of Key Learnings
-
-Throughout this primer, we've explored the foundational concepts that make modern NLP possible:
-
-**The Evolution of Language Understanding:**
-- **From Rules to Learning**: We've seen how NLP moved from hand-crafted rules to statistical learning and finally to deep neural networks
-- **The Embedding Revolution**: Word embeddings transformed how we represent language, capturing semantic relationships in dense vector spaces
-- **The Attention Breakthrough**: The Transformer architecture and attention mechanisms enabled unprecedented parallelization and long-range dependencies
-- **The Scale Revolution**: Large Language Models demonstrated that scale itself can unlock emergent capabilities
-
-**The RAG Paradigm:**
-- **Beyond Memorization**: RAG systems show that LLMs don't need to memorize everything; they can retrieve and synthesize information on demand
-- **Factual Grounding**: By grounding responses in retrieved documents, RAG systems address the hallucination problem
-- **Dynamic Knowledge**: RAG enables access to current, domain-specific, and proprietary information
-- **Attribution and Transparency**: Users can trace information back to its source, building trust
-
-**Practical Applications:**
-- **Information Retrieval**: Semantic search that understands meaning, not just keywords
-- **Question Answering**: Systems that can answer complex questions with detailed, sourced responses
-- **Content Generation**: AI that can create content based on specific, up-to-date information
-- **Knowledge Management**: Intelligent systems that can organize and retrieve information from vast document collections
-
-### The Ever-Evolving Landscape of NLP
-
-The field of NLP is evolving at an unprecedented pace, with new breakthroughs occurring regularly:
-
-**Emerging Trends:**
-- **Multimodal AI**: Systems that can process and generate text, images, audio, and video
-- **Reasoning and Planning**: LLMs that can perform complex reasoning and multi-step planning
-- **Personalization**: AI systems that adapt to individual users and contexts
-- **Efficiency**: Techniques to make large models more efficient and accessible
-
-**Technical Advances:**
-- **Longer Context Windows**: Models that can process entire books or long conversations
-- **Better Training Methods**: More efficient and effective ways to train language models
-- **Improved Evaluation**: Better metrics and methods for assessing AI system performance
-- **Robustness**: Systems that are more reliable and less prone to errors
-
-**Societal Impact:**
-- **Democratization**: Making AI tools accessible to more people and organizations
-- **Education**: Personalized learning experiences and intelligent tutoring systems
-- **Healthcare**: AI assistants that can help with diagnosis, treatment planning, and patient care
-- **Scientific Discovery**: AI systems that can read, analyze, and synthesize scientific literature
-
-### Ethical Responsibilities in Building Language AI
-
-As we build increasingly powerful language AI systems, we must also consider our ethical responsibilities:
-
-**Bias and Fairness:**
-- **Data Bias**: Ensuring training data represents diverse perspectives and populations
-- **Model Bias**: Detecting and mitigating biases in model outputs
-- **Evaluation Bias**: Using diverse evaluation criteria and test sets
-- **Deployment Bias**: Monitoring for bias in real-world applications
-
-**Privacy and Security:**
-- **Data Privacy**: Protecting sensitive information in training data and user interactions
-- **Model Security**: Preventing attacks and misuse of AI systems
-- **Transparency**: Making AI systems explainable and auditable
-- **Consent**: Ensuring users understand how their data is used
-
-**Safety and Reliability:**
-- **Hallucination Prevention**: Ensuring AI systems don't generate false information
-- **Harmful Content**: Preventing generation of harmful or inappropriate content
-- **Robustness**: Making systems reliable across different contexts and inputs
-- **Fallback Mechanisms**: Providing graceful degradation when systems fail
-
-**Accessibility and Inclusion:**
-- **Language Diversity**: Supporting languages beyond English
-- **Cultural Sensitivity**: Respecting different cultural contexts and norms
-- **Disability Access**: Making AI systems accessible to people with disabilities
-- **Economic Inclusion**: Ensuring AI benefits are distributed fairly
-
-### Call to Action: Your Role in Shaping the Future
-
-The future of language AI is not predetermined—it will be shaped by the choices we make today. As readers of this primer, you have a unique opportunity to contribute to this future:
-
-**For Students and Learners:**
-- **Build Projects**: Apply what you've learned by building your own NLP systems
-- **Stay Curious**: Keep learning about new developments in the field
-- **Join Communities**: Participate in AI and NLP communities and discussions
-- **Share Knowledge**: Help others learn by sharing your understanding
-
-**For Practitioners and Developers:**
-- **Build Responsibly**: Consider the ethical implications of your AI systems
-- **Test Thoroughly**: Ensure your systems work reliably across diverse inputs
-- **Document Well**: Make your systems understandable and maintainable
-- **Collaborate**: Work with others to solve complex problems
-
-**For Researchers:**
-- **Push Boundaries**: Explore new techniques and approaches
-- **Address Gaps**: Focus on important problems that haven't been solved
-- **Share Openly**: Publish your work and contribute to the community
-- **Consider Impact**: Think about how your research might be used in practice
-
-**For Everyone:**
-- **Stay Informed**: Keep up with developments in AI and their societal implications
-- **Think Critically**: Question AI outputs and understand their limitations
-- **Advocate**: Support responsible AI development and deployment
-- **Participate**: Engage in discussions about AI policy and governance
-
-### Further Resources and Learning Paths
-
-Your journey with NLP doesn't end here. Here are some resources to continue your learning:
-
-**Books and Papers:**
-- **"Speech and Language Processing" by Jurafsky and Martin**: Comprehensive textbook on NLP
-- **"Natural Language Processing with Python" by Bird, Klein, and Loper**: Practical introduction
-- **"Transformers for Natural Language Processing" by Denis Rothman**: Deep dive into Transformers
-- **"Attention Is All You Need"**: The original Transformer paper
-- **"BERT: Pre-training of Deep Bidirectional Transformers"**: Foundation of modern NLP
-
-**Online Courses:**
-- **Stanford CS224N**: Natural Language Processing with Deep Learning
-- **Coursera NLP Specialization**: Practical NLP applications
-- **Fast.ai NLP Course**: Practical deep learning for NLP
-- **Hugging Face Course**: Modern NLP with Transformers
-
-**Tools and Libraries:**
-- **Hugging Face Transformers**: State-of-the-art NLP models
-- **spaCy**: Industrial-strength NLP library
-- **NLTK**: Natural Language Toolkit for Python
-- **AllenNLP**: Research-focused NLP library
-- **LangChain**: Framework for building LLM applications
-
-**Communities and Conferences:**
-- **ACL (Association for Computational Linguistics)**: Premier NLP conference
-- **EMNLP (Empirical Methods in Natural Language Processing)**: Leading NLP conference
-- **NAACL (North American Chapter of the ACL)**: Regional NLP conference
-- **Reddit r/MachineLearning**: Active ML community
-- **Papers With Code**: Repository of ML papers with implementations
-
-**Practice Platforms:**
-- **Kaggle**: Data science competitions and datasets
-- **Hugging Face**: Model sharing and collaboration
-- **Google Colab**: Free GPU access for experimentation
-- **GitHub**: Open-source projects and code sharing
-
-### Final Thoughts
-
-As we conclude this comprehensive primer, remember that NLP is not just about algorithms and models—it's about enabling meaningful communication between humans and machines. The systems we build today will shape how people interact with technology tomorrow.
-
-The journey from understanding basic text processing to building sophisticated RAG systems represents a remarkable achievement in human ingenuity. But this is just the beginning. The field continues to evolve rapidly, with new breakthroughs and applications emerging regularly.
-
-Whether you're a student just beginning your journey, a practitioner building real-world applications, or a researcher pushing the boundaries of what's possible, you have a role to play in shaping the future of language AI. The knowledge you've gained from this primer provides a solid foundation, but the most important thing is to keep learning, experimenting, and building.
-
-Remember that with great power comes great responsibility. As you work with these powerful technologies, always consider their impact on individuals and society. Build systems that are not just technically impressive, but also beneficial, fair, and trustworthy.
-
-The future of language AI is bright, and it's being written by people like you. Go forth and build something amazing!
-
----
-
-## Appendix A: Mathematical Foundations
-
-### A.1 Linear Algebra for NLP
-
-**Vectors and Matrices:**
-- **Vector Operations**: Addition, multiplication, dot product
-- **Matrix Operations**: Multiplication, inversion, eigendecomposition
-- **Vector Spaces**: Basis, dimension, linear independence
-
-**Eigenvalues and Eigenvectors:**
-- **Definition**: Av = λv where A is a matrix, v is a vector, λ is a scalar
-- **Applications**: Principal Component Analysis (PCA), dimensionality reduction
-- **Computation**: Power iteration, QR algorithm
-
-### A.2 Probability and Statistics
-
-**Probability Theory:**
-- **Basic Concepts**: Sample space, events, probability measures
-- **Conditional Probability**: P(A|B) = P(A∩B) / P(B)
-- **Bayes' Theorem**: P(A|B) = P(B|A) × P(A) / P(B)
-
-**Statistical Inference:**
-- **Hypothesis Testing**: Null hypothesis, p-values, significance levels
-- **Confidence Intervals**: Estimating population parameters
-- **Maximum Likelihood Estimation**: Finding parameters that maximize likelihood
-
-### A.3 Information Theory
-
-**Entropy and Information:**
-- **Entropy**: H(X) = -Σ p(x) log p(x)
-- **Cross-entropy**: H(p,q) = -Σ p(x) log q(x)
-- **Mutual Information**: I(X;Y) = H(X) - H(X|Y)
-
-**Applications in NLP:**
-- **Language Modeling**: Measuring uncertainty in text
-- **Feature Selection**: Identifying informative features
-- **Compression**: Efficient text representation
-
-## Appendix B: Python Environment Setup
-
-### B.1 Required Packages
-
-```bash
-# Core NLP libraries
-pip install nltk spacy transformers torch tensorflow
-
-# Data processing
-pip install pandas numpy scipy scikit-learn
-
-# Visualization
-pip install matplotlib seaborn plotly
-
-# Vector databases
-pip install chromadb faiss-cpu
-
-# API clients
-pip install openai anthropic
-
-# Utilities
-pip install tqdm jupyter ipywidgets
+#### 6.1.1 Mermaid Diagram: NLP Pipeline
+```mermaid
+graph TD;
+  A["Raw Text"] --> B["Text Cleaning"]
+  B --> C["Tokenization"]
+  C --> D["Normalization"]
+  D --> E["Stop Word Removal"]
+  E --> F["Lemmatization"]
+  F --> G["Feature Extraction"]
+  G --> H["Model Input"]
+  
+  subgraph "Text Cleaning"
+    I["Remove HTML tags"]
+    J["Remove special characters"]
+    K["Convert to lowercase"]
+  end
+  
+  subgraph "Tokenization"
+    L["Word Tokenization"]
+    M["Subword Tokenization"]
+    N["Sentence Tokenization"]
+  end
 ```
 
-### B.2 Environment Configuration
-
+#### 6.1.2 Practical Implementation
 ```python
-# Download NLTK data
+import re
 import nltk
+from nltk.tokenize import word_tokenize, sent_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+import spacy
+
+# Download required NLTK data
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
 
-# Download spaCy models
-import spacy
-spacy.cli.download("en_core_web_sm")
+class TextPreprocessor:
+    def __init__(self):
+        self.lemmatizer = WordNetLemmatizer()
+        self.stop_words = set(stopwords.words('english'))
+        self.nlp = spacy.load('en_core_web_sm')
+    
+    def clean_text(self, text):
+        """Clean raw text"""
+        # Remove HTML tags
+        text = re.sub(r'<[^>]+>', '', text)
+        # Remove special characters
+        text = re.sub(r'[^a-zA-Z\s]', '', text)
+        # Convert to lowercase
+        text = text.lower()
+        return text.strip()
+    
+    def tokenize_words(self, text):
+        """Tokenize text into words"""
+        return word_tokenize(text)
+    
+    def tokenize_sentences(self, text):
+        """Tokenize text into sentences"""
+        return sent_tokenize(text)
+    
+    def remove_stopwords(self, tokens):
+        """Remove stop words from tokens"""
+        return [token for token in tokens if token not in self.stop_words]
+    
+    def lemmatize_tokens(self, tokens):
+        """Lemmatize tokens"""
+        return [self.lemmatizer.lemmatize(token) for token in tokens]
+    
+    def process_text(self, text):
+        """Complete text preprocessing pipeline"""
+        # Clean text
+        cleaned_text = self.clean_text(text)
+        
+        # Tokenize
+        sentences = self.tokenize_sentences(cleaned_text)
+        processed_sentences = []
+        
+        for sentence in sentences:
+            # Word tokenization
+            tokens = self.tokenize_words(sentence)
+            
+            # Remove stop words
+            tokens = self.remove_stopwords(tokens)
+            
+            # Lemmatization
+            tokens = self.lemmatize_tokens(tokens)
+            
+            processed_sentences.append(tokens)
+        
+        return processed_sentences
+
+# Example usage
+preprocessor = TextPreprocessor()
+sample_text = """
+<html><body>
+Natural Language Processing (NLP) is a subfield of artificial intelligence.
+It focuses on the interaction between computers and human language.
+NLP techniques are used in many applications like chatbots and translation.
+</body></html>
+"""
+
+processed = preprocessor.process_text(sample_text)
+print("Processed text:")
+for i, sentence in enumerate(processed):
+    print(f"Sentence {i+1}: {sentence}")
 ```
 
-### B.3 GPU Setup (Optional)
+### 6.2 Word Embeddings Implementation
 
-```bash
-# For CUDA support
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-
-# For TensorFlow GPU
-pip install tensorflow[gpu]
+#### 6.2.1 Mermaid Diagram: Word Embeddings
+```mermaid
+graph LR;
+  A["Word"] --> B["One-Hot Encoding"]
+  B --> C["Embedding Layer"]
+  C --> D["Dense Vector"]
+  
+  subgraph "Similar Words"
+    E["king"] --> F["Vector 1"]
+    G["queen"] --> H["Vector 2"]
+    I["man"] --> J["Vector 3"]
+    K["woman"] --> L["Vector 4"]
+  end
+  
+  F -.-> M["Similar in Vector Space"]
+  H -.-> M
+  J -.-> M
+  L -.-> M
 ```
 
-## Appendix C: Glossary
+#### 6.2.2 Word2Vec Implementation
+```python
+import numpy as np
+from gensim.models import Word2Vec
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
 
-**Attention Mechanism**: A technique that allows models to focus on different parts of the input when processing each element.
+# Sample sentences for training
+sentences = [
+    ['the', 'king', 'loves', 'the', 'queen'],
+    ['the', 'queen', 'loves', 'the', 'king'],
+    ['the', 'man', 'loves', 'the', 'woman'],
+    ['the', 'woman', 'loves', 'the', 'man'],
+    ['the', 'boy', 'loves', 'the', 'girl'],
+    ['the', 'girl', 'loves', 'the', 'boy'],
+    ['the', 'king', 'is', 'a', 'man'],
+    ['the', 'queen', 'is', 'a', 'woman'],
+    ['the', 'boy', 'is', 'a', 'man'],
+    ['the', 'girl', 'is', 'a', 'woman']
+]
 
-**BERT (Bidirectional Encoder Representations from Transformers)**: A transformer-based model that uses bidirectional context for language understanding.
+# Train Word2Vec model
+model = Word2Vec(sentences, vector_size=50, window=2, min_count=1, workers=4)
 
-**Chunking**: The process of breaking documents into smaller, manageable pieces for processing.
+# Get word vectors
+words = list(model.wv.key_to_index.keys())
+word_vectors = [model.wv[word] for word in words]
 
-**Embedding**: A dense vector representation of words, sentences, or documents in a continuous space.
+# Visualize using t-SNE
+tsne = TSNE(n_components=2, random_state=42)
+word_vectors_2d = tsne.fit_transform(word_vectors)
 
-**Fine-tuning**: The process of adapting a pre-trained model to a specific task using task-specific data.
+plt.figure(figsize=(10, 8))
+plt.scatter(word_vectors_2d[:, 0], word_vectors_2d[:, 1])
 
-**Hallucination**: When an AI system generates information that is not supported by its training data or context.
+for i, word in enumerate(words):
+    plt.annotate(word, (word_vectors_2d[i, 0], word_vectors_2d[i, 1]))
 
-**Large Language Model (LLM)**: A neural network with billions of parameters trained on vast amounts of text data.
+plt.title('Word Embeddings Visualization')
+plt.show()
 
-**Named Entity Recognition (NER)**: The task of identifying and classifying named entities in text.
+# Test word similarities
+print("Similarity between 'king' and 'queen':", model.wv.similarity('king', 'queen'))
+print("Similarity between 'man' and 'woman':", model.wv.similarity('man', 'woman'))
+print("Similarity between 'king' and 'man':", model.wv.similarity('king', 'man'))
 
-**Prompt Engineering**: The practice of designing effective prompts to guide AI model behavior.
+# Word analogy: king - man + woman = ?
+result = model.wv.most_similar(positive=['king', 'woman'], negative=['man'])
+print(f"king - man + woman = {result[0][0]} (similarity: {result[0][1]:.3f})")
+```
 
-**RAG (Retrieval-Augmented Generation)**: A technique that combines information retrieval with text generation.
+### 6.3 Attention Mechanism Implementation
 
-**Tokenization**: The process of breaking text into individual tokens (words, subwords, or characters).
+#### 6.3.1 Mermaid Diagram: Attention Mechanism
+```mermaid
+graph TD;
+  A["Input Sequence"] --> B["Query"]
+  A --> C["Key"]
+  A --> D["Value"]
+  
+  B --> E["Attention Scores"]
+  C --> E
+  E --> F["Softmax"]
+  F --> G["Weighted Values"]
+  D --> G
+  G --> H["Output"]
+  
+  subgraph "Multi-Head Attention"
+    I["Head 1"] --> J["Head 2"] --> K["Head N"]
+    J --> L["Concatenate"]
+    K --> L
+    L --> M["Linear Layer"]
+  end
+```
 
-**Transformer**: A neural network architecture that uses attention mechanisms to process sequential data.
+#### 6.3.2 Simple Attention Implementation
+```python
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import numpy as np
 
-**Vector Database**: A specialized database designed for storing and searching high-dimensional vectors.
+class SimpleAttention(nn.Module):
+    def __init__(self, hidden_size):
+        super(SimpleAttention, self).__init__()
+        self.hidden_size = hidden_size
+        self.query_projection = nn.Linear(hidden_size, hidden_size)
+        self.key_projection = nn.Linear(hidden_size, hidden_size)
+        self.value_projection = nn.Linear(hidden_size, hidden_size)
+        
+    def forward(self, x):
+        # x shape: (batch_size, seq_len, hidden_size)
+        batch_size, seq_len, hidden_size = x.size()
+        
+        # Project to Q, K, V
+        Q = self.query_projection(x)  # (batch_size, seq_len, hidden_size)
+        K = self.key_projection(x)    # (batch_size, seq_len, hidden_size)
+        V = self.value_projection(x)  # (batch_size, seq_len, hidden_size)
+        
+        # Calculate attention scores
+        scores = torch.matmul(Q, K.transpose(-2, -1)) / np.sqrt(hidden_size)
+        
+        # Apply softmax
+        attention_weights = F.softmax(scores, dim=-1)
+        
+        # Apply attention to values
+        output = torch.matmul(attention_weights, V)
+        
+        return output, attention_weights
 
-**Word Embedding**: A dense vector representation of words that captures semantic relationships.
+# Example usage
+batch_size = 2
+seq_len = 4
+hidden_size = 8
+
+# Create sample input
+x = torch.randn(batch_size, seq_len, hidden_size)
+
+# Initialize attention mechanism
+attention = SimpleAttention(hidden_size)
+
+# Forward pass
+output, attention_weights = attention(x)
+
+print(f"Input shape: {x.shape}")
+print(f"Output shape: {output.shape}")
+print(f"Attention weights shape: {attention_weights.shape}")
+
+# Visualize attention weights for first batch
+plt.figure(figsize=(8, 6))
+plt.imshow(attention_weights[0].detach().numpy(), cmap='Blues')
+plt.colorbar()
+plt.title('Attention Weights')
+plt.xlabel('Key Position')
+plt.ylabel('Query Position')
+plt.show()
+```
+
+### 6.4 Transformer Implementation
+
+#### 6.4.1 Mermaid Diagram: Transformer Architecture
+```mermaid
+graph TD;
+  A["Input Embeddings"] --> B["Positional Encoding"]
+  B --> C["Multi-Head Attention"]
+  C --> D["Add & Norm"]
+  D --> E["Feed Forward"]
+  E --> F["Add & Norm"]
+  F --> G["Output"]
+  
+  subgraph "Encoder Block"
+    C --> D
+    D --> E
+    E --> F
+  end
+  
+  subgraph "Multi-Head Attention"
+    H["Linear Projections"] --> I["Scaled Dot-Product"]
+    I --> J["Concatenate"]
+    J --> K["Final Linear"]
+  end
+```
+
+#### 6.4.2 Simple Transformer Implementation
+```python
+import torch
+import torch.nn as nn
+import math
+
+class PositionalEncoding(nn.Module):
+    def __init__(self, d_model, max_len=5000):
+        super(PositionalEncoding, self).__init__()
+        
+        pe = torch.zeros(max_len, d_model)
+        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
+        div_term = torch.exp(torch.arange(0, d_model, 2).float() * 
+                           (-math.log(10000.0) / d_model))
+        
+        pe[:, 0::2] = torch.sin(position * div_term)
+        pe[:, 1::2] = torch.cos(position * div_term)
+        pe = pe.unsqueeze(0).transpose(0, 1)
+        
+        self.register_buffer('pe', pe)
+    
+    def forward(self, x):
+        return x + self.pe[:x.size(0), :]
+
+class TransformerEncoder(nn.Module):
+    def __init__(self, vocab_size, d_model, nhead, num_layers):
+        super(TransformerEncoder, self).__init__()
+        
+        self.embedding = nn.Embedding(vocab_size, d_model)
+        self.pos_encoding = PositionalEncoding(d_model)
+        
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=d_model,
+            nhead=nhead,
+            dim_feedforward=2048,
+            dropout=0.1
+        )
+        
+        self.transformer_encoder = nn.TransformerEncoder(
+            encoder_layer, 
+            num_layers=num_layers
+        )
+        
+        self.fc_out = nn.Linear(d_model, vocab_size)
+        
+    def forward(self, src):
+        # src shape: (seq_len, batch_size)
+        src = self.embedding(src) * math.sqrt(self.embedding.embedding_dim)
+        src = self.pos_encoding(src)
+        output = self.transformer_encoder(src)
+        output = self.fc_out(output)
+        return output
+
+# Example usage
+vocab_size = 1000
+d_model = 512
+nhead = 8
+num_layers = 6
+
+# Create model
+model = TransformerEncoder(vocab_size, d_model, nhead, num_layers)
+
+# Create sample input
+seq_len = 10
+batch_size = 4
+src = torch.randint(0, vocab_size, (seq_len, batch_size))
+
+# Forward pass
+output = model(src)
+
+print(f"Input shape: {src.shape}")
+print(f"Output shape: {output.shape}")
+```
+
+### 6.5 Large Language Model Interaction
+
+#### 6.5.1 Mermaid Diagram: LLM Interaction
+```mermaid
+graph LR;
+  A["User Input"] --> B["Prompt Engineering"]
+  B --> C["LLM API Call"]
+  C --> D["Model Processing"]
+  D --> E["Response Generation"]
+  E --> F["Response Processing"]
+  F --> G["User Output"]
+  
+  subgraph "Prompt Engineering"
+    H["System Prompt"] --> I["User Message"]
+    I --> J["Context"]
+    J --> K["Format Instructions"]
+  end
+```
+
+#### 6.5.2 LLM Interaction Implementation
+```python
+import openai
+from typing import List, Dict, Any
+import json
+
+class LLMInterface:
+    def __init__(self, api_key: str, model: str = "gpt-3.5-turbo"):
+        self.client = openai.OpenAI(api_key=api_key)
+        self.model = model
+    
+    def create_chat_completion(self, messages: List[Dict[str, str]], 
+                              temperature: float = 0.7) -> str:
+        """Create a chat completion with the LLM"""
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                temperature=temperature
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            return f"Error: {str(e)}"
+    
+    def extract_structured_data(self, text: str, schema: Dict[str, Any]) -> Dict[str, Any]:
+        """Extract structured data from text using LLM"""
+        system_prompt = f"""
+        Extract structured data from the following text according to this schema:
+        {json.dumps(schema, indent=2)}
+        
+        Return only valid JSON matching the schema.
+        """
+        
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": text}
+        ]
+        
+        response = self.create_chat_completion(messages, temperature=0.1)
+        
+        try:
+            return json.loads(response)
+        except json.JSONDecodeError:
+            return {"error": "Failed to parse JSON response"}
+    
+    def summarize_text(self, text: str, max_length: int = 150) -> str:
+        """Summarize text using LLM"""
+        system_prompt = f"""
+        Summarize the following text in {max_length} words or less.
+        Focus on the main points and key information.
+        """
+        
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": text}
+        ]
+        
+        return self.create_chat_completion(messages, temperature=0.3)
+
+# Example usage (requires OpenAI API key)
+# llm = LLMInterface("your-api-key-here")
+
+# Example text for summarization
+sample_text = """
+Natural Language Processing (NLP) is a subfield of artificial intelligence that focuses on 
+the interaction between computers and human language. It involves developing algorithms and 
+models that can understand, interpret, and generate human language in a way that is both 
+meaningful and useful. NLP has applications in machine translation, sentiment analysis, 
+question answering, and many other areas. Recent advances in deep learning, particularly 
+transformer models like BERT and GPT, have significantly improved the performance of NLP 
+systems across various tasks.
+"""
+
+# Schema for structured data extraction
+schema = {
+    "type": "object",
+    "properties": {
+        "field": {"type": "string"},
+        "applications": {"type": "array", "items": {"type": "string"}},
+        "key_technologies": {"type": "array", "items": {"type": "string"}}
+    }
+}
+
+# Example function calls (commented out as they require API key)
+# summary = llm.summarize_text(sample_text)
+# structured_data = llm.extract_structured_data(sample_text, schema)
+```
+
+### 6.6 RAG System Implementation
+
+#### 6.6.1 Mermaid Diagram: RAG System
+```mermaid
+graph TD;
+  A["User Query"] --> B["Query Processing"]
+  B --> C["Vector Search"]
+  C --> D["Retrieve Relevant Documents"]
+  D --> E["Context Assembly"]
+  E --> F["LLM Generation"]
+  F --> G["Response"]
+  
+  subgraph "Knowledge Base"
+    H["Document 1"] --> I["Embedding 1"]
+    J["Document 2"] --> K["Embedding 2"]
+    L["Document N"] --> M["Embedding N"]
+  end
+  
+  subgraph "Vector Database"
+    I --> N["Index"]
+    K --> N
+    M --> N
+  end
+  
+  C --> N
+```
+
+#### 6.6.2 RAG System Implementation
+```python
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+from typing import List, Dict, Any
+import json
+
+class SimpleRAGSystem:
+    def __init__(self):
+        self.documents = []
+        self.embeddings = []
+        self.document_embeddings = {}
+    
+    def add_document(self, doc_id: str, content: str, embedding: List[float]):
+        """Add a document to the knowledge base"""
+        self.documents.append({
+            'id': doc_id,
+            'content': content
+        })
+        self.embeddings.append(embedding)
+        self.document_embeddings[doc_id] = embedding
+    
+    def search_similar_documents(self, query_embedding: List[float], 
+                               top_k: int = 3) -> List[Dict[str, Any]]:
+        """Search for similar documents using cosine similarity"""
+        if not self.embeddings:
+            return []
+        
+        # Calculate similarities
+        similarities = cosine_similarity([query_embedding], self.embeddings)[0]
+        
+        # Get top-k similar documents
+        top_indices = np.argsort(similarities)[::-1][:top_k]
+        
+        results = []
+        for idx in top_indices:
+            results.append({
+                'document': self.documents[idx],
+                'similarity': similarities[idx]
+            })
+        
+        return results
+    
+    def generate_response(self, query: str, query_embedding: List[float], 
+                         llm_interface) -> str:
+        """Generate response using RAG"""
+        # Retrieve relevant documents
+        similar_docs = self.search_similar_documents(query_embedding, top_k=3)
+        
+        if not similar_docs:
+            return "I don't have enough information to answer that question."
+        
+        # Build context from retrieved documents
+        context = "\n\n".join([doc['document']['content'] 
+                              for doc in similar_docs])
+        
+        # Create prompt for LLM
+        system_prompt = """
+        You are a helpful assistant. Use the following context to answer the user's question.
+        If the context doesn't contain enough information to answer the question, say so.
+        Be concise and accurate in your response.
+        """
+        
+        user_prompt = f"""
+        Context:
+        {context}
+        
+        Question: {query}
+        
+        Answer:
+        """
+        
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ]
+        
+        return llm_interface.create_chat_completion(messages, temperature=0.3)
+
+# Example usage
+def create_sample_embeddings(text: str) -> List[float]:
+    """Simple function to create embeddings (in practice, use proper embedding models)"""
+    # This is a simplified version - in practice, use models like sentence-transformers
+    return [hash(text) % 100 / 100.0 for _ in range(384)]
+
+# Initialize RAG system
+rag_system = SimpleRAGSystem()
+
+# Add sample documents
+documents = [
+    {
+        "id": "doc1",
+        "content": "Machine learning is a subset of artificial intelligence that enables computers to learn without being explicitly programmed."
+    },
+    {
+        "id": "doc2", 
+        "content": "Deep learning uses neural networks with multiple layers to learn complex patterns in data."
+    },
+    {
+        "id": "doc3",
+        "content": "Natural Language Processing (NLP) focuses on enabling computers to understand and process human language."
+    }
+]
+
+for doc in documents:
+    embedding = create_sample_embeddings(doc["content"])
+    rag_system.add_document(doc["id"], doc["content"], embedding)
+
+# Example query
+query = "What is machine learning?"
+query_embedding = create_sample_embeddings(query)
+
+# Search for similar documents
+similar_docs = rag_system.search_similar_documents(query_embedding)
+print("Similar documents:")
+for doc in similar_docs:
+    print(f"Document: {doc['document']['content']}")
+    print(f"Similarity: {doc['similarity']:.3f}")
+    print()
+```
+
+### 6.7 End-to-End NLP Project: Sentiment Analysis System
+
+#### 6.7.1 Complete Sentiment Analysis Implementation
+```python
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report, confusion_matrix
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+class SentimentAnalysisSystem:
+    def __init__(self):
+        self.vectorizer = TfidfVectorizer(max_features=5000, stop_words='english')
+        self.model = LogisticRegression(random_state=42)
+        self.is_trained = False
+    
+    def preprocess_text(self, texts):
+        """Basic text preprocessing"""
+        processed_texts = []
+        for text in texts:
+            # Convert to lowercase
+            text = text.lower()
+            # Remove special characters
+            text = re.sub(r'[^a-zA-Z\s]', '', text)
+            processed_texts.append(text)
+        return processed_texts
+    
+    def train(self, texts, labels):
+        """Train the sentiment analysis model"""
+        # Preprocess texts
+        processed_texts = self.preprocess_text(texts)
+        
+        # Vectorize texts
+        X = self.vectorizer.fit_transform(processed_texts)
+        
+        # Train model
+        self.model.fit(X, labels)
+        self.is_trained = True
+        
+        print("Model trained successfully!")
+    
+    def predict(self, texts):
+        """Predict sentiment for new texts"""
+        if not self.is_trained:
+            raise ValueError("Model must be trained before making predictions")
+        
+        # Preprocess texts
+        processed_texts = self.preprocess_text(texts)
+        
+        # Vectorize texts
+        X = self.vectorizer.transform(processed_texts)
+        
+        # Make predictions
+        predictions = self.model.predict(X)
+        probabilities = self.model.predict_proba(X)
+        
+        return predictions, probabilities
+    
+    def evaluate(self, texts, true_labels):
+        """Evaluate model performance"""
+        predictions, _ = self.predict(texts)
+        
+        # Print classification report
+        print("Classification Report:")
+        print(classification_report(true_labels, predictions))
+        
+        # Plot confusion matrix
+        cm = confusion_matrix(true_labels, predictions)
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+        plt.title('Confusion Matrix')
+        plt.ylabel('True Label')
+        plt.xlabel('Predicted Label')
+        plt.show()
+    
+    def analyze_sentiment_distribution(self, texts, labels):
+        """Analyze sentiment distribution in the dataset"""
+        sentiment_counts = pd.Series(labels).value_counts()
+        
+        plt.figure(figsize=(10, 4))
+        
+        plt.subplot(1, 2, 1)
+        sentiment_counts.plot(kind='bar')
+        plt.title('Sentiment Distribution')
+        plt.xlabel('Sentiment')
+        plt.ylabel('Count')
+        
+        plt.subplot(1, 2, 2)
+        sentiment_counts.plot(kind='pie', autopct='%1.1f%%')
+        plt.title('Sentiment Distribution (%)')
+        
+        plt.tight_layout()
+        plt.show()
+
+# Generate sample data
+np.random.seed(42)
+n_samples = 1000
+
+positive_texts = [
+    "I love this product! It's amazing and works perfectly.",
+    "Great service and excellent quality. Highly recommended!",
+    "This is exactly what I was looking for. Fantastic!",
+    "Outstanding performance and great value for money.",
+    "Wonderful experience with this company."
+]
+
+negative_texts = [
+    "Terrible product, completely disappointed.",
+    "Poor quality and bad customer service.",
+    "This is the worst purchase I've ever made.",
+    "Awful experience, would not recommend.",
+    "Very dissatisfied with the service."
+]
+
+# Generate synthetic dataset
+texts = []
+labels = []
+
+for _ in range(n_samples // 2):
+    # Positive samples
+    text = np.random.choice(positive_texts)
+    texts.append(text)
+    labels.append(1)
+    
+    # Negative samples
+    text = np.random.choice(negative_texts)
+    texts.append(text)
+    labels.append(0)
+
+# Shuffle the data
+indices = np.random.permutation(len(texts))
+texts = [texts[i] for i in indices]
+labels = [labels[i] for i in indices]
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    texts, labels, test_size=0.2, random_state=42
+)
+
+# Initialize and train the system
+sentiment_system = SentimentAnalysisSystem()
+sentiment_system.train(X_train, y_train)
+
+# Evaluate the model
+sentiment_system.evaluate(X_test, y_test)
+
+# Analyze sentiment distribution
+sentiment_system.analyze_sentiment_distribution(texts, labels)
+
+# Test with new texts
+new_texts = [
+    "This product exceeded my expectations!",
+    "I'm very disappointed with the quality.",
+    "It's okay, nothing special.",
+    "Absolutely love it! Best purchase ever!",
+    "Terrible waste of money."
+]
+
+predictions, probabilities = sentiment_system.predict(new_texts)
+
+print("\nPredictions for new texts:")
+for text, pred, prob in zip(new_texts, predictions, probabilities):
+    sentiment = "Positive" if pred == 1 else "Negative"
+    confidence = max(prob)
+    print(f"Text: {text}")
+    print(f"Sentiment: {sentiment} (confidence: {confidence:.3f})")
+    print()
+```
 
 ---
 
-*This comprehensive primer represents a journey through the fascinating world of Natural Language Processing. From the fundamental concepts of text processing to the cutting-edge techniques of Large Language Models and Retrieval-Augmented Generation, we've explored the tools and techniques that are transforming how machines understand and generate human language.*
+## Chapter 7: Exercises and Practice Problems
 
-*The field continues to evolve rapidly, with new breakthroughs and applications emerging regularly. Whether you're building chatbots, analyzing sentiment, translating languages, or creating intelligent search systems, the knowledge and skills you've gained here provide a solid foundation for your NLP journey.*
+### 7.1 Text Processing Exercises
 
-*Remember that the most important aspect of any technology is how it serves human needs and values. As you apply these techniques, always consider their impact on individuals and society. Build systems that are not just technically impressive, but also beneficial, fair, and trustworthy.*
+**Exercise 1: Custom Tokenizer**
+- Implement a custom tokenizer that handles contractions (e.g., "don't" → ["do", "n't"])
+- Add support for handling URLs, emails, and phone numbers
+- Test with various text types
 
-*Happy coding, and may your NLP projects make a positive difference in the world!* 
+**Exercise 2: Named Entity Recognition**
+- Use spaCy to extract named entities from news articles
+- Create a custom NER system for domain-specific entities
+- Evaluate performance on different text types
+
+**Exercise 3: Text Classification**
+- Build a multi-class text classifier for news categories
+- Implement different feature extraction methods (TF-IDF, word embeddings)
+- Compare performance of different algorithms
+
+### 7.2 Advanced NLP Exercises
+
+**Exercise 4: Question Answering System**
+- Build a simple QA system using RAG
+- Implement document retrieval and answer generation
+- Evaluate on a custom dataset
+
+**Exercise 5: Text Summarization**
+- Implement extractive summarization using sentence ranking
+- Build an abstractive summarization system using transformers
+- Compare different summarization approaches
+
+**Exercise 6: Language Model Fine-tuning**
+- Fine-tune a pre-trained language model on a specific task
+- Implement prompt engineering techniques
+- Evaluate model performance and analyze outputs
+
+### 7.3 Project-Based Exercises
+
+**Exercise 7: Chatbot Development**
+- Build a conversational chatbot using RAG
+- Implement context management and conversation flow
+- Add personality and response generation
+
+**Exercise 8: Document Analysis System**
+- Create a system that analyzes legal documents
+- Extract key information and generate summaries
+- Implement document similarity and clustering
+
+**Exercise 9: Multilingual NLP System**
+- Build a system that works with multiple languages
+- Implement translation and cross-lingual analysis
+- Handle language detection and processing
+
+---
+
+## Summary and Next Steps
+
+Congratulations! You've completed a comprehensive journey through Natural Language Processing. Here's what you've learned:
+
+### Key Concepts Covered:
+1. **Text Processing**: Tokenization, normalization, preprocessing pipelines
+2. **Word Embeddings**: Vector representations, similarity, analogies
+3. **Attention Mechanisms**: Self-attention, multi-head attention
+4. **Transformers**: Architecture, implementation, applications
+5. **Large Language Models**: Interaction, prompt engineering, fine-tuning
+6. **RAG Systems**: Retrieval, generation, end-to-end implementation
+7. **Practical Applications**: Sentiment analysis, text classification, QA systems
+
+### Next Steps:
+1. **Practice**: Work through all exercises and implement the code examples
+2. **Real Projects**: Apply these concepts to real-world NLP problems
+3. **Specialization**: Focus on areas that interest you (multilingual, domain-specific, etc.)
+4. **Stay Updated**: Follow the latest research and developments in NLP
+5. **Contribute**: Participate in open-source NLP projects and competitions
+
+### Resources for Further Learning:
+- **Research Papers**: ACL, EMNLP, NAACL proceedings
+- **Online Courses**: Stanford CS224N, Coursera NLP Specialization
+- **Tools and Libraries**: Hugging Face, spaCy, NLTK, AllenNLP
+- **Competitions**: Kaggle NLP competitions, SemEval
+- **Communities**: Reddit r/LanguageTechnology, NLP Slack groups
+
+### Remember:
+- **Start Simple**: Begin with basic text processing before moving to complex models
+- **Focus on Data**: Quality data is crucial for NLP success
+- **Understand Context**: Language is context-dependent
+- **Consider Ethics**: Be mindful of bias and fairness in NLP systems
+- **Keep Learning**: NLP is rapidly evolving with new breakthroughs
+
+Natural Language Processing is a fascinating field that bridges human communication and artificial intelligence. The knowledge you've gained provides a solid foundation for building intelligent language systems that can understand, process, and generate human language effectively.
+
+---
+
+*This concludes the comprehensive practical guide to Natural Language Processing. Happy coding and building amazing NLP systems!* 

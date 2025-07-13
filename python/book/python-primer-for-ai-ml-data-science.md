@@ -518,3 +518,245 @@ dependencies:
 ---
 
 *[Continue reading in the next section...]* 
+
+---
+
+## Chapter 2: Python Language Essentials for AI/ML/Data Science
+
+### 2.1 Python Syntax and Data Structures
+
+#### 2.1.1 Variables and Types
+```python
+x = 10          # integer
+y = 3.14        # float
+name = "Alice"  # string
+is_valid = True # boolean
+```
+
+#### 2.1.2 Lists
+```python
+fruits = ["apple", "banana", "cherry"]
+fruits.append("orange")
+print(fruits[1])  # Output: banana
+```
+
+#### 2.1.3 Tuples
+```python
+point = (3, 4)
+x, y = point
+```
+
+#### 2.1.4 Dictionaries
+```python
+person = {"name": "Alice", "age": 30}
+print(person["name"])
+person["city"] = "London"
+```
+
+#### 2.1.5 Sets
+```python
+unique_numbers = {1, 2, 3, 2}
+print(unique_numbers)  # Output: {1, 2, 3}
+```
+
+#### 2.1.6 Control Flow
+```python
+for i in range(5):
+    print(i)
+
+if x > 5:
+    print("x is large")
+else:
+    print("x is small")
+```
+
+#### 2.1.7 Mermaid Diagram: Python Data Structures
+```mermaid
+graph TD;
+  A["List"] --> B["Ordered, Mutable"]
+  C["Tuple"] --> D["Ordered, Immutable"]
+  E["Dict"] --> F["Key-Value, Mutable"]
+  G["Set"] --> H["Unordered, Unique"]
+```
+
+### 2.2 Functions, Modules, and OOP
+
+#### 2.2.1 Functions
+```python
+def add(a, b):
+    return a + b
+
+result = add(2, 3)
+```
+
+#### 2.2.2 Modules and Imports
+```python
+import math
+print(math.sqrt(16))
+```
+
+#### 2.2.3 Object-Oriented Programming (OOP)
+```python
+class Dog:
+    def __init__(self, name):
+        self.name = name
+    def bark(self):
+        print(f"{self.name} says woof!")
+
+my_dog = Dog("Rex")
+my_dog.bark()
+```
+
+### 2.3 File I/O and Error Handling
+
+#### 2.3.1 Reading and Writing Files
+```python
+with open("data.txt", "w") as f:
+    f.write("Hello, world!\n")
+
+with open("data.txt", "r") as f:
+    content = f.read()
+    print(content)
+```
+
+#### 2.3.2 Error Handling
+```python
+try:
+    result = 10 / 0
+except ZeroDivisionError:
+    print("Cannot divide by zero!")
+finally:
+    print("Done.")
+```
+
+---
+
+## Chapter 3: Essential Libraries for Data Science
+
+### 3.1 NumPy
+```python
+import numpy as np
+arr = np.array([1, 2, 3])
+print(arr.mean())
+```
+
+### 3.2 pandas
+```python
+import pandas as pd
+df = pd.DataFrame({"A": [1, 2], "B": [3, 4]})
+print(df.head())
+```
+
+### 3.3 matplotlib
+```python
+import matplotlib.pyplot as plt
+plt.plot([1, 2, 3], [4, 5, 6])
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Simple Plot")
+plt.show()
+```
+
+### 3.4 scikit-learn
+```python
+from sklearn.linear_model import LinearRegression
+import numpy as np
+X = np.array([[1], [2], [3]])
+y = np.array([2, 4, 6])
+model = LinearRegression()
+model.fit(X, y)
+print(model.predict([[4]]))
+```
+
+---
+
+## Chapter 4: End-to-End Mini Project
+
+### 4.1 Problem: Predicting House Prices
+
+#### 4.1.1 Load Data
+```python
+import pandas as pd
+df = pd.read_csv("house_prices.csv")
+print(df.head())
+```
+
+#### 4.1.2 Data Exploration
+```python
+print(df.describe())
+print(df.isnull().sum())
+```
+
+#### 4.1.3 Data Preprocessing
+```python
+df = df.fillna(df.mean())
+X = df[["sqft", "bedrooms"]]
+y = df["price"]
+```
+
+#### 4.1.4 Model Training
+```python
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+model.fit(X, y)
+```
+
+#### 4.1.5 Prediction and Evaluation
+```python
+predictions = model.predict(X)
+from sklearn.metrics import mean_squared_error
+mse = mean_squared_error(y, predictions)
+print(f"MSE: {mse}")
+```
+
+#### 4.1.6 Visualization
+```python
+import matplotlib.pyplot as plt
+plt.scatter(df["sqft"], y, label="Actual")
+plt.scatter(df["sqft"], predictions, label="Predicted")
+plt.xlabel("Square Footage")
+plt.ylabel("Price")
+plt.legend()
+plt.show()
+```
+
+#### 4.1.7 Mermaid Diagram: Data Science Workflow
+```mermaid
+graph LR;
+  A["Raw Data"] --> B["Data Cleaning"]
+  B --> C["Feature Engineering"]
+  C --> D["Model Training"]
+  D --> E["Evaluation"]
+  E --> F["Deployment"]
+```
+
+---
+
+## Chapter 5: Exercises
+
+### 5.1 Python Basics
+- Write a function to compute the factorial of a number.
+- Create a dictionary mapping numbers 1-5 to their squares.
+
+### 5.2 Data Structures
+- Given a list of numbers, return only the even ones.
+- Convert a list of (name, age) tuples to a dictionary.
+
+### 5.3 Libraries
+- Load a CSV file using pandas and print the first 3 rows.
+- Plot a sine wave using matplotlib.
+
+### 5.4 Mini Project
+- Download a public dataset (e.g., from Kaggle), perform basic EDA, and fit a simple regression model.
+
+---
+
+## Summary
+- Python is the foundation for AI/ML/Data Science.
+- Mastering syntax, data structures, and libraries is essential.
+- Practice with real data and projects.
+- Use diagrams and visualizations to understand workflows and relationships.
+
+---
+
+*Congratulations! You are now ready to dive deeper into Machine Learning, Neural Networks, and NLP with Python as your toolkit.* 
