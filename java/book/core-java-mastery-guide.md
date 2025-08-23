@@ -1661,7 +1661,120 @@ Create a program that benefits from different JVM tuning parameters and demonstr
 
 ## 🔍 **Solutions & Explanations**
 
-*Detailed solutions with code analysis, performance considerations, and best practices will be provided at the end of the book.*
+### **Problem 6.1: Singleton Pattern Implementation**
+
+**Solution Analysis:**
+```java
+// Key Implementation Points:
+// 1. Private constructor prevents instantiation
+// 2. Static instance with volatile keyword for thread safety
+// 3. Double-checked locking for performance
+// 4. Lazy initialization for memory efficiency
+
+public class Singleton {
+    private static volatile Singleton instance;
+    private Singleton() {} // Private constructor
+    
+    public static Singleton getInstance() {
+        if (instance == null) {
+            synchronized (Singleton.class) {
+                if (instance == null) {
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+}
+```
+
+**Performance Considerations:**
+- **Thread Safety**: Volatile ensures visibility across threads
+- **Lazy Loading**: Instance created only when first requested
+- **Double-Checked Locking**: Minimizes synchronization overhead
+
+**Best Practices:**
+- Use enum-based singleton for serialization safety
+- Consider eager initialization for simple cases
+- Document thread safety guarantees
+- Avoid complex initialization in getInstance()
+
+### **Problem 6.2: Factory Pattern Implementation**
+
+**Solution Analysis:**
+```java
+// Key Implementation Points:
+// 1. Abstract factory interface defines creation contract
+// 2. Concrete factories implement specific creation logic
+// 3. Product hierarchy with common interface
+// 4. Runtime object creation based on factory type
+
+interface AnimalFactory {
+    Animal createAnimal(String type);
+}
+
+class DomesticAnimalFactory implements AnimalFactory {
+    @Override
+    public Animal createAnimal(String type) {
+        switch (type.toLowerCase()) {
+            case "dog": return new Dog();
+            case "cat": return new Cat();
+            default: throw new IllegalArgumentException("Unknown animal type: " + type);
+        }
+    }
+}
+```
+
+**Performance Considerations:**
+- **Object Creation**: Factory overhead is minimal
+- **Memory Usage**: Objects created on-demand
+- **Extensibility**: Easy to add new product types
+
+**Best Practices:**
+- Use factory when object creation is complex
+- Consider parameterized factories for flexibility
+- Implement proper error handling for invalid types
+- Document factory behavior and constraints
+
+### **Problem 6.3: Observer Pattern Implementation**
+
+**Solution Analysis:**
+```java
+// Key Implementation Points:
+// 1. Subject maintains list of observers
+// 2. Observer interface defines update contract
+// 3. Loose coupling between subject and observers
+// 4. Efficient notification mechanism
+
+class NewsAgency implements Subject {
+    private List<Observer> observers = new ArrayList<>();
+    
+    @Override
+    public void registerObserver(Observer observer) {
+        if (!observers.contains(observer)) {
+            observers.add(observer);
+        }
+    }
+    
+    @Override
+    public void notifyObservers(String message) {
+        for (Observer observer : observers) {
+            observer.update(message);
+        }
+    }
+}
+```
+
+**Performance Considerations:**
+- **Notification**: O(n) where n is number of observers
+- **Memory**: Each observer maintains reference
+- **Concurrency**: Consider thread safety for observer lists
+
+**Best Practices:**
+- Use CopyOnWriteArrayList for thread safety
+- Consider weak references to prevent memory leaks
+- Implement observer priority if needed
+- Provide unregister method for cleanup
 
 ---
 
@@ -3010,3 +3123,504 @@ In the upcoming chapters, we'll explore:
 - Testing and debugging strategies
 
 **Continue your Java mastery journey with hands-on practice and real-world applications! 🚀**
+
+---
+
+## 🎯 **Chapter 9: Java Interview Questions & Technical Assessment**
+
+### 🎯 **Chapter Overview**
+This chapter provides a comprehensive collection of Java interview questions covering all major areas. These questions range from basic to advanced, helping you assess your knowledge and prepare for technical interviews at various levels.
+
+### 📋 **Interview Question Categories**
+
+#### **9.1 Java Fundamentals & Memory Management**
+
+**Q1: Explain the difference between `==` and `.equals()` in Java.**
+```java
+String s1 = "Hello";
+String s2 = new String("Hello");
+String s3 = "Hello";
+
+System.out.println(s1 == s2);      // false (different objects)
+System.out.println(s1 == s3);      // true (string pool)
+System.out.println(s1.equals(s2)); // true (same content)
+```
+
+**Q2: What is the String Pool and how does it work?**
+- String Pool is a special memory area in the heap
+- String literals are automatically interned
+- `String.intern()` method adds strings to the pool
+- Saves memory by reusing string objects
+
+**Q3: Explain Java Memory Model components.**
+```java
+// Stack: Local variables, method calls
+// Heap: Objects, arrays
+// Method Area: Class metadata, static variables
+// Native Method Stack: Native method calls
+```
+
+**Q4: What is the difference between primitive types and wrapper classes?**
+```java
+int primitive = 42;           // Stack, no null
+Integer wrapper = 42;         // Heap, can be null
+Integer autoBoxed = 42;       // Autoboxing
+int unboxed = wrapper;        // Unboxing
+```
+
+#### **9.2 Object-Oriented Programming**
+
+**Q5: Explain the difference between method overloading and overriding.**
+```java
+// Overloading: Same method name, different parameters
+public void process(int value) { }
+public void process(String value) { }
+public void process(int value, String description) { }
+
+// Overriding: Same method signature in subclass
+@Override
+public void process(int value) { 
+    super.process(value); // Call parent method
+}
+```
+
+**Q6: What is the difference between abstract classes and interfaces?**
+```java
+// Abstract Class: Can have state, constructors, concrete methods
+abstract class Animal {
+    protected String name; // State
+    public Animal(String name) { this.name = name; } // Constructor
+    public abstract void makeSound(); // Abstract method
+    public void sleep() { System.out.println("Sleeping..."); } // Concrete
+}
+
+// Interface: Pure contract, default methods, static methods
+interface Movable {
+    void move(); // Abstract method
+    default void stop() { System.out.println("Stopped"); } // Default
+    static boolean isValidSpeed(int speed) { return speed > 0; } // Static
+}
+```
+
+**Q7: Explain polymorphism with examples.**
+```java
+// Compile-time polymorphism (overloading)
+public class Calculator {
+    public int add(int a, int b) { return a + b; }
+    public double add(double a, double b) { return a + b; }
+}
+
+// Runtime polymorphism (overriding)
+Animal animal = new Dog(); // Animal reference, Dog object
+animal.makeSound(); // Calls Dog's makeSound method
+```
+
+#### **9.3 Collections Framework**
+
+**Q8: What is the difference between ArrayList and LinkedList?**
+```java
+// ArrayList: Dynamic array, fast random access
+ArrayList<String> arrayList = new ArrayList<>();
+arrayList.add("Element");           // O(1) amortized
+String element = arrayList.get(0);  // O(1)
+arrayList.remove(0);               // O(n) - shifting
+
+// LinkedList: Doubly linked list, fast insertion/deletion
+LinkedList<String> linkedList = new LinkedList<>();
+linkedList.add("Element");          // O(1)
+linkedList.addFirst("First");       // O(1)
+linkedList.removeLast();            // O(1)
+```
+
+**Q9: How does HashMap handle collisions?**
+```java
+// HashMap uses chaining (linked list) for collisions
+// Java 8+: Converts to tree when list length > 8
+// Resize when load factor threshold is reached
+Map<String, Integer> map = new HashMap<>();
+map.put("key1", 1);
+map.put("key2", 2);
+// If hash(key1) == hash(key2), collision occurs
+```
+
+**Q10: Explain the difference between HashSet and TreeSet.**
+```java
+// HashSet: Hash table, O(1) operations, no ordering
+HashSet<String> hashSet = new HashSet<>();
+hashSet.add("Zebra");
+hashSet.add("Apple");
+// Order not guaranteed
+
+// TreeSet: Red-black tree, O(log n) operations, sorted
+TreeSet<String> treeSet = new TreeSet<>();
+treeSet.add("Zebra");
+treeSet.add("Apple");
+// Always sorted: Apple, Zebra
+```
+
+#### **9.4 Generics & Type Safety**
+
+**Q11: What are bounded generics and how do you use them?**
+```java
+// Upper bound: T must be Number or subclass
+class NumberBox<T extends Number> {
+    private T value;
+    public NumberBox(T value) { this.value = value; }
+    public double getDoubleValue() { return value.doubleValue(); }
+}
+
+// Multiple bounds: T must implement multiple interfaces
+class ComparableNumberBox<T extends Number & Comparable<T>> {
+    public T max(T a, T b) {
+        return a.compareTo(b) > 0 ? a : b;
+    }
+}
+```
+
+**Q12: Explain wildcards in generics.**
+```java
+// Upper bound wildcard: ? extends Type
+public static double sumOfNumbers(List<? extends Number> numbers) {
+    return numbers.stream()
+                 .mapToDouble(Number::doubleValue)
+                 .sum();
+}
+
+// Lower bound wildcard: ? super Type
+public static void addNumbers(List<? super Integer> numbers) {
+    numbers.add(42); // Can add Integer
+    numbers.add(100); // Can add Integer
+}
+```
+
+#### **9.5 Exception Handling**
+
+**Q13: What is the difference between checked and unchecked exceptions?**
+```java
+// Checked exceptions: Must be handled or declared
+public void readFile() throws IOException {
+    FileReader reader = new FileReader("file.txt"); // Compiler error if not handled
+}
+
+// Unchecked exceptions: Don't need explicit handling
+public void divide(int a, int b) {
+    if (b == 0) {
+        throw new IllegalArgumentException("Division by zero"); // No throws needed
+    }
+    return a / b;
+}
+```
+
+**Q14: Explain try-with-resources.**
+```java
+// Automatic resource management
+try (FileReader reader = new FileReader("file.txt");
+     BufferedReader br = new BufferedReader(reader)) {
+    String line = br.readLine();
+    // Resources automatically closed
+} catch (IOException e) {
+    // Handle exception
+}
+```
+
+#### **9.6 Multithreading & Concurrency**
+
+**Q15: What is the difference between Thread and Runnable?**
+```java
+// Extending Thread
+class MyThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println("Thread running: " + Thread.currentThread().getName());
+    }
+}
+
+// Implementing Runnable (preferred)
+class MyRunnable implements Runnable {
+    @Override
+    public void run() {
+        System.out.println("Runnable running: " + Thread.currentThread().getName());
+    }
+}
+
+// Usage
+Thread thread1 = new MyThread();
+Thread thread2 = new Thread(new MyRunnable());
+```
+
+**Q16: Explain synchronized keyword and its usage.**
+```java
+class Counter {
+    private int count = 0;
+    
+    // Synchronized method
+    public synchronized void increment() {
+        count++;
+    }
+    
+    // Synchronized block
+    public void decrement() {
+        synchronized(this) {
+            count--;
+        }
+    }
+    
+    // Synchronized static method
+    public static synchronized void reset() {
+        // Synchronizes on class object
+    }
+}
+```
+
+#### **9.7 Design Patterns**
+
+**Q17: Implement a Singleton pattern.**
+```java
+public class Singleton {
+    private static volatile Singleton instance;
+    private Singleton() {} // Private constructor
+    
+    public static Singleton getInstance() {
+        if (instance == null) {
+            synchronized (Singleton.class) {
+                if (instance == null) {
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+}
+```
+
+**Q18: Explain the Observer pattern with Java implementation.**
+```java
+interface Observer {
+    void update(String message);
+}
+
+interface Subject {
+    void registerObserver(Observer observer);
+    void removeObserver(Observer observer);
+    void notifyObservers(String message);
+}
+
+class NewsAgency implements Subject {
+    private List<Observer> observers = new ArrayList<>();
+    
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+    
+    @Override
+    public void notifyObservers(String message) {
+        for (Observer observer : observers) {
+            observer.update(message);
+        }
+    }
+}
+```
+
+#### **9.8 Java 8+ Features**
+
+**Q19: Explain Stream API with examples.**
+```java
+List<String> names = Arrays.asList("Alice", "Bob", "Charlie", "David");
+
+// Filter and map
+List<String> filteredNames = names.stream()
+    .filter(name -> name.length() > 4)
+    .map(String::toUpperCase)
+    .collect(Collectors.toList());
+
+// Reduce operation
+int totalLength = names.stream()
+    .mapToInt(String::length)
+    .sum();
+
+// Parallel processing
+List<String> parallelNames = names.parallelStream()
+    .filter(name -> name.startsWith("A"))
+    .collect(Collectors.toList());
+```
+
+**Q20: What are Optional and how do you use them?**
+```java
+// Avoid null pointer exceptions
+Optional<String> name = Optional.of("John");
+Optional<String> emptyName = Optional.empty();
+
+// Safe operations
+String result = name.orElse("Unknown");
+String upperCase = name.map(String::toUpperCase).orElse("");
+
+// Chaining
+Optional<String> processed = name
+    .filter(n -> n.length() > 3)
+    .map(String::toUpperCase);
+```
+
+### 🎯 **Advanced Interview Questions**
+
+#### **9.9 Performance & Optimization**
+
+**Q21: How would you optimize a Java application for better performance?**
+- Use appropriate data structures
+- Implement caching strategies
+- Optimize memory usage
+- Use profiling tools
+- Consider JVM tuning
+
+**Q22: Explain garbage collection in Java.**
+```java
+// Different GC algorithms
+// - Serial GC: Single thread, good for small applications
+// - Parallel GC: Multiple threads, throughput focused
+// - G1 GC: Low latency, good for large heaps
+// - ZGC: Ultra-low latency, Java 11+
+
+// GC tuning flags
+// -Xms2g -Xmx4g -XX:+UseG1GC
+```
+
+#### **9.10 System Design Questions**
+
+**Q23: Design a custom ArrayList implementation.**
+```java
+// Key considerations:
+// - Dynamic resizing
+// - Efficient element shifting
+// - Iterator implementation
+// - Thread safety (if needed)
+// - Performance characteristics
+```
+
+**Q24: Design a thread-safe cache.**
+```java
+// Key considerations:
+// - Eviction policy (LRU, LFU, FIFO)
+// - Concurrency control
+// - Memory management
+// - Performance optimization
+// - Monitoring and metrics
+```
+
+### 📝 **Interview Preparation Tips**
+
+#### **9.11 Before the Interview**
+1. **Review Fundamentals**: Ensure solid understanding of core concepts
+2. **Practice Coding**: Solve problems on platforms like LeetCode, HackerRank
+3. **Understand Trade-offs**: Know when to use different approaches
+4. **Review Your Code**: Be ready to explain your implementation choices
+
+#### **9.12 During the Interview**
+1. **Clarify Requirements**: Ask questions before starting
+2. **Think Aloud**: Explain your thought process
+3. **Consider Edge Cases**: Think about boundary conditions
+4. **Optimize Incrementally**: Start simple, then improve
+
+#### **9.13 Common Interview Mistakes to Avoid**
+1. **Not Testing Code**: Always test with examples
+2. **Ignoring Edge Cases**: Consider null, empty, invalid inputs
+3. **Poor Communication**: Explain your approach clearly
+4. **Not Asking Questions**: Clarify requirements when unclear
+
+### 🔍 **Sample Interview Scenarios**
+
+#### **Scenario 1: String Processing**
+**Problem**: Implement a method to find the first non-repeating character in a string.
+
+**Approach**:
+```java
+public static char firstNonRepeating(String str) {
+    Map<Character, Integer> charCount = new HashMap<>();
+    
+    // Count characters
+    for (char c : str.toCharArray()) {
+        charCount.put(c, charCount.getOrDefault(c, 0) + 1);
+    }
+    
+    // Find first non-repeating
+    for (char c : str.toCharArray()) {
+        if (charCount.get(c) == 1) {
+            return c;
+        }
+    }
+    
+    return '\0'; // No non-repeating character
+}
+```
+
+#### **Scenario 2: Data Structure Design**
+**Problem**: Design a data structure that supports insert, delete, and getRandom in O(1) time.
+
+**Approach**:
+```java
+class RandomizedSet {
+    private List<Integer> list;
+    private Map<Integer, Integer> map; // value -> index
+    
+    public RandomizedSet() {
+        list = new ArrayList<>();
+        map = new HashMap<>();
+    }
+    
+    public boolean insert(int val) {
+        if (map.containsKey(val)) return false;
+        
+        list.add(val);
+        map.put(val, list.size() - 1);
+        return true;
+    }
+    
+    public boolean remove(int val) {
+        if (!map.containsKey(val)) return false;
+        
+        int index = map.get(val);
+        int lastElement = list.get(list.size() - 1);
+        
+        list.set(index, lastElement);
+        map.put(lastElement, index);
+        
+        list.remove(list.size() - 1);
+        map.remove(val);
+        return true;
+    }
+    
+    public int getRandom() {
+        return list.get((int)(Math.random() * list.size()));
+    }
+}
+```
+
+### 📚 **Additional Resources**
+
+#### **9.14 Recommended Reading**
+- "Effective Java" by Joshua Bloch
+- "Java Concurrency in Practice" by Brian Goetz
+- "Clean Code" by Robert C. Martin
+- "Design Patterns" by Gang of Four
+
+#### **9.15 Online Practice Platforms**
+- LeetCode (Java problems)
+- HackerRank (Java track)
+- CodeSignal
+- InterviewBit
+
+#### **9.16 Mock Interview Resources**
+- Pramp
+- Interviewing.io
+- Triplebyte
+- Local coding meetups
+
+### 🎯 **Chapter Summary**
+
+This chapter has provided you with:
+- **Comprehensive coverage** of Java interview topics
+- **Practical examples** for each concept
+- **Common interview questions** with solutions
+- **Preparation strategies** and tips
+- **Real-world scenarios** to practice
+
+Remember: **Practice makes perfect!** The more you code and solve problems, the more confident you'll become in technical interviews.
