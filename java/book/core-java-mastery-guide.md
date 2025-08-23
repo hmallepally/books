@@ -51,11 +51,18 @@ export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 1. **Java Fundamentals & Philosophy**
 2. **Object-Oriented Programming Deep Dive**
 3. **Java Collections Framework Mastery**
-4. **Core Libraries & Utilities**
-5. **Design Patterns in Java**
-6. **Advanced Java Concepts**
-7. **Problem-Solving Challenges**
-8. **Solutions & Explanations**
+4. **Advanced OOP Concepts & Interfaces**
+5. **Generics & Type Safety**
+6. **Design Patterns in Java**
+7. **Gang of Four Design Patterns**
+8. **Java Collections & I/O Design Patterns**
+9. **Exception Handling & Logging Strategies**
+10. **Concurrency & Threading Models**
+11. **Reflection & Annotation Processing**
+12. **Performance Optimization Techniques**
+13. **Real-World Project Examples**
+14. **Testing & Debugging Strategies**
+15. **Java Interview Questions & Technical Assessment**
 
 ---
 
@@ -839,7 +846,111 @@ Implement a simple event system using the observer pattern.
 
 ## 🔍 **Solutions & Explanations**
 
-*Solutions will be provided at the end of the book with detailed explanations, code analysis, and performance considerations.*
+### **Problem 1.1: Memory Leak Prevention**
+```java
+public class MemoryLeakExample {
+    private static List<Object> cache = new ArrayList<>();
+    
+    // ❌ Problematic: Objects never removed from cache
+    public static void addToCache(Object obj) {
+        cache.add(obj);
+    }
+    
+    // ✅ Solution: Implement cleanup mechanism
+    public static void addToCacheWithCleanup(Object obj) {
+        if (cache.size() > 1000) {
+            cache.clear(); // Prevent unlimited growth
+        }
+        cache.add(obj);
+    }
+    
+    // Better solution: Use WeakHashMap for automatic cleanup
+    private static Map<Object, Object> weakCache = new WeakHashMap<>();
+    
+    public static void addToWeakCache(Object key, Object value) {
+        weakCache.put(key, value); // Automatically cleaned up when key becomes unreachable
+    }
+}
+```
+
+**Key Points:**
+- **Memory Leaks**: Objects that are no longer needed but still referenced
+- **Prevention**: Implement cleanup mechanisms, use weak references
+- **Tools**: JProfiler, VisualVM for memory analysis
+
+### **Problem 1.2: String Optimization**
+```java
+public class StringOptimization {
+    // ❌ Inefficient: Creates multiple String objects
+    public static String buildStringInefficient(int count) {
+        String result = "";
+        for (int i = 0; i < count; i++) {
+            result += "item" + i; // Creates new String each iteration
+        }
+        return result;
+    }
+    
+    // ✅ Efficient: Use StringBuilder
+    public static String buildStringEfficient(int count) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            sb.append("item").append(i);
+        }
+        return sb.toString();
+    }
+    
+    // ✅ Most efficient: Pre-allocate capacity
+    public static String buildStringOptimal(int count) {
+        StringBuilder sb = new StringBuilder(count * 8); // Estimate capacity
+        for (int i = 0; i < count; i++) {
+            sb.append("item").append(i);
+        }
+        return sb.toString();
+    }
+}
+```
+
+**Performance Comparison:**
+- **String concatenation**: O(n²) time complexity
+- **StringBuilder**: O(n) time complexity
+- **Pre-allocated StringBuilder**: Best performance with minimal memory allocation
+
+### **Problem 1.3: Primitive vs Wrapper Performance**
+```java
+public class PrimitiveWrapperComparison {
+    // ❌ Wrapper overhead in loops
+    public static long sumWithWrappers(int count) {
+        Long sum = 0L; // Autoboxing overhead
+        for (int i = 0; i < count; i++) {
+            sum += i; // Autoboxing + unboxing each iteration
+        }
+        return sum;
+    }
+    
+    // ✅ Primitive performance
+    public static long sumWithPrimitives(int count) {
+        long sum = 0L; // No boxing overhead
+        for (int i = 0; i < count; i++) {
+            sum += i; // Direct primitive arithmetic
+        }
+        return sum;
+    }
+    
+    // ✅ Hybrid approach: Use primitives in loops, wrappers for collections
+    public static List<Long> createListWithPrimitives(int count) {
+        List<Long> list = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            list.add((long) i); // Single boxing operation
+        }
+        return list;
+    }
+}
+```
+
+**When to Use What:**
+- **Primitives**: Performance-critical loops, calculations
+- **Wrappers**: Collections, nullable values, generics
+- **Rule of Thumb**: Use primitives unless you need null or generics
 
 ---
 
@@ -3108,34 +3219,1809 @@ Create an iterator that can filter elements based on predicates.
 
 ## 🔍 **Solutions & Explanations**
 
-*Detailed solutions with code analysis, performance considerations, and best practices will be provided at the end of the book.*
+### **Problem 2.1: Collection Performance Analysis**
+```java
+public class CollectionPerformanceAnalysis {
+    public static void analyzeListPerformance() {
+        List<Integer> arrayList = new ArrayList<>();
+        List<Integer> linkedList = new LinkedList<>();
+        
+        // ArrayList: Fast random access, slow insertions in middle
+        long start = System.nanoTime();
+        for (int i = 0; i < 100000; i++) {
+            arrayList.add(0, i); // O(n) operation
+        }
+        long arrayListTime = System.nanoTime() - start;
+        
+        // LinkedList: Fast insertions, slower random access
+        start = System.nanoTime();
+        for (int i = 0; i < 100000; i++) {
+            linkedList.add(0, i); // O(1) operation
+        }
+        long linkedListTime = System.nanoTime() - start;
+        
+        System.out.println("ArrayList time: " + arrayListTime + " ns");
+        System.out.println("LinkedList time: " + linkedListTime + " ns");
+    }
+    
+    public static void analyzeMapPerformance() {
+        Map<String, Integer> hashMap = new HashMap<>();
+        Map<String, Integer> treeMap = new TreeMap<>();
+        
+        // HashMap: O(1) average case, O(n) worst case
+        long start = System.nanoTime();
+        for (int i = 0; i < 100000; i++) {
+            hashMap.put("key" + i, i);
+        }
+        long hashMapTime = System.nanoTime() - start;
+        
+        // TreeMap: O(log n) guaranteed, sorted keys
+        start = System.nanoTime();
+        for (int i = 0; i < 100000; i++) {
+            treeMap.put("key" + i, i);
+        }
+        long treeMapTime = System.nanoTime() - start;
+        
+        System.out.println("HashMap time: " + hashMapTime + " ns");
+        System.out.println("TreeMap time: " + treeMapTime + " ns");
+    }
+}
+```
+
+**Performance Characteristics:**
+- **ArrayList**: O(1) random access, O(n) insertions/deletions in middle
+- **LinkedList**: O(1) insertions/deletions, O(n) random access
+- **HashMap**: O(1) average case, O(n) worst case (collision)
+- **TreeMap**: O(log n) guaranteed, maintains sorted order
+
+### **Problem 2.2: Iterator vs For-Each Performance**
+```java
+public class IteratorPerformanceComparison {
+    public static void compareIterationMethods(List<Integer> list) {
+        // Traditional for loop with index
+        long start = System.nanoTime();
+        for (int i = 0; i < list.size(); i++) {
+            Integer value = list.get(i); // O(1) for ArrayList, O(n) for LinkedList
+        }
+        long indexedTime = System.nanoTime() - start;
+        
+        // Iterator approach
+        start = System.nanoTime();
+        Iterator<Integer> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            Integer value = iterator.next(); // O(1) for all List types
+        }
+        long iteratorTime = System.nanoTime() - start;
+        
+        // For-each loop (uses iterator internally)
+        start = System.nanoTime();
+        for (Integer value : list) {
+            // Uses iterator internally
+        }
+        long forEachTime = System.nanoTime() - start;
+        
+        System.out.println("Indexed: " + indexedTime + " ns");
+        System.out.println("Iterator: " + iteratorTime + " ns");
+        System.out.println("For-each: " + forEachTime + " ns");
+    }
+}
+```
+
+**Best Practices:**
+- **ArrayList**: Indexed loop is fine (O(1) access)
+- **LinkedList**: Always use iterator (O(1) access)
+- **For-each**: Most readable, uses iterator internally
+- **Custom collections**: Implement proper iterators for performance
+
+### **Problem 2.3: Memory-Efficient Collections**
+```java
+public class MemoryEfficientCollections {
+    // Use primitive arrays for large datasets
+    public static int[] createPrimitiveArray(int size) {
+        return new int[size]; // 4 bytes per element
+    }
+    
+    // Wrapper arrays use more memory
+    public static Integer[] createWrapperArray(int size) {
+        return new Integer[size]; // 16+ bytes per element (object overhead)
+    }
+    
+    // Use specialized collections for primitives
+    public static void usePrimitiveCollections() {
+        // Trove library provides primitive collections
+        // gnu.trove.list.array.TIntArrayList
+        // gnu.trove.map.hash.TIntIntHashMap
+        
+        // Java 8+ Streams with primitive types
+        IntStream.range(0, 1000)
+                .filter(i -> i % 2 == 0)
+                .sum(); // No boxing/unboxing overhead
+    }
+}
+```
+
+**Memory Optimization Tips:**
+- **Primitive arrays**: Use for large datasets of primitive types
+- **Specialized collections**: Consider Trove or other libraries for primitives
+- **Streams**: Use primitive streams to avoid boxing
+- **Capacity**: Pre-allocate capacity to avoid resizing
 
 ---
 
 ## 📚 **Next Steps**
 
-In the upcoming chapters, we'll explore:
-- Exception handling and logging strategies
-- Concurrency and threading models
-- Reflection and annotation processing
-- Performance optimization techniques
-- Real-world project examples
-- Testing and debugging strategies
+Congratulations! You have completed the comprehensive Core Java Mastery Guide. This book has covered:
+
+✅ **Java Fundamentals & Memory Management**
+✅ **Object-Oriented Programming Principles**
+✅ **Java Collections Framework**
+✅ **Advanced OOP Concepts**
+✅ **Design Patterns & Implementation**
+✅ **Custom Collection Implementations**
+✅ **Exception Handling & Logging**
+✅ **Concurrency & Threading**
+✅ **Reflection & Annotations**
+✅ **Performance Optimization**
+✅ **Real-World Projects**
+✅ **Testing & Debugging Strategies**
+✅ **Java Interview Questions**
+
+**What's Next?**
+- **Practice**: Implement the custom collections and design patterns
+- **Build**: Create real-world projects using the concepts learned
+- **Explore**: Dive deeper into specific areas like Spring Framework, Microservices, or Cloud Native Java
+- **Contribute**: Share your knowledge and help others on their Java journey
 
 **Continue your Java mastery journey with hands-on practice and real-world applications! 🚀**
 
 ---
 
-## 🎯 **Chapter 9: Java Interview Questions & Technical Assessment**
+## 🎯 **Chapter 9: Exception Handling & Logging Strategies**
 
 ### 🎯 **Chapter Overview**
-This chapter provides a comprehensive collection of Java interview questions covering all major areas. These questions range from basic to advanced, helping you assess your knowledge and prepare for technical interviews at various levels.
+This chapter covers comprehensive exception handling strategies, logging frameworks, and best practices for building robust Java applications.
 
-### 📋 **Interview Question Categories**
+### 📋 **Exception Handling Fundamentals**
 
-#### **9.1 Java Fundamentals & Memory Management**
+#### **9.1 Exception Hierarchy & Types**
+```java
+// Checked vs Unchecked Exceptions
+public class ExceptionExamples {
+    // Checked Exception: Must be handled or declared
+    public void readFile(String filename) throws IOException {
+        FileReader reader = new FileReader(filename);
+        // ... file operations
+    }
+    
+    // Unchecked Exception: Runtime exception, no declaration needed
+    public void divide(int a, int b) {
+        if (b == 0) {
+            throw new ArithmeticException("Division by zero");
+        }
+        int result = a / b;
+    }
+    
+    // Custom Exception
+    public static class CustomBusinessException extends Exception {
+        public CustomBusinessException(String message) {
+            super(message);
+        }
+    }
+}
+```
 
-**Q1: Explain the difference between `==` and `.equals()` in Java.**
+#### **9.2 Exception Handling Best Practices**
+```java
+public class ExceptionHandlingBestPractices {
+    // ✅ Good: Specific exception handling
+    public void processData(String data) {
+        try {
+            validateData(data);
+            processValidData(data);
+        } catch (ValidationException e) {
+            logger.error("Data validation failed: " + e.getMessage());
+            throw new BusinessException("Invalid data provided", e);
+        } catch (ProcessingException e) {
+            logger.error("Data processing failed: " + e.getMessage());
+            throw new BusinessException("Processing error", e);
+        }
+    }
+    
+    // ❌ Bad: Generic exception catching
+    public void processDataBad(String data) {
+        try {
+            validateData(data);
+            processValidData(data);
+        } catch (Exception e) { // Too generic!
+            logger.error("Error: " + e.getMessage());
+        }
+    }
+    
+    // ✅ Good: Resource management with try-with-resources
+    public void readFileWithResources(String filename) {
+        try (FileReader reader = new FileReader(filename);
+             BufferedReader br = new BufferedReader(reader)) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                processLine(line);
+            }
+        } catch (IOException e) {
+            logger.error("File reading failed: " + e.getMessage());
+            throw new BusinessException("File processing error", e);
+        }
+    }
+}
+```
+
+#### **9.3 Logging Strategies**
+```java
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
+public class LoggingStrategies {
+    private static final Logger logger = Logger.getLogger(LoggingStrategies.class.getName());
+    
+    public void demonstrateLogging() {
+        // Different log levels
+        logger.finest("Finest level - detailed debugging");
+        logger.finer("Finer level - method entry/exit");
+        logger.fine("Fine level - general debugging");
+        logger.config("Configuration information");
+        logger.info("General information");
+        logger.warning("Warning messages");
+        logger.severe("Severe errors");
+        
+        // Structured logging
+        logger.log(Level.INFO, "Processing user {0} with role {1}", 
+                  new Object[]{"john.doe", "ADMIN"});
+        
+        // Exception logging with context
+        try {
+            riskyOperation();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Operation failed for user: " + getUser(), e);
+        }
+    }
+    
+    private void riskyOperation() throws Exception {
+        // Simulate risky operation
+        if (Math.random() > 0.5) {
+            throw new RuntimeException("Random failure");
+        }
+    }
+    
+    private String getUser() {
+        return "john.doe";
+    }
+}
+```
+
+### 📋 **Advanced Exception Handling**
+
+#### **9.4 Exception Translation & Wrapping**
+```java
+public class ExceptionTranslation {
+    // Translate low-level exceptions to business exceptions
+    public void processUserRequest(String userId) throws BusinessException {
+        try {
+            User user = userRepository.findById(userId);
+            if (user == null) {
+                throw new UserNotFoundException("User not found: " + userId);
+            }
+            processUserData(user);
+        } catch (SQLException e) {
+            // Translate database exception to business exception
+            throw new BusinessException("Database error while processing user: " + userId, e);
+        } catch (IOException e) {
+            // Translate I/O exception to business exception
+            throw new BusinessException("I/O error while processing user: " + userId, e);
+        }
+    }
+    
+    // Custom business exceptions
+    public static class BusinessException extends Exception {
+        public BusinessException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+    
+    public static class UserNotFoundException extends BusinessException {
+        public UserNotFoundException(String message) {
+            super(message, null);
+        }
+    }
+}
+```
+
+#### **9.5 Exception Handling Patterns**
+```java
+public class ExceptionHandlingPatterns {
+    // Pattern 1: Result Object Pattern
+    public static class Result<T> {
+        private final T data;
+        private final String error;
+        private final boolean success;
+        
+        private Result(T data, String error, boolean success) {
+            this.data = data;
+            this.error = error;
+            this.success = success;
+        }
+        
+        public static <T> Result<T> success(T data) {
+            return new Result<>(data, null, true);
+        }
+        
+        public static <T> Result<T> failure(String error) {
+            return new Result<>(null, error, false);
+        }
+        
+        public T getData() { return data; }
+        public String getError() { return error; }
+        public boolean isSuccess() { return success; }
+    }
+    
+    // Pattern 2: Try-Catch with Recovery
+    public Result<String> processWithRecovery(String input) {
+        try {
+            String result = processInput(input);
+            return Result.success(result);
+        } catch (ValidationException e) {
+            // Try to recover with default value
+            try {
+                String recovered = processWithDefault(input);
+                return Result.success(recovered);
+            } catch (Exception recoveryException) {
+                return Result.failure("Recovery failed: " + recoveryException.getMessage());
+            }
+        } catch (Exception e) {
+            return Result.failure("Processing failed: " + e.getMessage());
+        }
+    }
+    
+    private String processInput(String input) throws ValidationException {
+        if (input == null || input.trim().isEmpty()) {
+            throw new ValidationException("Input cannot be null or empty");
+        }
+        return input.toUpperCase();
+    }
+    
+    private String processWithDefault(String input) {
+        return "DEFAULT_" + (input != null ? input : "NULL");
+    }
+    
+    public static class ValidationException extends Exception {
+        public ValidationException(String message) {
+            super(message);
+        }
+    }
+}
+```
+
+---
+
+## 🎯 **Chapter 10: Concurrency & Threading Models**
+
+### 🎯 **Chapter Overview**
+This chapter covers Java concurrency fundamentals, threading models, synchronization mechanisms, and best practices for building concurrent applications.
+
+### 📋 **Threading Fundamentals**
+
+#### **10.1 Thread Creation & Lifecycle**
+```java
+public class ThreadingBasics {
+    // Method 1: Extending Thread class
+    public static class MyThread extends Thread {
+        @Override
+        public void run() {
+            System.out.println("Thread " + getName() + " is running");
+            for (int i = 0; i < 5; i++) {
+                System.out.println("Thread " + getName() + ": " + i);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    System.out.println("Thread interrupted");
+                    return;
+                }
+            }
+        }
+    }
+    
+    // Method 2: Implementing Runnable interface
+    public static class MyRunnable implements Runnable {
+        private final String name;
+        
+        public MyRunnable(String name) {
+            this.name = name;
+        }
+        
+        @Override
+        public void run() {
+            System.out.println("Runnable " + name + " is running");
+            for (int i = 0; i < 5; i++) {
+                System.out.println("Runnable " + name + ": " + i);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    System.out.println("Runnable interrupted");
+                    return;
+                }
+            }
+        }
+    }
+    
+    // Method 3: Lambda expression (Java 8+)
+    public static void createThreadWithLambda() {
+        Thread lambdaThread = new Thread(() -> {
+            System.out.println("Lambda thread is running");
+            for (int i = 0; i < 5; i++) {
+                System.out.println("Lambda: " + i);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    return;
+                }
+            }
+        });
+        lambdaThread.start();
+    }
+    
+    public static void main(String[] args) {
+        // Create and start threads
+        MyThread thread1 = new MyThread();
+        thread1.setName("Thread-1");
+        thread1.start();
+        
+        MyRunnable runnable = new MyRunnable("Runnable-1");
+        Thread thread2 = new Thread(runnable);
+        thread2.start();
+        
+        createThreadWithLambda();
+        
+        // Wait for threads to complete
+        try {
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            System.out.println("Main thread interrupted");
+        }
+        
+        System.out.println("All threads completed");
+    }
+}
+```
+
+#### **10.2 Thread Synchronization**
+```java
+public class ThreadSynchronization {
+    private int counter = 0;
+    private final Object lock = new Object();
+    
+    // Method 1: Synchronized method
+    public synchronized void incrementCounter() {
+        counter++;
+        System.out.println("Counter: " + counter + " by " + Thread.currentThread().getName());
+    }
+    
+    // Method 2: Synchronized block
+    public void incrementCounterWithBlock() {
+        synchronized (lock) {
+            counter++;
+            System.out.println("Counter: " + counter + " by " + Thread.currentThread().getName());
+        }
+    }
+    
+    // Method 3: ReentrantLock
+    private final ReentrantLock reentrantLock = new ReentrantLock();
+    
+    public void incrementCounterWithLock() {
+        reentrantLock.lock();
+        try {
+            counter++;
+            System.out.println("Counter: " + counter + " by " + Thread.currentThread().getName());
+        } finally {
+            reentrantLock.unlock();
+        }
+    }
+    
+    // Method 4: AtomicInteger (lock-free)
+    private final AtomicInteger atomicCounter = new AtomicInteger(0);
+    
+    public void incrementAtomicCounter() {
+        int newValue = atomicCounter.incrementAndGet();
+        System.out.println("Atomic Counter: " + newValue + " by " + Thread.currentThread().getName());
+    }
+}
+```
+
+### 📋 **Advanced Concurrency**
+
+#### **10.3 Thread Pools & Executors**
+```java
+import java.util.concurrent.*;
+
+public class ThreadPoolExamples {
+    public static void demonstrateThreadPools() {
+        // Fixed thread pool
+        ExecutorService fixedPool = Executors.newFixedThreadPool(3);
+        
+        // Cached thread pool
+        ExecutorService cachedPool = Executors.newCachedThreadPool();
+        
+        // Scheduled thread pool
+        ScheduledExecutorService scheduledPool = Executors.newScheduledThreadPool(2);
+        
+        // Custom thread pool
+        ThreadPoolExecutor customPool = new ThreadPoolExecutor(
+            2,                      // Core pool size
+            10,                     // Maximum pool size
+            60L,                    // Keep alive time
+            TimeUnit.SECONDS,       // Time unit
+            new LinkedBlockingQueue<>(100), // Work queue
+            new ThreadPoolExecutor.CallerRunsPolicy() // Rejection policy
+        );
+        
+        // Submit tasks
+        for (int i = 0; i < 10; i++) {
+            final int taskId = i;
+            fixedPool.submit(() -> {
+                System.out.println("Task " + taskId + " executed by " + Thread.currentThread().getName());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+        }
+        
+        // Schedule tasks
+        scheduledPool.schedule(() -> System.out.println("Delayed task"), 2, TimeUnit.SECONDS);
+        scheduledPool.scheduleAtFixedRate(() -> System.out.println("Periodic task"), 0, 1, TimeUnit.SECONDS);
+        
+        // Shutdown pools
+        fixedPool.shutdown();
+        cachedPool.shutdown();
+        scheduledPool.shutdown();
+        customPool.shutdown();
+    }
+}
+```
+
+#### **10.4 Concurrent Collections**
+```java
+import java.util.concurrent.*;
+
+public class ConcurrentCollectionsExamples {
+    public static void demonstrateConcurrentCollections() {
+        // Thread-safe list
+        List<String> concurrentList = new CopyOnWriteArrayList<>();
+        
+        // Thread-safe set
+        Set<String> concurrentSet = new ConcurrentHashMap.newKeySet();
+        
+        // Thread-safe map
+        Map<String, Integer> concurrentMap = new ConcurrentHashMap<>();
+        
+        // Blocking queue
+        BlockingQueue<String> blockingQueue = new LinkedBlockingQueue<>(10);
+        
+        // Producer thread
+        Thread producer = new Thread(() -> {
+            try {
+                for (int i = 0; i < 20; i++) {
+                    String item = "Item-" + i;
+                    blockingQueue.put(item);
+                    System.out.println("Produced: " + item);
+                    Thread.sleep(100);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        
+        // Consumer thread
+        Thread consumer = new Thread(() -> {
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
+                    String item = blockingQueue.take();
+                    System.out.println("Consumed: " + item);
+                    Thread.sleep(200);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        
+        producer.start();
+        consumer.start();
+        
+        try {
+            producer.join();
+            Thread.sleep(1000); // Let consumer finish
+            consumer.interrupt();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+```
+
+---
+
+## 🎯 **Chapter 11: Reflection & Annotation Processing**
+
+### 🎯 **Chapter Overview**
+This chapter covers Java reflection capabilities, annotation processing, and how to use these powerful features for dynamic programming and metadata-driven applications.
+
+### 📋 **Reflection Fundamentals**
+
+#### **11.1 Class Information & Inspection**
+```java
+import java.lang.reflect.*;
+
+public class ReflectionBasics {
+    public static void inspectClass(Class<?> clazz) {
+        System.out.println("=== Class Information ===");
+        System.out.println("Name: " + clazz.getName());
+        System.out.println("Simple Name: " + clazz.getSimpleName());
+        System.out.println("Package: " + clazz.getPackage());
+        System.out.println("Modifiers: " + Modifier.toString(clazz.getModifiers()));
+        System.out.println("Superclass: " + clazz.getSuperclass());
+        System.out.println("Interfaces: " + Arrays.toString(clazz.getInterfaces()));
+        
+        // Fields
+        System.out.println("\n=== Fields ===");
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            System.out.println("Field: " + field.getName() + " (" + field.getType() + ")");
+        }
+        
+        // Methods
+        System.out.println("\n=== Methods ===");
+        Method[] methods = clazz.getDeclaredMethods();
+        for (Method method : methods) {
+            System.out.println("Method: " + method.getName() + " (" + Arrays.toString(method.getParameterTypes()) + ")");
+        }
+        
+        // Constructors
+        System.out.println("\n=== Constructors ===");
+        Constructor<?>[] constructors = clazz.getDeclaredConstructors();
+        for (Constructor<?> constructor : constructors) {
+            System.out.println("Constructor: " + constructor.getName() + " (" + Arrays.toString(constructor.getParameterTypes()) + ")");
+        }
+    }
+    
+    public static void main(String[] args) {
+        // Inspect a sample class
+        inspectClass(String.class);
+        
+        // Inspect our own class
+        inspectClass(ReflectionBasics.class);
+    }
+}
+```
+
+#### **11.2 Dynamic Object Creation & Method Invocation**
+```java
+public class DynamicObjectCreation {
+    public static void createObjectDynamically() {
+        try {
+            // Get class reference
+            Class<?> stringClass = String.class;
+            
+            // Create object using default constructor
+            String defaultString = (String) stringClass.getDeclaredConstructor().newInstance();
+            System.out.println("Default string: '" + defaultString + "'");
+            
+            // Create object using parameterized constructor
+            Constructor<?> stringConstructor = stringClass.getDeclaredConstructor(String.class);
+            String customString = (String) stringConstructor.newInstance("Hello Reflection!");
+            System.out.println("Custom string: " + customString);
+            
+            // Invoke methods dynamically
+            Method lengthMethod = stringClass.getMethod("length");
+            int length = (int) lengthMethod.invoke(customString);
+            System.out.println("String length: " + length);
+            
+            Method substringMethod = stringClass.getMethod("substring", int.class, int.class);
+            String substring = (String) substringMethod.invoke(customString, 0, 5);
+            System.out.println("Substring: " + substring);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void accessPrivateMembers() {
+        try {
+            // Access private fields
+            Field[] fields = String.class.getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true); // Make private field accessible
+                System.out.println("Field: " + field.getName() + " = " + field.get(null));
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### 📋 **Annotation Processing**
+
+#### **11.3 Custom Annotations**
+```java
+import java.lang.annotation.*;
+
+// Custom annotation for validation
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
+public @interface Validation {
+    String message() default "Validation failed";
+    int minLength() default 0;
+    int maxLength() default Integer.MAX_VALUE;
+    boolean required() default false;
+}
+
+// Custom annotation for logging
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
+public @interface Loggable {
+    String level() default "INFO";
+    boolean logParameters() default true;
+    boolean logReturnValue() default false;
+}
+
+// Custom annotation for caching
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
+public @interface Cacheable {
+    String key() default "";
+    int ttl() default 3600; // Time to live in seconds
+}
+```
+
+#### **11.4 Annotation Processing at Runtime**
+```java
+public class AnnotationProcessor {
+    public static void processValidationAnnotations(Object obj) {
+        Class<?> clazz = obj.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+        
+        for (Field field : fields) {
+            Validation validation = field.getAnnotation(Validation.class);
+            if (validation != null) {
+                field.setAccessible(true);
+                try {
+                    Object value = field.get(obj);
+                    validateField(value, validation, field.getName());
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    private static void validateField(Object value, Validation validation, String fieldName) {
+        if (validation.required() && value == null) {
+            throw new ValidationException(fieldName + ": " + validation.message());
+        }
+        
+        if (value instanceof String) {
+            String stringValue = (String) value;
+            if (stringValue.length() < validation.minLength()) {
+                throw new ValidationException(fieldName + ": Minimum length is " + validation.minLength());
+            }
+            if (stringValue.length() > validation.maxLength()) {
+                throw new ValidationException(fieldName + ": Maximum length is " + validation.maxLength());
+            }
+        }
+    }
+    
+    public static void processLoggingAnnotations(Object obj, String methodName, Object... args) {
+        try {
+            Method method = obj.getClass().getMethod(methodName, 
+                Arrays.stream(args).map(Object::getClass).toArray(Class[]::new));
+            
+            Loggable loggable = method.getAnnotation(Loggable.class);
+            if (loggable != null) {
+                System.out.println("[" + loggable.level() + "] Calling method: " + methodName);
+                
+                if (loggable.logParameters()) {
+                    System.out.println("Parameters: " + Arrays.toString(args));
+                }
+                
+                // Invoke method
+                Object result = method.invoke(obj, args);
+                
+                if (loggable.logReturnValue()) {
+                    System.out.println("Return value: " + result);
+                }
+                
+                System.out.println("[" + loggable.level() + "] Method completed: " + methodName);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static class ValidationException extends RuntimeException {
+        public ValidationException(String message) {
+            super(message);
+        }
+    }
+}
+
+// Example usage
+class User {
+    @Validation(required = true, minLength = 2, maxLength = 50)
+    private String name;
+    
+    @Validation(required = true, minLength = 6)
+    private String password;
+    
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+    
+    @Loggable(level = "INFO", logParameters = true, logReturnValue = true)
+    public String getDisplayName() {
+        return "User: " + name;
+    }
+    
+    @Cacheable(key = "user", ttl = 1800)
+    public String getProfile() {
+        return "Profile for user: " + name;
+    }
+}
+```
+
+---
+
+## 🎯 **Chapter 12: Performance Optimization Techniques**
+
+### 🎯 **Chapter Overview**
+This chapter covers Java performance optimization techniques, profiling tools, memory management, and best practices for building high-performance applications.
+
+### 📋 **Performance Profiling & Measurement**
+
+#### **12.1 Performance Measurement Tools**
+```java
+public class PerformanceMeasurement {
+    public static void measureExecutionTime(Runnable task, String taskName) {
+        long startTime = System.nanoTime();
+        long startMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        
+        task.run();
+        
+        long endTime = System.nanoTime();
+        long endMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        
+        long duration = endTime - startTime;
+        long memoryUsed = endMemory - startMemory;
+        
+        System.out.println("Task: " + taskName);
+        System.out.println("Duration: " + duration + " ns (" + (duration / 1_000_000.0) + " ms)");
+        System.out.println("Memory used: " + memoryUsed + " bytes (" + (memoryUsed / 1024.0) + " KB)");
+        System.out.println();
+    }
+    
+    public static void benchmarkCollections() {
+        // ArrayList vs LinkedList performance
+        measureExecutionTime(() -> {
+            List<Integer> arrayList = new ArrayList<>();
+            for (int i = 0; i < 100000; i++) {
+                arrayList.add(0, i); // O(n) operation
+            }
+        }, "ArrayList add at beginning");
+        
+        measureExecutionTime(() -> {
+            List<Integer> linkedList = new LinkedList<>();
+            for (int i = 0; i < 100000; i++) {
+                linkedList.add(0, i); // O(1) operation
+            }
+        }, "LinkedList add at beginning");
+        
+        // HashMap vs TreeMap performance
+        measureExecutionTime(() -> {
+            Map<String, Integer> hashMap = new HashMap<>();
+            for (int i = 0; i < 100000; i++) {
+                hashMap.put("key" + i, i);
+            }
+        }, "HashMap insertion");
+        
+        measureExecutionTime(() -> {
+            Map<String, Integer> treeMap = new TreeMap<>();
+            for (int i = 0; i < 100000; i++) {
+                treeMap.put("key" + i, i);
+            }
+        }, "TreeMap insertion");
+    }
+}
+```
+
+#### **12.2 Memory Optimization Techniques**
+```java
+public class MemoryOptimization {
+    // Object pooling for expensive objects
+    public static class ObjectPool<T> {
+        private final Queue<T> pool;
+        private final Supplier<T> factory;
+        private final int maxSize;
+        
+        public ObjectPool(Supplier<T> factory, int maxSize) {
+            this.factory = factory;
+            this.maxSize = maxSize;
+            this.pool = new ConcurrentLinkedQueue<>();
+        }
+        
+        public T borrow() {
+            T obj = pool.poll();
+            return obj != null ? obj : factory.get();
+        }
+        
+        public void returnObject(T obj) {
+            if (pool.size() < maxSize) {
+                pool.offer(obj);
+            }
+        }
+    }
+    
+    // Weak references for caching
+    public static class WeakCache<K, V> {
+        private final Map<K, WeakReference<V>> cache = new ConcurrentHashMap<>();
+        
+        public V get(K key) {
+            WeakReference<V> ref = cache.get(key);
+            if (ref != null) {
+                V value = ref.get();
+                if (value != null) {
+                    return value;
+                } else {
+                    cache.remove(key); // Clean up garbage collected references
+                }
+            }
+            return null;
+        }
+        
+        public void put(K key, V value) {
+            cache.put(key, new WeakReference<>(value));
+        }
+    }
+    
+    // Primitive collections to avoid boxing
+    public static void usePrimitiveCollections() {
+        // Instead of List<Integer>, use int[]
+        int[] numbers = new int[1000000];
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = i;
+        }
+        
+        // Use IntStream for operations
+        int sum = Arrays.stream(numbers).sum();
+        int[] evenNumbers = Arrays.stream(numbers)
+                .filter(n -> n % 2 == 0)
+                .toArray();
+    }
+}
+```
+
+### 📋 **JVM Tuning & Optimization**
+
+#### **12.3 JVM Flags & Garbage Collection**
+```java
+public class JVMOptimization {
+    public static void demonstrateGCBehavior() {
+        // Force garbage collection (for demonstration only)
+        System.gc();
+        
+        // Memory information
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory();
+        long freeMemory = runtime.freeMemory();
+        long usedMemory = totalMemory - freeMemory;
+        long maxMemory = runtime.maxMemory();
+        
+        System.out.println("Memory Information:");
+        System.out.println("Total Memory: " + (totalMemory / 1024 / 1024) + " MB");
+        System.out.println("Free Memory: " + (freeMemory / 1024 / 1024) + " MB");
+        System.out.println("Used Memory: " + (usedMemory / 1024 / 1024) + " MB");
+        System.out.println("Max Memory: " + (maxMemory / 1024 / 1024) + " MB");
+        
+        // Garbage collection information
+        List<GarbageCollectorMXBean> gcBeans = ManagementFactory.getGarbageCollectorMXBeans();
+        for (GarbageCollectorMXBean gcBean : gcBeans) {
+            System.out.println("GC: " + gcBean.getName() + 
+                             " - Collections: " + gcBean.getCollectionCount() +
+                             " - Time: " + gcBean.getCollectionTime() + " ms");
+        }
+    }
+    
+    public static void optimizeStringOperations() {
+        // StringBuilder for multiple concatenations
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 10000; i++) {
+            sb.append("Item ").append(i).append(", ");
+        }
+        String result = sb.toString();
+        
+        // String interning for repeated strings
+        String[] strings = new String[1000];
+        for (int i = 0; i < strings.length; i++) {
+            strings[i] = ("CommonPrefix" + (i % 100)).intern();
+        }
+    }
+}
+```
+
+#### **12.4 Algorithmic Optimization**
+```java
+public class AlgorithmicOptimization {
+    // Efficient sorting for small arrays
+    public static void optimizedSort(int[] array) {
+        if (array.length < 10) {
+            insertionSort(array); // O(n²) but good for small arrays
+        } else if (array.length < 1000) {
+            Arrays.sort(array); // Dual-pivot quicksort
+        } else {
+            parallelSort(array); // Parallel sort for large arrays
+        }
+    }
+    
+    private static void insertionSort(int[] array) {
+        for (int i = 1; i < array.length; i++) {
+            int key = array[i];
+            int j = i - 1;
+            while (j >= 0 && array[j] > key) {
+                array[j + 1] = array[j];
+                j--;
+            }
+            array[j + 1] = key;
+        }
+    }
+    
+    private static void parallelSort(int[] array) {
+        Arrays.parallelSort(array);
+    }
+    
+    // Lazy evaluation for expensive operations
+    public static class LazyEvaluator<T> {
+        private final Supplier<T> supplier;
+        private volatile T value;
+        private volatile boolean initialized = false;
+        
+        public LazyEvaluator(Supplier<T> supplier) {
+            this.supplier = supplier;
+        }
+        
+        public T get() {
+            if (!initialized) {
+                synchronized (this) {
+                    if (!initialized) {
+                        value = supplier.get();
+                        initialized = true;
+                    }
+                }
+            }
+            return value;
+        }
+    }
+    
+    // Example usage
+    public static void demonstrateLazyEvaluation() {
+        LazyEvaluator<ExpensiveObject> lazyObject = new LazyEvaluator<>(() -> {
+            System.out.println("Creating expensive object...");
+            return new ExpensiveObject();
+        });
+        
+        System.out.println("Lazy evaluator created");
+        System.out.println("Getting object...");
+        ExpensiveObject obj = lazyObject.get(); // Object created only now
+        System.out.println("Object retrieved: " + obj);
+    }
+    
+    private static class ExpensiveObject {
+        public ExpensiveObject() {
+            try {
+                Thread.sleep(1000); // Simulate expensive creation
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+}
+```
+
+---
+
+## 🎯 **Chapter 13: Real-World Project Examples**
+
+### 🎯 **Chapter Overview**
+This chapter presents real-world Java projects that demonstrate the practical application of all the concepts covered in this book.
+
+### 📋 **Project 1: E-Commerce Order Management System**
+
+#### **13.1 System Architecture & Design**
+```java
+// Domain Models
+public class Order {
+    private String orderId;
+    private Customer customer;
+    private List<OrderItem> items;
+    private OrderStatus status;
+    private LocalDateTime createdAt;
+    private BigDecimal totalAmount;
+    
+    // Constructor, getters, setters
+    public Order(String orderId, Customer customer) {
+        this.orderId = orderId;
+        this.customer = customer;
+        this.items = new ArrayList<>();
+        this.status = OrderStatus.PENDING;
+        this.createdAt = LocalDateTime.now();
+        this.totalAmount = BigDecimal.ZERO;
+    }
+    
+    public void addItem(Product product, int quantity) {
+        OrderItem item = new OrderItem(product, quantity);
+        items.add(item);
+        recalculateTotal();
+    }
+    
+    private void recalculateTotal() {
+        this.totalAmount = items.stream()
+                .map(OrderItem::getSubtotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+    
+    public void process() {
+        if (status != OrderStatus.PENDING) {
+            throw new IllegalStateException("Order cannot be processed in current status: " + status);
+        }
+        
+        // Validate inventory
+        validateInventory();
+        
+        // Process payment
+        processPayment();
+        
+        // Update status
+        status = OrderStatus.CONFIRMED;
+        
+        // Notify customer
+        notifyCustomer();
+    }
+    
+    private void validateInventory() {
+        for (OrderItem item : items) {
+            if (!item.getProduct().hasSufficientStock(item.getQuantity())) {
+                throw new InsufficientStockException("Insufficient stock for product: " + item.getProduct().getName());
+            }
+        }
+    }
+    
+    private void processPayment() {
+        // Payment processing logic
+        PaymentProcessor.process(this);
+    }
+    
+    private void notifyCustomer() {
+        NotificationService.sendOrderConfirmation(customer, this);
+    }
+}
+
+public class OrderItem {
+    private Product product;
+    private int quantity;
+    private BigDecimal unitPrice;
+    
+    public OrderItem(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
+        this.unitPrice = product.getPrice();
+    }
+    
+    public BigDecimal getSubtotal() {
+        return unitPrice.multiply(BigDecimal.valueOf(quantity));
+    }
+    
+    // Getters and setters
+}
+
+public enum OrderStatus {
+    PENDING, CONFIRMED, SHIPPED, DELIVERED, CANCELLED
+}
+```
+
+#### **13.2 Service Layer Implementation**
+```java
+@Service
+public class OrderService {
+    private final OrderRepository orderRepository;
+    private final ProductService productService;
+    private final CustomerService customerService;
+    private final PaymentService paymentService;
+    
+    public OrderService(OrderRepository orderRepository, 
+                       ProductService productService,
+                       CustomerService customerService,
+                       PaymentService paymentService) {
+        this.orderRepository = orderRepository;
+        this.productService = productService;
+        this.customerService = customerService;
+        this.paymentService = paymentService;
+    }
+    
+    @Transactional
+    public Order createOrder(CreateOrderRequest request) {
+        // Validate customer
+        Customer customer = customerService.getCustomerById(request.getCustomerId());
+        if (customer == null) {
+            throw new CustomerNotFoundException("Customer not found: " + request.getCustomerId());
+        }
+        
+        // Create order
+        String orderId = generateOrderId();
+        Order order = new Order(orderId, customer);
+        
+        // Add items
+        for (OrderItemRequest itemRequest : request.getItems()) {
+            Product product = productService.getProductById(itemRequest.getProductId());
+            if (product == null) {
+                throw new ProductNotFoundException("Product not found: " + itemRequest.getProductId());
+            }
+            order.addItem(product, itemRequest.getQuantity());
+        }
+        
+        // Save order
+        Order savedOrder = orderRepository.save(order);
+        
+        // Publish event
+        eventPublisher.publishEvent(new OrderCreatedEvent(savedOrder));
+        
+        return savedOrder;
+    }
+    
+    @Transactional
+    public Order processOrder(String orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException("Order not found: " + orderId));
+        
+        try {
+            order.process();
+            return orderRepository.save(order);
+        } catch (Exception e) {
+            // Log error and update status
+            order.setStatus(OrderStatus.FAILED);
+            orderRepository.save(order);
+            throw e;
+        }
+    }
+    
+    private String generateOrderId() {
+        return "ORD-" + System.currentTimeMillis() + "-" + ThreadLocalRandom.current().nextInt(1000, 9999);
+    }
+}
+```
+
+### 📋 **Project 2: RESTful API with Spring Boot**
+
+#### **13.3 Controller & Exception Handling**
+```java
+@RestController
+@RequestMapping("/api/orders")
+@Validated
+public class OrderController {
+    private final OrderService orderService;
+    private final OrderMapper orderMapper;
+    
+    public OrderController(OrderService orderService, OrderMapper orderMapper) {
+        this.orderService = orderService;
+        this.orderMapper = orderMapper;
+    }
+    
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public OrderResponse createOrder(@Valid @RequestBody CreateOrderRequest request) {
+        Order order = orderService.createOrder(request);
+        return orderMapper.toResponse(order);
+    }
+    
+    @GetMapping("/{orderId}")
+    public OrderResponse getOrder(@PathVariable String orderId) {
+        Order order = orderService.getOrderById(orderId);
+        return orderMapper.toResponse(order);
+    }
+    
+    @PutMapping("/{orderId}/process")
+    public OrderResponse processOrder(@PathVariable String orderId) {
+        Order order = orderService.processOrder(orderId);
+        return orderMapper.toResponse(order);
+    }
+    
+    @GetMapping
+    public Page<OrderResponse> getOrders(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) OrderStatus status,
+            @RequestParam(required = false) String customerId) {
+        
+        OrderSearchCriteria criteria = OrderSearchCriteria.builder()
+                .status(status)
+                .customerId(customerId)
+                .build();
+        
+        Page<Order> orders = orderService.searchOrders(criteria, PageRequest.of(page, size));
+        return orders.map(orderMapper::toResponse);
+    }
+    
+    @ExceptionHandler(OrderNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleOrderNotFound(OrderNotFoundException e) {
+        return ErrorResponse.builder()
+                .error("Order not found")
+                .message(e.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+    
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleValidation(ValidationException e) {
+        return ErrorResponse.builder()
+                .error("Validation failed")
+                .message(e.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+}
+```
+
+#### **13.4 Repository & Data Access Layer**
+```java
+@Repository
+public class OrderRepositoryImpl implements OrderRepository {
+    private final JdbcTemplate jdbcTemplate;
+    private final OrderRowMapper orderRowMapper;
+    
+    public OrderRepositoryImpl(JdbcTemplate jdbcTemplate, OrderRowMapper orderRowMapper) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.orderRowMapper = orderRowMapper;
+    }
+    
+    @Override
+    public Order save(Order order) {
+        if (order.getOrderId() == null) {
+            return insert(order);
+        } else {
+            return update(order);
+        }
+    }
+    
+    private Order insert(Order order) {
+        String sql = """
+            INSERT INTO orders (order_id, customer_id, status, created_at, total_amount)
+            VALUES (?, ?, ?, ?, ?)
+            """;
+        
+        jdbcTemplate.update(sql,
+                order.getOrderId(),
+                order.getCustomer().getId(),
+                order.getStatus().name(),
+                order.getCreatedAt(),
+                order.getTotalAmount());
+        
+        // Insert order items
+        insertOrderItems(order);
+        
+        return order;
+    }
+    
+    private void insertOrderItems(Order order) {
+        String sql = """
+            INSERT INTO order_items (order_id, product_id, quantity, unit_price)
+            VALUES (?, ?, ?, ?)
+            """;
+        
+        for (OrderItem item : order.getItems()) {
+            jdbcTemplate.update(sql,
+                    order.getOrderId(),
+                    item.getProduct().getId(),
+                    item.getQuantity(),
+                    item.getUnitPrice());
+        }
+    }
+    
+    @Override
+    public Optional<Order> findById(String orderId) {
+        String sql = """
+            SELECT o.*, c.*, oi.*, p.*
+            FROM orders o
+            JOIN customers c ON o.customer_id = c.id
+            LEFT JOIN order_items oi ON o.order_id = oi.order_id
+            LEFT JOIN products p ON oi.product_id = p.id
+            WHERE o.order_id = ?
+            """;
+        
+        List<Order> orders = jdbcTemplate.query(sql, orderRowMapper, orderId);
+        return orders.isEmpty() ? Optional.empty() : Optional.of(orders.get(0));
+    }
+    
+    @Override
+    public Page<Order> searchOrders(OrderSearchCriteria criteria, Pageable pageable) {
+        StringBuilder sql = new StringBuilder("""
+            SELECT o.*, c.*, oi.*, p.*
+            FROM orders o
+            JOIN customers c ON o.customer_id = c.id
+            LEFT JOIN order_items oi ON o.order_id = oi.order_id
+            LEFT JOIN products p ON oi.product_id = p.id
+            WHERE 1=1
+            """);
+        
+        List<Object> params = new ArrayList<>();
+        
+        if (criteria.getStatus() != null) {
+            sql.append(" AND o.status = ?");
+            params.add(criteria.getStatus().name());
+        }
+        
+        if (criteria.getCustomerId() != null) {
+            sql.append(" AND o.customer_id = ?");
+            params.add(criteria.getCustomerId());
+        }
+        
+        sql.append(" ORDER BY o.created_at DESC");
+        
+        // Add pagination
+        sql.append(" LIMIT ? OFFSET ?");
+        params.add(pageable.getPageSize());
+        params.add(pageable.getPageNumber() * pageable.getPageSize());
+        
+        List<Order> orders = jdbcTemplate.query(sql.toString(), orderRowMapper, params.toArray());
+        
+        // Get total count for pagination
+        String countSql = buildCountSql(criteria);
+        Long total = jdbcTemplate.queryForObject(countSql, Long.class, 
+                params.subList(0, params.size() - 2).toArray());
+        
+        return new PageImpl<>(orders, pageable, total != null ? total : 0);
+    }
+}
+```
+
+---
+
+## 🎯 **Chapter 14: Testing & Debugging Strategies**
+
+### 🎯 **Chapter Overview**
+This chapter covers comprehensive testing strategies, debugging techniques, and best practices for building reliable Java applications.
+
+### 📋 **Unit Testing with JUnit 5**
+
+#### **14.1 Test Structure & Best Practices**
+```java
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import static org.junit.jupiter.api.Assertions.*;
+
+@DisplayName("Order Service Tests")
+class OrderServiceTest {
+    
+    private OrderService orderService;
+    private OrderRepository mockOrderRepository;
+    private ProductService mockProductService;
+    private CustomerService mockCustomerService;
+    
+    @BeforeEach
+    void setUp() {
+        mockOrderRepository = mock(OrderRepository.class);
+        mockProductService = mock(ProductService.class);
+        mockCustomerService = mock(CustomerService.class);
+        
+        orderService = new OrderService(
+            mockOrderRepository, 
+            mockProductService, 
+            mockCustomerService, 
+            mock(PaymentService.class)
+        );
+    }
+    
+    @Test
+    @DisplayName("Should create order successfully with valid data")
+    void shouldCreateOrderSuccessfully() {
+        // Given
+        String customerId = "CUST-001";
+        String productId = "PROD-001";
+        int quantity = 2;
+        
+        Customer customer = new Customer(customerId, "John Doe", "john@example.com");
+        Product product = new Product(productId, "Laptop", BigDecimal.valueOf(999.99));
+        
+        CreateOrderRequest request = CreateOrderRequest.builder()
+                .customerId(customerId)
+                .items(List.of(new OrderItemRequest(productId, quantity)))
+                .build();
+        
+        when(mockCustomerService.getCustomerById(customerId)).thenReturn(customer);
+        when(mockProductService.getProductById(productId)).thenReturn(product);
+        when(mockOrderRepository.save(any(Order.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        
+        // When
+        Order result = orderService.createOrder(request);
+        
+        // Then
+        assertNotNull(result);
+        assertEquals(customerId, result.getCustomer().getId());
+        assertEquals(1, result.getItems().size());
+        assertEquals(quantity, result.getItems().get(0).getQuantity());
+        assertEquals(OrderStatus.PENDING, result.getStatus());
+        
+        verify(mockOrderRepository).save(any(Order.class));
+    }
+    
+    @Test
+    @DisplayName("Should throw exception when customer not found")
+    void shouldThrowExceptionWhenCustomerNotFound() {
+        // Given
+        String customerId = "INVALID-CUST";
+        CreateOrderRequest request = CreateOrderRequest.builder()
+                .customerId(customerId)
+                .items(new ArrayList<>())
+                .build();
+        
+        when(mockCustomerService.getCustomerById(customerId)).thenReturn(null);
+        
+        // When & Then
+        CustomerNotFoundException exception = assertThrows(
+            CustomerNotFoundException.class,
+            () -> orderService.createOrder(request)
+        );
+        
+        assertEquals("Customer not found: " + customerId, exception.getMessage());
+        verify(mockOrderRepository, never()).save(any(Order.class));
+    }
+    
+    @ParameterizedTest
+    @ValueSource(ints = {0, -1, -100})
+    @DisplayName("Should throw exception for invalid quantities")
+    void shouldThrowExceptionForInvalidQuantities(int invalidQuantity) {
+        // Given
+        String customerId = "CUST-001";
+        String productId = "PROD-001";
+        
+        Customer customer = new Customer(customerId, "John Doe", "john@example.com");
+        Product product = new Product(productId, "Laptop", BigDecimal.valueOf(999.99));
+        
+        CreateOrderRequest request = CreateOrderRequest.builder()
+                .customerId(customerId)
+                .items(List.of(new OrderItemRequest(productId, invalidQuantity)))
+                .build();
+        
+        when(mockCustomerService.getCustomerById(customerId)).thenReturn(customer);
+        when(mockProductService.getProductById(productId)).thenReturn(product);
+        
+        // When & Then
+        assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(request));
+    }
+    
+    @Test
+    @DisplayName("Should calculate order total correctly")
+    void shouldCalculateOrderTotalCorrectly() {
+        // Given
+        String customerId = "CUST-001";
+        Customer customer = new Customer(customerId, "John Doe", "john@example.com");
+        
+        Product laptop = new Product("PROD-001", "Laptop", BigDecimal.valueOf(999.99));
+        Product mouse = new Product("PROD-002", "Mouse", BigDecimal.valueOf(29.99));
+        
+        CreateOrderRequest request = CreateOrderRequest.builder()
+                .customerId(customerId)
+                .items(List.of(
+                    new OrderItemRequest("PROD-001", 1),
+                    new OrderItemRequest("PROD-002", 2)
+                ))
+                .build();
+        
+        when(mockCustomerService.getCustomerById(customerId)).thenReturn(customer);
+        when(mockProductService.getProductById("PROD-001")).thenReturn(laptop);
+        when(mockProductService.getProductById("PROD-002")).thenReturn(mouse);
+        when(mockOrderRepository.save(any(Order.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        
+        // When
+        Order result = orderService.createOrder(request);
+        
+        // Then
+        BigDecimal expectedTotal = laptop.getPrice()
+                .add(mouse.getPrice().multiply(BigDecimal.valueOf(2)));
+        assertEquals(0, expectedTotal.compareTo(result.getTotalAmount()));
+    }
+}
+```
+
+#### **14.2 Integration Testing**
+```java
+@SpringBootTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Transactional
+class OrderServiceIntegrationTest {
+    
+    @Autowired
+    private OrderService orderService;
+    
+    @Autowired
+    private OrderRepository orderRepository;
+    
+    @Autowired
+    private CustomerRepository customerRepository;
+    
+    @Autowired
+    private ProductRepository productRepository;
+    
+    @Test
+    @DisplayName("Should create and persist order in database")
+    void shouldCreateAndPersistOrderInDatabase() {
+        // Given
+        Customer customer = customerRepository.save(new Customer("John Doe", "john@example.com"));
+        Product product = productRepository.save(new Product("Laptop", BigDecimal.valueOf(999.99)));
+        
+        CreateOrderRequest request = CreateOrderRequest.builder()
+                .customerId(customer.getId())
+                .items(List.of(new OrderItemRequest(product.getId(), 2)))
+                .build();
+        
+        // When
+        Order createdOrder = orderService.createOrder(request);
+        
+        // Then
+        assertNotNull(createdOrder.getOrderId());
+        
+        // Verify persistence
+        Optional<Order> persistedOrder = orderRepository.findById(createdOrder.getOrderId());
+        assertTrue(persistedOrder.isPresent());
+        
+        Order order = persistedOrder.get();
+        assertEquals(customer.getId(), order.getCustomer().getId());
+        assertEquals(1, order.getItems().size());
+        assertEquals(2, order.getItems().get(0).getQuantity());
+        assertEquals(product.getId(), order.getItems().get(0).getProduct().getId());
+    }
+    
+    @Test
+    @DisplayName("Should process order and update status")
+    void shouldProcessOrderAndUpdateStatus() {
+        // Given
+        Customer customer = customerRepository.save(new Customer("John Doe", "john@example.com"));
+        Product product = productRepository.save(new Product("Laptop", BigDecimal.valueOf(999.99)));
+        
+        Order order = new Order("TEST-ORD-001", customer);
+        order.addItem(product, 1);
+        order = orderRepository.save(order);
+        
+        // When
+        Order processedOrder = orderService.processOrder(order.getOrderId());
+        
+        // Then
+        assertEquals(OrderStatus.CONFIRMED, processedOrder.getStatus());
+        
+        // Verify database update
+        Order updatedOrder = orderRepository.findById(order.getOrderId()).orElseThrow();
+        assertEquals(OrderStatus.CONFIRMED, updatedOrder.getStatus());
+    }
+}
+```
+
+### 📋 **Debugging & Troubleshooting**
+
+#### **14.3 Debugging Techniques**
+```java
+public class DebuggingExamples {
+    
+    public static void demonstrateDebugging() {
+        // 1. Strategic logging
+        Logger logger = LoggerFactory.getLogger(DebuggingExamples.class);
+        
+        try {
+            processComplexData();
+        } catch (Exception e) {
+            logger.error("Failed to process data", e);
+            // Log additional context
+            logger.error("Current state: {}", getCurrentState());
+            logger.error("Input parameters: {}", getInputParameters());
+        }
+        
+        // 2. Assertions for debugging
+        String result = processString("test");
+        assert result != null : "Result should not be null";
+        assert result.length() > 0 : "Result should not be empty";
+        
+        // 3. Conditional breakpoints (use in IDE)
+        for (int i = 0; i < 1000; i++) {
+            if (i == 500) { // Set breakpoint here
+                System.out.println("Debug point reached at i = " + i);
+            }
+            processItem(i);
+        }
+    }
+    
+    private static void processComplexData() {
+        // Simulate complex processing
+        if (Math.random() > 0.5) {
+            throw new RuntimeException("Random processing failure");
+        }
+    }
+    
+    private static String processString(String input) {
+        return input.toUpperCase();
+    }
+    
+    private static void processItem(int item) {
+        // Simulate item processing
+        if (item % 100 == 0) {
+            System.out.println("Processing item: " + item);
+        }
+    }
+    
+    private static String getCurrentState() {
+        return "Processing state";
+    }
+    
+    private static String getInputParameters() {
+        return "Input parameters";
+    }
+}
+```
+
+#### **14.4 Performance Testing**
+```java
+@SpringBootTest
+class OrderServicePerformanceTest {
+    
+    @Autowired
+    private OrderService orderService;
+    
+    @Test
+    @DisplayName("Should handle high load efficiently")
+    void shouldHandleHighLoadEfficiently() {
+        int numberOfOrders = 1000;
+        List<CreateOrderRequest> requests = generateTestRequests(numberOfOrders);
+        
+        long startTime = System.currentTimeMillis();
+        
+        // Process orders in parallel
+        List<Order> orders = requests.parallelStream()
+                .map(orderService::createOrder)
+                .collect(Collectors.toList());
+        
+        long endTime = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+        
+        // Performance assertions
+        assertEquals(numberOfOrders, orders.size());
+        assertTrue(totalTime < 10000, "Should process 1000 orders in less than 10 seconds");
+        
+        double ordersPerSecond = (double) numberOfOrders / (totalTime / 1000.0);
+        System.out.println("Performance: " + String.format("%.2f", ordersPerSecond) + " orders/second");
+    }
+    
+    private List<CreateOrderRequest> generateTestRequests(int count) {
+        // Generate test data
+        return IntStream.range(0, count)
+                .mapToObj(i -> CreateOrderRequest.builder()
+                        .customerId("CUST-" + i)
+                        .items(List.of(new OrderItemRequest("PROD-" + i, 1)))
+                        .build())
+                .collect(Collectors.toList());
+    }
+}
+```
+
+---
+
+## 🎯 **Chapter 15: Java Interview Questions & Technical Assessment**
 ```java
 String s1 = "Hello";
 String s2 = new String("Hello");
@@ -3168,7 +5054,7 @@ Integer autoBoxed = 42;       // Autoboxing
 int unboxed = wrapper;        // Unboxing
 ```
 
-#### **9.2 Object-Oriented Programming**
+#### **15.2 Object-Oriented Programming**
 
 **Q5: Explain the difference between method overloading and overriding.**
 ```java
@@ -3215,7 +5101,7 @@ Animal animal = new Dog(); // Animal reference, Dog object
 animal.makeSound(); // Calls Dog's makeSound method
 ```
 
-#### **9.3 Collections Framework**
+#### **15.3 Collections Framework**
 
 **Q8: What is the difference between ArrayList and LinkedList?**
 ```java
@@ -3258,7 +5144,7 @@ treeSet.add("Apple");
 // Always sorted: Apple, Zebra
 ```
 
-#### **9.4 Generics & Type Safety**
+#### **15.4 Generics & Type Safety**
 
 **Q11: What are bounded generics and how do you use them?**
 ```java
@@ -3293,7 +5179,7 @@ public static void addNumbers(List<? super Integer> numbers) {
 }
 ```
 
-#### **9.5 Exception Handling**
+#### **15.5 Exception Handling**
 
 **Q13: What is the difference between checked and unchecked exceptions?**
 ```java
@@ -3323,7 +5209,7 @@ try (FileReader reader = new FileReader("file.txt");
 }
 ```
 
-#### **9.6 Multithreading & Concurrency**
+#### **15.6 Multithreading & Concurrency**
 
 **Q15: What is the difference between Thread and Runnable?**
 ```java
@@ -3372,7 +5258,7 @@ class Counter {
 }
 ```
 
-#### **9.7 Design Patterns**
+#### **15.7 Design Patterns**
 
 **Q17: Implement a Singleton pattern.**
 ```java
@@ -3422,7 +5308,7 @@ class NewsAgency implements Subject {
 }
 ```
 
-#### **9.8 Java 8+ Features**
+#### **15.8 Java 8+ Features**
 
 **Q19: Explain Stream API with examples.**
 ```java
@@ -3463,7 +5349,7 @@ Optional<String> processed = name
 
 ### 🎯 **Advanced Interview Questions**
 
-#### **9.9 Performance & Optimization**
+#### **15.9 Performance & Optimization**
 
 **Q21: How would you optimize a Java application for better performance?**
 - Use appropriate data structures
@@ -3484,7 +5370,7 @@ Optional<String> processed = name
 // -Xms2g -Xmx4g -XX:+UseG1GC
 ```
 
-#### **9.10 System Design Questions**
+#### **15.10 System Design Questions**
 
 **Q23: Design a custom ArrayList implementation.**
 ```java
@@ -3508,19 +5394,19 @@ Optional<String> processed = name
 
 ### 📝 **Interview Preparation Tips**
 
-#### **9.11 Before the Interview**
+#### **15.11 Before the Interview**
 1. **Review Fundamentals**: Ensure solid understanding of core concepts
 2. **Practice Coding**: Solve problems on platforms like LeetCode, HackerRank
 3. **Understand Trade-offs**: Know when to use different approaches
 4. **Review Your Code**: Be ready to explain your implementation choices
 
-#### **9.12 During the Interview**
+#### **15.12 During the Interview**
 1. **Clarify Requirements**: Ask questions before starting
 2. **Think Aloud**: Explain your thought process
 3. **Consider Edge Cases**: Think about boundary conditions
 4. **Optimize Incrementally**: Start simple, then improve
 
-#### **9.13 Common Interview Mistakes to Avoid**
+#### **15.13 Common Interview Mistakes to Avoid**
 1. **Not Testing Code**: Always test with examples
 2. **Ignoring Edge Cases**: Consider null, empty, invalid inputs
 3. **Poor Communication**: Explain your approach clearly
@@ -3596,19 +5482,19 @@ class RandomizedSet {
 
 ### 📚 **Additional Resources**
 
-#### **9.14 Recommended Reading**
+#### **15.14 Recommended Reading**
 - "Effective Java" by Joshua Bloch
 - "Java Concurrency in Practice" by Brian Goetz
 - "Clean Code" by Robert C. Martin
 - "Design Patterns" by Gang of Four
 
-#### **9.15 Online Practice Platforms**
+#### **15.15 Online Practice Platforms**
 - LeetCode (Java problems)
 - HackerRank (Java track)
 - CodeSignal
 - InterviewBit
 
-#### **9.16 Mock Interview Resources**
+#### **15.16 Mock Interview Resources**
 - Pramp
 - Interviewing.io
 - Triplebyte
