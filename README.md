@@ -1,19 +1,44 @@
 # AI, Machine Learning, and Data Science Book Series
 
-Welcome to a comprehensive, hands-on book series for learning Python for AI/ML/Data Science, Machine Learning, Advanced ML, Neural Networks, and Natural Language Processing. Each book is self-contained, includes code, exercises, and interactive notebooks, and is designed for progressive, practical learning.
+Welcome to a comprehensive, hands-on book series for learning Python for AI/ML/Data Science, Machine Learning, Advanced ML, Neural Networks, Natural Language Processing, and Core Java. Each book is self-contained, includes code, exercises, and interactive notebooks, and is designed for progressive, practical learning.
 
 ---
 
 ## 📚 **Book Series Overview**
 
-This series is designed to take you from Python basics to advanced AI/ML concepts. Each book builds upon the previous ones, but you can also jump into any topic that interests you.
+This series is designed to take you from programming fundamentals to advanced AI/ML concepts. Each book builds upon the previous ones, but you can also jump into any topic that interests you.
 
 ### **Recommended Learning Path:**
-1. **Python Primer** → 2. **Machine Learning** → 3. **Neural Networks** → 4. **NLP**
+1. **Core Java** → 2. **Python Primer** → 3. **Machine Learning** → 4. **Neural Networks** → 5. **NLP**
 
 ---
 
-## 1. 🐍 [Python Primer for AI/ML/Data Science](python/book/python-primer-for-ai-ml-data-science.md)
+## 1. ☕ [Core Java Mastery Guide](java/book/core-java-mastery-guide.md)
+
+**📖 [Read the Book](java/book/core-java-mastery-guide.md)** | **📁 [Directory](java/)**
+
+**Description:**
+- Comprehensive guide to mastering Core Java: fundamentals, OOPs, collections, design patterns, and advanced concepts.
+- Includes hands-on examples, problem-solving exercises, and real-world applications for developers who want to excel in Java.
+
+**Key Topics:**
+- Java fundamentals and philosophy (memory model, type system, string handling)
+- Object-Oriented Programming deep dive (inheritance, polymorphism, encapsulation, abstraction)
+- Java Collections Framework mastery (Lists, Sets, Maps, performance characteristics)
+- Advanced OOP concepts (interfaces, abstract classes, inner classes, generics)
+- Design patterns implementation (Singleton, Factory, Observer, and more)
+- Performance optimization and best practices
+- Problem-solving challenges with detailed solutions
+
+**Getting Started:**
+- **📖 [Read the Book](java/book/core-java-mastery-guide.md)**
+- Install Java Development Kit (JDK) 11 or higher
+- Run `python java/setup.py` to set up and verify Java environment
+- Use any IDE (IntelliJ IDEA, Eclipse, or VS Code)
+
+---
+
+## 2. 🐍 [Python Primer for AI/ML/Data Science](python/book/python-primer-for-ai-ml-data-science.md)
 
 **📖 [Read the Book](python/book/python-primer-for-ai-ml-data-science.md)** | **📁 [Directory](python/)**
 
@@ -35,7 +60,7 @@ This series is designed to take you from Python basics to advanced AI/ML concept
 
 ---
 
-## 2. 🤖 [Machine Learning & Advanced Machine Learning](aml/book/machine-learning-comprehensive-guide.md)
+## 3. 🤖 [Machine Learning & Advanced Machine Learning](aml/book/machine-learning-comprehensive-guide.md)
 
 **📖 [Read the Book](aml/book/machine-learning-comprehensive-guide.md)** | **📁 [Directory](aml/)**
 
@@ -58,7 +83,7 @@ This series is designed to take you from Python basics to advanced AI/ML concept
 
 ---
 
-## 3. 🧠 [Neural Networks: A Comprehensive Guide](nn/book/neural-networks-comprehensive-guide.md)
+## 4. 🧠 [Neural Networks: A Comprehensive Guide](nn/book/neural-networks-comprehensive-guide.md)
 
 **📖 [Read the Book](nn/book/neural-networks-comprehensive-guide.md)** | **📁 [Directory](nn/)**
 
@@ -81,7 +106,7 @@ This series is designed to take you from Python basics to advanced AI/ML concept
 
 ---
 
-## 4. 💬 [NLP: A Comprehensive Primer](nlp/book/nlp-comprehensive-primer.md)
+## 5. 💬 [NLP: A Comprehensive Primer](nlp/book/nlp-comprehensive-primer.md)
 
 **📖 [Read the Book](nlp/book/nlp-comprehensive-primer.md)** | **📁 [Directory](nlp/)**
 
@@ -107,10 +132,11 @@ This series is designed to take you from Python basics to advanced AI/ML concept
 ## 🚀 **Quick Start Guide**
 
 ### **For Beginners:**
-1. Start with the **[Python Primer](python/book/python-primer-for-ai-ml-data-science.md)**
-2. Move to **[Machine Learning](aml/book/machine-learning-comprehensive-guide.md)**
-3. Continue with **[Neural Networks](nn/book/neural-networks-comprehensive-guide.md)**
-4. Finish with **[NLP](nlp/book/nlp-comprehensive-primer.md)**
+1. Start with the **[Core Java Mastery Guide](java/book/core-java-mastery-guide.md)**
+2. Move to **[Python Primer](python/book/python-primer-for-ai-ml-data-science.md)**
+3. Continue with **[Machine Learning](aml/book/machine-learning-comprehensive-guide.md)**
+4. Advance to **[Neural Networks](nn/book/neural-networks-comprehensive-guide.md)**
+5. Finish with **[NLP](nlp/book/nlp-comprehensive-primer.md)**
 
 ### **For Intermediate Learners:**
 - Jump directly to any book that interests you
@@ -128,32 +154,39 @@ This series is designed to take you from Python basics to advanced AI/ML concept
 
 ```
 books/
-├── python/                          # Python Primer
+├── java/                              # Core Java Mastery Guide
+│   ├── book/core-java-mastery-guide.md
+│   ├── code/                          # Code examples
+│   ├── exercises/                     # Practice exercises
+│   ├── notebooks/                     # Jupyter notebooks
+│   ├── requirements.txt
+│   └── setup.py
+├── python/                            # Python Primer
 │   ├── book/python-primer-for-ai-ml-data-science.md
-│   ├── code/                        # Code examples
-│   ├── exercises/                   # Practice exercises
-│   ├── notebooks/                   # Jupyter notebooks
+│   ├── code/                          # Code examples
+│   ├── exercises/                     # Practice exercises
+│   ├── notebooks/                     # Jupyter notebooks
 │   ├── requirements.txt
 │   └── setup.py
-├── aml/                             # Machine Learning
+├── aml/                               # Machine Learning
 │   ├── book/machine-learning-comprehensive-guide.md
-│   ├── code/                        # Code examples
-│   ├── exercises/                   # Practice exercises
-│   ├── notebooks/                   # Jupyter notebooks
+│   ├── code/                          # Code examples
+│   ├── exercises/                     # Practice exercises
+│   ├── notebooks/                     # Jupyter notebooks
 │   ├── requirements.txt
 │   └── setup.py
-├── nn/                              # Neural Networks
+├── nn/                                # Neural Networks
 │   ├── book/neural-networks-comprehensive-guide.md
-│   ├── code/                        # Code examples
-│   ├── exercises/                   # Practice exercises
-│   ├── notebooks/                   # Jupyter notebooks
+│   ├── code/                          # Code examples
+│   ├── exercises/                     # Practice exercises
+│   ├── notebooks/                     # Jupyter notebooks
 │   ├── requirements.txt
 │   └── setup.py
-└── nlp/                             # Natural Language Processing
+└── nlp/                               # Natural Language Processing
     ├── book/nlp-comprehensive-primer.md
-    ├── code/                        # Code examples
-    ├── exercises/                   # Practice exercises
-    ├── notebooks/                   # Jupyter notebooks
+    ├── code/                          # Code examples
+    ├── exercises/                     # Practice exercises
+    ├── notebooks/                     # Jupyter notebooks
     ├── requirements.txt
     └── setup.py
 ```
@@ -163,7 +196,8 @@ books/
 ## 🛠️ **Setup Instructions**
 
 ### **Prerequisites:**
-- Python 3.8 or higher
+- **For Java**: Java Development Kit (JDK) 11 or higher
+- **For Python**: Python 3.8 or higher
 - pip (Python package installer)
 - Git (for cloning the repository)
 
@@ -186,12 +220,16 @@ pip install -r nlp/requirements.txt
 
 ### **Running Setup Scripts:**
 ```bash
-# Each book has a setup script that:
-# 1. Installs required packages
-# 2. Downloads datasets
-# 3. Launches Jupyter notebooks
+# Java setup (verifies JDK installation)
+python java/setup.py
+
+# Python setup
 python python/setup.py
+
+# Machine Learning setup
 python aml/setup.py
+
+# Neural Networks setup
 python nn/setup.py
 ```
 
@@ -206,7 +244,7 @@ python nn/setup.py
 - **Build Projects**: Use the end-to-end projects as templates for your own work
 
 ### **Interactive Learning:**
-- Each book includes Jupyter notebooks for interactive exploration
+- Each book includes Jupyter notebooks for interactive exploration (where applicable)
 - Code examples are designed to be runnable and educational
 - Exercises include hints and solutions for self-assessment
 
@@ -230,22 +268,24 @@ This book series is designed to be a living resource. Feel free to:
 ## 📚 **Additional Resources**
 
 ### **Books and Papers:**
+- "Effective Java" by Joshua Bloch (for Java)
 - "Introduction to Statistical Learning" by James et al.
 - "Deep Learning" by Goodfellow, Bengio, and Courville
 - "Speech and Language Processing" by Jurafsky and Martin
 
 ### **Online Courses:**
+- Stanford CS106A (Programming Methodology)
 - Stanford CS224N (NLP)
 - Coursera Machine Learning
 - Fast.ai Practical Deep Learning
 
 ### **Communities:**
-- Reddit: r/MachineLearning, r/datascience
+- Reddit: r/java, r/MachineLearning, r/datascience
 - Stack Overflow
 - Kaggle competitions
 
 ---
 
-**🎯 Ready to start your AI/ML journey? Pick a book and dive in!**
+**🎯 Ready to start your programming and AI/ML journey? Pick a book and dive in!**
 
 **Happy learning and building! 🚀** 

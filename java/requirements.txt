@@ -1,0 +1,35 @@
+# Core Java Mastery Guide - Requirements
+# This file lists the necessary tools and dependencies for the Java book
+
+# Java Development Kit (JDK) - Version 11 or higher required
+# Download from: https://adoptium.net/ or https://www.oracle.com/java/technologies/downloads/
+
+# IDE Recommendations:
+# - IntelliJ IDEA Community Edition (free)
+# - Eclipse IDE for Java Developers (free)
+# - VS Code with Java extensions (free)
+
+# Build Tools (optional but recommended):
+# - Maven 3.6+ (for dependency management)
+# - Gradle 7.0+ (alternative to Maven)
+
+# Testing Framework (for exercises):
+# - JUnit 5 (Jupiter)
+# - Mockito (for mocking)
+
+# Code Quality Tools:
+# - Checkstyle (code style checking)
+# - PMD (static code analysis)
+# - SpotBugs (bug detection)
+
+# Performance Analysis Tools:
+# - JProfiler (commercial)
+# - VisualVM (free, comes with JDK)
+# - JConsole (free, comes with JDK)
+
+# Documentation:
+# - JavaDoc (comes with JDK)
+# - Mermaid (for diagrams in markdown)
+
+# Note: Most tools mentioned above come bundled with modern IDEs
+# or can be installed via package managers
