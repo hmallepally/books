@@ -1,0 +1,65 @@
+# Spring Framework Book Dependencies
+# Core Spring Dependencies
+spring-boot-starter-web>=3.0.0
+spring-boot-starter-data-jpa>=3.0.0
+spring-boot-starter-security>=3.0.0
+spring-boot-starter-validation>=3.0.0
+spring-boot-starter-actuator>=3.0.0
+spring-boot-starter-websocket>=3.0.0
+spring-boot-starter-cache>=3.0.0
+spring-boot-starter-aop>=3.0.0
+
+# Database Dependencies
+spring-boot-starter-data-redis>=3.0.0
+h2>=2.1.214
+mysql-connector-java>=8.0.33
+postgresql>=42.6.0
+
+# Security Dependencies
+spring-security-jwt>=1.1.1.RELEASE
+jjwt-api>=0.11.5
+jjwt-impl>=0.11.5
+jjwt-jackson>=0.11.5
+
+# Testing Dependencies
+spring-boot-starter-test>=3.0.0
+junit-jupiter>=5.9.2
+mockito-core>=5.3.1
+mockito-junit-jupiter>=5.3.1
+testcontainers>=1.18.3
+testcontainers-junit-jupiter>=1.18.3
+
+# Documentation Dependencies
+springdoc-openapi-starter-webmvc-ui>=2.1.0
+springdoc-openapi-starter-webmvc-api>=2.1.0
+
+# Utility Dependencies
+lombok>=1.18.26
+mapstruct>=1.5.3.Final
+mapstruct-processor>=1.5.3.Final
+jackson-datatype-jsr310>=2.15.2
+
+# Development Tools
+spring-boot-devtools>=3.0.0
+spring-boot-configuration-processor>=3.0.0
+
+# Monitoring and Metrics
+micrometer-registry-prometheus>=1.11.0
+spring-boot-starter-actuator>=3.0.0
+
+# Message Queue (Optional)
+spring-boot-starter-amqp>=3.0.0
+spring-boot-starter-kafka>=3.0.0
+
+# Cloud Dependencies (Optional)
+spring-cloud-starter-netflix-eureka-client>=4.0.0
+spring-cloud-starter-gateway>=4.0.0
+spring-cloud-starter-config>=4.0.0
+spring-cloud-starter-bootstrap>=4.0.0
+
+# Circuit Breaker (Optional)
+spring-cloud-starter-circuitbreaker-resilience4j>=3.0.0
+
+# Distributed Tracing (Optional)
+spring-cloud-starter-sleuth>=4.0.0
+spring-cloud-starter-zipkin>=4.0.0

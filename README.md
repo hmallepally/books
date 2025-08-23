@@ -9,7 +9,7 @@ Welcome to a comprehensive, hands-on book series for learning Python for AI/ML/D
 This series is designed to take you from programming fundamentals to advanced AI/ML concepts. Each book builds upon the previous ones, but you can also jump into any topic that interests you.
 
 ### **Recommended Learning Path:**
-1. **Core Java** → 2. **Python Primer** → 3. **Machine Learning** → 4. **Neural Networks** → 5. **NLP**
+1. **Core Java** → 2. **Spring Framework** → 3. **Python Primer** → 4. **Machine Learning** → 5. **Neural Networks** → 6. **NLP**
 
 ---
 
@@ -38,7 +38,35 @@ This series is designed to take you from programming fundamentals to advanced AI
 
 ---
 
-## 2. 🐍 [Python Primer for AI/ML/Data Science](python/book/python-primer-for-ai-ml-data-science.md)
+## 2. 🌱 [Spring Framework Comprehensive Guide](spring/book/spring-framework-comprehensive-guide.md)
+
+**📖 [Read the Book](spring/book/spring-framework-comprehensive-guide.md)** | **📁 [Directory](spring/)**
+
+**Description:**
+- Master Spring Framework from fundamentals to advanced patterns: DI, AOP, Spring Boot, REST APIs, security, testing, and microservices.
+- Includes comprehensive code examples, interview questions, and real-world project implementations for enterprise Java development.
+
+**Key Topics:**
+- Dependency Injection (DI) and Inversion of Control (IoC)
+- Aspect-Oriented Programming (AOP) and cross-cutting concerns
+- Spring Core Container and bean lifecycle management
+- Spring Boot auto-configuration and starter dependencies
+- Spring Data JPA and transaction management
+- REST API design and Spring Web MVC
+- Spring Security and JWT authentication
+- Testing strategies and best practices
+- Microservices architecture and patterns
+- Real-world project implementations
+
+**Getting Started:**
+- **📖 [Read the Book](spring/book/spring-framework-comprehensive-guide.md)**
+- Prerequisites: Java 17+ and Maven/Gradle
+- Run `python spring/setup.py` to set up development environment
+- Use any IDE (IntelliJ IDEA, Eclipse, or VS Code)
+
+---
+
+## 3. 🐍 [Python Primer for AI/ML/Data Science](python/book/python-primer-for-ai-ml-data-science.md)
 
 **📖 [Read the Book](python/book/python-primer-for-ai-ml-data-science.md)** | **📁 [Directory](python/)**
 
@@ -60,7 +88,7 @@ This series is designed to take you from programming fundamentals to advanced AI
 
 ---
 
-## 3. 🤖 [Machine Learning & Advanced Machine Learning](aml/book/machine-learning-comprehensive-guide.md)
+## 4. 🤖 [Machine Learning & Advanced Machine Learning](aml/book/machine-learning-comprehensive-guide.md)
 
 **📖 [Read the Book](aml/book/machine-learning-comprehensive-guide.md)** | **📁 [Directory](aml/)**
 
@@ -83,7 +111,7 @@ This series is designed to take you from programming fundamentals to advanced AI
 
 ---
 
-## 4. 🧠 [Neural Networks: A Comprehensive Guide](nn/book/neural-networks-comprehensive-guide.md)
+## 5. 🧠 [Neural Networks: A Comprehensive Guide](nn/book/neural-networks-comprehensive-guide.md)
 
 **📖 [Read the Book](nn/book/neural-networks-comprehensive-guide.md)** | **📁 [Directory](nn/)**
 
@@ -106,7 +134,7 @@ This series is designed to take you from programming fundamentals to advanced AI
 
 ---
 
-## 5. 💬 [NLP: A Comprehensive Primer](nlp/book/nlp-comprehensive-primer.md)
+## 6. 💬 [NLP: A Comprehensive Primer](nlp/book/nlp-comprehensive-primer.md)
 
 **📖 [Read the Book](nlp/book/nlp-comprehensive-primer.md)** | **📁 [Directory](nlp/)**
 
@@ -133,10 +161,11 @@ This series is designed to take you from programming fundamentals to advanced AI
 
 ### **For Beginners:**
 1. Start with the **[Core Java Mastery Guide](java/book/core-java-mastery-guide.md)**
-2. Move to **[Python Primer](python/book/python-primer-for-ai-ml-data-science.md)**
-3. Continue with **[Machine Learning](aml/book/machine-learning-comprehensive-guide.md)**
-4. Advance to **[Neural Networks](nn/book/neural-networks-comprehensive-guide.md)**
-5. Finish with **[NLP](nlp/book/nlp-comprehensive-primer.md)**
+2. Continue with **[Spring Framework](spring/book/spring-framework-comprehensive-guide.md)**
+3. Move to **[Python Primer](python/book/python-primer-for-ai-ml-data-science.md)**
+4. Continue with **[Machine Learning](aml/book/machine-learning-comprehensive-guide.md)**
+5. Advance to **[Neural Networks](nn/book/neural-networks-comprehensive-guide.md)**
+6. Finish with **[NLP](nlp/book/nlp-comprehensive-primer.md)**
 
 ### **For Intermediate Learners:**
 - Jump directly to any book that interests you
@@ -156,6 +185,13 @@ This series is designed to take you from programming fundamentals to advanced AI
 books/
 ├── java/                              # Core Java Mastery Guide
 │   ├── book/core-java-mastery-guide.md
+│   ├── code/                          # Code examples
+│   ├── exercises/                     # Practice exercises
+│   ├── notebooks/                     # Jupyter notebooks
+│   ├── requirements.txt
+│   └── setup.py
+├── spring/                            # Spring Framework
+│   ├── book/spring-framework-comprehensive-guide.md
 │   ├── code/                          # Code examples
 │   ├── exercises/                     # Practice exercises
 │   ├── notebooks/                     # Jupyter notebooks
