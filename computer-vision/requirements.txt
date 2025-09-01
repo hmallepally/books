@@ -1,0 +1,51 @@
+# Core Computer Vision Libraries
+opencv-python>=4.8.0
+opencv-contrib-python>=4.8.0
+
+# Deep Learning Frameworks
+torch>=2.0.0
+torchvision>=0.15.0
+tensorflow>=2.13.0
+keras>=2.13.0
+
+# Data Science and Numerical Computing
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+
+# Machine Learning
+scikit-learn>=1.3.0
+scikit-image>=0.21.0
+
+# Image Processing
+Pillow>=10.0.0
+imageio>=2.31.0
+albumentations>=1.3.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.15.0
+
+# Jupyter and Interactive Development
+jupyter>=1.0.0
+jupyterlab>=4.0.0
+ipywidgets>=8.0.0
+
+# Utility Libraries
+tqdm>=4.65.0
+requests>=2.31.0
+Pillow>=10.0.0
+
+# Optional: GPU Support (if available)
+# torch-cuda  # Uncomment if CUDA is available
+# tensorflow-gpu  # Uncomment if CUDA is available
+
+# Optional: Additional Computer Vision Tools
+# mediapipe>=0.10.0  # For real-time computer vision
+# face-recognition>=1.3.0  # For face recognition tasks
+# easyocr>=1.7.0  # For optical character recognition
+# ultralytics>=8.0.0  # For YOLO object detection
+# transformers>=4.30.0  # For vision transformers
+# timm>=0.9.0  # For pre-trained vision models
+

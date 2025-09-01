@@ -9,7 +9,7 @@ Welcome to a comprehensive, hands-on book series for learning Python for AI/ML/D
 This series is designed to take you from programming fundamentals to advanced AI/ML concepts. Each book builds upon the previous ones, but you can also jump into any topic that interests you.
 
 ### **Recommended Learning Path:**
-1. **Core Java** → 2. **Spring Framework** → 3. **Python Primer** → 4. **Machine Learning** → 5. **Neural Networks** → 6. **NLP**
+1. **Core Java** → 2. **Spring Framework** → 3. **Python Primer** → 4. **Machine Learning** → 5. **Neural Networks** → 6. **Computer Vision** → 7. **NLP**
 
 ---
 
@@ -134,7 +134,32 @@ This series is designed to take you from programming fundamentals to advanced AI
 
 ---
 
-## 6. 💬 [NLP: A Comprehensive Primer](nlp/book/nlp-comprehensive-primer.md)
+## 6. 👁️ [Computer Vision: A Comprehensive Guide](computer-vision/book/computer-vision-comprehensive-guide.md)
+
+**📖 [Read the Book](computer-vision/book/computer-vision-comprehensive-guide.md)** | **📁 [Directory](computer-vision/)**
+
+**Description:**
+- Comprehensive guide to computer vision: image fundamentals, processing techniques, feature detection, deep learning, CNNs, and real-world applications.
+- Includes detailed code examples, exercises, and Jupyter notebooks for both traditional and modern computer vision techniques.
+
+**Key Topics:**
+- Image fundamentals and color spaces
+- Image processing techniques (filtering, convolution, enhancement)
+- Feature detection and description (SIFT, ORB, feature matching)
+- Deep learning for computer vision
+- Convolutional Neural Networks (CNNs) and advanced architectures
+- Object detection, recognition, and segmentation
+- Real-world applications and practical projects
+- Performance optimization and deployment strategies
+
+**Getting Started:**
+- **📖 [Read the Book](computer-vision/book/computer-vision-comprehensive-guide.md)**
+- Install requirements: `pip install -r computer-vision/requirements.txt`
+- Run `python computer-vision/setup.py` to set up and verify environment
+
+---
+
+## 7. 💬 [NLP: A Comprehensive Primer](nlp/book/nlp-comprehensive-primer.md)
 
 **📖 [Read the Book](nlp/book/nlp-comprehensive-primer.md)** | **📁 [Directory](nlp/)**
 
@@ -165,7 +190,8 @@ This series is designed to take you from programming fundamentals to advanced AI
 3. Move to **[Python Primer](python/book/python-primer-for-ai-ml-data-science.md)**
 4. Continue with **[Machine Learning](aml/book/machine-learning-comprehensive-guide.md)**
 5. Advance to **[Neural Networks](nn/book/neural-networks-comprehensive-guide.md)**
-6. Finish with **[NLP](nlp/book/nlp-comprehensive-primer.md)**
+6. Learn **[Computer Vision](computer-vision/book/computer-vision-comprehensive-guide.md)**
+7. Finish with **[NLP](nlp/book/nlp-comprehensive-primer.md)**
 
 ### **For Intermediate Learners:**
 - Jump directly to any book that interests you
@@ -213,6 +239,13 @@ books/
 │   └── setup.py
 ├── nn/                                # Neural Networks
 │   ├── book/neural-networks-comprehensive-guide.md
+│   ├── code/                          # Code examples
+│   ├── exercises/                     # Practice exercises
+│   ├── notebooks/                     # Jupyter notebooks
+│   ├── requirements.txt
+│   └── setup.py
+├── computer-vision/                   # Computer Vision
+│   ├── book/computer-vision-comprehensive-guide.md
 │   ├── code/                          # Code examples
 │   ├── exercises/                     # Practice exercises
 │   ├── notebooks/                     # Jupyter notebooks
