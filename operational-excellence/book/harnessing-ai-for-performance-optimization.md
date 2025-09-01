@@ -35,18 +35,19 @@ This comprehensive guide explores the intersection of artificial intelligence an
 
 ### Table of Contents
 
-1. [Introduction to AI in Operations](#introduction)
-2. [AI-Powered Quality Control and Manufacturing](#quality-control)
-3. [Strategic AI Implementation: The Intel Case Study](#intel-case)
-4. [Operational Excellence Frameworks in the AI Era](#frameworks)
-5. [Lean Six Sigma Meets Artificial Intelligence](#lean-ai)
-6. [Total Quality Management Enhanced by AI](#tqm-ai)
-7. [AI-Driven Strategic Measurement and KPIs](#strategic-measurement)
-8. [Prescriptive Analytics and Future Trends](#prescriptive-analytics)
-9. [Implementation Roadmap and Best Practices](#implementation)
-10. [Case Studies and Real-World Applications](#case-studies)
-11. [Future of AI in Operational Excellence](#future)
-12. [Interview Questions and Career Guidance](#interview-questions)
+1. [Introduction to AI in Operations](#1-introduction-to-ai-in-operations)
+2. [AI-Powered Quality Control and Manufacturing](#2-ai-powered-quality-control-and-manufacturing)
+3. [Strategic AI Implementation: The Intel Case Study](#3-strategic-ai-implementation-the-intel-case-study)
+4. [Operational Excellence Frameworks in the AI Era](#4-operational-excellence-frameworks-in-the-ai-era)
+5. [Lean Six Sigma Meets Artificial Intelligence](#5-lean-six-sigma-meets-artificial-intelligence)
+6. [Total Quality Management Enhanced by AI](#6-total-quality-management-enhanced-by-ai)
+7. [AI-Driven Strategic Measurement and KPIs](#7-ai-driven-strategic-measurement-and-kpis)
+8. [Prescriptive Analytics and Future Trends](#8-prescriptive-analytics-and-future-trends)
+9. [Implementation Roadmap and Best Practices](#9-implementation-roadmap-and-best-practices)
+10. [Case Studies and Real-World Applications](#10-case-studies-and-real-world-applications)
+11. [Future of AI in Operational Excellence](#11-future-of-ai-in-operational-excellence)
+12. [AI Tools and Technologies for Operational Excellence](#12-ai-tools-and-technologies-for-operational-excellence)
+13. [Interview Questions and Career Guidance](#13-interview-questions-and-career-guidance)
 
 ### Key Learning Objectives
 
@@ -110,7 +111,7 @@ Each chapter is structured to provide:
 
 ---
 
-## 1. Introduction to AI in Operations {#introduction}
+## 1. Introduction to AI in Operations
 
 ### Opening Quote
 
@@ -131,6 +132,36 @@ By the end of this chapter, students and professionals will be able to:
 ### Chapter Overview
 
 This chapter establishes the foundation for understanding how artificial intelligence transforms operational excellence. We begin by examining the historical context of operations management evolution, then explore the key AI technologies driving this transformation. The chapter concludes with practical frameworks for AI adoption and real-world case studies that demonstrate successful implementations.
+
+### AI Transformation Journey
+
+```mermaid
+graph TD
+    A[Traditional Operations] --> B[Digital Transformation]
+    B --> C[AI Integration]
+    C --> D[Operational Excellence]
+    
+    A --> A1[Manual Processes]
+    A --> A2[Reactive Management]
+    A --> A3[Limited Analytics]
+    
+    B --> B1[Process Automation]
+    B --> B2[Data Collection]
+    B --> B3[Basic Analytics]
+    
+    C --> C1[Predictive Analytics]
+    C --> C2[Intelligent Automation]
+    C --> C3[Real-time Optimization]
+    
+    D --> D1[Proactive Management]
+    D --> D2[Continuous Improvement]
+    D --> D3[Competitive Advantage]
+    
+    style A fill:#ffcccc
+    style B fill:#ffffcc
+    style C fill:#ccffcc
+    style D fill:#ccccff
+```
 
 ### The AI Revolution in Operations
 
@@ -324,7 +355,7 @@ Research and evaluate three AI technologies relevant to your industry. Create a 
 
 ---
 
-## 2. AI-Powered Quality Control and Manufacturing {#quality-control}
+## 2. AI-Powered Quality Control and Manufacturing
 
 ### Opening Quote
 
@@ -671,7 +702,7 @@ Design an AI quality control pilot program for a specific product or process in 
 
 ---
 
-## 3. Strategic AI Implementation: The Intel Case Study {#intel-case}
+## 3. Strategic AI Implementation: The Intel Case Study
 
 ### Opening Quote
 
@@ -1032,7 +1063,7 @@ Conduct a comprehensive ROI analysis for AI implementation in your organization.
 
 ---
 
-## 4. Operational Excellence Frameworks in the AI Era {#frameworks}
+## 4. Operational Excellence Frameworks in the AI Era
 
 ### Opening Quote
 
