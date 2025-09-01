@@ -6,7 +6,7 @@ We have successfully created a comprehensive textbook titled **"Harnessing AI fo
 
 ## 🎯 Book Structure and Content
 
-### **All 12 Chapters Completed** ✅
+### **All 13 Chapters Completed** ✅
 
 1. **Introduction to AI in Operations** ✅
    - Historical evolution of operations management to AI-enhanced systems
@@ -14,13 +14,15 @@ We have successfully created a comprehensive textbook titled **"Harnessing AI fo
    - Strategic framework for AI adoption and readiness assessment
    - Real-world success stories (Tesla, Amazon)
    - Comprehensive learning objectives and academic exercises
+   - **Visual Learning**: AI Transformation Journey Mermaid diagram
 
 2. **AI-Powered Quality Control and Manufacturing** ✅
    - Evolution from manual inspection to AI vision systems
    - Computer vision and deep learning applications in manufacturing
    - Predictive quality analytics and anomaly detection
    - Case studies: BMW, Samsung, General Electric
-   - Technical implementation with Python code examples
+   - **Code References**: [chapter2_quality_control.py](../code/chapter2_quality_control.py)
+   - **Visual Learning**: AI Quality Control System Architecture diagram
 
 3. **Strategic AI Implementation: The Intel Case Study** ✅
    - Comprehensive analysis of Intel's AI transformation journey
@@ -28,6 +30,7 @@ We have successfully created a comprehensive textbook titled **"Harnessing AI fo
    - Large-scale AI implementation across manufacturing operations
    - ROI analysis and strategic implications
    - Lessons learned and best practices
+   - **Code References**: [chapter3_intel_case_study.py](../code/chapter3_intel_case_study.py)
 
 4. **Operational Excellence Frameworks in the AI Era** ✅
    - Evolution of operational excellence frameworks
@@ -35,6 +38,7 @@ We have successfully created a comprehensive textbook titled **"Harnessing AI fo
    - AI-enhanced DMAIC framework and Lean management
    - Integration strategies for traditional and AI methodologies
    - Implementation roadmaps and success factors
+   - **Code References**: [chapter4_frameworks.py](../code/chapter4_frameworks.py)
 
 5. **Lean Six Sigma Meets Artificial Intelligence** ✅
    - Integration of Lean Six Sigma with AI technologies
@@ -42,6 +46,8 @@ We have successfully created a comprehensive textbook titled **"Harnessing AI fo
    - Real-world applications in healthcare (Mayo Clinic) and manufacturing (GE)
    - Implementation strategies and success factors
    - ROI analysis and business case development
+   - **Code References**: [chapter5_lean_six_sigma.py](../code/chapter5_lean_six_sigma.py)
+   - **Visual Learning**: AI-Enhanced DMAIC Process diagram
 
 6. **Total Quality Management Enhanced by AI** ✅
    - Evolution of TQM in the AI era
@@ -49,6 +55,7 @@ We have successfully created a comprehensive textbook titled **"Harnessing AI fo
    - Predictive and adaptive quality management systems
    - Case studies in automotive and healthcare industries
    - Customer focus and continuous improvement with AI
+   - **Code References**: [chapter6_tqm_ai.py](../code/chapter6_tqm_ai.py)
 
 7. **AI-Driven Strategic Measurement and KPIs** ✅
    - Evolution from descriptive to prescriptive analytics
@@ -56,6 +63,8 @@ We have successfully created a comprehensive textbook titled **"Harnessing AI fo
    - Predictive and adaptive measurement systems
    - Strategic alignment and performance optimization
    - Real-world applications in retail and manufacturing
+   - **Code References**: [chapter7_kpi_systems.py](../code/chapter7_kpi_systems.py)
+   - **Visual Learning**: AI-Enhanced KPI System Architecture diagram
 
 8. **Prescriptive Analytics and Future Trends** ✅
    - Evolution of analytics from descriptive to prescriptive
@@ -63,6 +72,7 @@ We have successfully created a comprehensive textbook titled **"Harnessing AI fo
    - Future trends: autonomous operations, edge AI, explainable AI
    - Implementation strategies and emerging technologies
    - Ethical considerations and human-AI collaboration
+   - **Code References**: [chapter8_prescriptive_analytics.py](../code/chapter8_prescriptive_analytics.py)
 
 9. **Implementation Roadmap and Best Practices** ✅
    - Comprehensive 4-phase AI implementation journey
@@ -85,7 +95,15 @@ We have successfully created a comprehensive textbook titled **"Harnessing AI fo
     - Strategic planning for future AI developments
     - Innovation opportunities and competitive advantages
 
-12. **Interview Questions and Career Guidance** ✅
+12. **AI Tools and Technologies for Operational Excellence** ✅ **NEW**
+    - Comprehensive guide to AI tools and platforms
+    - 10 categories of AI tools with official documentation links
+    - Tool selection framework and implementation roadmap
+    - Best practices for AI tool implementation
+    - Future trends in AI tools and technologies
+    - **Categories Covered**: Data Analytics, ML Platforms, Computer Vision, NLP, RPA, Predictive Analytics, IoT, Quality Management, Project Management, Emerging AI Tools
+
+13. **Interview Questions and Career Guidance** ✅
     - Career opportunities in AI-enhanced operational excellence
     - Comprehensive interview preparation with sample questions
     - Skill development requirements and learning paths
@@ -124,7 +142,7 @@ The book includes detailed case studies from:
 ## 📊 Key Features
 
 ### **Comprehensive Coverage**
-- **12 completed chapters** with detailed academic content
+- **13 completed chapters** with detailed academic content
 - **60+ code examples** demonstrating practical implementation
 - **25+ real-world case studies** from leading organizations
 - **Multiple frameworks** and methodologies enhanced by AI
@@ -137,14 +155,16 @@ The book includes detailed case studies from:
 - **Academic bibliography** with proper citations and Amazon affiliate links
 - **Instructor's guide** with detailed teaching notes and assessment rubrics
 - **Index and references** for easy navigation and research
+- **Visual learning** with elegant Mermaid diagrams for complex concepts
 
 ### **Practical Implementation**
 - **Step-by-step implementation guides** for each chapter
-- **Code examples** that can be run and tested
+- **Modular code organization** with links to separate code files
 - **Exercise sections** for hands-on learning
 - **Best practices** and success factors
 - **ROI analysis** and business case development
-- **Table of contents** with proper navigation links
+- **Working table of contents** with proper GitHub-compatible navigation links
+- **AI Tools reference** with official documentation links and implementation guidance
 
 ### **Professional Development**
 - **Career guidance** and skill development
@@ -250,17 +270,19 @@ By completing this textbook, students and professionals will be able to:
 
 This textbook represents a significant achievement in creating a comprehensive, academically rigorous guide to AI-enhanced operational excellence. It successfully transforms academic course materials into a complete educational resource suitable for MBA programs, executive education, and professional development.
 
-The combination of theoretical frameworks, practical code examples, real-world case studies, comprehensive exercises, and future-focused insights creates a unique resource that serves multiple audiences and use cases. With all 12 chapters completed, academic rigor enhanced, and supporting materials developed, this textbook provides the knowledge and tools needed to succeed in the AI-driven future of operational excellence.
+The combination of theoretical frameworks, practical code examples, real-world case studies, comprehensive exercises, visual learning aids, and future-focused insights creates a unique resource that serves multiple audiences and use cases. With all 13 chapters completed, academic rigor enhanced, and supporting materials developed, this textbook provides the knowledge and tools needed to succeed in the AI-driven future of operational excellence.
 
 ### **Key Achievements**
-- ✅ **Complete 12-chapter textbook** with academic rigor
+- ✅ **Complete 13-chapter textbook** with academic rigor
 - ✅ **Comprehensive instructor's guide** for educators
 - ✅ **Academic bibliography** with proper citations and affiliate links
 - ✅ **Enhanced learning objectives** aligned with Bloom's taxonomy
 - ✅ **Comprehensive exercises** for individual and group learning
-- ✅ **Professional navigation** with table of contents and index
+- ✅ **Professional navigation** with working table of contents and index
 - ✅ **Real-world case studies** from leading organizations
-- ✅ **Practical code examples** for hands-on learning
+- ✅ **Modular code organization** with clean file references
+- ✅ **Visual learning** with elegant Mermaid diagrams
+- ✅ **AI Tools reference** with official documentation links
 - ✅ **Career guidance** and interview preparation materials
 
 Whether for organizational transformation, professional development, academic study, or MBA program integration, this textbook provides the comprehensive knowledge and practical tools needed to succeed in the AI-driven future of operational excellence.

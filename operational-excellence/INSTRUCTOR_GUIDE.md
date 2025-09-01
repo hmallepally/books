@@ -44,10 +44,10 @@ By the end of this course, students will be able to:
 - Chapter 10: Case Studies and Real-World Applications
 - **Assessment**: Implementation Plan Project
 
-**Week 11-12: Future and Career**
-- Chapter 11: Future of AI in Operational Excellence
-- Chapter 12: Interview Questions and Career Guidance
-- **Assessment**: Future Trends Analysis
+**Week 11-12: Tools and Future**
+- Chapter 12: AI Tools and Technologies for Operational Excellence
+- Chapter 13: Interview Questions and Career Guidance
+- **Assessment**: AI Tools Evaluation Project
 
 **Week 13-14: Integration and Application**
 - Comprehensive case study analysis
