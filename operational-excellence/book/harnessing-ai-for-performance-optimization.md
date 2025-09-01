@@ -372,6 +372,37 @@ Research and evaluate three AI technologies relevant to your industry. Create a 
 
 Quality control has undergone a remarkable transformation, evolving from purely human-based inspection to sophisticated AI-powered systems that can detect defects with superhuman precision and consistency.
 
+### AI Quality Control System Architecture
+
+```mermaid
+graph LR
+    A[Production Line] --> B[Data Collection]
+    B --> C[AI Processing]
+    C --> D[Quality Decision]
+    D --> E[Action]
+    
+    B --> B1[Visual Inspection]
+    B --> B2[Sensor Data]
+    B --> B3[Historical Data]
+    
+    C --> C1[Computer Vision]
+    C --> C2[Machine Learning]
+    C --> C3[Pattern Recognition]
+    
+    D --> D1[Pass]
+    D --> D2[Fail]
+    D --> D3[Flag for Review]
+    
+    E --> E1[Continue Production]
+    E --> E2[Stop Line]
+    E --> E3[Adjust Process]
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style D fill:#e8f5e8
+    style E fill:#fff3e0
+```
+
 #### Historical Progression of Quality Control
 
 **Era 1: Manual Inspection (Pre-1900s)**
@@ -404,115 +435,46 @@ Quality control has undergone a remarkable transformation, evolving from purely 
 
 Computer vision systems powered by deep learning algorithms are revolutionizing quality inspection:
 
-```python
-# Example: AI-powered defect detection system
-import cv2
-import numpy as np
-from tensorflow import keras
+**Technical Implementation**: AI-powered defect detection system using computer vision and deep learning.
 
-class AIQualityInspector:
-    def __init__(self, model_path):
-        self.model = keras.models.load_model(model_path)
-        self.confidence_threshold = 0.95
-        
-    def inspect_product(self, image):
-        # Preprocess image
-        processed_image = self.preprocess_image(image)
-        
-        # Run AI prediction
-        prediction = self.model.predict(processed_image)
-        confidence = np.max(prediction)
-        
-        # Determine quality status
-        if confidence > self.confidence_threshold:
-            return "PASS", confidence
-        else:
-            return "FAIL", confidence
-    
-    def preprocess_image(self, image):
-        # Resize, normalize, and format for model input
-        resized = cv2.resize(image, (224, 224))
-        normalized = resized / 255.0
-        batched = np.expand_dims(normalized, axis=0)
-        return batched
-```
+📁 **Code Reference**: [chapter2_quality_control.py](../code/chapter2_quality_control.py) - `AIQualityInspector` class
+
+This implementation demonstrates:
+- Computer vision-based defect detection
+- Deep learning model integration with TensorFlow/Keras
+- Confidence-based quality decisions
+- Image preprocessing and normalization
+- Automated pass/fail determination
 
 **2. Predictive Quality Analytics**
 
 AI systems can predict quality issues before they occur:
 
-```python
-# Example: Predictive quality monitoring
-import pandas as pd
-from sklearn.ensemble import RandomForestRegressor
+**Technical Implementation**: Predictive quality monitoring system using machine learning.
 
-class PredictiveQualityMonitor:
-    def __init__(self):
-        self.model = RandomForestRegressor(n_estimators=100)
-        self.feature_columns = ['temperature', 'pressure', 'speed', 'humidity']
-        
-    def train_model(self, historical_data):
-        X = historical_data[self.feature_columns]
-        y = historical_data['quality_score']
-        self.model.fit(X, y)
-        
-    def predict_quality_risk(self, current_conditions):
-        prediction = self.model.predict([current_conditions])
-        risk_level = self.calculate_risk_level(prediction[0])
-        return risk_level, prediction[0]
-    
-    def calculate_risk_level(self, quality_score):
-        if quality_score >= 0.9:
-            return "LOW"
-        elif quality_score >= 0.7:
-            return "MEDIUM"
-        else:
-            return "HIGH"
-```
+📁 **Code Reference**: [chapter2_quality_control.py](../code/chapter2_quality_control.py) - `PredictiveQualityMonitor` class
+
+This implementation demonstrates:
+- Machine learning-based quality prediction
+- Random Forest regression for quality scoring
+- Risk level classification (LOW/MEDIUM/HIGH)
+- Real-time quality monitoring
+- Historical data training and validation
 
 **3. Natural Language Processing for Quality Documentation**
 
 NLP systems can analyze quality reports and extract insights:
 
-```python
-# Example: NLP for quality report analysis
-import spacy
-from textblob import TextBlob
+**Technical Implementation**: Natural Language Processing system for quality report analysis.
 
-class QualityReportAnalyzer:
-    def __init__(self):
-        self.nlp = spacy.load("en_core_web_sm")
-        
-    def analyze_report(self, report_text):
-        # Extract key entities
-        doc = self.nlp(report_text)
-        entities = [(ent.text, ent.label_) for ent in doc.ents]
-        
-        # Sentiment analysis
-        sentiment = TextBlob(report_text).sentiment.polarity
-        
-        # Extract quality issues
-        quality_issues = self.extract_quality_issues(report_text)
-        
-        return {
-            'entities': entities,
-            'sentiment': sentiment,
-            'quality_issues': quality_issues
-        }
-    
-    def extract_quality_issues(self, text):
-        # Identify quality-related keywords and phrases
-        quality_keywords = ['defect', 'failure', 'reject', 'scrap', 'rework']
-        issues = []
-        
-        for keyword in quality_keywords:
-            if keyword.lower() in text.lower():
-                # Extract context around keyword
-                context = self.extract_context(text, keyword)
-                issues.append(context)
-                
-        return issues
-```
+📁 **Code Reference**: [chapter2_quality_control.py](../code/chapter2_quality_control.py) - `QualityReportAnalyzer` class
+
+This implementation demonstrates:
+- Named entity recognition using spaCy
+- Sentiment analysis with TextBlob
+- Quality issue extraction and classification
+- Context-aware text analysis
+- Automated quality report processing
 
 ### Real-World Applications and Case Studies
 
@@ -795,132 +757,46 @@ Intel's journey into AI represents one of the most comprehensive corporate trans
 
 Intel implemented AI-powered predictive maintenance across its manufacturing facilities:
 
-```python
-# Example: Intel's Predictive Maintenance System
-import pandas as pd
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.preprocessing import StandardScaler
+**Technical Implementation**: Intel's predictive maintenance system using machine learning.
 
-class IntelPredictiveMaintenance:
-    def __init__(self):
-        self.model = RandomForestRegressor(n_estimators=200)
-        self.scaler = StandardScaler()
-        self.feature_columns = [
-            'temperature', 'pressure', 'vibration', 'current', 
-            'voltage', 'flow_rate', 'chemical_concentration'
-        ]
-        
-    def train_model(self, equipment_data):
-        X = equipment_data[self.feature_columns]
-        y = equipment_data['time_to_failure']
-        
-        # Scale features
-        X_scaled = self.scaler.fit_transform(X)
-        
-        # Train model
-        self.model.fit(X_scaled, y)
-        
-    def predict_maintenance_needs(self, current_conditions):
-        # Scale input data
-        scaled_input = self.scaler.transform([current_conditions])
-        
-        # Predict time to failure
-        predicted_time = self.model.predict(scaled_input)[0]
-        
-        # Determine maintenance urgency
-        if predicted_time < 24:  # hours
-            return "CRITICAL", predicted_time
-        elif predicted_time < 168:  # 1 week
-            return "HIGH", predicted_time
-        elif predicted_time < 720:  # 1 month
-            return "MEDIUM", predicted_time
-        else:
-            return "LOW", predicted_time
-```
+📁 **Code Reference**: [chapter3_intel_case_study.py](../code/chapter3_intel_case_study.py) - `IntelPredictiveMaintenance` class
+
+This implementation demonstrates:
+- Machine learning-based equipment failure prediction
+- Multi-feature sensor data analysis
+- Maintenance urgency classification (CRITICAL/HIGH/MEDIUM/LOW)
+- Feature scaling and preprocessing
+- Time-to-failure prediction modeling
 
 **2. Quality Control and Defect Detection**
 
 AI-powered quality control systems monitor every aspect of semiconductor manufacturing:
 
-```python
-# Example: Intel's Quality Control System
-import cv2
-import numpy as np
-from tensorflow import keras
+**Technical Implementation**: Intel's AI-powered quality control system for semiconductor manufacturing.
 
-class IntelQualityControl:
-    def __init__(self):
-        self.defect_model = keras.models.load_model('defect_detection_model.h5')
-        self.measurement_model = keras.models.load_model('measurement_model.h5')
-        
-    def inspect_wafer(self, wafer_image):
-        # Detect defects
-        defect_prediction = self.defect_model.predict(wafer_image)
-        defect_score = np.max(defect_prediction)
-        
-        # Measure critical dimensions
-        measurement_prediction = self.measurement_model.predict(wafer_image)
-        
-        # Determine wafer status
-        if defect_score > 0.95:
-            return "PASS", defect_score, measurement_prediction
-        else:
-            return "FAIL", defect_score, measurement_prediction
-    
-    def analyze_trends(self, historical_data):
-        # Analyze quality trends over time
-        trend_analysis = self.perform_trend_analysis(historical_data)
-        return trend_analysis
-```
+📁 **Code Reference**: [chapter3_intel_case_study.py](../code/chapter3_intel_case_study.py) - `IntelQualityControl` class
+
+This implementation demonstrates:
+- Computer vision-based wafer defect detection
+- Deep learning models for quality inspection
+- Critical dimension measurement
+- Automated pass/fail determination
+- Quality trend analysis and monitoring
 
 **3. Supply Chain Optimization**
 
 AI optimizes Intel's complex global supply chain:
 
-```python
-# Example: Intel's Supply Chain Optimization
-import pulp
-import pandas as pd
+**Technical Implementation**: Intel's supply chain optimization system using linear programming.
 
-class IntelSupplyChainOptimizer:
-    def __init__(self):
-        self.optimization_model = None
-        
-    def optimize_supply_chain(self, demand_forecast, supplier_capacity, 
-                             transportation_costs, inventory_costs):
-        # Create optimization problem
-        prob = pulp.LpProblem("Intel_Supply_Chain_Optimization", pulp.LpMinimize)
-        
-        # Decision variables
-        production_vars = {}
-        inventory_vars = {}
-        transportation_vars = {}
-        
-        # Objective function: minimize total cost
-        total_cost = (
-            sum(production_vars[i] * production_costs[i] for i in facilities) +
-            sum(inventory_vars[i] * inventory_costs[i] for i in warehouses) +
-            sum(transportation_vars[i,j] * transportation_costs[i,j] 
-                for i in facilities for j in warehouses)
-        )
-        
-        prob += total_cost
-        
-        # Constraints
-        # Demand satisfaction
-        for warehouse in warehouses:
-            prob += sum(transportation_vars[facility, warehouse] 
-                       for facility in facilities) >= demand_forecast[warehouse]
-        
-        # Capacity constraints
-        for facility in facilities:
-            prob += production_vars[facility] <= supplier_capacity[facility]
-        
-        # Solve optimization problem
-        prob.solve()
-        
-        return prob.objective.value(), production_vars, inventory_vars, transportation_vars
-```
+📁 **Code Reference**: [chapter3_intel_case_study.py](../code/chapter3_intel_case_study.py) - `IntelSupplyChainOptimizer` class
+
+This implementation demonstrates:
+- Linear programming optimization using PuLP
+- Multi-objective cost minimization
+- Supply chain constraint modeling
+- Demand forecasting integration
+- Production, inventory, and transportation optimization
 
 ### Results and Impact
 
@@ -1554,6 +1430,42 @@ Create a detailed implementation roadmap for AI-enhanced operational excellence.
 ### Introduction
 
 Lean Six Sigma has been the gold standard for process improvement for decades, combining the waste elimination principles of Lean with the statistical rigor of Six Sigma. However, the integration of artificial intelligence is revolutionizing this methodology, enabling organizations to achieve unprecedented levels of efficiency, quality, and customer satisfaction.
+
+### AI-Enhanced DMAIC Process
+
+```mermaid
+graph TD
+    A[Define] --> B[Measure]
+    B --> C[Analyze]
+    C --> D[Improve]
+    D --> E[Control]
+    
+    A --> A1[AI-Powered Problem Definition]
+    A --> A2[NLP for Requirements Analysis]
+    A --> A3[Stakeholder Sentiment Analysis]
+    
+    B --> B1[Automated Data Collection]
+    B --> B2[Real-time Monitoring]
+    B --> B3[IoT Sensor Integration]
+    
+    C --> C1[Predictive Analytics]
+    C --> C2[Root Cause AI Analysis]
+    C --> C3[Pattern Recognition]
+    
+    D --> D1[Optimization Algorithms]
+    D --> D2[Simulation Modeling]
+    D --> D3[Automated Testing]
+    
+    E --> E1[Continuous Monitoring]
+    E --> E2[Predictive Maintenance]
+    E --> E3[Adaptive Control Systems]
+    
+    style A fill:#ffebee
+    style B fill:#e8f5e8
+    style C fill:#e3f2fd
+    style D fill:#fff3e0
+    style E fill:#f3e5f5
+```
 
 This chapter explores how AI technologies are transforming Lean Six Sigma from a reactive, manual process to a proactive, intelligent system that can predict issues, optimize processes, and continuously improve performance.
 
@@ -2411,6 +2323,40 @@ Create a detailed implementation roadmap for AI-enhanced TQM in your organizatio
 ### The Evolution of Strategic Measurement
 
 Strategic measurement has evolved from simple financial metrics to comprehensive, AI-powered systems that provide real-time insights, predictive capabilities, and strategic guidance for organizational success.
+
+### AI-Enhanced KPI System Architecture
+
+```mermaid
+graph TB
+    A[Data Sources] --> B[AI Processing Layer]
+    B --> C[KPI Dashboard]
+    C --> D[Strategic Decisions]
+    
+    A --> A1[Operational Data]
+    A --> A2[Financial Data]
+    A --> A3[Customer Data]
+    A --> A4[Market Data]
+    
+    B --> B1[Real-time Analytics]
+    B --> B2[Predictive Models]
+    B --> B3[Anomaly Detection]
+    B --> B4[Trend Analysis]
+    
+    C --> C1[Performance Metrics]
+    C --> C2[Predictive Indicators]
+    C --> C3[Alert System]
+    C --> C4[Benchmarking]
+    
+    D --> D1[Operational Adjustments]
+    D --> D2[Strategic Planning]
+    D --> D3[Resource Allocation]
+    D --> D4[Risk Management]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#e8f5e8
+    style D fill:#fff3e0
+```
 
 #### Historical Development of Strategic Measurement
 
