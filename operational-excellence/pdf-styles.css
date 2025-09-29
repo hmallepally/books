@@ -1,0 +1,198 @@
+/* PDF Styles for Operational Excellence with AI */
+
+/* Page setup */
+@page {
+    size: 8.5in 11in;
+    margin: 0.75in;
+}
+
+/* Main title page styling - ensure it's on its own page */
+h1 {
+    font-size: 3.5em;
+    text-align: center;
+    margin-top: 2.5in;
+    margin-bottom: 0.3in;
+    color: #2c3e50;
+    font-weight: bold;
+    page-break-before: always;
+}
+
+h2 {
+    font-size: 2.2em;
+    text-align: center;
+    margin-bottom: 0.5in;
+    color: #34495e;
+    font-weight: normal;
+}
+
+/* Chapter heading styling - much bigger and properly positioned */
+h2:contains("Chapter") {
+    font-size: 3.2em;
+    text-align: center;
+    margin-top: 2in; /* 25% from top of 8in content area */
+    margin-bottom: 0.8in;
+    color: #2c3e50;
+    font-weight: bold;
+    page-break-before: always;
+    line-height: 1.2;
+}
+
+/* Quote styling with proper spacing */
+.quote-chapter {
+    text-align: center;
+    margin: 0.8in 0;
+    padding: 0.6in;
+    background-color: #f8f9fa;
+    border-left: 6px solid #3498db;
+    border-radius: 10px;
+}
+
+.quote-chapter blockquote {
+    font-size: 1.6em;
+    color: #2c3e50;
+    font-style: italic;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+.quote-chapter blockquote p {
+    margin: 0.3in 0;
+    line-height: 1.6;
+}
+
+/* Chapter overview styling with proper spacing */
+h3:contains("Chapter Overview") {
+    font-size: 1.5em;
+    color: #34495e;
+    margin-top: 0.8in;
+    margin-bottom: 0.4in;
+    font-weight: bold;
+}
+
+/* Regular content styling */
+p {
+    line-height: 1.6;
+    margin-bottom: 0.3in;
+    text-align: justify;
+}
+
+/* Lists styling */
+ul, ol {
+    margin-bottom: 0.3in;
+    padding-left: 0.5in;
+}
+
+li {
+    margin-bottom: 0.1in;
+    line-height: 1.5;
+}
+
+/* Subheadings */
+h3 {
+    font-size: 1.6em;
+    color: #2c3e50;
+    margin-top: 0.5in;
+    margin-bottom: 0.3in;
+    font-weight: bold;
+}
+
+h4 {
+    font-size: 1.3em;
+    color: #34495e;
+    margin-top: 0.4in;
+    margin-bottom: 0.2in;
+    font-weight: bold;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0.5in auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Figure captions */
+em:contains("Figure") {
+    display: block;
+    text-align: center;
+    font-style: italic;
+    color: #7f8c8d;
+    margin-top: 0.2in;
+    font-size: 0.9em;
+}
+
+/* Page breaks */
+.clearpage {
+    page-break-before: always;
+}
+
+/* Preface styling */
+h2:contains("Preface") {
+    font-size: 2.5em;
+    text-align: center;
+    margin-top: 2in;
+    margin-bottom: 0.5in;
+    color: #2c3e50;
+    font-weight: bold;
+    page-break-before: always;
+}
+
+/* Table of contents styling */
+nav#TOC {
+    page-break-before: always;
+    margin-top: 1in;
+}
+
+nav#TOC h2 {
+    font-size: 2.5em;
+    text-align: center;
+    margin-bottom: 0.5in;
+    color: #2c3e50;
+}
+
+nav#TOC ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+nav#TOC li {
+    margin-bottom: 0.1in;
+    line-height: 1.4;
+}
+
+nav#TOC a {
+    text-decoration: none;
+    color: #2c3e50;
+}
+
+/* Bold text */
+strong {
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+/* Code blocks */
+code {
+    background-color: #f8f9fa;
+    padding: 0.1in 0.2in;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+/* Blockquotes */
+blockquote {
+    border-left: 4px solid #3498db;
+    padding-left: 0.5in;
+    margin: 0.5in 0;
+    font-style: italic;
+    color: #2c3e50;
+    background-color: #f8f9fa;
+    padding: 0.3in 0.5in;
+    border-radius: 4px;
+}

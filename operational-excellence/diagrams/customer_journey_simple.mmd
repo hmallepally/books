@@ -1,0 +1,25 @@
+graph LR
+    A[Awareness] --> B[Consideration]
+    B --> C[Purchase]
+    C --> D[Post-Purchase]
+    
+    subgraph "AI Touchpoints"
+        AI1[AI Recommendations]
+        AI2[AI Personalization]
+        AI3[AI Checkout]
+        AI4[AI Support]
+    end
+    
+    A --> AI1
+    B --> AI2
+    C --> AI3
+    D --> AI4
+    
+    style A fill:#e8f5e8
+    style B fill:#e1f5fe
+    style C fill:#f3e5f5
+    style D fill:#fff3e0
+    style AI1 fill:#fce4ec
+    style AI2 fill:#fce4ec
+    style AI3 fill:#fce4ec
+    style AI4 fill:#fce4ec

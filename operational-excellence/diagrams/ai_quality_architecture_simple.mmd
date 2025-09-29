@@ -1,0 +1,49 @@
+graph TB
+    subgraph "Data Sources"
+        A[IoT Sensors]
+        B[Production Systems]
+        C[Quality Reports]
+    end
+    
+    subgraph "Data Management"
+        D[Data Collection]
+        E[Data Validation]
+        F[Data Storage]
+    end
+    
+    subgraph "AI Processing"
+        G[Data Preprocessing]
+        H[Machine Learning Models]
+        I[Prediction Engine]
+    end
+    
+    subgraph "Output & Actions"
+        J[Real-time Alerts]
+        K[Quality Reports]
+        L[Automated Actions]
+    end
+    
+    A --> D
+    B --> D
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
+    I --> J
+    I --> K
+    I --> L
+    
+    style A fill:#e3f2fd
+    style B fill:#e3f2fd
+    style C fill:#e3f2fd
+    style D fill:#f3e5f5
+    style E fill:#f3e5f5
+    style F fill:#f3e5f5
+    style G fill:#e8f5e8
+    style H fill:#e8f5e8
+    style I fill:#e8f5e8
+    style J fill:#fff3e0
+    style K fill:#fff3e0
+    style L fill:#fff3e0

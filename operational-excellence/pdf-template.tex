@@ -1,0 +1,123 @@
+\documentclass[12pt]{book}
+\usepackage[paperwidth=8.5in,paperheight=11in,margin=0.75in]{geometry}
+\usepackage{fontspec}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{tocloft}
+
+% Color definitions
+\definecolor{primaryblue}{HTML}{2c3e50}
+\definecolor{secondaryblue}{HTML}{34495e}
+\definecolor{accentblue}{HTML}{3498db}
+\definecolor{lightgray}{HTML}{f8f9fa}
+
+% Font setup
+\setmainfont{Times New Roman}
+
+% Chapter title formatting - BIG and properly positioned
+\titleformat{\chapter}[display]
+{\fontsize{36}{43}\selectfont\bfseries\color{primaryblue}\centering}
+{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+
+% Chapter title positioning and spacing - 25% from top
+\titlespacing{\chapter}{0pt}{2in}{0.8in}
+
+% Section formatting
+\titleformat{\section}
+{\fontsize{18}{22}\selectfont\bfseries\color{primaryblue}}
+{\thesection}{1em}{}
+
+% Subsection formatting
+\titleformat{\subsection}
+{\fontsize{16}{19}\selectfont\bfseries\color{primaryblue}}
+{\thesubsection}{1em}{}
+
+% Chapter overview styling
+\titleformat{\subsubsection}
+{\fontsize{15}{18}\selectfont\bfseries\color{secondaryblue}}
+{\thesubsubsection}{1em}{}
+
+% Page headers and footers
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE,LO]{\textcolor{primaryblue}{Operational Excellence with AI}}
+
+% Table of contents styling
+\renewcommand{\cfttoctitlefont}{\fontsize{24}{29}\selectfont\bfseries\color{primaryblue}\centering}
+\renewcommand{\cftchapfont}{\fontsize{14}{17}\selectfont\color{primaryblue}}
+\renewcommand{\cftsecfont}{\fontsize{12}{14}\selectfont\color{secondaryblue}}
+
+% Main title page styling
+\renewcommand{\maketitle}{
+    \thispagestyle{empty}
+    \vspace*{2.5in}
+    \begin{center}
+        {\fontsize{42}{50}\selectfont\bfseries\color{primaryblue} Operational Excellence with AI}
+        
+        \vspace{0.3in}
+        
+        {\fontsize{26}{31}\selectfont\color{secondaryblue} A Comprehensive Guide to AI-Driven Performance Optimization}
+        
+        \vspace{0.5in}
+        
+        {\fontsize{16}{19}\selectfont\color{primaryblue}
+        \textbf{Author:} Hari Mallepally\\
+        \textbf{Version:} 3.0\\
+        \textbf{Publication Date:} September 2025\\
+        \textbf{Target Audience:} Business Leaders, Operations Professionals, MBA Students}
+    \end{center}
+    \clearpage
+}
+
+% Regular content styling
+\setstretch{1.6}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.3in}
+
+% Image styling
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+
+% Custom commands for better control
+\newcommand{\chapterquote}[1]{
+    \vspace{0.8in}
+    \begin{center}
+        \fboxsep=0.6in
+        \fboxrule=0pt
+        \colorbox{lightgray}{
+            \parbox{0.8\textwidth}{
+                \centering
+                \fontsize{16}{19}\selectfont\itshape\color{primaryblue}
+                #1
+            }
+        }
+    \end{center}
+    \vspace{0.8in}
+}
+
+\newcommand{\chapteroverview}[1]{
+    \vspace{0.8in}
+    \subsubsection*{Chapter Overview}
+    \vspace{0.2in}
+    #1
+    \vspace{0.4in}
+}
+
+\begin{document}
+
+$if(title)$
+\maketitle
+$endif$
+
+$if(toc)$
+\tableofcontents
+\clearpage
+$endif$
+
+$body$
+
+\end{document}

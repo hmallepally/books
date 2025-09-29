@@ -1,0 +1,375 @@
+/* EPUB Styles for Harnessing AI for Performance Optimization */
+
+body {
+    font-family: Georgia, serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 1em;
+    color: #333;
+    background-color: #fff;
+}
+
+h1 {
+    color: #2c3e50;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 0.3em;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+    font-size: 2.2em;
+    page-break-before: always;
+    break-before: page;
+    page-break-after: avoid;
+    break-after: avoid;
+}
+
+h2 {
+    color: #34495e;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 0.2em;
+    margin-top: 1.3em;
+    margin-bottom: 0.8em;
+    font-size: 1.8em;
+    page-break-before: always;
+    break-before: page;
+    page-break-after: avoid;
+    break-after: avoid;
+}
+
+/* Simplified page breaks - less aggressive */
+.chapter-break {
+    page-break-before: always !important;
+    break-before: page !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    clear: both !important;
+}
+
+/* Remove excessive page breaks */
+.page-break-force {
+    display: none !important;
+}
+
+/* Chapter heading specific */
+h2.chapter-start {
+    page-break-before: always !important;
+    break-before: page !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+}
+
+/* Ensure chapter content stays together */
+.chapter-content {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+h3 {
+    color: #2c3e50;
+    margin-top: 1.2em;
+    margin-bottom: 0.6em;
+    font-size: 1.4em;
+}
+
+h4 {
+    color: #34495e;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-size: 1.2em;
+}
+
+h5, h6 {
+    color: #7f8c8d;
+    margin-top: 0.8em;
+    margin-bottom: 0.4em;
+    font-size: 1.1em;
+}
+
+p {
+    margin-bottom: 1em;
+    text-align: justify;
+}
+
+blockquote {
+    border-left: 4px solid #3498db;
+    margin: 1.5em 0;
+    padding: 0.5em 1em;
+    background-color: #f8f9fa;
+    font-style: italic;
+    color: #555;
+}
+
+/* Simplified quote styling that works better in EPUB */
+.quote {
+    text-align: center;
+    font-style: italic;
+    font-size: 1.3em;
+    color: #2c3e50;
+    margin: 2em auto;
+    padding: 2em;
+    border-left: 6px solid #00b894;
+    background-color: #dff6ff;
+    border-radius: 10px;
+    max-width: 80%;
+    box-shadow: 0 4px 15px rgba(0,184,148,0.2);
+}
+
+.quote-opening {
+    text-align: center;
+    font-style: italic;
+    font-size: 1.4em;
+    color: #2c3e50;
+    margin: 2em auto;
+    padding: 2.5em;
+    border-left: 8px solid #e74c3c;
+    background-color: #ffeaa7;
+    border-radius: 12px;
+    max-width: 85%;
+    box-shadow: 0 6px 20px rgba(231,76,60,0.25);
+    font-weight: 500;
+}
+
+.quote-chapter {
+    text-align: center;
+    font-style: italic;
+    font-size: 1.2em;
+    color: #2c3e50;
+    margin: 1.5em auto;
+    padding: 1.5em;
+    border-left: 5px solid #6c5ce7;
+    background-color: #a29bfe;
+    border-radius: 8px;
+    max-width: 80%;
+    box-shadow: 0 4px 15px rgba(108,92,231,0.3);
+    color: white;
+}
+
+/* Alternative quote styling using blockquote */
+blockquote.quote-opening {
+    text-align: center;
+    font-style: italic;
+    font-size: 1.4em;
+    color: #2c3e50;
+    margin: 2em auto;
+    padding: 2.5em;
+    border-left: 8px solid #e74c3c;
+    background-color: #ffeaa7;
+    border-radius: 12px;
+    max-width: 85%;
+    box-shadow: 0 6px 20px rgba(231,76,60,0.25);
+    font-weight: 500;
+}
+
+blockquote.quote {
+    text-align: center;
+    font-style: italic;
+    font-size: 1.3em;
+    color: #2c3e50;
+    margin: 2em auto;
+    padding: 2em;
+    border-left: 6px solid #00b894;
+    background-color: #dff6ff;
+    border-radius: 10px;
+    max-width: 80%;
+    box-shadow: 0 4px 15px rgba(0,184,148,0.2);
+}
+
+ul, ol {
+    margin-bottom: 1em;
+    padding-left: 2em;
+}
+
+li {
+    margin-bottom: 0.3em;
+}
+
+code {
+    background-color: #f4f4f4;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    color: #e74c3c;
+}
+
+pre {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 5px;
+    padding: 1em;
+    overflow-x: auto;
+    margin: 1em 0;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+    color: #333;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 0.8em;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Chapter-specific styles */
+.chapter-title {
+    page-break-before: always;
+    text-align: center;
+    margin-top: 2em;
+}
+
+.learning-objectives {
+    background-color: #e8f4fd;
+    border: 1px solid #bee5eb;
+    border-radius: 5px;
+    padding: 1em;
+    margin: 1em 0;
+}
+
+.key-takeaways {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    padding: 1em;
+    margin: 1em 0;
+}
+
+.exercises {
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 5px;
+    padding: 1em;
+    margin: 1em 0;
+}
+
+.further-reading {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    padding: 1em;
+    margin: 1em 0;
+}
+
+/* Table of Contents styling */
+.toc {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 5px;
+    padding: 1em;
+    margin: 1em 0;
+}
+
+/* Prevent page breaks in TOC entries */
+.toc a {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+/* Ensure TOC page numbers don't split */
+.toc .toc-item {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    white-space: nowrap;
+}
+
+/* Mermaid diagram placeholder */
+.mermaid {
+    text-align: center;
+    margin: 1em 0;
+    padding: 1em;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 5px;
+    font-style: italic;
+    color: #6c757d;
+}
+
+/* Code reference styling */
+.code-reference {
+    background-color: #e9ecef;
+    border-left: 4px solid #6c757d;
+    padding: 0.5em 1em;
+    margin: 0.5em 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+/* Simplified page breaks */
+.page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+}
+
+/* Remove HTML page break entity */
+.page-break-html::before {
+    display: none !important;
+}
+
+/* Prevent page breaks in Preface */
+h2:contains("Preface") {
+    page-break-after: avoid;
+    break-after: avoid;
+}
+
+/* Keep Preface content together */
+h2:contains("Preface") + * {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+/* Prevent headings at bottom of pages */
+h2, h3, h4 {
+    page-break-after: avoid;
+    break-after: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+/* Keep sections together */
+h2 + div, h3 + div {
+    page-break-inside: avoid;
+    break-inside: avoid;
+}
+
+/* Responsive design for different screen sizes */
+@media (max-width: 600px) {
+    body {
+        padding: 0.5em;
+    }
+    
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    h2 {
+        font-size: 1.5em;
+    }
+    
+    h3 {
+        font-size: 1.3em;
+    }
+}

@@ -1,0 +1,35 @@
+graph TB
+    A[Data Sources] --> B[AI Processing Layer]
+    B --> C[KPI Dashboard]
+    C --> D[Strategic Decisions]
+    
+    A --> A1[Operational Data]
+    A --> A2[Financial Data]
+    A --> A3[Customer Data]
+    A --> A4[Market Data]
+    
+    B --> B1[Data Integration]
+    B --> B2[Real-time Processing]
+    B --> B3[Predictive Analytics]
+    B --> B4[Anomaly Detection]
+    
+    C --> C1[Executive Dashboard]
+    C --> C2[Operational Dashboard]
+    C --> C3[Performance Alerts]
+    C --> C4[Trend Analysis]
+    
+    D --> D1[Strategic Planning]
+    D --> D2[Resource Allocation]
+    D --> D3[Process Optimization]
+    D --> D4[Risk Management]
+    
+    A1 --> E[AI-Enhanced KPI System]
+    B1 --> E
+    C1 --> E
+    D1 --> E
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#e8f5e8
+    style D fill:#fff3e0
+    style E fill:#ffeb3b

@@ -1,0 +1,48 @@
+graph TB
+    A[Data Sources] --> B[Data Processing]
+    B --> C[AI/ML Layer]
+    C --> D[Business Applications]
+    
+    subgraph "Data Sources"
+        A1[IoT Sensors]
+        A2[Production Systems]
+        A3[Customer Data]
+    end
+    
+    subgraph "AI/ML Layer"
+        C1[Machine Learning]
+        C2[Computer Vision]
+        C3[NLP]
+        C4[RPA]
+    end
+    
+    subgraph "Business Applications"
+        D1[Predictive Analytics]
+        D2[Quality Control]
+        D3[Process Optimization]
+    end
+    
+    A1 --> B
+    A2 --> B
+    A3 --> B
+    
+    B --> C1
+    B --> C2
+    B --> C3
+    B --> C4
+    
+    C1 --> D1
+    C2 --> D2
+    C3 --> D3
+    C4 --> D1
+    
+    style A1 fill:#fff3e0
+    style A2 fill:#fff3e0
+    style A3 fill:#fff3e0
+    style C1 fill:#e1f5fe
+    style C2 fill:#e1f5fe
+    style C3 fill:#e1f5fe
+    style C4 fill:#e1f5fe
+    style D1 fill:#e8f5e8
+    style D2 fill:#e8f5e8
+    style D3 fill:#e8f5e8

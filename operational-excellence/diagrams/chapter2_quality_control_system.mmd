@@ -1,0 +1,26 @@
+graph LR
+    A[Production Line] --> B[Data Collection]
+    B --> C[AI Processing]
+    C --> D[Quality Decision]
+    D --> E[Action]
+    
+    B --> B1[Visual Inspection]
+    B --> B2[Sensor Data]
+    B --> B3[Historical Data]
+    
+    C --> C1[Computer Vision]
+    C --> C2[Machine Learning]
+    C --> C3[Pattern Recognition]
+    
+    D --> D1[Pass]
+    D --> D2[Fail]
+    D --> D3[Flag for Review]
+    
+    E --> E1[Continue Production]
+    E --> E2[Stop Line]
+    E --> E3[Adjust Process]
+    
+    style A fill:#e1f5fe
+    style C fill:#f3e5f5
+    style D fill:#e8f5e8
+    style E fill:#fff3e0

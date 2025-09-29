@@ -1,0 +1,71 @@
+graph TD
+    Center["AI Ethics Framework<br/>⚖️ Responsible AI Implementation<br/>Balanced & Ethical AI Systems"]
+    
+    subgraph Fairness["🟢 Fairness<br/>Equal Treatment & Non-Discrimination"]
+        F1["Bias Detection<br/>• Algorithm auditing<br/>• Fairness metrics<br/>• Bias mitigation"]
+        F2["Equal Opportunities<br/>• Access equality<br/>• Inclusive design<br/>• Diverse representation"]
+        F3["Transparent Decision Making<br/>• Explainable outcomes<br/>• Clear criteria<br/>• Auditable processes"]
+    end
+    
+    subgraph Transparency["🔵 Transparency<br/>Openness & Explainability"]
+        T1["Algorithm Transparency<br/>• Clear methodology<br/>• Process visibility<br/>• Documentation"]
+        T2["Data Usage Disclosure<br/>• Data sources<br/>• Processing methods<br/>• Purpose clarity"]
+        T3["Decision Explainability<br/>• Reasoning clarity<br/>• Outcome justification<br/>• User understanding"]
+    end
+    
+    subgraph Privacy["🟣 Privacy<br/>Data Protection & Confidentiality"]
+        P1["Data Minimization<br/>• Minimal data collection<br/>• Purpose limitation<br/>• Retention policies"]
+        P2["Security Measures<br/>• Encryption<br/>• Access controls<br/>• Secure storage"]
+        P3["User Consent<br/>• Informed consent<br/>• Opt-in/out options<br/>• Consent management"]
+    end
+    
+    subgraph Accountability["🟠 Accountability<br/>Responsibility & Oversight"]
+        A1["Clear Responsibility<br/>• Defined roles<br/>• Decision ownership<br/>• Responsibility chains"]
+        A2["Monitoring & Auditing<br/>• Performance tracking<br/>• Regular audits<br/>• Compliance checks"]
+        A3["Redress Mechanisms<br/>• Grievance procedures<br/>• Appeal processes<br/>• Remediation options"]
+    end
+
+    Center --> Fairness
+    Center --> Transparency
+    Center --> Privacy
+    Center --> Accountability
+    
+    Fairness --> T1
+    Transparency --> P1
+    Privacy --> A1
+    Accountability --> F1
+    
+    F1 --> T2
+    T2 --> P2
+    P2 --> A2
+    A2 --> F2
+    
+    F2 --> T3
+    T3 --> P3
+    P3 --> A3
+    A3 --> F3
+    
+    F3 --> T1
+    T1 --> P1
+    P1 --> A1
+    A1 --> F1
+
+    style Center fill:#2c3e50,stroke:#34495e,stroke-width:3px,color:#fff
+    style Fairness fill:#e8f5e8,stroke:#27ae60,stroke-width:2px
+    style Transparency fill:#e8f4fd,stroke:#3498db,stroke-width:2px
+    style Privacy fill:#f4e6ff,stroke:#9b59b6,stroke-width:2px
+    style Accountability fill:#fff2cc,stroke:#f39c12,stroke-width:2px
+    style F1 fill:#d5f4e6,stroke:#27ae60,stroke-width:1px
+    style F2 fill:#d5f4e6,stroke:#27ae60,stroke-width:1px
+    style F3 fill:#d5f4e6,stroke:#27ae60,stroke-width:1px
+    style T1 fill:#d6eaf8,stroke:#3498db,stroke-width:1px
+    style T2 fill:#d6eaf8,stroke:#3498db,stroke-width:1px
+    style T3 fill:#d6eaf8,stroke:#3498db,stroke-width:1px
+    style P1 fill:#e8d5f2,stroke:#9b59b6,stroke-width:1px
+    style P2 fill:#e8d5f2,stroke:#9b59b6,stroke-width:1px
+    style P3 fill:#e8d5f2,stroke:#9b59b6,stroke-width:1px
+    style A1 fill:#fef9e7,stroke:#f39c12,stroke-width:1px
+    style A2 fill:#fef9e7,stroke:#f39c12,stroke-width:1px
+    style A3 fill:#fef9e7,stroke:#f39c12,stroke-width:1px
+
+

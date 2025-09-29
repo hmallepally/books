@@ -1,0 +1,53 @@
+\documentclass[12pt]{book}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+% Colors
+\definecolor{primaryblue}{HTML}{2c3e50}
+\definecolor{secondaryblue}{HTML}{34495e}
+
+% Chapter titles - BIG and at 25% from top
+\titleformat{\chapter}[display]
+{\fontsize{36}{43}\selectfont\bfseries\color{primaryblue}\centering}
+{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+
+% Chapter positioning - 25% from top
+\titlespacing{\chapter}{0pt}{2in}{1in}
+
+% Main title page
+\renewcommand{\maketitle}{
+    \thispagestyle{empty}
+    \vspace*{2.5in}
+    \begin{center}
+        {\fontsize{36}{43}\selectfont\bfseries\color{primaryblue} Operational Excellence with AI}
+        
+        \vspace{0.3in}
+        
+        {\fontsize{20}{24}\selectfont\color{secondaryblue} A Comprehensive Guide to AI-Driven Performance Optimization}
+        
+        \vspace{0.5in}
+        
+        {\fontsize{14}{17}\selectfont\color{primaryblue}
+        \textbf{Author:} Hari Mallepally\\
+        \textbf{Version:} 3.0\\
+        \textbf{Publication Date:} September 2025\\
+        \textbf{Target Audience:} Business Leaders, Operations Professionals, MBA Students}
+    \end{center}
+    \clearpage
+}
+
+\begin{document}
+
+$if(title)$
+\maketitle
+$endif$
+
+$if(toc)$
+\tableofcontents
+\clearpage
+$endif$
+
+$body$
+
+\end{document}

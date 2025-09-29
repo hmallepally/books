@@ -3,14 +3,14 @@
 
 **Author**: Hari Mallepally  
 **Version**: 1.0  
-**Publication Date**: January 2025  
+**Publication Date**: September 2025  
 **Target Audience**: Business Leaders, MBA Students, Operations Professionals
 
 ---
 
 ## Abstract
 
-This comprehensive textbook examines the transformative impact of artificial intelligence on operational excellence across diverse industries. Through rigorous analysis of real-world implementations, strategic frameworks, and practical methodologies, this work provides business leaders and MBA students with the knowledge and tools necessary to successfully integrate AI into operational processes. The book combines theoretical foundations with practical applications, featuring detailed case studies from leading organizations including Intel, Amazon, Tesla, and Mayo Clinic.
+This comprehensive textbook examines the transformative impact of Artificial Intelligence on operational excellence across diverse industries. Through rigorous analysis of real-world implementations, strategic frameworks, and practical methodologies, this work provides business leaders and MBA students with the knowledge and tools necessary to successfully integrate AI into operational processes. The book combines theoretical foundations with practical applications, featuring detailed case studies from leading organizations including Intel, Amazon, Tesla, and Mayo Clinic.
 
 **Keywords**: Artificial Intelligence, Operational Excellence, Business Strategy, Quality Management, Process Optimization, Digital Transformation
 
@@ -18,9 +18,15 @@ This comprehensive textbook examines the transformative impact of artificial int
 
 ## Preface
 
-*"The future of operational excellence lies not in choosing between human expertise and artificial intelligence, but in orchestrating their perfect symphony."*
+<div style="text-align: center; font-style: italic; font-size: 1.2em; color: #2c3e50; margin: 2em 0; padding: 1.5em; border-left: 4px solid #3498db; background-color: #f8f9fa; border-radius: 5px;">
 
-The integration of artificial intelligence into operational excellence represents one of the most significant transformations in business management since the advent of lean manufacturing and Six Sigma methodologies. This book emerges from a critical need in business education and professional development: the gap between understanding AI technologies and applying them effectively in operational contexts.
+*"The future of operational excellence lies not in choosing between human expertise and Artificial Intelligence, but in orchestrating their perfect symphony."*
+
+</div>
+
+This book is a direct result of my studies in the Jack Welch Management Institute's MBA program, specifically a course with the same title. The content you'll find within these pages is a synthesis of my weekly discussion questions and assignments. I leveraged an AI-powered code editor, Cursor IDE, to help me generate and organize this material, and the book's cover image was created with the help of Google Gemini. This project has been a valuable application of the very technologies I write about.
+
+The integration of Artificial Intelligence into operational excellence represents one of the most significant transformations in business management since the advent of lean manufacturing and Six Sigma methodologies. This book emerges from a critical need in business education and professional development: the gap between understanding AI technologies and applying them effectively in operational contexts.
 
 As organizations worldwide grapple with digital transformation, the demand for leaders who can bridge the technical and strategic aspects of AI implementation has never been greater. This textbook addresses this need by providing a comprehensive framework that combines:
 
@@ -31,23 +37,99 @@ As organizations worldwide grapple with digital transformation, the demand for l
 
 ### About This Book
 
-This comprehensive guide explores the intersection of artificial intelligence and operational excellence, providing practical insights, frameworks, and implementation strategies for organizations seeking to leverage AI for performance optimization. Drawing from real-world case studies, industry best practices, and cutting-edge research, this book serves as both a strategic roadmap and practical manual for AI-driven operational transformation.
+This comprehensive guide explores the intersection of Artificial Intelligence and operational excellence, providing practical insights, frameworks, and implementation strategies for organizations seeking to leverage AI for performance optimization. Drawing from real-world case studies, industry best practices, and cutting-edge research, this book serves as both a strategic roadmap and practical manual for AI-driven operational transformation.
+
+### Supporting Resources
+
+For additional resources, code examples, exercises, and updates, please visit the supporting GitHub repository: [https://github.com/hmallepally/books/tree/main/operational-excellence/book](https://github.com/hmallepally/books/tree/main/operational-excellence/book)
+
+If you would like to suggest corrections or improvements to the content in this book, I encourage you to reach out to me directly.
+
+---
+
+**Hari Mallepally**  
+Connect with me on LinkedIn: [https://www.linkedin.com/in/mallepally/](https://www.linkedin.com/in/mallepally/)
 
 ### Table of Contents
 
 1. [Introduction to AI in Operations](#1-introduction-to-ai-in-operations)
+   - AI Transformation Journey
+   - The AI Revolution in Operations
+   - Real-World Impact: Success Stories
+   - Implementation Guidelines
+
 2. [AI-Powered Quality Control and Manufacturing](#2-ai-powered-quality-control-and-manufacturing)
+   - The Evolution of Quality Control: From Human Eyes to AI Vision
+   - AI Quality Control System Architecture
+   - Real-World Applications and Case Studies
+   - Implementation Framework for AI Quality Control
+
 3. [Strategic AI Implementation: The Intel Case Study](#3-strategic-ai-implementation-the-intel-case-study)
+   - Intel's AI Transformation Journey
+   - Intel's AI Implementation Framework
+   - AI Implementation in Intel's Manufacturing Operations
+   - Results and Impact
+
 4. [Operational Excellence Frameworks in the AI Era](#4-operational-excellence-frameworks-in-the-ai-era)
+   - Evolution of Operational Excellence Frameworks
+   - AI-Enhanced Operational Excellence Models
+   - The Foundation: Traditional Methodologies
+     - Kaizen: Continuous Improvement Enhanced by AI
+     - 5W1H Analysis: Root Cause Analysis Enhanced by AI
+     - PDCA Cycle: Systematic Improvement Enhanced by AI
+     - Gemba Walks: Observation Enhanced by AI
+     - Value Stream Mapping: Process Visualization Enhanced by AI
+     - 5S Methodology: Workplace Organization Enhanced by AI
+   - Integration of Traditional and AI-Enhanced Methodologies
+
 5. [Lean Six Sigma Meets Artificial Intelligence](#5-lean-six-sigma-meets-artificial-intelligence)
+   - AI-Enhanced DMAIC Process
+   - The Evolution of Lean Six Sigma
+   - AI Applications in DMAIC Framework
+   - Real-World Applications
+
 6. [Total Quality Management Enhanced by AI](#6-total-quality-management-enhanced-by-ai)
+   - The Evolution of Total Quality Management
+   - AI-Enhanced TQM Framework
+   - AI-Enhanced TQM Systems
+   - Real-World Applications
+
 7. [AI-Driven Strategic Measurement and KPIs](#7-ai-driven-strategic-measurement-and-kpis)
+   - The Evolution of Strategic Measurement
+   - AI-Enhanced KPI System Architecture
+   - AI-Enhanced Strategic Measurement Framework
+   - AI-Enhanced KPI Categories
+
 8. [Prescriptive Analytics and Future Trends](#8-prescriptive-analytics-and-future-trends)
+   - The Evolution of Analytics: From Descriptive to Prescriptive
+   - Prescriptive Analytics Technologies
+   - Real-World Applications
+
 9. [Implementation Roadmap and Best Practices](#9-implementation-roadmap-and-best-practices)
+   - Strategic Planning and Assessment
+   - Technology Selection and Integration
+   - Change Management and Training
+
 10. [Case Studies and Real-World Applications](#10-case-studies-and-real-world-applications)
+    - Manufacturing Excellence
+    - Healthcare Quality Management
+    - Supply Chain Optimization
+
 11. [Future of AI in Operational Excellence](#11-future-of-ai-in-operational-excellence)
+    - Emerging Technologies and Trends
+    - Strategic Implications
+    - Preparing for the Future
+
 12. [AI Tools and Technologies for Operational Excellence](#12-ai-tools-and-technologies-for-operational-excellence)
+    - Machine Learning and Predictive Analytics
+    - Computer Vision and Image Recognition
+    - Natural Language Processing
+    - Robotics Process Automation
+
 13. [Interview Questions and Career Guidance](#13-interview-questions-and-career-guidance)
+    - Technical Interview Questions
+    - Strategic Interview Questions
+    - Career Development Pathways
 
 ### Key Learning Objectives
 
@@ -107,7 +189,11 @@ Each chapter is structured to provide:
 
 ---
 
+<div style="text-align: center; font-style: italic; font-size: 1.1em; color: #34495e; margin: 1.5em 0; padding: 1em; border-left: 3px solid #e74c3c; background-color: #fdf2f2; border-radius: 3px;">
+
 *"The best way to predict the future is to invent it."* - Alan Kay
+
+</div>
 
 ---
 
@@ -115,7 +201,11 @@ Each chapter is structured to provide:
 
 ### Opening Quote
 
-*"Artificial intelligence is not about replacing human intelligence; it's about amplifying it, extending it, and enabling us to achieve what was previously impossible."* - Ginni Rometty
+<div style="text-align: center; font-style: italic; font-size: 1.2em; color: #2c3e50; margin: 2em 0; padding: 1.5em; border-left: 4px solid #3498db; background-color: #f8f9fa; border-radius: 5px;">
+
+*"Artificial Intelligence is not about replacing human intelligence; it's about amplifying it, extending it, and enabling us to achieve what was previously impossible."* - Ginni Rometty
+
+</div>
 
 ### Learning Objectives
 
@@ -135,37 +225,11 @@ This chapter establishes the foundation for understanding how artificial intelli
 
 ### AI Transformation Journey
 
-```mermaid
-graph TD
-    A[Traditional Operations] --> B[Digital Transformation]
-    B --> C[AI Integration]
-    C --> D[Operational Excellence]
-    
-    A --> A1[Manual Processes]
-    A --> A2[Reactive Management]
-    A --> A3[Limited Analytics]
-    
-    B --> B1[Process Automation]
-    B --> B2[Data Collection]
-    B --> B3[Basic Analytics]
-    
-    C --> C1[Predictive Analytics]
-    C --> C2[Intelligent Automation]
-    C --> C3[Real-time Optimization]
-    
-    D --> D1[Proactive Management]
-    D --> D2[Continuous Improvement]
-    D --> D3[Competitive Advantage]
-    
-    style A fill:#ffcccc
-    style B fill:#ffffcc
-    style C fill:#ccffcc
-    style D fill:#ccccff
-```
+![AI Transformation Journey](diagrams/chapter1_ai_transformation_journey.png)
 
 ### The AI Revolution in Operations
 
-The landscape of operational excellence is undergoing a fundamental transformation, driven by the convergence of artificial intelligence, big data, and advanced analytics. Organizations that successfully integrate AI into their operational DNA are achieving unprecedented levels of efficiency, quality, and innovation.
+Imagine a world where machines not only perform tasks but learn from every interaction, predict problems before they occur, and continuously optimize themselves. This is not science fiction—it's the reality of operational excellence in the AI era. The landscape of operational excellence is undergoing a fundamental transformation, driven by the convergence of artificial intelligence, big data, and advanced analytics. While some organizations remain hesitant, those that successfully integrate AI into their operational DNA are achieving unprecedented levels of efficiency, quality, and innovation that were once thought impossible.
 
 #### Historical Context: From Lean to AI-Enhanced Operations
 
@@ -193,30 +257,27 @@ The journey of operational excellence has evolved through several distinct phase
 
 #### Key AI Technologies Transforming Operations
 
+The AI revolution in operations is powered by five core technologies, each bringing unique capabilities that, when combined, create a comprehensive operational intelligence system.
+
 **1. Machine Learning and Predictive Analytics**
-- Pattern recognition in operational data
-- Predictive maintenance and quality control
-- Demand forecasting and inventory optimization
+
+Machine learning represents the brain of AI-enhanced operations. Unlike traditional rule-based systems, machine learning algorithms learn from data, identifying patterns that humans might miss and making predictions with increasing accuracy over time. In operational contexts, these algorithms excel at pattern recognition in operational data, enabling organizations to predict equipment failures before they occur, forecast demand with remarkable precision, and optimize quality control processes. The beauty of machine learning lies in its ability to continuously improve—every new data point makes the system smarter and more accurate.
 
 **2. Computer Vision and Image Recognition**
-- Automated quality inspection
-- Safety monitoring and compliance
-- Process documentation and analysis
+
+Computer vision technology has transformed quality control from a manual, error-prone process into an automated, superhuman capability. Modern AI vision systems can inspect thousands of components per minute, detecting defects that are invisible to the human eye. These systems work tirelessly, maintaining consistent quality standards regardless of fatigue or environmental conditions. Beyond quality control, computer vision enables safety monitoring, process documentation, and real-time analysis of operational activities, providing insights that were previously impossible to capture.
 
 **3. Natural Language Processing (NLP)**
-- Automated customer service and support
-- Document processing and analysis
-- Knowledge management and sharing
+
+Natural language processing bridges the gap between human communication and machine understanding. In operational contexts, NLP systems can process customer feedback, analyze maintenance reports, and extract insights from unstructured data sources. These systems enable automated customer service that understands context and nuance, process documents at scale, and facilitate knowledge management across organizations. The true power of NLP lies in its ability to make sense of the vast amounts of text-based data that organizations generate daily.
 
 **4. Robotics Process Automation (RPA)**
-- Repetitive task automation
-- Process standardization and compliance
-- Error reduction and efficiency gains
+
+RPA represents the hands of AI-enhanced operations, automating repetitive tasks that previously required human intervention. Unlike traditional automation, RPA systems can adapt to changing processes and learn from their interactions. These systems excel at process standardization, ensuring consistent execution regardless of human factors, while reducing errors and improving efficiency. RPA is particularly valuable for tasks that involve multiple systems and require coordination across different platforms.
 
 **5. Internet of Things (IoT) and Edge Computing**
-- Real-time data collection and processing
-- Connected devices and systems
-- Distributed computing and decision-making
+
+IoT and edge computing provide the nervous system of AI-enhanced operations, collecting data from sensors, devices, and systems throughout the operational environment. This technology enables real-time data collection and processing, connecting devices and systems in ways that create unprecedented visibility into operational performance. Edge computing brings processing power closer to data sources, enabling faster decision-making and reducing the need for centralized processing. The combination of IoT and edge computing creates a distributed intelligence network that can respond to changes in real-time.
 
 #### Strategic Framework for AI Adoption
 
@@ -244,15 +305,23 @@ The journey of operational excellence has evolved through several distinct phase
 
 #### Case Study: Tesla's AI-Enhanced Manufacturing
 
-Tesla's Gigafactories represent a paradigm shift in automotive manufacturing, leveraging AI across every aspect of operations:
+**The Challenge**: In 2018, Tesla faced a critical challenge that threatened its ambitious production goals. The company had committed to producing 500,000 vehicles annually, but traditional manufacturing methods were proving insufficient. Quality issues were causing production delays, and the manual inspection process was both time-consuming and error-prone. The company needed a revolutionary approach to manufacturing that could scale rapidly while maintaining the highest quality standards.
 
-**Quality Control**: AI-powered computer vision systems inspect every component with superhuman precision, detecting defects that human inspectors might miss.
+**The Decision**: Tesla's leadership team, led by CEO Elon Musk, made a bold decision to transform their manufacturing operations through Artificial Intelligence. Rather than incrementally improving existing processes, they chose to completely reimagine the manufacturing floor as an intelligent, self-optimizing system. This decision required significant investment in AI infrastructure, but the potential rewards were enormous.
 
-**Production Optimization**: Machine learning algorithms continuously optimize production schedules, resource allocation, and supply chain management.
+**The Implementation Journey**: The transformation began with Tesla's Fremont factory, where they implemented a comprehensive AI system that would become the blueprint for their Gigafactories. The first phase focused on quality control, where they deployed computer vision systems that could inspect every component with superhuman precision. These systems were trained on millions of images of both defective and perfect parts, enabling them to detect subtle defects that human inspectors might miss.
 
-**Predictive Maintenance**: IoT sensors and AI analytics predict equipment failures before they occur, minimizing downtime and maximizing efficiency.
+The second phase involved production optimization. Tesla's engineers developed machine learning algorithms that continuously analyzed production data in real-time, optimizing schedules, resource allocation, and supply chain management. These algorithms learned from every production cycle, becoming increasingly sophisticated over time.
 
-**Results**: 40% reduction in production time, 60% improvement in quality metrics, and 30% reduction in operational costs.
+The third phase introduced predictive maintenance. IoT sensors were installed throughout the manufacturing floor, collecting data on equipment performance, temperature, vibration, and other critical parameters. AI analytics processed this data to predict equipment failures before they occurred, enabling proactive maintenance that minimized downtime.
+
+**The Challenges**: The implementation was not without challenges. The initial AI systems required extensive training and fine-tuning, and there were several false starts before the systems achieved the desired accuracy. Some workers were initially resistant to the new technology, fearing job displacement. Tesla addressed these concerns through comprehensive training programs and by demonstrating how AI would enhance rather than replace human capabilities.
+
+**The Results**: The transformation exceeded even the most optimistic projections. Tesla achieved a 40% reduction in production time, a 60% improvement in quality metrics, and a 30% reduction in operational costs. More importantly, the AI systems enabled Tesla to scale production rapidly while maintaining quality standards that exceeded industry benchmarks.
+
+**The Strategic Impact**: This success had far-reaching implications. Tesla's AI-enhanced manufacturing became a competitive advantage that other automakers struggled to replicate. The company's ability to rapidly iterate and improve production processes gave them a significant edge in the fast-evolving electric vehicle market. The lessons learned from this transformation informed Tesla's approach to building new Gigafactories in Berlin, Shanghai, and Austin.
+
+**Key Success Factors**: Several factors contributed to Tesla's success. First, the company had a clear vision and strong leadership commitment to AI transformation. Second, they took a holistic approach, integrating AI across all aspects of manufacturing rather than implementing isolated solutions. Third, they invested heavily in data infrastructure and talent, recognizing that AI is only as good as the data it processes and the people who implement it. Finally, they maintained a culture of continuous learning and adaptation, essential for success in the rapidly evolving AI landscape.
 
 #### Case Study: Amazon's AI-Driven Fulfillment
 
@@ -271,18 +340,107 @@ Amazon's fulfillment centers demonstrate the power of AI in logistics and supply
 #### Step 1: Assessment and Readiness
 
 **Technology Assessment**
-- Evaluate current IT infrastructure and capabilities
-- Identify data sources and quality issues
-- Assess technical skills and expertise gaps
+
+*Week 1-2: Infrastructure Evaluation*
+1. **Current IT Infrastructure Audit**
+   - Document existing hardware, software, and network capabilities
+   - Assess cloud vs. on-premise infrastructure readiness
+   - Evaluate data storage and processing capabilities
+   - Identify integration points and APIs
+
+2. **Data Quality Assessment**
+   - Create a comprehensive data inventory across all systems
+   - Assess data quality using the following criteria:
+     - Completeness: What percentage of data fields are populated?
+     - Accuracy: How reliable is the data?
+     - Consistency: Are data formats standardized?
+     - Timeliness: How current is the data?
+   - Document data governance policies and procedures
+
+3. **Technical Skills Gap Analysis**
+   - Conduct skills assessment for current IT team
+   - Identify gaps in AI/ML, data science, and cloud computing
+   - Develop training and hiring plans
+   - Consider external partnerships and consultants
 
 **Organizational Readiness**
-- Analyze cultural readiness for AI adoption
-- Identify change management requirements
-- Assess leadership commitment and support
+
+*Week 3-4: Cultural and Change Management Assessment*
+1. **Cultural Readiness Evaluation**
+   - Conduct employee surveys on AI awareness and attitudes
+   - Assess organizational openness to change and innovation
+   - Evaluate risk tolerance and failure acceptance
+   - Identify potential resistance and concerns
+
+2. **Change Management Planning**
+   - Develop comprehensive change management strategy
+   - Create communication plan for AI initiatives
+   - Design training programs for different stakeholder groups
+   - Establish feedback mechanisms and support systems
+
+3. **Leadership Commitment Assessment**
+   - Evaluate executive sponsorship and commitment
+   - Assess resource allocation and budget support
+   - Review governance structure and decision-making processes
+   - Ensure alignment with strategic objectives
 
 **Strategic Alignment**
-- Align AI initiatives with business objectives
-- Identify high-impact, low-risk pilot opportunities
+
+*Week 5-6: Business Alignment and Pilot Selection*
+1. **Business Objective Alignment**
+   - Map AI initiatives to specific business objectives
+   - Identify key performance indicators (KPIs) for success
+   - Assess competitive landscape and market positioning
+   - Develop business case with ROI projections
+
+2. **Pilot Opportunity Identification**
+   - Create criteria for pilot project selection:
+     - High business impact potential (minimum 20% improvement target)
+     - Clear success metrics and measurement capability
+     - Manageable scope (3-6 month timeline)
+     - Strong stakeholder support and sponsorship
+     - Available data and technical feasibility
+   - Rank opportunities by impact vs. effort matrix
+   - Select top 2-3 pilot candidates for detailed analysis
+
+#### Code Example: AI Operations Framework
+
+Here's a practical example of how to implement an AI operations framework:
+
+```python
+class AIOperationsFramework:
+    """AI-enhanced operations framework for operational excellence"""
+    
+    def __init__(self):
+        self.model = RandomForestRegressor(n_estimators=100)
+        self.is_trained = False
+    
+    def load_data(self, filepath):
+        """Load operational data from various sources"""
+        return pd.read_csv(filepath)
+    
+    def preprocess_data(self, data):
+        """Clean and prepare data for AI analysis"""
+        # Remove duplicates and handle missing values
+        data = data.drop_duplicates()
+        data = data.fillna(data.mean())
+        return data
+    
+    def train_model(self, X, y):
+        """Train AI model on operational data"""
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+        self.model.fit(X_train, y_train)
+        self.is_trained = True
+        return self.model.score(X_test, y_test)
+    
+    def predict_performance(self, X):
+        """Predict operational performance using AI"""
+        if not self.is_trained:
+            raise ValueError("Model must be trained before making predictions")
+        return self.model.predict(X)
+```
+
+This framework provides the foundation for AI-enhanced operational excellence, enabling organizations to predict performance, optimize processes, and make data-driven decisions.
 - Develop clear success metrics and KPIs
 
 #### Step 2: Pilot Program Design
@@ -374,34 +532,7 @@ Quality control has undergone a remarkable transformation, evolving from purely 
 
 ### AI Quality Control System Architecture
 
-```mermaid
-graph LR
-    A[Production Line] --> B[Data Collection]
-    B --> C[AI Processing]
-    C --> D[Quality Decision]
-    D --> E[Action]
-    
-    B --> B1[Visual Inspection]
-    B --> B2[Sensor Data]
-    B --> B3[Historical Data]
-    
-    C --> C1[Computer Vision]
-    C --> C2[Machine Learning]
-    C --> C3[Pattern Recognition]
-    
-    D --> D1[Pass]
-    D --> D2[Fail]
-    D --> D3[Flag for Review]
-    
-    E --> E1[Continue Production]
-    E --> E2[Stop Line]
-    E --> E3[Adjust Process]
-    
-    style A fill:#e1f5fe
-    style C fill:#f3e5f5
-    style D fill:#e8f5e8
-    style E fill:#fff3e0
-```
+![AI Quality Control System Architecture](diagrams/chapter2_quality_control_system.png)
 
 #### Historical Progression of Quality Control
 
@@ -681,6 +812,10 @@ Design an AI quality control pilot program for a specific product or process in 
 
 Intel's journey into AI represents one of the most comprehensive corporate transformations in the technology sector. From a traditional semiconductor manufacturer to an AI-first company, Intel's story provides valuable insights into strategic AI implementation at scale.
 
+### Intel's AI Implementation Framework
+
+![Intel's AI Implementation Framework](diagrams/chapter3_intel_ai_framework.png)
+
 #### The Strategic Context: Why Intel Needed AI
 
 **Market Pressures**
@@ -958,29 +1093,7 @@ Conduct a comprehensive ROI analysis for AI implementation in your organization.
 
 Operational excellence has evolved through several generations, each building upon the previous while incorporating new technologies and methodologies. The integration of AI represents the latest and most transformative evolution.
 
-```mermaid
-graph TD
-    A[Traditional Operations<br/>1900s-1950s] --> B[Quality Movement<br/>1950s-1980s]
-    B --> C[Lean & Six Sigma<br/>1980s-2000s]
-    C --> D[Digital Transformation<br/>2000s-2010s]
-    D --> E[AI-Enhanced Operations<br/>2010s-Present]
-    
-    A1[Manual Processes<br/>Reactive Approach<br/>Limited Data] --> A
-    B1[Statistical Control<br/>Quality Circles<br/>TQM Principles] --> B
-    C1[Waste Elimination<br/>Process Improvement<br/>DMAIC Methodology] --> C
-    D1[Automation<br/>Digital Tools<br/>Data Analytics] --> D
-    E1[Predictive Analytics<br/>Intelligent Automation<br/>Continuous Learning] --> E
-    
-    F[Future: Autonomous Operations<br/>2025+] --> E
-    F1[Self-Optimizing Systems<br/>Human-AI Collaboration<br/>Quantum Computing] --> F
-    
-    style A fill:#ffcccc
-    style B fill:#ffffcc
-    style C fill:#ccffcc
-    style D fill:#ccccff
-    style E fill:#ffccff
-    style F fill:#ccffff
-```
+![Evolution of Operational Excellence](diagrams/chapter4_evolution_operational_excellence.png)
 
 #### Historical Development of Operational Excellence
 
@@ -1029,12 +1142,11 @@ W. Edwards Deming's principles provide the foundation for modern operational exc
 
 **AI Enhancement of Deming's Principles**
 
-<details>
-<summary>🔧 Technical Implementation: AI-Enhanced Deming Framework (Click to expand)</summary>
+**Technical Implementation: AI-Enhanced Deming Framework**
+
+The AI-enhanced Deming framework integrates artificial intelligence with traditional quality management principles, enabling organizations to achieve higher levels of operational excellence through intelligent automation and predictive analytics.
 
 📁 **Code Reference**: [chapter4_frameworks.py](../code/chapter4_frameworks.py) - `AIDemingFramework` class
-
-</details>
 
 **2. Six Sigma DMAIC Framework**
 
@@ -1067,12 +1179,11 @@ The DMAIC (Define, Measure, Analyze, Improve, Control) methodology provides a st
 
 **AI-Enhanced DMAIC Framework**
 
-<details>
-<summary>🔧 Technical Implementation: AI-Enhanced DMAIC Framework (Click to expand)</summary>
+**Technical Implementation: AI-Enhanced DMAIC Framework**
+
+The AI-enhanced DMAIC framework transforms the traditional Six Sigma methodology by incorporating machine learning, predictive analytics, and intelligent automation at each phase of the improvement process.
 
 📁 **Code Reference**: [chapter4_frameworks.py](../code/chapter4_frameworks.py) - `AIDMAICFramework` class
-
-</details>
 
 **3. Lean Management Principles**
 
@@ -1212,46 +1323,7 @@ While modern AI-enhanced frameworks represent the cutting edge of operational ex
 
 Traditional operational excellence methodologies have stood the test of time because they address fundamental principles of human behavior, process optimization, and continuous improvement. AI doesn't replace these methodologies—it amplifies their effectiveness and extends their capabilities.
 
-```mermaid
-mindmap
-  root((Traditional Operational Excellence))
-    Kaizen
-      Daily Improvements
-      Small Incremental Changes
-      Employee Involvement
-      AI Enhancement: Automated Suggestions
-    5W1H Analysis
-      Why Analysis
-      What Analysis
-      Where Analysis
-      When Analysis
-      Who Analysis
-      How Analysis
-      AI Enhancement: Intelligent Root Cause Prediction
-    PDCA Cycle
-      Plan Phase
-      Do Phase
-      Check Phase
-      Act Phase
-      AI Enhancement: Predictive Planning
-    Gemba Walks
-      Go to Actual Place
-      Observe Real Processes
-      Talk to People
-      AI Enhancement: Virtual Gemba with IoT
-    Value Stream Mapping
-      Current State Analysis
-      Future State Design
-      Waste Identification
-      AI Enhancement: Dynamic Optimization
-    5S Methodology
-      Sort
-      Set in Order
-      Shine
-      Standardize
-      Sustain
-      AI Enhancement: Smart Workplace
-```
+![Traditional Operational Excellence Methodologies](diagrams/chapter4_traditional_methodologies_mindmap.png)
 
 ### 1. Kaizen: Continuous Improvement Enhanced by AI
 
@@ -1267,30 +1339,7 @@ Kaizen, meaning "change for better," represents the philosophy of continuous imp
 
 #### AI-Enhanced Kaizen
 
-```mermaid
-graph LR
-    A[Traditional Kaizen] --> B[AI-Enhanced Kaizen]
-    
-    A1[Manual Problem Identification] --> B1[AI-Powered Problem Detection]
-    A2[Experience-Based Solutions] --> B2[Data-Driven Solution Generation]
-    A3[Manual Implementation] --> B3[Automated Implementation]
-    A4[Periodic Review] --> B4[Continuous Monitoring]
-    A5[Limited Scope] --> B5[Organization-Wide Impact]
-    
-    C[AI Kaizen System] --> D[Problem Detection AI]
-    C --> E[Solution Generation AI]
-    C --> F[Implementation AI]
-    C --> G[Monitoring AI]
-    
-    D --> H[Real-time Anomaly Detection]
-    E --> I[Pattern Recognition]
-    F --> J[Automated Workflows]
-    G --> K[Performance Tracking]
-    
-    style A fill:#ffcccc
-    style B fill:#ccffcc
-    style C fill:#ccccff
-```
+![AI-Enhanced Kaizen](diagrams/chapter4_ai_enhanced_kaizen.png)
 
 **AI Enhancements:**
 - **Automated Problem Detection**: AI continuously monitors processes and identifies improvement opportunities
@@ -1314,36 +1363,7 @@ The 5W1H (Why, What, Where, When, Who, How) analysis is a systematic approach to
 
 #### AI-Enhanced 5W1H Analysis
 
-```mermaid
-flowchart TD
-    A[Problem Occurs] --> B[AI Data Collection]
-    B --> C[5W1H AI Analysis]
-    
-    C --> D[Why Analysis<br/>AI Root Cause Detection]
-    C --> E[What Analysis<br/>AI Event Classification]
-    C --> F[Where Analysis<br/>AI Location Mapping]
-    C --> G[When Analysis<br/>AI Temporal Analysis]
-    C --> H[Who Analysis<br/>AI Stakeholder Analysis]
-    C --> I[How Analysis<br/>AI Process Analysis]
-    
-    D --> J[Pattern Recognition]
-    E --> J
-    F --> J
-    G --> J
-    H --> J
-    I --> J
-    
-    J --> K[AI-Generated Insights]
-    K --> L[Recommended Actions]
-    L --> M[Implementation Plan]
-    
-    style A fill:#ffcccc
-    style C fill:#ffffcc
-    style J fill:#ccffcc
-    style K fill:#ccccff
-    style L fill:#ffccff
-    style M fill:#ccffff
-```
+![AI-Enhanced 5W1H Analysis](diagrams/chapter4_ai_enhanced_5w1h.png)
 
 **AI Enhancements:**
 - **Intelligent Data Gathering**: AI automatically collects relevant data from multiple sources
@@ -1365,40 +1385,7 @@ The Plan-Do-Check-Act (PDCA) cycle is a four-step management method for continuo
 
 #### AI-Enhanced PDCA Cycle
 
-```mermaid
-graph TD
-    A[AI-Enhanced PDCA Cycle] --> B[Plan Phase]
-    A --> C[Do Phase]
-    A --> D[Check Phase]
-    A --> E[Act Phase]
-    
-    B --> B1[AI Problem Identification]
-    B --> B2[AI Solution Generation]
-    B --> B3[AI Risk Assessment]
-    B --> B4[AI Resource Planning]
-    
-    C --> C1[AI Implementation Monitoring]
-    C --> C2[AI Real-time Adjustments]
-    C --> C3[AI Performance Tracking]
-    
-    D --> D1[AI Data Analysis]
-    D --> D2[AI Statistical Analysis]
-    D --> D3[AI Impact Assessment]
-    D --> D4[AI Trend Analysis]
-    
-    E --> E1[AI Standardization]
-    E --> E2[AI Knowledge Management]
-    E --> E3[AI Continuous Learning]
-    E --> E4[AI Process Optimization]
-    
-    E4 --> B
-    
-    style A fill:#ffccff
-    style B fill:#ffcccc
-    style C fill:#ffffcc
-    style D fill:#ccffcc
-    style E fill:#ccccff
-```
+![AI-Enhanced PDCA Cycle](diagrams/chapter4_ai_enhanced_pdca.png)
 
 **AI Enhancements:**
 - **Intelligent Planning**: AI analyzes historical data to create more effective plans
@@ -1421,36 +1408,7 @@ Gemba, meaning "the real place," refers to going to the actual location where wo
 
 #### AI-Enhanced Gemba Walks
 
-```mermaid
-graph LR
-    A[Traditional Gemba Walk] --> B[AI-Enhanced Gemba]
-    
-    A1[Physical Presence Required] --> B1[Virtual Gemba with IoT]
-    A2[Manual Observation] --> B2[AI-Powered Observation]
-    A3[Limited Time Coverage] --> B3[24/7 Continuous Monitoring]
-    A4[Human Bias] --> B4[Objective AI Analysis]
-    A5[Manual Documentation] --> B5[Automated Documentation]
-    
-    C[AI Gemba System] --> D[IoT Sensors]
-    C --> E[Computer Vision]
-    C --> F[Audio Analysis]
-    C --> G[Data Analytics]
-    
-    D --> H[Process Monitoring]
-    E --> I[Visual Analysis]
-    F --> J[Communication Analysis]
-    G --> K[Performance Analysis]
-    
-    H --> L[Real-time Insights]
-    I --> L
-    J --> L
-    K --> L
-    
-    style A fill:#ffcccc
-    style B fill:#ccffcc
-    style C fill:#ccccff
-    style L fill:#ffccff
-```
+![AI-Enhanced Gemba Walks](diagrams/chapter4_ai_enhanced_gemba.png)
 
 **AI Enhancements:**
 - **Virtual Gemba**: IoT sensors and cameras provide continuous observation
@@ -1471,37 +1429,7 @@ Value Stream Mapping (VSM) is a lean management method for analyzing and designi
 
 #### AI-Enhanced Value Stream Mapping
 
-```mermaid
-graph TD
-    A[AI-Enhanced Value Stream Mapping] --> B[Current State Analysis]
-    A --> C[Future State Design]
-    A --> D[Implementation Planning]
-    
-    B --> B1[AI Data Collection]
-    B --> B2[AI Process Analysis]
-    B --> B3[AI Waste Identification]
-    B --> B4[AI Bottleneck Detection]
-    
-    C --> C1[AI Optimization Algorithms]
-    C --> C2[AI Simulation Modeling]
-    C --> C3[AI Resource Optimization]
-    C --> C4[AI Risk Assessment]
-    
-    D --> D1[AI Implementation Sequencing]
-    D --> D2[AI Resource Allocation]
-    D --> D3[AI Timeline Optimization]
-    D --> D4[AI Progress Monitoring]
-    
-    E[Real-time VSM Updates] --> B
-    E --> C
-    E --> D
-    
-    style A fill:#ffccff
-    style B fill:#ffcccc
-    style C fill:#ccffcc
-    style D fill:#ccccff
-    style E fill:#ffffcc
-```
+![AI-Enhanced Value Stream Mapping](diagrams/chapter4_ai_enhanced_vsm.png)
 
 **AI Enhancements:**
 - **Automated Data Collection**: AI automatically gathers process data from multiple sources
@@ -1524,43 +1452,7 @@ The 5S methodology is a systematic approach to workplace organization and standa
 
 #### AI-Enhanced 5S Methodology
 
-```mermaid
-graph TD
-    A[AI-Enhanced 5S System] --> B[Sort - AI Analysis]
-    A --> C[Set in Order - AI Optimization]
-    A --> D[Shine - AI Monitoring]
-    A --> E[Standardize - AI Standards]
-    A --> F[Sustain - AI Maintenance]
-    
-    B --> B1[AI Item Classification]
-    B --> B2[AI Usage Analysis]
-    B --> B3[AI Disposal Recommendations]
-    
-    C --> C1[AI Layout Optimization]
-    C --> C2[AI Accessibility Analysis]
-    C --> C3[AI Workflow Optimization]
-    
-    D --> D1[AI Cleanliness Monitoring]
-    D --> D2[AI Maintenance Scheduling]
-    D --> D3[AI Quality Inspection]
-    
-    E --> E1[AI Standard Generation]
-    E --> E2[AI Compliance Monitoring]
-    E --> E3[AI Training Recommendations]
-    
-    F --> F1[AI Continuous Monitoring]
-    F --> F2[AI Improvement Suggestions]
-    F --> F3[AI Performance Tracking]
-    
-    F3 --> B
-    
-    style A fill:#ffccff
-    style B fill:#ffcccc
-    style C fill:#ffffcc
-    style D fill:#ccffcc
-    style E fill:#ccccff
-    style F fill:#ccffff
-```
+![AI-Enhanced 5S Methodology](diagrams/chapter4_ai_enhanced_5s.png)
 
 **AI Enhancements:**
 - **Intelligent Sorting**: AI analyzes item usage patterns to recommend what to keep or remove
@@ -1572,37 +1464,7 @@ graph TD
 
 The most effective approach combines traditional methodologies with AI enhancements, creating a hybrid system that leverages both human wisdom and artificial intelligence.
 
-```mermaid
-graph TD
-    A[Traditional Methodologies] --> C[Hybrid AI-Enhanced System]
-    B[AI Technologies] --> C
-    
-    C --> D[Human Expertise]
-    C --> E[AI Capabilities]
-    
-    D --> D1[Experience & Judgment]
-    D --> D2[Creative Problem Solving]
-    D --> D3[Relationship Building]
-    D --> D4[Cultural Understanding]
-    
-    E --> E1[Data Processing]
-    E --> E2[Pattern Recognition]
-    E --> E3[Predictive Analytics]
-    E --> E4[Automated Execution]
-    
-    F[Best Practices] --> G[Continuous Improvement]
-    D1 --> F
-    D2 --> F
-    E1 --> F
-    E2 --> F
-    
-    G --> H[Operational Excellence]
-    
-    style A fill:#ffcccc
-    style B fill:#ccccff
-    style C fill:#ffccff
-    style H fill:#ccffcc
-```
+![Integration of Traditional Methodologies with AI](diagrams/chapter4_integration_traditional_ai.png)
 
 ### Key Takeaways
 
@@ -1674,39 +1536,7 @@ Lean Six Sigma has been the gold standard for process improvement for decades, c
 
 ### AI-Enhanced DMAIC Process
 
-```mermaid
-graph TD
-    A[Define] --> B[Measure]
-    B --> C[Analyze]
-    C --> D[Improve]
-    D --> E[Control]
-    
-    A --> A1[AI-Powered Problem Definition]
-    A --> A2[NLP for Requirements Analysis]
-    A --> A3[Stakeholder Sentiment Analysis]
-    
-    B --> B1[Automated Data Collection]
-    B --> B2[Real-time Monitoring]
-    B --> B3[IoT Sensor Integration]
-    
-    C --> C1[Predictive Analytics]
-    C --> C2[Root Cause AI Analysis]
-    C --> C3[Pattern Recognition]
-    
-    D --> D1[Optimization Algorithms]
-    D --> D2[Simulation Modeling]
-    D --> D3[Automated Testing]
-    
-    E --> E1[Continuous Monitoring]
-    E --> E2[Predictive Maintenance]
-    E --> E3[Adaptive Control Systems]
-    
-    style A fill:#ffebee
-    style B fill:#e8f5e8
-    style C fill:#e3f2fd
-    style D fill:#fff3e0
-    style E fill:#f3e5f5
-```
+![AI-Enhanced DMAIC Process](diagrams/chapter5_ai_enhanced_dmaic.png)
 
 This chapter explores how AI technologies are transforming Lean Six Sigma from a reactive, manual process to a proactive, intelligent system that can predict issues, optimize processes, and continuously improve performance.
 
@@ -2081,6 +1911,10 @@ This chapter explores how AI technologies are transforming Lean Six Sigma from a
 
 Total Quality Management has evolved from a reactive, inspection-based approach to a proactive, intelligent system that leverages AI to predict, prevent, and continuously improve quality across all organizational processes.
 
+### AI-Enhanced TQM Framework
+
+![AI-Enhanced TQM Framework](diagrams/chapter6_ai_enhanced_tqm.png)
+
 #### Historical Development of TQM
 
 **Generation 1: Quality Control (1950s-1970s)**
@@ -2309,37 +2143,7 @@ Strategic measurement has evolved from simple financial metrics to comprehensive
 
 ### AI-Enhanced KPI System Architecture
 
-```mermaid
-graph TB
-    A[Data Sources] --> B[AI Processing Layer]
-    B --> C[KPI Dashboard]
-    C --> D[Strategic Decisions]
-    
-    A --> A1[Operational Data]
-    A --> A2[Financial Data]
-    A --> A3[Customer Data]
-    A --> A4[Market Data]
-    
-    B --> B1[Real-time Analytics]
-    B --> B2[Predictive Models]
-    B --> B3[Anomaly Detection]
-    B --> B4[Trend Analysis]
-    
-    C --> C1[Performance Metrics]
-    C --> C2[Predictive Indicators]
-    C --> C3[Alert System]
-    C --> C4[Benchmarking]
-    
-    D --> D1[Operational Adjustments]
-    D --> D2[Strategic Planning]
-    D --> D3[Resource Allocation]
-    D --> D4[Risk Management]
-    
-    style A fill:#e1f5fe
-    style B fill:#f3e5f5
-    style C fill:#e8f5e8
-    style D fill:#fff3e0
-```
+![AI-Enhanced KPI System Architecture](diagrams/chapter7_ai_enhanced_kpi_system.png)
 
 #### Historical Development of Strategic Measurement
 
@@ -2606,6 +2410,10 @@ Create a detailed implementation roadmap for AI-enhanced strategic measurement.
 ### The Evolution of Analytics: From Descriptive to Prescriptive
 
 The analytics landscape has evolved through several generations, each building upon the previous to provide deeper insights and more actionable intelligence for operational excellence.
+
+### Analytics Evolution Framework
+
+![Analytics Evolution Framework](diagrams/chapter8_analytics_evolution.png)
 
 #### Historical Development of Analytics
 
@@ -3148,6 +2956,35 @@ The journey from traditional operations to AI-enhanced operational excellence in
 6. **Avoid common pitfalls through careful planning and execution**
 7. **Focus on business value and user adoption, not just technology**
 
+### Chapter Exercises
+
+#### Individual Exercises
+
+**Exercise 1: Implementation Roadmap Development**
+Create a comprehensive 18-month AI implementation roadmap for your organization, including phases, milestones, resource requirements, and success metrics.
+
+**Exercise 2: Change Management Strategy**
+Develop a detailed change management strategy for AI transformation, including stakeholder analysis, communication plan, and training requirements.
+
+**Exercise 3: ROI Analysis and Business Case**
+Conduct a comprehensive ROI analysis for AI implementation in your organization. Include cost-benefit analysis, risk assessment, and financial projections.
+
+#### Group Exercises
+
+**Exercise 4: Implementation Simulation**
+In groups of 4-5, role-play an AI implementation project from initiation to completion. Address challenges, make decisions, and present final results.
+
+**Exercise 5: Best Practices Workshop**
+Organize a workshop to identify and document best practices for AI implementation based on research and group discussions.
+
+#### Research Assignments
+
+**Exercise 6: Case Study Comparison**
+Research and compare three different AI implementation approaches from various organizations. Identify success factors and lessons learned.
+
+**Exercise 7: Industry Best Practices**
+Conduct research on AI implementation best practices in your specific industry. Create recommendations for your organization.
+
 ### Further Reading
 
 - [Davenport, T. H. (2018). *The AI Advantage: How to Put the Artificial Intelligence Revolution to Work*](https://www.amazon.com/AI-Advantage-Artificial-Intelligence-Revolution/dp/1633695670?tag=mahanare-20)
@@ -3342,6 +3179,42 @@ This chapter presents detailed case studies from organizations that have success
 4. **Data quality and infrastructure are fundamental to AI success**
 5. **Continuous learning and adaptation drive long-term success**
 
+### Chapter Exercises
+
+#### Individual Exercises
+
+**Exercise 1: Case Study Analysis**
+Select one case study from this chapter and conduct a detailed analysis. Identify the AI technologies used, implementation challenges, and success factors. Create a presentation summarizing key insights.
+
+**Exercise 2: Industry Application Research**
+Research AI applications in your industry. Identify current implementations, emerging trends, and potential opportunities for your organization.
+
+**Exercise 3: ROI Benchmarking**
+Compare the ROI results from the case studies in this chapter. Analyze factors that contribute to higher returns and create recommendations for maximizing AI investment returns.
+
+#### Group Exercises
+
+**Exercise 4: Cross-Industry Analysis**
+In groups of 3-4, compare AI implementations across different industries. Identify common patterns, unique approaches, and transferable best practices.
+
+**Exercise 5: Implementation Simulation**
+Choose one case study and simulate the implementation process. Identify potential challenges and develop solutions for successful execution.
+
+#### Research Assignments
+
+**Exercise 6: Emerging Applications Research**
+Research emerging AI applications in operational excellence that are not covered in this chapter. Assess their potential impact and implementation requirements.
+
+**Exercise 7: Success Factor Analysis**
+Conduct research on AI implementation success factors across multiple organizations. Create a comprehensive framework for successful AI transformation.
+
+### Further Reading
+
+- [Pine, B. J., & Gilmore, J. H. (2019). *The Experience Economy: Competing for Customer Time, Attention, and Money*](https://www.amazon.com/Experience-Economy-Competing-Customer-Attention/dp/1625274122?tag=mahanare-20)
+- [Parker, G. G., Van Alstyne, M. W., & Choudary, S. P. (2016). *Platform Revolution: How Networked Markets Are Transforming the Economy*](https://www.amazon.com/Platform-Revolution-Networked-Markets-Transforming/dp/0393249131?tag=mahanare-20)
+- [Christensen, C. M. (2016). *The Innovator's Dilemma: When New Technologies Cause Great Firms to Fail*](https://www.amazon.com/Innovators-Dilemma-Technologies-Management-Innovation/dp/1633691780?tag=mahanare-20)
+- [Porter, M. E., & Heppelmann, J. E. (2015). *How Smart, Connected Products Are Transforming Companies*](https://hbr.org/2015/10/how-smart-connected-products-are-transforming-companies)
+
 ---
 
 ## 11. Future of AI in Operational Excellence {#future}
@@ -3535,6 +3408,42 @@ The future of AI in operational excellence is characterized by rapid technologic
 3. **Human-AI collaboration will be essential for future success**
 4. **Continuous learning and adaptation are critical**
 5. **Strategic planning and investment are necessary for future readiness**
+
+### Chapter Exercises
+
+#### Individual Exercises
+
+**Exercise 1: Future Technology Assessment**
+Research three emerging AI technologies not covered in this chapter. Assess their potential impact on operational excellence and create implementation recommendations for your organization.
+
+**Exercise 2: Strategic Planning for AI Future**
+Develop a 5-year strategic plan for your organization to prepare for future AI developments. Include technology roadmap, skill development plan, and investment strategy.
+
+**Exercise 3: Human-AI Collaboration Framework**
+Design a framework for optimal human-AI collaboration in your organization. Consider roles, responsibilities, decision-making processes, and training requirements.
+
+#### Group Exercises
+
+**Exercise 4: Future Scenario Planning**
+In groups of 4-5, develop three future scenarios for AI in operational excellence (optimistic, realistic, pessimistic). Discuss implications and prepare strategies for each scenario.
+
+**Exercise 5: Technology Trend Analysis**
+Research and analyze current trends in AI technology. Present findings on which trends are most likely to impact operational excellence in the next 3-5 years.
+
+#### Research Assignments
+
+**Exercise 6: Industry Future Analysis**
+Conduct research on how AI will specifically transform your industry. Identify key trends, challenges, and opportunities for the next decade.
+
+**Exercise 7: Ethical AI Framework Development**
+Research AI ethics frameworks and develop recommendations for responsible AI implementation in operational excellence.
+
+### Further Reading
+
+- [Harari, Y. N. (2018). *21 Lessons for the 21st Century*](https://www.amazon.com/Lessons-21st-Century-Yuval-Harari/dp/0525512179?tag=mahanare-20)
+- [Tegmark, M. (2017). *Life 3.0: Being Human in the Age of Artificial Intelligence*](https://www.amazon.com/Life-3-0-Being-Artificial-Intelligence/dp/1101946598?tag=mahanare-20)
+- [Schwab, K. (2017). *The Fourth Industrial Revolution*](https://www.amazon.com/Fourth-Industrial-Revolution-Klaus-Schwab/dp/1524758868?tag=mahanare-20)
+- [Brynjolfsson, E., & McAfee, A. (2014). *The Second Machine Age*](https://www.amazon.com/Second-Machine-Age-Prosperity-Technologies/dp/0393350649?tag=mahanare-20)
 
 ---
 

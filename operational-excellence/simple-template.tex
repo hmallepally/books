@@ -1,0 +1,108 @@
+\documentclass[12pt]{book}
+\usepackage[paperwidth=8.5in,paperheight=11in,margin=0.75in]{geometry}
+\usepackage{fontspec}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{setspace}
+
+% Color definitions
+\definecolor{primaryblue}{HTML}{2c3e50}
+\definecolor{secondaryblue}{HTML}{34495e}
+
+% Font setup
+\setmainfont{Times New Roman}
+
+% Chapter title formatting - BIG and at 25% from top
+\titleformat{\chapter}[display]
+{\fontsize{40}{48}\selectfont\bfseries\color{primaryblue}\centering}
+{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+
+% Chapter title positioning - 25% from top (2in from top of 8in content area)
+\titlespacing{\chapter}{0pt}{2in}{1in}
+
+% Section formatting
+\titleformat{\section}
+{\fontsize{18}{22}\selectfont\bfseries\color{primaryblue}}
+{\thesection}{1em}{}
+
+% Subsection formatting
+\titleformat{\subsection}
+{\fontsize{16}{19}\selectfont\bfseries\color{primaryblue}}
+{\thesubsection}{1em}{}
+
+% Chapter overview styling
+\titleformat{\subsubsection}
+{\fontsize{15}{18}\selectfont\bfseries\color{secondaryblue}}
+{\thesubsubsection}{1em}{}
+
+% Main title page styling - ensure it's on its own page
+\renewcommand{\maketitle}{
+    \thispagestyle{empty}
+    \vspace*{2.5in}
+    \begin{center}
+        {\fontsize{42}{50}\selectfont\bfseries\color{primaryblue} Operational Excellence with AI}
+        
+        \vspace{0.3in}
+        
+        {\fontsize{26}{31}\selectfont\color{secondaryblue} A Comprehensive Guide to AI-Driven Performance Optimization}
+        
+        \vspace{0.5in}
+        
+        {\fontsize{16}{19}\selectfont\color{primaryblue}
+        \textbf{Author:} Hari Mallepally\\
+        \textbf{Version:} 3.0\\
+        \textbf{Publication Date:} September 2025\\
+        \textbf{Target Audience:} Business Leaders, Operations Professionals, MBA Students}
+    \end{center}
+    \clearpage
+}
+
+% Regular content styling
+\setstretch{1.6}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.3in}
+
+% Image styling
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+
+% Quote styling with proper spacing
+\newcommand{\chapterquote}[1]{
+    \vspace{0.8in}
+    \begin{center}
+        \fboxsep=0.6in
+        \fboxrule=0pt
+        \colorbox{lightgray}{
+            \parbox{0.8\textwidth}{
+                \centering
+                \fontsize{16}{19}\selectfont\itshape\color{primaryblue}
+                #1
+            }
+        }
+    \end{center}
+    \vspace{0.8in}
+}
+
+\newcommand{\chapteroverview}[1]{
+    \vspace{0.8in}
+    \subsubsection*{Chapter Overview}
+    \vspace{0.2in}
+    #1
+    \vspace{0.4in}
+}
+
+\begin{document}
+
+$if(title)$
+\maketitle
+$endif$
+
+$if(toc)$
+\tableofcontents
+\clearpage
+$endif$
+
+$body$
+
+\end{document}
