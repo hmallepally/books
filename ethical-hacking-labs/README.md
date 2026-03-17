@@ -36,8 +36,8 @@ This repository contains the hands-on lab exercises referenced throughout the bo
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/ethical-hacking-labs.git
-cd ethical-hacking-labs
+git clone https://github.com/hmallepally/books.git
+cd books/ethical-hacking-labs
 
 # Create a virtual environment (recommended)
 python -m venv .venv

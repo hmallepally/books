@@ -1,0 +1,7 @@
+markdown2
+ebooklib
+Pillow
+html5lib
+beautifulsoup4
+pypandoc
+cairosvg
