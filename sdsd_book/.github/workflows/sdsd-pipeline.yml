@@ -1,0 +1,47 @@
+name: SDSD Verification Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  sdsd-verify:
+    name: "Enforce Invariant Specifications"
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Setup Java 21 (For PIT Mutation tests)
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+
+    - name: Setup .NET 9.0
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Install SDSD-CLI
+      run: |
+        python -m pip install --upgrade pip
+        cd sdsd-cli
+        pip install .
+
+    - name: Verify Python Specifications
+      run: sdsd verify --path samples/python-pytest
+
+    - name: Verify Java / Gradle Specifications & Mutation Coverage
+      run: sdsd verify --path samples/java-gradle
+
+    - name: Verify C# / .NET Specifications
+      run: sdsd verify --path samples/csharp-dotnet
