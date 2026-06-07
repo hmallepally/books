@@ -1,0 +1,18 @@
+version: "1.0"
+spec_type: "feature"
+feature_name: "AuthService"
+
+boundaries:
+  inputs:
+    - name: tenant_id
+      type: string
+      validation: "Must not be null or empty. Represents the isolation boundary."
+    - name: username
+      type: string
+    - name: password
+      type: string
+
+invariants:
+  - id: INV-001
+    description: "Tenant Isolation: All authentication attempts must explicitly provide a valid tenant_id."
+    enforcement_level: "FATAL"

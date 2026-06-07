@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SdsdSample.Core", "SdsdSample.Core\SdsdSample.Core.csproj", "{0A248C5E-2C87-4CB1-85FA-F7A3135ACF9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SdsdSample.Tests", "SdsdSample.Tests\SdsdSample.Tests.csproj", "{FA2B080A-E131-4067-8BC8-F2D73FB1A349}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A248C5E-2C87-4CB1-85FA-F7A3135ACF9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A248C5E-2C87-4CB1-85FA-F7A3135ACF9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A248C5E-2C87-4CB1-85FA-F7A3135ACF9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A248C5E-2C87-4CB1-85FA-F7A3135ACF9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA2B080A-E131-4067-8BC8-F2D73FB1A349}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA2B080A-E131-4067-8BC8-F2D73FB1A349}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA2B080A-E131-4067-8BC8-F2D73FB1A349}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA2B080A-E131-4067-8BC8-F2D73FB1A349}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

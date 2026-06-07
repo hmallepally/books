@@ -1,0 +1,12 @@
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-dotnet\SdsdSample.Core\bin\Debug\net9.0\SdsdSample.Core.deps.json
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-dotnet\SdsdSample.Core\bin\Debug\net9.0\SdsdSample.Core.dll
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-dotnet\SdsdSample.Core\bin\Debug\net9.0\SdsdSample.Core.pdb
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-dotnet\SdsdSample.Core\obj\Debug\net9.0\SdsdSample.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-dotnet\SdsdSample.Core\obj\Debug\net9.0\SdsdSample.Core.AssemblyInfoInputs.cache
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-dotnet\SdsdSample.Core\obj\Debug\net9.0\SdsdSample.Core.AssemblyInfo.cs
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-dotnet\SdsdSample.Core\obj\Debug\net9.0\SdsdSample.Core.csproj.CoreCompileInputs.cache
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-dotnet\SdsdSample.Core\obj\Debug\net9.0\SdsdSample.Core.sourcelink.json
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-dotnet\SdsdSample.Core\obj\Debug\net9.0\SdsdSample.Core.dll
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-dotnet\SdsdSample.Core\obj\Debug\net9.0\refint\SdsdSample.Core.dll
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-dotnet\SdsdSample.Core\obj\Debug\net9.0\SdsdSample.Core.pdb
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-dotnet\SdsdSample.Core\obj\Debug\net9.0\ref\SdsdSample.Core.dll
