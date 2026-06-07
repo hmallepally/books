@@ -38,10 +38,10 @@ jobs:
         pip install .
 
     - name: Verify Python Specifications
-      run: sdsd verify --path samples/python-pytest
+      run: sdsd verify --path samples/python-fraud-analyzer
 
     - name: Verify Java / Gradle Specifications & Mutation Coverage
-      run: sdsd verify --path samples/java-gradle
+      run: sdsd verify --path samples/java-ledger-engine
 
     - name: Verify C# / .NET Specifications
-      run: sdsd verify --path samples/csharp-dotnet
+      run: sdsd verify --path samples/csharp-api-gateway
