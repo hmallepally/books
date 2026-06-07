@@ -4,6 +4,9 @@ Welcome to the official companion repository for the book **Spec-Driven Secure D
 
 This repository provides the open-source tools, code snippets, and IDE configuration templates necessary to implement the SDSD methodology in your own enterprise environments.
 
+> [!WARNING]
+> **Disclaimer:** The sample projects (`samples/`) and code snippets provided in this repository are strictly for educational purposes to explain SDSD concepts. **They are NOT intended to be used in production.** They contain dummy logic (e.g., hardcoded credentials for tests) to demonstrate how the `sdsd-cli` enforcement engine functions. Do not deploy this code to production environments.
+
 ## Repository Structure
 
 ### 1. `sdsd-cli/`
@@ -11,7 +14,13 @@ The official Python-based command-line interface for the SDSD workflow. The CLI 
 
 *   **Docs & Roadmaps:** Check out `sdsd-cli/docs/design/` to view the architectural roadmap, including [RFC-001](sdsd-cli/docs/design/RFC-001-Spec-Drift-and-Validation.md) which details our upcoming solutions for Spec Drift, Semantic Validation, and Test Framework Integration.
 
-### 2. `code/`
+### 2. `samples/`
+Fully functional, native mini-projects demonstrating SDSD integration with enterprise toolchains. These act as "Monorepo" integration tests for the CLI and reference implementations for readers.
+*   `java-gradle/` - Java 21, Gradle, JUnit 5, and PIT Mutation Testing.
+*   `python-pytest/` - Python 3.11 with `pytest` and property boundaries.
+*   `csharp-dotnet/` - .NET 9.0 solution with `xUnit` invariants.
+
+### 3. `code/`
 This directory contains every code snippet featured in the book, cleanly organized by chapter and language.
 *   `python/` - FastAPI, PyTest, SQLAlchemy implementations.
 *   `java/` - Spring Boot, JUnit 5, JPA implementations.
