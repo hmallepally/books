@@ -30,7 +30,7 @@ pip install sdsd-cli
 Or install from source:
 
 ```bash
-git clone https://github.com/harinath-mallepally/sdsd-cli.git
+git clone https://github.com/hmallepally/books/tree/main/sdsd_book/sdsd-cli
 cd sdsd-cli
 pip install -e .
 ```
@@ -159,7 +159,7 @@ Rules are automatically matched to targets by domain tags in the file path.
 ## Development
 
 ```bash
-git clone https://github.com/harinath-mallepally/sdsd-cli.git
+git clone https://github.com/hmallepally/books/tree/main/sdsd_book/sdsd-cli
 cd sdsd-cli
 pip install -e ".[dev]"
 pytest

@@ -1,0 +1,15 @@
+# SDSD Global Invariants
+# These constraints apply to EVERY prompt assembled by sdsd-cli.
+# They represent the absolute, non-negotiable engineering standards
+# of your organization.
+#
+# Based on the Invariant Wall concept (Chapter 4).
+#
+# Edit this file to match your project's specific requirements.
+
+invariants:
+  - "All database queries MUST use parameterized queries. Raw SQL string concatenation is forbidden."
+  - "All new database tables MUST include `created_at` and `updated_at` timestamp columns."
+  - "Do NOT suppress errors with catch-all exception handlers. Handle specific exception types."
+  - "All public functions MUST include type hints/annotations and a docstring."
+  - "Do NOT use mutable default arguments in function signatures."

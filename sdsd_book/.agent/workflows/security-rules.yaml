@@ -1,0 +1,139 @@
+# SDSD Security Rules — Threat Blueprints
+# Based on the Generative Threat Matrix (Chapter 3, §3.5)
+#
+# These rules are automatically linked to targets by domain tags.
+# Rules with domain: "global" apply to ALL prompt assemblies.
+#
+# Format:
+#   rule_id: Unique identifier
+#   domain: Tag for matching (e.g., 'payment', 'auth', 'crypto', 'global')
+#   severity: HIGH, MEDIUM, LOW
+#   constraint: The actual constraint text injected into the prompt
+
+rules:
+  # ===== GLOBAL RULES (Apply to everything) =====
+  - rule_id: "TR-001"
+    domain: "global"
+    severity: "HIGH"
+    constraint: >
+      All database queries MUST use parameterized queries or the ORM.
+      Raw string concatenation for SQL is STRICTLY FORBIDDEN.
+      Reference: OWASP Top 10 — A03:2021 Injection.
+
+  - rule_id: "TR-002"
+    domain: "global"
+    severity: "HIGH"
+    constraint: >
+      Never log, print, or expose sensitive data (passwords, tokens,
+      API keys, PII) in error messages, stack traces, or debug output.
+
+  - rule_id: "TR-003"
+    domain: "global"
+    severity: "MEDIUM"
+    constraint: >
+      Do NOT install or import any third-party packages not already
+      present in the project's dependency lock file. If a utility is
+      needed, implement it using the standard library or existing
+      internal packages.
+
+  # ===== AUTHENTICATION & AUTHORIZATION =====
+  - rule_id: "TR-010"
+    domain: "auth"
+    severity: "HIGH"
+    constraint: >
+      Password hashing MUST use bcrypt, scrypt, or Argon2id.
+      MD5 and SHA-1 are STRICTLY FORBIDDEN for password storage.
+
+  - rule_id: "TR-011"
+    domain: "auth"
+    severity: "HIGH"
+    constraint: >
+      Session tokens and password reset tokens MUST be generated
+      using cryptographically secure random generators (e.g., Python's
+      `secrets` module, Java's `SecureRandom`, C#'s `RNGCryptoServiceProvider`).
+      Do NOT use `Math.random()`, `random.random()`, or equivalent.
+
+  - rule_id: "TR-012"
+    domain: "auth"
+    severity: "HIGH"
+    constraint: >
+      Every API endpoint that modifies data MUST verify authentication
+      and authorization. Never assume a request is authorized because
+      it came from an internal service.
+
+  # ===== FINANCIAL / PAYMENT =====
+  - rule_id: "TR-020"
+    domain: "payment"
+    severity: "HIGH"
+    constraint: >
+      All monetary amounts MUST be processed using exact decimal types
+      (Python's `decimal.Decimal`, Java's `BigDecimal`, C#'s `decimal`).
+      Floating-point arithmetic (`float`, `double`) is STRICTLY FORBIDDEN
+      for financial calculations.
+
+  - rule_id: "TR-021"
+    domain: "payment"
+    severity: "HIGH"
+    constraint: >
+      Conservation of Mass: For any financial transaction,
+      sum(source_debits) MUST equal sum(destination_credits) + sum(fees).
+      No money may be created or destroyed.
+
+  - rule_id: "TR-022"
+    domain: "payment"
+    severity: "HIGH"
+    constraint: >
+      All financial operations MUST be wrapped in a database transaction
+      with proper rollback on failure. Partial commits are forbidden.
+
+  # ===== CRYPTOGRAPHY =====
+  - rule_id: "TR-030"
+    domain: "crypto"
+    severity: "HIGH"
+    constraint: >
+      Use established, audited cryptographic libraries only.
+      Do NOT implement custom cryptographic algorithms.
+      AES-256-GCM or ChaCha20-Poly1305 for symmetric encryption.
+      RSA-OAEP or ECDH for asymmetric operations.
+
+  - rule_id: "TR-031"
+    domain: "crypto"
+    severity: "HIGH"
+    constraint: >
+      Cryptographic keys MUST be loaded from environment variables or
+      a dedicated secrets manager. Keys must NEVER be hardcoded in
+      source code, configuration files, or committed to version control.
+
+  # ===== DATA / DATABASE =====
+  - rule_id: "TR-040"
+    domain: "database"
+    severity: "HIGH"
+    constraint: >
+      Multi-tenant applications: Every database query MUST include
+      an explicit filter for `tenant_id`. Queries without tenant
+      isolation will cause an IDOR vulnerability.
+
+  - rule_id: "TR-041"
+    domain: "database"
+    severity: "MEDIUM"
+    constraint: >
+      Database migration scripts are immutable once deployed.
+      Do NOT modify existing migration files; create new migration
+      files for schema changes.
+
+  # ===== API / NETWORK =====
+  - rule_id: "TR-050"
+    domain: "api"
+    severity: "HIGH"
+    constraint: >
+      All API responses MUST use explicit Content-Type headers.
+      User-supplied data rendered in HTML MUST be sanitized to
+      prevent XSS. Do NOT use `dangerouslySetInnerHTML` or equivalent
+      without DOMPurify.
+
+  - rule_id: "TR-051"
+    domain: "api"
+    severity: "MEDIUM"
+    constraint: >
+      API rate limiting MUST be implemented on all public endpoints.
+      Default: 100 requests per minute per API key.
