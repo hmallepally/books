@@ -1,0 +1,12 @@
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-api-gateway\SdsdGateway.Core\bin\Debug\net9.0\SdsdGateway.Core.deps.json
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-api-gateway\SdsdGateway.Core\bin\Debug\net9.0\SdsdGateway.Core.dll
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-api-gateway\SdsdGateway.Core\bin\Debug\net9.0\SdsdGateway.Core.pdb
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-api-gateway\SdsdGateway.Core\obj\Debug\net9.0\SdsdGateway.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-api-gateway\SdsdGateway.Core\obj\Debug\net9.0\SdsdGateway.Core.AssemblyInfoInputs.cache
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-api-gateway\SdsdGateway.Core\obj\Debug\net9.0\SdsdGateway.Core.AssemblyInfo.cs
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-api-gateway\SdsdGateway.Core\obj\Debug\net9.0\SdsdGateway.Core.csproj.CoreCompileInputs.cache
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-api-gateway\SdsdGateway.Core\obj\Debug\net9.0\SdsdGateway.Core.sourcelink.json
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-api-gateway\SdsdGateway.Core\obj\Debug\net9.0\SdsdGateway.Core.dll
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-api-gateway\SdsdGateway.Core\obj\Debug\net9.0\refint\SdsdGateway.Core.dll
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-api-gateway\SdsdGateway.Core\obj\Debug\net9.0\SdsdGateway.Core.pdb
+C:\Users\hari\Documents\DBA\books\sdsd_book\samples\csharp-api-gateway\SdsdGateway.Core\obj\Debug\net9.0\ref\SdsdGateway.Core.dll

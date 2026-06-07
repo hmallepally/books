@@ -1,0 +1,15 @@
+[project]
+name = "python-fraud-analyzer"
+version = "0.1.0"
+description = "SDSD Python Fraud Analyzer Sample"
+dependencies = [
+    "pytest>=7.0.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+testpaths = [
+    "tests"
+]

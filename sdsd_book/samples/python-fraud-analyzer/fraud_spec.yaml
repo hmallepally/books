@@ -1,0 +1,18 @@
+version: "1.0"
+spec_type: "feature"
+feature_name: "FraudAnalyzer"
+
+boundaries:
+  inputs:
+    - name: transaction_id
+      type: string
+    - name: amount
+      type: double
+    - name: risk_score
+      type: int
+      validation: "Score between 0 and 100"
+
+invariants:
+  - id: INV-FRAUD-001
+    description: "High Value Hard Gate: Any transaction amount strictly greater than 10000.00 MUST be flagged for manual review, regardless of risk score."
+    enforcement_level: "FATAL"

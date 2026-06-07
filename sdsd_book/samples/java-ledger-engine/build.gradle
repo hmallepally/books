@@ -1,0 +1,41 @@
+plugins {
+    id 'info.solidsoft.pitest' version '1.15.0' apply false
+}
+
+subprojects {
+    apply plugin: 'java-library'
+    
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}
+
+project(':ledger-service') {
+    apply plugin: 'info.solidsoft.pitest'
+    
+    dependencies {
+        implementation project(':core-domain')
+    }
+
+    pitest {
+        junit5PluginVersion = '1.2.1'
+        targetClasses = ['sdsd.ledger.service.*']
+        mutators = ['DEFAULTS']
+        mutationThreshold = 100 // SDSD Mandate: 100% Mutation Coverage
+    }
+}

@@ -1,0 +1,3 @@
+rootProject.name = 'java-ledger-engine'
+include 'core-domain'
+include 'ledger-service'

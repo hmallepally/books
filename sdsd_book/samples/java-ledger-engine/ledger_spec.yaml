@@ -1,0 +1,23 @@
+version: "1.0"
+spec_type: "core_domain"
+feature_name: "LedgerEngine"
+
+boundaries:
+  inputs:
+    - name: transactionId
+      type: string
+    - name: accountId
+      type: string
+    - name: amount
+      type: double
+
+invariants:
+  - id: INV-LEDGER-001
+    description: "Balance Protection: An account balance can never drop below zero. Throws IllegalArgumentException."
+    enforcement_level: "FATAL"
+  - id: INV-LEDGER-002
+    description: "Double Spend Prevention: A transactionId can only be processed once per system lifecycle. Throws IllegalStateException."
+    enforcement_level: "FATAL"
+  - id: INV-LEDGER-003
+    description: "Tenant Isolation: The transaction's accountId must match the target Account's id. Throws SecurityException."
+    enforcement_level: "FATAL"

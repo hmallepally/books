@@ -1,0 +1,15 @@
+version: "1.0"
+spec_type: "api_gateway"
+feature_name: "TenantRouting"
+
+boundaries:
+  inputs:
+    - name: requestTenantId
+      type: string
+    - name: userTenantContext
+      type: string
+
+invariants:
+  - id: INV-GATEWAY-001
+    description: "Strict Tenant Isolation (IDOR Prevention): The requested route's tenant must EXACTLY match the authenticated user's tenant context. Throws UnauthorizedAccessException."
+    enforcement_level: "FATAL"
