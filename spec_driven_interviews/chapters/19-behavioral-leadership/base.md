@@ -104,6 +104,6 @@ To project executive presence and clear technical rounds on live video calls or 
 3. **The Trade-Off Verbalization:** Throughout the interview, constantly verbalize your architectural trade-offs (e.g., *"If we use Redis for rate limiting, we gain speed, but we must handle memory expiration and potential write consistency issues during partition events"*). Never present a design as "perfect."
 
 
-> ⭐ **STAR Moment: Speak in Metrics**
+> * **STAR Moment: Speak in Metrics**
 > 
 > When presenting your career accomplishments, translate every engineering activity into a business outcome. Never say: *"I rewrote the database queries."* Say: *"I optimized our query indexes, reducing database read latency by 60% and cutting our monthly database hosting cost by $12,000."* Executives and engineering leaders hire developers who understand the financial and operational impact of their code.

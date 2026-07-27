@@ -52,6 +52,8 @@ When database size or write throughput exceeds the limits of a single master ser
    - **Trade-off:** Uniform data distribution. However, if the number of shards $N$ changes (re-sharding), almost all historical data must be migrated.
 3. **Directory-Based Sharding:** Utilizing a centralized lookup service (lookup table) to track which shard stores a specific partition key.
 
+![Database Sharding Strategies — Range, Hash, and Directory Based](visuals/sharding_strategies.jpg){width=85%}
+
    - **Trade-off:** Flexible, but introduces a single point of failure and query latency bottleneck at the lookup layer.
 
 
@@ -209,6 +211,6 @@ Even if a DBA has root access to the database tables or extracts a raw disk back
 
 
 
-> ⭐ **STAR Moment: The Security-First Architecture**
+> * **STAR Moment: The Security-First Architecture**
 > 
 > In a system design interview, explain the concept of *"auditing and perimeter isolation."* Show how you can use a separate network zone (VPC) for your Card Vault, with separate encryption keys managed by an HSM (Hardware Security Module) or Key Management Service (KMS), and separate access control roles. Decoupling data in this way reduces security risk and simplifies compliance audits.

@@ -125,7 +125,7 @@ To maximize the value of this manual, select the path that aligns with your care
   4. Read **Chapter 19 (Behavioral & Technical Leadership)** to prepare for the behavioral round with Technical STAR frameworks and full mock responses.
 
 
-> ⭐ **STAR Moment: The Invariant Principle**
+> * **STAR Moment: The Invariant Principle**
 > 
 > The best code is code that is correct by design. When you write a method, your first task is not to implement the algorithm, but to define the contract: what must be true *before* the method runs (pre-conditions), and what must be guaranteed *after* it completes (post-conditions). If you enforce these boundaries, the code inside the method almost writes itself.
 
@@ -313,6 +313,8 @@ Write the code, beginning with explicit checks for your pre-conditions. Use mode
 
 To demonstrate the mathematical power of invariants, let us examine the classic binary search algorithm. Many developers struggle with binary search, often getting trapped in infinite loops or off-by-one errors because they guess the boundary updates (e.g., `right = mid` vs. `right = mid - 1`).
 
+![Loop Invariant States — Boundary Contraction in Binary Search](editions/csharp/chapters/01-invariant-first/visuals/loop_invariant_states.jpg){width=85%}
+
 ### The Challenge
 Given a sorted array of integers `nums` and a `target` value, return the index of the `target` if it exists in the array, or `-1` if it does not.
 
@@ -407,7 +409,7 @@ Prove the invariant for maintaining a monotonic deque that tracks the maximum el
 
 **Initialization:** The deque is empty before processing begins. Vacuously true.
 **Maintenance:** When processing element A[i]:
-1. Remove all indices from the back where A[deque.peekLast()] ≤ A[i] (maintains decreasing order)
+1. Remove all indices from the back where A[deque.peekLast()] $\leq$ A[i] (maintains decreasing order)
 2. Remove the front if deque.peekFirst() < i-K+1 (maintains window bounds)
 3. Add i to the back
 
@@ -418,7 +420,7 @@ After these operations, deque.peekFirst() always holds the index of the maximum 
 This proves the Monotonic Deque pattern [PAT-20] achieves O(N) total time for sliding window maximum.
 
 
-> ⭐ **STAR Moment: The $O(1)$ Failure Principle**
+> * **STAR Moment: The $O(1)$ Failure Principle**
 > 
 > A robust system fails fast and fails explicitly. The first lines of any method should always be pre-condition validation. If an input is invalid, fail immediately. Do not allow execution to proceed with corrupted or unexpected state, as this leads to hard-to-debug failures deep inside your call stack. In an interview, writing explicit input validations shows that you design for production safety, not just passing test suites.
 
@@ -430,6 +432,8 @@ This proves the Monotonic Deque pattern [PAT-20] achieves O(N) total time for sl
 ## Why Decomposition Matters
 
 In the high-stakes environment of technical assessments, the most common trap engineers fall into is the pursuit of memorization. Memorizing solutions to hundreds of common interview questions might give a false sense of security, but it invariably fails when confronted with novel, unique, or subtly modified problems. The real skill—the one that distinguishes top-tier candidates—is not recall, but the ability to break any complex, unfamiliar problem into a series of recognizable, solvable sub-problems that map directly to known patterns.
+
+![Problem Decomposition Tree — Breaking Complex Problems into Sub-Problems](editions/csharp/chapters/02-problem-decomposition/visuals/decomposition_tree.jpg){width=85%}
 
 This principle applies universally across all assessment formats. Whether you are facing a monotonically increasing difficulty curve, equal-weight peer questions, a single deep architectural problem, or a live whiteboard interview, decomposition remains your primary analytical tool. When you encounter a question you have never seen before, your memorized catalog of answers is useless. However, your ability to dismantle that question into its atomic components is exactly what the assessment is designed to measure.
 
@@ -469,6 +473,8 @@ Let us walk through a concrete example using the framework. Consider this proble
 **Step 1: Constraint Analysis**
 Assume $N \le 10^5$. This instantly rules out any $O(N^2)$ solution. We must solve this in $O(N)$ or $O(N \log N)$ time.
 
+![Constraint-to-Complexity Flowchart](editions/csharp/chapters/02-problem-decomposition/visuals/constraint_flowchart.jpg){width=85%}
+
 **Step 2: Data Flow Mapping**
 Input: Array of $N$ heights. Output: A single integer (total water). This is a reduction problem. For any building `i`, the water it traps is `min(max_left, max_right) - height[i]`.
 
@@ -504,7 +510,7 @@ In modern assessment environments, particularly equal-weight assessments where a
 
 When confronted with novel, never-before-seen problems—problems explicitly designed to test engineering limits rather than memorization—decomposition is the *only* reliable strategy. It bridges the gap between the unknown problem domain and your known catalog of patterns, ensuring that you can always make structured, demonstrable progress.
 
-> ⭐ **STAR Moment: The Decomposition Discipline**
+> * **STAR Moment: The Decomposition Discipline**
 >
 > Before you write a single line of code, invest 3-5 minutes in decomposition. Write your analysis as comments at the top of your solution file. This serves three purposes: it clarifies your thinking, it provides partial credit if you run out of time, and it creates a roadmap that prevents you from getting lost during implementation.
 
@@ -662,6 +668,8 @@ In the following chapters, we will use these domain classes to demonstrate OOP d
 
 ZenithTrade is a high-frequency, low-latency order matching engine. It is designed to process incoming buy and sell limit orders and execute matches in real time.
 
+![ZenithTrade High-Frequency Matching Engine Architecture](editions/csharp/chapters/03-case-studies/visuals/zenithtrade_architecture.jpg){width=85%}
+
 ### Key System Requirements
 
 - **Order Book State:** Maintains separate buy (bid) and sell (ask) order books, sorted by price (highest bid first, lowest ask first) and arrival time (FIFO).
@@ -700,6 +708,8 @@ These architectures serve as running case studies throughout the book. You will 
 ## ChiramTrust: Decentralized Identity Consent Wallet (Reference Architecture)
 
 ChiramTrust is a decentralized identity wallet that allows users to store credentials locally, negotiate sharing terms with verifiers, and establish consensus-based recovery.
+
+![ChiramTrust Decentralized Identity Wallet Architecture](editions/csharp/chapters/03-case-studies/visuals/chiramtrust_architecture.jpg){width=85%}
 
 ### Key System Requirements
 
@@ -767,7 +777,7 @@ To ensure zero-loss durability, ZenithTrade employs a write-ahead journal (WAJ) 
 
 If the Ledger database slows down or halts, the matching engine continues to process trades in memory without interruption. The event broker queues the trade events until the ledger recovers. This decoupling guarantees fault isolation and maintains a high-availability trading path."
 
-> ⭐ **STAR Moment: Bounded Context Isolation**
+> * **STAR Moment: Bounded Context Isolation**
 > 
 > During system design interviews, explain that microservice division should mirror DDD Bounded Contexts. Say: *"We will isolate the ZenithTrade Matching Engine from the AuraPay Ledger. If the ledger experiences a database write lag, our matching engine can continue to accept and queue orders in memory, preventing system-wide downtime."* This shows you design for fault isolation.
 
@@ -785,6 +795,8 @@ If the Ledger database slows down or halts, the matching engine continues to pro
 In many enterprise applications, domain classes are treated as passive data holders—simple collections of fields with auto-generated getters and setters. This is the **Anemic Domain Model** anti-pattern. 
 
 When your domain models are anemic, the business logic shifts into stateless service classes (e.g., `LedgerService`). The service pulls the state out of the domain model, performs validation, modifies the fields, and pushes the data back to the database. The danger of this design is that the domain object itself has no control over its state. Any developer can instantiate a ledger account, set the balance to a negative value without checks, and persist it, violating the core safety boundaries of the system.
+
+![God Object Violation Detector — Single Responsibility Principle](editions/csharp/chapters/04-oop-principles/visuals/oop_violation_detector.jpg){width=85%}
 
 The following code illustrates this fragile, anemic design:
 
@@ -1085,7 +1097,7 @@ public class SettlementProcessor
 
 
 
-> ⭐ **STAR Moment: The Encapsulation Test**
+> * **STAR Moment: The Encapsulation Test**
 > 
 > When designing class structures in a technical interview, ask yourself: *Can this class enter an invalid state?* If a client developer can instantiate your object and set its properties to values that violate business rules, your encapsulation has failed. Build your validation boundaries directly into the constructors and state-transition methods of your domain objects.
 
@@ -1303,7 +1315,7 @@ SOLID principles are design heuristics, not commandments. Over-application creat
 > The senior engineer's skill is knowing WHEN to apply SOLID and when the cure is worse than the disease.
 
 
-> ⭐ **STAR Moment: The Mockability Test**
+> * **STAR Moment: The Mockability Test**
 > 
 > The ultimate test of a SOLID design is **mockability**. In a technical interview, explain that a correctly decoupled class can be unit-tested in isolation by mocking all of its interface dependencies. If you cannot test a method without spinning up a real database, an active web server, or a third-party messaging channel, your design violates the Dependency Inversion Principle.
 
@@ -1406,6 +1418,8 @@ By declaring the operations as a stream pipeline, the code becomes a readable tr
 
 Debugging streams can be difficult due to their lazy execution model. To inspect stream internals during test failures, apply these tactics:
 
+![Lazy Evaluation and Short-Circuiting in Streams](editions/csharp/chapters/06-functional-streams/visuals/lazy_evaluation.jpg){width=85%}
+
 1. **Injecting `peek()` for Logging:**
    Use the `.peek()` intermediate operation to log elements as they flow through specific stages of the pipeline:
    ```java
@@ -1423,7 +1437,7 @@ Debugging streams can be difficult due to their lazy execution model. To inspect
    If a pipeline throws an exception, temporarily break the pipeline into separate intermediate variables to isolate the throwing operation in the stack trace.
 
 
-> ⭐ **STAR Moment: The Stateless Pipeline Principle**
+> * **STAR Moment: The Stateless Pipeline Principle**
 > 
 > A functional stream pipeline must never modify state variables outside the stream. If you write a `.forEach()` or `.map()` that mutates a shared list or updates a local counter, you have violated the functional contract. You lose thread safety, and your code cannot be parallelized. Keep your lambdas pure, stateless, and side-effect-free. In an interview, say: *"I use `collect()` and `reduce()` to accumulate results rather than mutating external variables, because stateless pipelines are safe to parallelize and easy to reason about."*
 
@@ -1672,7 +1686,7 @@ In senior interviews, you must connect patterns to the frameworks you use. Here 
 | **Template Method** | Spring `JdbcTemplate` | `JdbcTemplate` defines the skeleton of database execution (opening connection, statement preparation, cleanup) while letting subclasses map rows to domain objects. |
 
 
-> ⭐ **STAR Moment: The Framework Pattern Test**
+> * **STAR Moment: The Framework Pattern Test**
 > 
 > During system design interviews, explain design patterns in terms of the framework concepts the interviewer already knows. Instead of drawing a generic observer diagram, say: *"We will implement this like a Spring ApplicationEventPublisher or a Kafka Event Broker, decoupling the transactional write thread from the audit and search indexing consumers."* This shows you understand patterns in modern, production-grade architectures.
 
@@ -1706,6 +1720,8 @@ Reactive programming solved this by decoupling processing execution from threads
 
 ### The Virtual Thread Revolution
 Virtual threads are lightweight threads managed by the JVM rather than the OS. They are mounted onto a small carrier pool of platform threads. When a virtual thread blocks on I/O (e.g., executing a SQL query), the JVM unmounts the virtual thread, parking it, and assigns the carrier thread to another task.
+
+![Thread Lifecycle and Context Switching States](editions/csharp/chapters/08-concurrency-performance/visuals/thread_lifecycle.jpg){width=85%}
 
 *   **Impact:** You can run millions of virtual threads concurrently while writing standard, synchronous, block-on-write code that is easy to read, debug, and trace.
 
@@ -1827,6 +1843,8 @@ When designing financial ledgers, selecting the right locking paradigm is critic
 | **Starvation Risk** | High for hot accounts (constant retries) | Low (threads queue in order) | Medium (depends on retry/backoff settings) |
 | **Scale Limits** | Scales with DB capacity | Hard limit based on DB connection pool size | Scales horizontally with distributed key store |
 | **Deadlock Risk** | Zero | High (requires strict alphabetical locking of aggregates) | Medium (depends on lock lease expiration / release logic) |
+
+![Database Deadlock Cycle — Circular Wait Conditions](editions/csharp/chapters/08-concurrency-performance/visuals/deadlock_diagram.jpg){width=85%}
 
 
 ## Caching Patterns & Consistency Deep-Dive
@@ -1965,7 +1983,7 @@ Setting the pool size to 17 will yield *higher* overall throughput than setting 
 
 
 
-> ⭐ **STAR Moment: The Cache Invalidation Design**
+> * **STAR Moment: The Cache Invalidation Design**
 > 
 > When discussing performance during an interview, never say *"We will add a cache."* Say: *"We will implement a Cache-Aside pattern using Redis. To prevent stale reads in our double-entry ledger, we will use a transactional write-through strategy, invalidating cache keys atomically inside the database commit boundary to ensure absolute consistency."* This shows you understand caching boundaries in financial transaction systems.
 
@@ -2032,7 +2050,11 @@ Before diving into the 25 canonical patterns, ensure you have instant recall of 
 | O(2^N) | Exponential | Subset generation | 20-25 |
 | O(N!) | Factorial | Permutations | 10-12 |
 
-**The Constraint-to-Complexity Rule:** Read the problem constraints FIRST. If N ≤ 10^4, O(N²) is acceptable. If N ≤ 10^5, you need O(N log N) or better. If N ≤ 10^6, you need O(N). This single rule eliminates 50% of wrong algorithm choices before you write a line of code.
+![Big-O Time Complexity Comparison Graph](editions/csharp/chapters/09-algorithms-assessment/visuals/big_o_comparison.jpg){width=85%}
+
+**The Constraint-to-Complexity Rule:** Read the problem constraints FIRST. If N $\leq$ 10^4, O(N²) is acceptable. If N $\leq$ 10^5, you need O(N log N) or better. If N $\leq$ 10^6, you need O(N). This single rule eliminates 50% of wrong algorithm choices before you write a line of code.
+
+![Constraint-to-Complexity Flowchart](../02-problem-decomposition/visuals/constraint_flowchart.jpg){width=85%}
 
 ---
 
@@ -2785,7 +2807,7 @@ public class Trie {
 
 **Diagnostic Trigger:** "Find the K-th largest/smallest", "Merge K sorted lists", "Schedule tasks by priority", or any problem requiring efficient access to the minimum or maximum element while dynamically inserting.
 
-**Invariant:** The heap property is maintained: for a min-heap, every parent node is ≤ its children. This guarantees O(1) access to the minimum and O(log N) insertion/extraction.
+**Invariant:** The heap property is maintained: for a min-heap, every parent node is $\leq$ its children. This guarantees O(1) access to the minimum and O(log N) insertion/extraction.
 
 **Canonical Skeleton:**
 ```java
@@ -4334,9 +4356,9 @@ $$S[r][c] = A[r\text{-}1][c\text{-}1] + S[r\text{-}1][c] + S[r][c\text{-}1] - S[
 
 $$S[2][2] = \underbrace{A[1][1]}_{5} + \underbrace{S[1][2]}_{3} + \underbrace{S[2][1]}_{5} - \underbrace{S[1][1]}_{1} = 12$$
 
-The two 5s come from different sources: `A[1][1] = 5` is the center cell of the original matrix, while `S[2][1] = 5` is the prefix sum of the first column (`1 + 4 = 5`). Verify: `S[2][2]` should equal `1 + 2 + 4 + 5 = 12` — the sum of all elements from `(0,0)` to `(1,1)`. ✓
+The two 5s come from different sources: `A[1][1] = 5` is the center cell of the original matrix, while `S[2][1] = 5` is the prefix sum of the first column (`1 + 4 = 5`). Verify: `S[2][2]` should equal `1 + 2 + 4 + 5 = 12` — the sum of all elements from `(0,0)` to `(1,1)`. [x]
 
-**Sanity check**: `S[3][3] = 45` equals `1+2+3+4+5+6+7+8+9 = 45`. ✓
+**Sanity check**: `S[3][3] = 45` equals `1+2+3+4+5+6+7+8+9 = 45`. [x]
 
 ![2D Prefix Sum — Construction via Inclusion-Exclusion (Trace)](editions/csharp/chapters/11-matrix-grid-patterns/visuals/prefix_sum_construction.png){width=85%}
 
@@ -6804,11 +6826,11 @@ The key insight that allows us to achieve $\mathcal{O}(\log N)$ time complexity 
 > **The Fundamental Invariant:** Whenever you split a Rotated Sorted Array into two halves using a midpoint `mid = left + (right - left) / 2`, **AT LEAST ONE OF THE TWO HALVES IS GUARANTEED TO BE STRICTLY MONOTONICALLY SORTED.**
 
 > **Proof by Exhaustion.** Consider array `A[lo..hi]` with midpoint `mid = (lo + hi) / 2`. The rotation point (the index where `A[i] > A[i+1]`) can only exist in one contiguous segment.
-> - **Case 1:** Rotation point is in `A[mid+1..hi]`. Then `A[lo..mid]` contains no rotation point, so `A[lo] ≤ A[lo+1] ≤ ... ≤ A[mid]` — the left half is sorted.
-> - **Case 2:** Rotation point is in `A[lo..mid]`. Then `A[mid+1..hi]` contains no rotation point, so `A[mid+1] ≤ ... ≤ A[hi]` — the right half is sorted.
+> - **Case 1:** Rotation point is in `A[mid+1..hi]`. Then `A[lo..mid]` contains no rotation point, so `A[lo] $\leq$ A[lo+1] $\leq$ ... $\leq$ A[mid]` — the left half is sorted.
+> - **Case 2:** Rotation point is in `A[lo..mid]`. Then `A[mid+1..hi]` contains no rotation point, so `A[mid+1] $\leq$ ... $\leq$ A[hi]` — the right half is sorted.
 > - **Case 3:** No rotation point exists in `A[lo..hi]` (entire subarray is sorted). Both halves are sorted.
 >
-> In all cases, at least one half is sorted. ∎
+> In all cases, at least one half is sorted. $\square$
 
 - If `nums[left] <= nums[mid]`: The **LEFT half** `[left ... mid]` is monotonically sorted.
 - If `nums[left] > nums[mid]`: The **RIGHT half** `[mid ... right]` is monotonically sorted.
@@ -7168,7 +7190,7 @@ public int[] MaxSlidingWindow(int[] nums, int k) {
 
 **Pattern:** 2D DP
 
-> ⚠️ **Common Confusion: Subsequence $\neq$ Substring**
+> WARNING: **Common Confusion: Subsequence $\neq$ Substring**
 >
 > A **substring** must be contiguous (`"BCD"` from `"ABCDE"`). A **subsequence** can skip characters but must preserve order (`"ACE"` from `"ABCDE"` — pick A, skip B, pick C, skip D, pick E). The order matters: `"ECA"` is **not** a valid subsequence of `"ABCDE"` because the characters appear in the wrong order.
 
@@ -7179,11 +7201,11 @@ public int[] MaxSlidingWindow(int[] nums, int k) {
 |  | "" | C | A | R | T |
 |---|---|---|---|---|---|
 | **""** | 0 | 0 | 0 | 0 | 0 |
-| **C** | 0 | **1** ↖ | 1 ← | 1 ← | 1 ← |
-| **A** | 0 | 1 ↑ | **2** ↖ | 2 ← | 2 ← |
-| **T** | 0 | 1 ↑ | 2 ↑ | 2 ↑ | **3** ↖ |
+| **C** | 0 | **1** (up-left) | 1 ← | 1 ← | 1 ← |
+| **A** | 0 | 1 ↑ | **2** (up-left) | 2 ← | 2 ← |
+| **T** | 0 | 1 ↑ | 2 ↑ | 2 ↑ | **3** (up-left) |
 
-- ↖ (diagonal + 1): Characters **match** — extend the LCS we had before both characters.
+- (up-left) (diagonal + 1): Characters **match** — extend the LCS we had before both characters.
 - ← or ↑ (max of left/above): Characters **don't match** — carry forward the best LCS from skipping one character.
 
 The bold diagonal cells show: C matches C (1), A matches A (2), T matches T (3). The "R" in "CART" is simply skipped. **LCS = "CAT", length 3.**
@@ -7213,7 +7235,7 @@ public int LongestCommonSubsequence(string text1, string text2) {
 * * *
 
 **4. Burst Balloons**
-> ⚠️ **Assessment Realism Note:** Interval DP problems like Burst Balloons are extremely unlikely in timed assessments (the O(N³) derivation requires 30+ minutes of focused work). This exemplar is included for comprehensive pattern coverage. For timed assessment practice, prioritize the multi-source BFS, 1D DP, and monotonic stack problems in this chapter.
+> WARNING: **Assessment Realism Note:** Interval DP problems like Burst Balloons are extremely unlikely in timed assessments (the O(N³) derivation requires 30+ minutes of focused work). This exemplar is included for comprehensive pattern coverage. For timed assessment practice, prioritize the multi-source BFS, 1D DP, and monotonic stack problems in this chapter.
 
 **Specification:** Maximize coins by bursting balloons. Bursting `nums[i]` yields `nums[i-1] * nums[i] * nums[i+1]` coins.
 
@@ -7221,7 +7243,7 @@ public int LongestCommonSubsequence(string text1, string text2) {
 
 **Pattern:** Interval DP
 
-> ⚠️ **The Key Trick: Think BACKWARDS**
+> WARNING: **The Key Trick: Think BACKWARDS**
 >
 > The natural instinct is to simulate bursting balloons left-to-right, but that creates dependency chaos — bursting balloon `i` changes the neighbors of balloon `i+1`. Instead, ask: **"Which balloon do I burst LAST?"** If balloon `k` is the *last* to burst in interval `(i, j)`, then at that moment only `arr[i]` and `arr[j]` remain as its neighbors. This makes the left and right subproblems *independent*.
 
@@ -7412,9 +7434,9 @@ public int[] DailyTemperatures(int[] temperatures) {
 
 **Pattern:** 2D DP
 
-> ⚠️ **The Three Operations — Mapped to Table Directions**
+> WARNING: **The Three Operations — Mapped to Table Directions**
 >
-> At each cell, you choose the cheapest of three operations: **Replace** (↖ diagonal + 1), **Delete** from word1 (↑ up + 1), **Insert** into word1 (← left + 1). If characters already match, the diagonal costs 0 (no operation needed).
+> At each cell, you choose the cheapest of three operations: **Replace** ((up-left) diagonal + 1), **Delete** from word1 (↑ up + 1), **Insert** into word1 (← left + 1). If characters already match, the diagonal costs 0 (no operation needed).
 
 ![Edit Distance Trace](editions/csharp/chapters/13-optimization-dp/visuals/edit_distance_trace.png){width=85%}
 
@@ -7423,13 +7445,13 @@ public int[] DailyTemperatures(int[] temperatures) {
 |  | "" | C | U | T |
 |---|---|---|---|---|
 | **""** | 0 | 1 | 2 | 3 |
-| **C** | 1 | **0** ↖ | 1 | 2 |
-| **A** | 2 | 1 | **1** ↖ | 2 |
-| **T** | 3 | 2 | 2 | **1** ↖ |
+| **C** | 1 | **0** (up-left) | 1 | 2 |
+| **A** | 2 | 1 | **1** (up-left) | 2 |
+| **T** | 3 | 2 | 2 | **1** (up-left) |
 
 - **Row 0 / Col 0** (base cases): Converting "" → "CUT" costs 3 inserts. Converting "CAT" → "" costs 3 deletes.
 - **dp[1][1]:** C = C → match! Free! Diagonal `dp[0][0]` = 0.
-- **dp[2][2]:** A ≠ U → mismatch. `1 + min(dp[1][1], dp[1][2], dp[2][1])` = `1 + min(0, 1, 1)` = **1** (replace A→U).
+- **dp[2][2]:** A $\neq$ U → mismatch. `1 + min(dp[1][1], dp[1][2], dp[2][1])` = `1 + min(0, 1, 1)` = **1** (replace A→U).
 - **dp[3][3]:** T = T → match! Diagonal `dp[2][2]` = 1. **Answer: 1 edit.**
 
 **Real-world use:** Spell checkers, DNA alignment, fuzzy string matching, and `git diff` all use variants of this algorithm.
@@ -7469,7 +7491,7 @@ public int MinDistance(string word1, string word2) {
 
 **Pattern:** HashMap + Doubly Linked List
 
-> ⚠️ **"Why no timestamp?" — Position IS the Timestamp**
+> WARNING: **"Why no timestamp?" — Position IS the Timestamp**
 >
 > A common question is: "Shouldn't we store a timestamp for when each item was last used?" The answer is no — the **position in the linked list** is the timestamp. The node closest to HEAD was used most recently. The node closest to TAIL was used longest ago. Every `get()` or `put()` moves that node to the HEAD. No clock needed — the list order *is* the chronological record.
 
@@ -7560,7 +7582,7 @@ public class LRUCache {
 
 **Pattern:** Histogram Reduction + Monotonic Stack
 
-> ⚠️ **The Two-Step Intuition: Row Histograms + Monotonic Stack**
+> WARNING: **The Two-Step Intuition: Row Histograms + Monotonic Stack**
 >
 > **Step 1 (Matrix $\rightarrow$ Histograms):** Process the matrix row by row. At each row, compute column heights. If `matrix[r][c] == '1'`, `heights[c] += 1`; if `'0'`, `heights[c] = 0`. Each row forms a 1D histogram.
 >
@@ -7585,7 +7607,7 @@ public class LRUCache {
 | 3 | 2 | Push 3 | `[1, 3]` | — |
 | 4 | 2 | Push 4 | `[1, 3, 4]` | — |
 | 5 (sentinel) | 0 | `0 < 2` $\rightarrow$ Pop 4 (h=2) | `[1, 3]` | `height=2, width=5-3-1=1` $\rightarrow$ **2** |
-| 5 (sentinel) | 0 | `0 < 2` $\rightarrow$ Pop 3 (h=2) | `[1]` | `height=2, width=5-1-1=3` $\rightarrow$ **6** ✅ |
+| 5 (sentinel) | 0 | `0 < 2` $\rightarrow$ Pop 3 (h=2) | `[1]` | `height=2, width=5-1-1=3` $\rightarrow$ **6** [x] |
 | 5 (sentinel) | 0 | `0 < 1` $\rightarrow$ Pop 1 (h=1) | `[]` | `height=1, width=5` $\rightarrow$ **5** |
 
 **Explanation:** We treat each row as the base of a histogram and update heights. We then run the $\mathcal{O}(N)$ "Largest Rectangle in Histogram" algorithm using a monotonic stack on each row.
@@ -8523,6 +8545,8 @@ To navigate complex problem spaces effectively, we must formalize the 5-step dec
 
 By rigidly adhering to this canvas, you eliminate the panic of the blank screen and replace it with a systematic diagnostic process.
 
+![Problem Analysis Canvas — Structured Decomposition Framework](editions/csharp/chapters/14-mastering-decomposition/visuals/problem_analysis_canvas.jpg){width=85%}
+
 ## Decomposition Walkthroughs
 
 The following sections provide comprehensive step-by-step decomposition analyses across varying levels of complexity. We will analyze the problems, deconstruct them using the canvas methodology, and map them to our canonical patterns.
@@ -8671,6 +8695,8 @@ Tier 3 problems represent the apex of algorithmic assessments. These problems re
 
 ## The Pattern Recognition Decision Tree (Expanded)
 
+![Pattern Selection Decision Matrix](editions/csharp/chapters/14-mastering-decomposition/visuals/decomposition_decision.jpg){width=85%}
+
 To facilitate rapid decomposition during an assessment, utilize this expanded diagnostic decision tree. When analyzing a problem, ask yourself these guiding questions in sequence:
 
 1.  **What is the primary data structure?**
@@ -8743,7 +8769,7 @@ Apply the Problem Analysis Canvas to the following 15 problem statements. Do not
 14. Calculate the edit distance between two strings. *(Hint: 2D Dynamic Programming)*
 15. Find all valid combinations of $k$ numbers that sum up to $n$. *(Hint: Backtracking)*
 
-> ⭐ **STAR Moment: The Synthesis Mindset**
+> * **STAR Moment: The Synthesis Mindset**
 >
 > The engineers who consistently score in the top percentile on technical assessments are not the ones who have memorized the most solutions. They are the ones who can see the hidden structure in novel problems. Every new problem is a remix of patterns you already know. Train your eyes to see the composition, and no assessment will ever surprise you.
 
@@ -8755,6 +8781,8 @@ Apply the Problem Analysis Canvas to the following 15 problem statements. Do not
 This chapter provides 20 full, four-question exam mock sets (80 problems total) modeled after the common standardized coding assessment format. Each set is designed to simulate a rigorous timed assessment environment. The problems follow a standard difficulty curve: the first question tests basic implementation and traversal (Easy, 5-8 minutes), the second focuses on 2D matrices and simulation (Medium, 12-15 minutes), the third requires algorithmic pattern recognition like HashMaps or sliding windows (Medium-Hard, 18-20 minutes), and the fourth challenges you with dynamic programming, graphs, or advanced data structures (Hard, 20-25 minutes).
 
 To get the most out of these mock assessments, strictly time yourself. Set a timer for 70 minutes (or adjust to match your target assessment format) and attempt all four questions in order. Do not look up syntax or external resources. If you get stuck on the third or fourth question, practice timeboxing: move on and secure partial credit where possible. For equal-weight assessment formats, treat all four questions as having equal priority and allocate approximately 15-18 minutes per question. After time expires, review your performance. Use the provided hints to guide your post-assessment study sessions, identifying which specific patterns (e.g., sliding window, BFS, monotonic stack) require further review.
+
+![Assessment Pacing Strategy and Time Allocation](editions/csharp/chapters/15-mock-assessment-sets/visuals/pacing_strategy.jpg){width=85%}
 
 Remember, there is no code in this chapter—this is your practice arena. Read the specifications, analyze the test cases, check the constraints, and write your own optimal solutions.
 
@@ -9436,12 +9464,16 @@ Choosing an architectural style is a trade-off between latency, complexity, and 
 
 ![Monolithic vs Microservices vs Event-Driven Architecture](editions/csharp/chapters/16-system-architecture/visuals/arch_styles.png){width=80%}
 
+![System Evolution — Scaling from Monolith to Microservices](editions/csharp/chapters/16-system-architecture/visuals/system_evolution.jpg){width=85%}
+
 
 ## Scaling Out: Partitioning & Consistent Hashing
 
 A single matching engine instance cannot handle all trading instruments globally. To scale ZenithTrade horizontally, we must partition (shard) the matching workload.
 
 ### Consistent Hashing for Instrument Sharding
+
+![Consistent Hashing Ring — Distributed Key Routing](editions/csharp/chapters/16-system-architecture/visuals/consistent_hashing.jpg){width=85%}
 Instead of traditional modulo sharding (`hash(instrumentId) % nodeCount`), which causes massive data reshuffling when nodes are added or removed, ZenithTrade utilizes a **Consistent Hash Ring**:
 
 1.  **The Ring:** The hash space is mapped onto a circular ring (e.g., 0 to $2^{32} - 1$).
@@ -9462,6 +9494,8 @@ In financial systems, read traffic (users querying active order books, historica
 ## CAP Theorem & Distributed Trade-offs
 
 The CAP Theorem states that in a distributed system, you can only guarantee two out of three properties during a network partition: **Consistency (C)**, **Availability (A)**, or **Partition Tolerance (P)**. Because network partitions are inevitable in real-world infrastructure, system design is a choice between **CP** and **AP**:
+
+![CAP Theorem — Consistency, Availability, and Partition Tolerance Trade-offs](editions/csharp/chapters/16-system-architecture/visuals/cap_theorem.jpg){width=85%}
 
 -   **The Ledger Context (CP Choice):** AuraPay is designed as a **CP** system. In financial bookkeeping, correctness is non-negotiable. If a network partition occurs between ledger replicas, we must reject transaction requests (sacrificing availability) rather than risk allowing double-spending or balance mismatch (sacrificing consistency). Consensus protocols like Raft or Paxos are used to coordinate commits across healthy replicas.
 -   **The Market Feed Context (AP Choice):** The ZenithTrade public price feed (ticker data) is designed as an **AP** system. If a partition occurs, it is better to continue broadcasting the latest available price data (even if slightly stale) to users than to shut down the feed entirely.
@@ -9762,7 +9796,7 @@ Modern system design interviews increasingly expect familiarity with container o
 
 **Serverless Trade-offs:** Lambda/Cloud Functions eliminate infrastructure management but introduce cold start latency (100ms-2s), vendor lock-in, and debugging complexity. Use for event-driven workloads (image processing, webhook handling), not for latency-critical paths.
 
-> ⭐ **STAR Moment: Bounded Context Isolation**
+> * **STAR Moment: Bounded Context Isolation**
 > 
 > During system design interviews, explain that microservice division should mirror DDD Bounded Contexts. Say: *"We will isolate the ZenithTrade Matching Engine from the AuraPay Ledger. If the ledger experiences a database write lag, our matching engine can continue to accept and queue orders in memory, preventing system-wide downtime."* This shows you design for fault isolation.
 
@@ -10005,7 +10039,7 @@ Expose endpoints (e.g., Prometheus Prometheus JMX/Micrometer) to collect perform
 - **Application Metrics:** API request rates, HTTP 5xx error counts, database connection pool saturation, and circuit breaker states.
 
 
-> ⭐ **STAR Moment: Compensating Transactions vs Rollback**
+> * **STAR Moment: Compensating Transactions vs Rollback**
 > 
 > In a system design interview, make sure to emphasize that a Saga cannot "rollback" in the traditional database sense, because the initial transactions have already been committed. Instead, we must write explicit **compensating transactions** (e.g., if a debit was committed, the compensation is a credit). You must design these compensating operations to be **idempotent**, as they may be retried multiple times during a network partition.
 
@@ -10063,6 +10097,8 @@ When database size or write throughput exceeds the limits of a single master ser
    
    - **Trade-off:** Uniform data distribution. However, if the number of shards $N$ changes (re-sharding), almost all historical data must be migrated.
 3. **Directory-Based Sharding:** Utilizing a centralized lookup service (lookup table) to track which shard stores a specific partition key.
+
+![Database Sharding Strategies — Range, Hash, and Directory Based](editions/csharp/chapters/18-database-compliance/visuals/sharding_strategies.jpg){width=85%}
 
    - **Trade-off:** Flexible, but introduces a single point of failure and query latency bottleneck at the lookup layer.
 
@@ -10264,7 +10300,7 @@ Even if a DBA has root access to the database tables or extracts a raw disk back
 
 
 
-> ⭐ **STAR Moment: The Security-First Architecture**
+> * **STAR Moment: The Security-First Architecture**
 > 
 > In a system design interview, explain the concept of *"auditing and perimeter isolation."* Show how you can use a separate network zone (VPC) for your Card Vault, with separate encryption keys managed by an HSM (Hardware Security Module) or Key Management Service (KMS), and separate access control roles. Decoupling data in this way reduces security risk and simplifies compliance audits.
 
@@ -10375,7 +10411,7 @@ To project executive presence and clear technical rounds on live video calls or 
 3. **The Trade-Off Verbalization:** Throughout the interview, constantly verbalize your architectural trade-offs (e.g., *"If we use Redis for rate limiting, we gain speed, but we must handle memory expiration and potential write consistency issues during partition events"*). Never present a design as "perfect."
 
 
-> ⭐ **STAR Moment: Speak in Metrics**
+> * **STAR Moment: Speak in Metrics**
 > 
 > When presenting your career accomplishments, translate every engineering activity into a business outcome. Never say: *"I rewrote the database queries."* Say: *"I optimized our query indexes, reducing database read latency by 60% and cutting our monthly database hosting cost by $12,000."* Executives and engineering leaders hire developers who understand the financial and operational impact of their code.
 
@@ -10561,7 +10597,7 @@ Update instances one at a time (or in small batches) behind the load balancer:
 - Best suited for stateless microservices with fast startup times.
 
 
-> ⭐ **STAR Moment: The Mocking Boundary**
+> * **STAR Moment: The Mocking Boundary**
 > 
 > In a technical interview, emphasize that you know *when* to mock. Say: *"We mock network calls and database interfaces in our unit tests to keep feedback loops fast. But we never mock our domain aggregates or value objects. Testing our business rules against actual domain structures guarantees that our core invariants are always enforced. For integration boundaries, we use Testcontainers against real Postgres and Kafka instances, and we validate API contracts using Pact before every deployment."* This shows you understand domain boundary protection and production-grade testing strategy.
 
@@ -10707,6 +10743,8 @@ Apache Kafka is designed as a distributed, partitioned, commit log. Understandin
 1. **The Commit Log:** A Kafka partition is an append-only, ordered sequence of records. Each record consists of a key, a value, and a timestamp. Records are immutable and assigned a sequential ID called an **offset**.
 2. **Partitions:** Topics are divided into multiple partitions distributed across Kafka brokers. Partitions are the unit of scalability in Kafka: while a single partition can only handle a throughput limited by its host broker, multiple partitions allow parallel writes and reads across the cluster.
 3. **Consumer Groups:** A consumer group is a collection of consumers working together to read messages from a topic. Kafka guarantees that each partition is assigned to exactly *one* consumer instance within a consumer group. This prevents duplicate processing of messages.
+
+![Kafka Partitions and Consumer Group Parallelism](editions/csharp/chapters/21-message-brokers/visuals/kafka_partitions.jpg){width=85%}
 
 ### Replication and Durability
 Each partition is replicated across multiple brokers for fault tolerance:
@@ -10857,7 +10895,7 @@ Selecting the right broker technology depends on the architectural requirements:
 | **Schema Evolution** | Schema Registry (Avro/Protobuf) | No native schema support | No native schema support |
 
 
-> ⭐ **STAR Moment: The Ordering Guarantee**
+> * **STAR Moment: The Ordering Guarantee**
 > 
 > In a system design interview, explain: *"We will configure our payment topics with a partitioning key based on the ledger account ID. This guarantees that all transactions affecting a specific account are processed sequentially by a single thread in our consumer group, eliminating race conditions and balance corruption during high-frequency parallel events. We use the StickyAssignor with cooperative rebalancing to minimize processing pauses when consumers scale, and route poison messages to a Dead Letter Queue after three retry attempts to prevent partition blocking."* This shows deep understanding of partition routing, failure recovery, and operational maturity.
 
@@ -10896,6 +10934,8 @@ When asked to design a machine learning system (e.g., real-time recommendation),
 - **Candidate Retrieval (Recall):** Query a vector database to retrieve the top 100 candidate items (using fast approximate nearest neighbors).
 - **Ranking:** Run a lighter model online to rank these 100 candidate items, returning the top 10 to the user.
 - **Model Serving:** Deploy models behind low-latency serving infrastructure (TensorFlow Serving, Triton Inference Server, or custom gRPC endpoints).
+
+![Model Serving Infrastructure and Real-time Inference](editions/csharp/chapters/22-aiml-llm/visuals/model_serving.jpg){width=85%}
 
 ### The Evaluation & Monitoring Pipeline
 Machine learning models degrade over time as the real-world distribution shifts away from the training data:
@@ -11082,7 +11122,7 @@ LLM inference costs scale directly with token volume. At enterprise scale, unopt
 4. **Self-Hosted Models:** For high-volume, latency-tolerant workloads, deploy open-source models (Llama, Mistral) on owned GPU infrastructure. Higher upfront cost but dramatically lower per-token cost at scale.
 
 
-> ⭐ **STAR Moment: The Full ML System Design**
+> * **STAR Moment: The Full ML System Design**
 > 
 > In a system design interview, demonstrate the complete picture: *"For the recommendation engine, we separate our architecture into three pipelines. The offline pipeline trains our ranking model using user interaction features stored in Feast, with weekly retraining triggered by data drift detection. The online pipeline retrieves candidate items via HNSW vector search, then re-ranks with a lightweight cross-encoder model, targeting sub-100ms p99 latency. We deploy new models in shadow mode first, comparing CTR and conversion rates against the incumbent via A/B testing before promotion. For cost control, we route simple classification queries to GPT-4o-mini and reserve frontier models for complex reasoning."* This shows end-to-end ML engineering maturity.
 
@@ -11212,9 +11252,9 @@ To make back-of-the-envelope calculations, memorize these rough access latency s
 | **Main Memory reference (DDR5)** | 50 ns | 50 sec |
 | **Compress 1K bytes with Zippy** | 3,000 ns | 50 min |
 | **Send 2K bytes over 1 Gbps network** | 20,000 ns | 5.5 hours |
-| **NVMe SSD random read** | 10-20 μs | ~3-6 hours |
-| **NVMe SSD sequential 1MB read** | 100-200 μs | ~1-2 days |
-| **Round trip within same datacenter** | 250-500 μs | ~3-6 days |
+| **NVMe SSD random read** | 10-20 $\mu$s | ~3-6 hours |
+| **NVMe SSD sequential 1MB read** | 100-200 $\mu$s | ~1-2 days |
+| **Round trip within same datacenter** | 250-500 $\mu$s | ~3-6 days |
 | **HDD seek** | 2-5 ms | ~1-2 months |
 | **Read 1MB sequentially from Disk** | 20,000,000 ns | 7.5 months |
 | **Send packet CA to Netherlands to CA** | 150,000,000 ns | 4.7 years |

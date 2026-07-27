@@ -57,7 +57,11 @@ Before diving into the 25 canonical patterns, ensure you have instant recall of 
 | O(2^N) | Exponential | Subset generation | 20-25 |
 | O(N!) | Factorial | Permutations | 10-12 |
 
-**The Constraint-to-Complexity Rule:** Read the problem constraints FIRST. If N ≤ 10^4, O(N²) is acceptable. If N ≤ 10^5, you need O(N log N) or better. If N ≤ 10^6, you need O(N). This single rule eliminates 50% of wrong algorithm choices before you write a line of code.
+![Big-O Time Complexity Comparison Graph](visuals/big_o_comparison.jpg){width=85%}
+
+**The Constraint-to-Complexity Rule:** Read the problem constraints FIRST. If N $\leq$ 10^4, O(N²) is acceptable. If N $\leq$ 10^5, you need O(N log N) or better. If N $\leq$ 10^6, you need O(N). This single rule eliminates 50% of wrong algorithm choices before you write a line of code.
+
+![Constraint-to-Complexity Flowchart](../02-problem-decomposition/visuals/constraint_flowchart.jpg){width=85%}
 
 ---
 
@@ -810,7 +814,7 @@ public class Trie {
 
 **Diagnostic Trigger:** "Find the K-th largest/smallest", "Merge K sorted lists", "Schedule tasks by priority", or any problem requiring efficient access to the minimum or maximum element while dynamically inserting.
 
-**Invariant:** The heap property is maintained: for a min-heap, every parent node is ≤ its children. This guarantees O(1) access to the minimum and O(log N) insertion/extraction.
+**Invariant:** The heap property is maintained: for a min-heap, every parent node is $\leq$ its children. This guarantees O(1) access to the minimum and O(log N) insertion/extraction.
 
 **Canonical Skeleton:**
 ```java

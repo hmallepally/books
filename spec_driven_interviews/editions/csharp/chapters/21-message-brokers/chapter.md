@@ -26,6 +26,8 @@ Apache Kafka is designed as a distributed, partitioned, commit log. Understandin
 2. **Partitions:** Topics are divided into multiple partitions distributed across Kafka brokers. Partitions are the unit of scalability in Kafka: while a single partition can only handle a throughput limited by its host broker, multiple partitions allow parallel writes and reads across the cluster.
 3. **Consumer Groups:** A consumer group is a collection of consumers working together to read messages from a topic. Kafka guarantees that each partition is assigned to exactly *one* consumer instance within a consumer group. This prevents duplicate processing of messages.
 
+![Kafka Partitions and Consumer Group Parallelism](visuals/kafka_partitions.jpg){width=85%}
+
 ### Replication and Durability
 Each partition is replicated across multiple brokers for fault tolerance:
 
@@ -175,6 +177,6 @@ Selecting the right broker technology depends on the architectural requirements:
 | **Schema Evolution** | Schema Registry (Avro/Protobuf) | No native schema support | No native schema support |
 
 
-> ⭐ **STAR Moment: The Ordering Guarantee**
+> * **STAR Moment: The Ordering Guarantee**
 > 
 > In a system design interview, explain: *"We will configure our payment topics with a partitioning key based on the ledger account ID. This guarantees that all transactions affecting a specific account are processed sequentially by a single thread in our consumer group, eliminating race conditions and balance corruption during high-frequency parallel events. We use the StickyAssignor with cooperative rebalancing to minimize processing pauses when consumers scale, and route poison messages to a Dead Letter Queue after three retry attempts to prevent partition blocking."* This shows deep understanding of partition routing, failure recovery, and operational maturity.

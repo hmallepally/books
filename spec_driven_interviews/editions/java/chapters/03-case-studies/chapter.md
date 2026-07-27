@@ -143,6 +143,8 @@ In the following chapters, we will use these domain classes to demonstrate OOP d
 
 ZenithTrade is a high-frequency, low-latency order matching engine. It is designed to process incoming buy and sell limit orders and execute matches in real time.
 
+![ZenithTrade High-Frequency Matching Engine Architecture](visuals/zenithtrade_architecture.jpg){width=85%}
+
 ### Key System Requirements
 
 - **Order Book State:** Maintains separate buy (bid) and sell (ask) order books, sorted by price (highest bid first, lowest ask first) and arrival time (FIFO).
@@ -185,6 +187,8 @@ These architectures serve as running case studies throughout the book. You will 
 ## ChiramTrust: Decentralized Identity Consent Wallet (Reference Architecture)
 
 ChiramTrust is a decentralized identity wallet that allows users to store credentials locally, negotiate sharing terms with verifiers, and establish consensus-based recovery.
+
+![ChiramTrust Decentralized Identity Wallet Architecture](visuals/chiramtrust_architecture.jpg){width=85%}
 
 ### Key System Requirements
 
@@ -249,6 +253,6 @@ To ensure zero-loss durability, ZenithTrade employs a write-ahead journal (WAJ) 
 
 If the Ledger database slows down or halts, the matching engine continues to process trades in memory without interruption. The event broker queues the trade events until the ledger recovers. This decoupling guarantees fault isolation and maintains a high-availability trading path."
 
-> ⭐ **STAR Moment: Bounded Context Isolation**
+> * **STAR Moment: Bounded Context Isolation**
 > 
 > During system design interviews, explain that microservice division should mirror DDD Bounded Contexts. Say: *"We will isolate the ZenithTrade Matching Engine from the AuraPay Ledger. If the ledger experiences a database write lag, our matching engine can continue to accept and queue orders in memory, preventing system-wide downtime."* This shows you design for fault isolation.

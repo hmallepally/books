@@ -28,6 +28,8 @@ Reactive programming solved this by decoupling processing execution from threads
 ### The Virtual Thread Revolution
 Virtual threads are lightweight threads managed by the JVM rather than the OS. They are mounted onto a small carrier pool of platform threads. When a virtual thread blocks on I/O (e.g., executing a SQL query), the JVM unmounts the virtual thread, parking it, and assigns the carrier thread to another task.
 
+![Thread Lifecycle and Context Switching States](visuals/thread_lifecycle.jpg){width=85%}
+
 *   **Impact:** You can run millions of virtual threads concurrently while writing standard, synchronous, block-on-write code that is easy to read, debug, and trace.
 
 ![Virtual Threads vs Platform Threads](visuals/virtual_threads.png){width=85%}
@@ -148,6 +150,8 @@ When designing financial ledgers, selecting the right locking paradigm is critic
 | **Starvation Risk** | High for hot accounts (constant retries) | Low (threads queue in order) | Medium (depends on retry/backoff settings) |
 | **Scale Limits** | Scales with DB capacity | Hard limit based on DB connection pool size | Scales horizontally with distributed key store |
 | **Deadlock Risk** | Zero | High (requires strict alphabetical locking of aggregates) | Medium (depends on lock lease expiration / release logic) |
+
+![Database Deadlock Cycle — Circular Wait Conditions](visuals/deadlock_diagram.jpg){width=85%}
 
 
 ## Caching Patterns & Consistency Deep-Dive
@@ -284,6 +288,6 @@ Setting the pool size to 17 will yield *higher* overall throughput than setting 
 
 
 
-> ⭐ **STAR Moment: The Cache Invalidation Design**
+> * **STAR Moment: The Cache Invalidation Design**
 > 
 > When discussing performance during an interview, never say *"We will add a cache."* Say: *"We will implement a Cache-Aside pattern using Redis. To prevent stale reads in our double-entry ledger, we will use a transactional write-through strategy, invalidating cache keys atomically inside the database commit boundary to ensure absolute consistency."* This shows you understand caching boundaries in financial transaction systems.

@@ -6,6 +6,8 @@
 
 In the high-stakes environment of technical assessments, the most common trap engineers fall into is the pursuit of memorization. Memorizing solutions to hundreds of common interview questions might give a false sense of security, but it invariably fails when confronted with novel, unique, or subtly modified problems. The real skill—the one that distinguishes top-tier candidates—is not recall, but the ability to break any complex, unfamiliar problem into a series of recognizable, solvable sub-problems that map directly to known patterns.
 
+![Problem Decomposition Tree — Breaking Complex Problems into Sub-Problems](visuals/decomposition_tree.jpg){width=85%}
+
 This principle applies universally across all assessment formats. Whether you are facing a monotonically increasing difficulty curve, equal-weight peer questions, a single deep architectural problem, or a live whiteboard interview, decomposition remains your primary analytical tool. When you encounter a question you have never seen before, your memorized catalog of answers is useless. However, your ability to dismantle that question into its atomic components is exactly what the assessment is designed to measure.
 
 Mastering problem decomposition transitions your mindset from "Have I seen this before?" to "What are the underlying structures of this problem?" It transforms an insurmountable challenge into a structured exercise in pattern recognition and application.
@@ -44,6 +46,8 @@ Let us walk through a concrete example using the framework. Consider this proble
 **Step 1: Constraint Analysis**
 Assume $N \le 10^5$. This instantly rules out any $O(N^2)$ solution. We must solve this in $O(N)$ or $O(N \log N)$ time.
 
+![Constraint-to-Complexity Flowchart](visuals/constraint_flowchart.jpg){width=85%}
+
 **Step 2: Data Flow Mapping**
 Input: Array of $N$ heights. Output: A single integer (total water). This is a reduction problem. For any building `i`, the water it traps is `min(max_left, max_right) - height[i]`.
 
@@ -79,6 +83,6 @@ In modern assessment environments, particularly equal-weight assessments where a
 
 When confronted with novel, never-before-seen problems—problems explicitly designed to test engineering limits rather than memorization—decomposition is the *only* reliable strategy. It bridges the gap between the unknown problem domain and your known catalog of patterns, ensuring that you can always make structured, demonstrable progress.
 
-> ⭐ **STAR Moment: The Decomposition Discipline**
+> * **STAR Moment: The Decomposition Discipline**
 >
 > Before you write a single line of code, invest 3-5 minutes in decomposition. Write your analysis as comments at the top of your solution file. This serves three purposes: it clarifies your thinking, it provides partial credit if you run out of time, and it creates a roadmap that prevents you from getting lost during implementation.

@@ -61,12 +61,16 @@ Choosing an architectural style is a trade-off between latency, complexity, and 
 
 ![Monolithic vs Microservices vs Event-Driven Architecture](visuals/arch_styles.png){width=80%}
 
+![System Evolution — Scaling from Monolith to Microservices](visuals/system_evolution.jpg){width=85%}
+
 
 ## Scaling Out: Partitioning & Consistent Hashing
 
 A single matching engine instance cannot handle all trading instruments globally. To scale ZenithTrade horizontally, we must partition (shard) the matching workload.
 
 ### Consistent Hashing for Instrument Sharding
+
+![Consistent Hashing Ring — Distributed Key Routing](visuals/consistent_hashing.jpg){width=85%}
 Instead of traditional modulo sharding (`hash(instrumentId) % nodeCount`), which causes massive data reshuffling when nodes are added or removed, ZenithTrade utilizes a **Consistent Hash Ring**:
 
 1.  **The Ring:** The hash space is mapped onto a circular ring (e.g., 0 to $2^{32} - 1$).
@@ -87,6 +91,8 @@ In financial systems, read traffic (users querying active order books, historica
 ## CAP Theorem & Distributed Trade-offs
 
 The CAP Theorem states that in a distributed system, you can only guarantee two out of three properties during a network partition: **Consistency (C)**, **Availability (A)**, or **Partition Tolerance (P)**. Because network partitions are inevitable in real-world infrastructure, system design is a choice between **CP** and **AP**:
+
+![CAP Theorem — Consistency, Availability, and Partition Tolerance Trade-offs](visuals/cap_theorem.jpg){width=85%}
 
 -   **The Ledger Context (CP Choice):** AuraPay is designed as a **CP** system. In financial bookkeeping, correctness is non-negotiable. If a network partition occurs between ledger replicas, we must reject transaction requests (sacrificing availability) rather than risk allowing double-spending or balance mismatch (sacrificing consistency). Consensus protocols like Raft or Paxos are used to coordinate commits across healthy replicas.
 -   **The Market Feed Context (AP Choice):** The ZenithTrade public price feed (ticker data) is designed as an **AP** system. If a partition occurs, it is better to continue broadcasting the latest available price data (even if slightly stale) to users than to shut down the feed entirely.
@@ -387,6 +393,6 @@ Modern system design interviews increasingly expect familiarity with container o
 
 **Serverless Trade-offs:** Lambda/Cloud Functions eliminate infrastructure management but introduce cold start latency (100ms-2s), vendor lock-in, and debugging complexity. Use for event-driven workloads (image processing, webhook handling), not for latency-critical paths.
 
-> ⭐ **STAR Moment: Bounded Context Isolation**
+> * **STAR Moment: Bounded Context Isolation**
 > 
 > During system design interviews, explain that microservice division should mirror DDD Bounded Contexts. Say: *"We will isolate the ZenithTrade Matching Engine from the AuraPay Ledger. If the ledger experiences a database write lag, our matching engine can continue to accept and queue orders in memory, preventing system-wide downtime."* This shows you design for fault isolation.

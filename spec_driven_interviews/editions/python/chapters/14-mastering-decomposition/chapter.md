@@ -44,6 +44,8 @@ To navigate complex problem spaces effectively, we must formalize the 5-step dec
 
 By rigidly adhering to this canvas, you eliminate the panic of the blank screen and replace it with a systematic diagnostic process.
 
+![Problem Analysis Canvas — Structured Decomposition Framework](visuals/problem_analysis_canvas.jpg){width=85%}
+
 ## Decomposition Walkthroughs
 
 The following sections provide comprehensive step-by-step decomposition analyses across varying levels of complexity. We will analyze the problems, deconstruct them using the canvas methodology, and map them to our canonical patterns.
@@ -192,6 +194,8 @@ Tier 3 problems represent the apex of algorithmic assessments. These problems re
 
 ## The Pattern Recognition Decision Tree (Expanded)
 
+![Pattern Selection Decision Matrix](visuals/decomposition_decision.jpg){width=85%}
+
 To facilitate rapid decomposition during an assessment, utilize this expanded diagnostic decision tree. When analyzing a problem, ask yourself these guiding questions in sequence:
 
 1.  **What is the primary data structure?**
@@ -264,6 +268,6 @@ Apply the Problem Analysis Canvas to the following 15 problem statements. Do not
 14. Calculate the edit distance between two strings. *(Hint: 2D Dynamic Programming)*
 15. Find all valid combinations of $k$ numbers that sum up to $n$. *(Hint: Backtracking)*
 
-> ⭐ **STAR Moment: The Synthesis Mindset**
+> * **STAR Moment: The Synthesis Mindset**
 >
 > The engineers who consistently score in the top percentile on technical assessments are not the ones who have memorized the most solutions. They are the ones who can see the hidden structure in novel problems. Every new problem is a remix of patterns you already know. Train your eyes to see the composition, and no assessment will ever surprise you.

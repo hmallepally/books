@@ -9,6 +9,8 @@ In many enterprise applications, domain classes are treated as passive data hold
 
 When your domain models are anemic, the business logic shifts into stateless service classes (e.g., `LedgerService`). The service pulls the state out of the domain model, performs validation, modifies the fields, and pushes the data back to the database. The danger of this design is that the domain object itself has no control over its state. Any developer can instantiate a ledger account, set the balance to a negative value without checks, and persist it, violating the core safety boundaries of the system.
 
+![God Object Violation Detector — Single Responsibility Principle](visuals/oop_violation_detector.jpg){width=85%}
+
 The following code illustrates this fragile, anemic design:
 
 ```java
@@ -290,6 +292,6 @@ public class SettlementProcessor {
 
 
 
-> ⭐ **STAR Moment: The Encapsulation Test**
+> * **STAR Moment: The Encapsulation Test**
 > 
 > When designing class structures in a technical interview, ask yourself: *Can this class enter an invalid state?* If a client developer can instantiate your object and set its properties to values that violate business rules, your encapsulation has failed. Build your validation boundaries directly into the constructors and state-transition methods of your domain objects.

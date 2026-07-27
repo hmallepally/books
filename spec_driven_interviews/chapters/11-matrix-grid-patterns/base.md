@@ -77,9 +77,9 @@ $$S[r][c] = A[r\text{-}1][c\text{-}1] + S[r\text{-}1][c] + S[r][c\text{-}1] - S[
 
 $$S[2][2] = \underbrace{A[1][1]}_{5} + \underbrace{S[1][2]}_{3} + \underbrace{S[2][1]}_{5} - \underbrace{S[1][1]}_{1} = 12$$
 
-The two 5s come from different sources: `A[1][1] = 5` is the center cell of the original matrix, while `S[2][1] = 5` is the prefix sum of the first column (`1 + 4 = 5`). Verify: `S[2][2]` should equal `1 + 2 + 4 + 5 = 12` — the sum of all elements from `(0,0)` to `(1,1)`. ✓
+The two 5s come from different sources: `A[1][1] = 5` is the center cell of the original matrix, while `S[2][1] = 5` is the prefix sum of the first column (`1 + 4 = 5`). Verify: `S[2][2]` should equal `1 + 2 + 4 + 5 = 12` — the sum of all elements from `(0,0)` to `(1,1)`. [x]
 
-**Sanity check**: `S[3][3] = 45` equals `1+2+3+4+5+6+7+8+9 = 45`. ✓
+**Sanity check**: `S[3][3] = 45` equals `1+2+3+4+5+6+7+8+9 = 45`. [x]
 
 ![2D Prefix Sum — Construction via Inclusion-Exclusion (Trace)](visuals/prefix_sum_construction.png){width=85%}
 

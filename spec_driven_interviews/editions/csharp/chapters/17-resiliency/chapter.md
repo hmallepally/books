@@ -236,6 +236,6 @@ Expose endpoints (e.g., Prometheus Prometheus JMX/Micrometer) to collect perform
 - **Application Metrics:** API request rates, HTTP 5xx error counts, database connection pool saturation, and circuit breaker states.
 
 
-> ⭐ **STAR Moment: Compensating Transactions vs Rollback**
+> * **STAR Moment: Compensating Transactions vs Rollback**
 > 
 > In a system design interview, make sure to emphasize that a Saga cannot "rollback" in the traditional database sense, because the initial transactions have already been committed. Instead, we must write explicit **compensating transactions** (e.g., if a debit was committed, the compensation is a credit). You must design these compensating operations to be **idempotent**, as they may be retried multiple times during a network partition.
