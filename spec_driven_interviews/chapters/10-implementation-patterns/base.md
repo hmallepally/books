@@ -145,7 +145,7 @@ These are the two most important templates to have memorized before the exam.
 **Trace Walkthrough** (input: `['a','a','b','b','c','c','c']`):
 
 | Step | read | write | Action | State |
-|------|------|-------|--------|-------|
+|:---:|:----:|:-----:|:--------------|:-----------------------------------|
 | Init | 0    | 0     | Start  | `['a','a','b','b','c','c','c']` |
 | 1    | 2    | 2     | Run 'a' len 2 | `['a','2','b','b','c','c','c']` |
 | 2    | 4    | 4     | Run 'b' len 2 | `['a','2','b','2','c','c','c']` |
@@ -465,7 +465,7 @@ The following problems are drawn directly from the automated testing platforms A
 **Trace Walkthrough** (input: `[1, 3, 2, 1]`):
 
 | Step | i | nums[i] | nums[i+1] | Violation? | Action | State (Violations) |
-|------|---|---------|-----------|------------|--------|--------------------|
+|:---:|:---:|:-------:|:---------:|:----------:|:-------|:-------------------|
 | 1    | 0 | 1       | 3         | No         | Continue | 0 |
 | 2    | 1 | 3       | 2         | Yes        | Check removals | 1 |
 | 3    | 2 | 2       | 1         | Yes        | Return false   | >1 |
@@ -483,7 +483,7 @@ The following problems are drawn directly from the automated testing platforms A
 **Trace Walkthrough** (input: `"(u(love)i)"`):
 
 | Step | char | Action | Stack | Current String |
-|------|------|--------|-------|----------------|
+|:---:|:----:|:-------|:------|:---------------|
 | 1    | '('  | Push new | `[""]` | `""` |
 | 2    | 'u'  | Append   | `[""]` | `"u"` |
 | 3    | '('  | Push new | `["", "u"]` | `""` |

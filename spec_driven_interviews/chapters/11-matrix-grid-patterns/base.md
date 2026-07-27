@@ -139,7 +139,7 @@ S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28
 **Trace Walkthrough** (input: `3x3 matrix`):
 
 | Step | Row | Col | Direction | Value | Action |
-|------|-----|-----|-----------|-------|--------|
+|:---:|:---:|:---:|:----------|:-----:|:-------|
 | 1    | 0   | 0   | Right     | 1     | Add to result |
 | 2    | 0   | 1   | Right     | 2     | Add to result |
 | 3    | 0   | 2   | Right     | 3     | Add, contract top bound |
@@ -285,7 +285,7 @@ S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28
 **Trace Walkthrough** (input: `Sudoku with duplicate 5s in row 0`):
 
 | Step | Row | Col | Value | Encoded Strings | Action |
-|------|-----|-----|-------|-----------------|--------|
+|:---:|:---:|:---:|:-----:|:----------------|:-------|
 | 1    | 0   | 0   | 5     | "5 in row 0", "5 in col 0", "5 in block 0-0" | Add to HashSet (Success) |
 | 2    | 0   | 1   | 3     | "3 in row 0", "3 in col 1", "3 in block 0-0" | Add to HashSet (Success) |
 | 3    | 0   | 4   | 5     | "5 in row 0", "5 in col 4", "5 in block 0-1" | Add to HashSet (Collision on "5 in row 0") -> Return false |
@@ -317,7 +317,7 @@ S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28
 **Trace Walkthrough** (input: `mat=[[1,2,3],[4,5,6],[7,8,9]], K=2`):
 
 | Step | Row | Col | Value | Action |
-|------|-----|-----|-------|--------|
+|:---:|:---:|:---:|:-----:|:-------|
 | 1    | 2   | 2   | 12    | Query (2,2) with K=2: 12 - 0 - 0 + 0 = 12 |
 | 2    | 2   | 3   | 16    | Query (2,3) with K=2: 18 - 0 - 2 + 0 = 16 |
 | 3    | 3   | 2   | 24    | Query (3,2) with K=2: 27 - 3 - 0 + 0 = 24 |
@@ -482,7 +482,7 @@ S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28
 **Trace Walkthrough** (input: `[[2,1,1],[1,1,0],[0,1,1]]`):
 
 | Step | Row | Col | Minute | Value | Action |
-|------|-----|-----|--------|-------|--------|
+|:---:|:---:|:---:|:------:|:-----:|:-------|
 | 1    | 0   | 0   | 0      | 2     | Initial rotten, enqueue |
 | 2    | 0   | 1   | 1      | 1->2  | Rot right neighbor, enqueue |
 | 3    | 1   | 0   | 1      | 1->2  | Rot bottom neighbor, enqueue |

@@ -382,7 +382,7 @@ The three nested loops enumerate: interval length → starting position → whic
 **Trace-Through:** Cache capacity = 2.
 
 | Operation | HashMap | Linked List (HEAD → TAIL) | Why |
-|---|---|---|---|
+|:-----------------|:-------------------|:--------------------------|:-------------------------------------------------------|
 | `put(1, "A")` | {1→A} | **[1]** | First entry, goes to head |
 | `put(2, "B")` | {1→A, 2→B} | **[2, 1]** | Newest at head |
 | `get(1)` | {1→A, 2→B} | **[1, 2]** | Accessed 1 → move to head |
@@ -425,7 +425,7 @@ Notice: after `get(1)`, key 1 moved to head, saving it from eviction. Key 2, unt
 **Trace-Through (Monotonic Stack for Heights `[3, 1, 3, 2, 2]`):**
 
 | Index `i` | Height `h` | Action | Stack State | Area Calculated |
-|---|---|---|---|---|
+|:---------:|:----------:|:-----------------------------|:------------|:----------------|
 | 0 | 3 | Push 0 | `[0]` | — |
 | 1 | 1 | `1 < 3` $\rightarrow$ Pop 0 (h=3) | `[]` | `height=3, width=1` $\rightarrow$ **3** |
 | 1 | 1 | Push 1 | `[1]` | — |
