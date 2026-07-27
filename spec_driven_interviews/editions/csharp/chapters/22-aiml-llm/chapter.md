@@ -173,6 +173,14 @@ public class LlmGatewaySecurityFilter
 Any incoming prompt containing injection signatures is blocked immediately before execution, protecting the LLM boundary from security drift.
 
 
+## Case Study Integration: ML in Practice
+
+**AuraPay: Real-Time Fraud Detection Pipeline**
+AuraPay processes 50,000 transactions per second. Its fraud detection pipeline combines rule-based filters (velocity checks, geo-anomaly flags) with a gradient-boosted ensemble model trained on 18 months of labeled transaction data. Feature engineering extracts 47 signals per transaction: merchant category deviation, time-of-day risk scores, device fingerprint similarity, and spending velocity z-scores. The model runs inference in < 5ms per transaction via ONNX Runtime, with a fallback to rule-only evaluation if the ML service is unavailable (graceful degradation, per Chapter 17's resiliency patterns).
+
+**ZenithTrade: LLM-Powered Compliance Checker**
+ZenithTrade's regulatory compliance team reviews 200+ SEC filings weekly. Their LLM pipeline uses Retrieval-Augmented Generation (RAG) to cross-reference new filings against the firm's internal compliance rulebook (12,000 rules). The system generates structured compliance reports highlighting potential violations, with confidence scores and source citations. Human compliance officers review flagged items — the LLM augments but never replaces human judgment on regulatory decisions.
+
 ## Cost Optimization for LLM-Powered Systems
 
 LLM inference costs scale directly with token volume. At enterprise scale, unoptimized architectures can generate six-figure monthly bills:

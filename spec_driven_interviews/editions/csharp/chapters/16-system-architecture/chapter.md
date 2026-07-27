@@ -140,29 +140,28 @@ The token bucket algorithm maintains a bucket that holds a maximum number of tok
 import java.util.concurrent.atomic.AtomicLong;
 
 public class TokenBucket {
-    private final long capacity;
-    private final long refillTokensPerSecond;
-    private AtomicLong tokens;
-    private AtomicLong lastRefillTimestamp;
+    private record State(long tokens, long timestampNanos) {}
+    
+    private final AtomicReference<State> state;
+    private final long maxTokens;
+    private final long refillRatePerSecond;
 
-    public TokenBucket(long capacity, long refillTokensPerSecond) {
-        this.capacity = capacity;
-        this.refillTokensPerSecond = refillTokensPerSecond;
-        this.tokens = new AtomicLong(capacity);
-        this.lastRefillTimestamp = new AtomicLong(System.currentTimeMillis());
+    public TokenBucket(long maxTokens, long refillRatePerSecond) {
+        this.maxTokens = maxTokens;
+        this.refillRatePerSecond = refillRatePerSecond;
+        this.state = new AtomicReference<>(new State(maxTokens, System.nanoTime()));
     }
 
     public boolean allowRequest() {
         while (true) {
+            State current = state.get();
             long now = System.nanoTime();
-            long currentTokens = tokens.get();
-            long elapsed = now - lastRefillTimestamp.get();
-            long newTokens = Math.min(capacity, currentTokens + elapsed * refillTokensPerSecond / 1_000_000_000L);
-            if (newTokens <= 0) return false;
-            if (tokens.compareAndSet(currentTokens, newTokens - 1)) {
-                lastRefillTimestamp.set(now);
-                return true;
-            }
+            long elapsed = now - current.timestampNanos();
+            long refilled = Math.min(maxTokens,
+                current.tokens() + elapsed * refillRatePerSecond / 1_000_000_000L);
+            if (refilled <= 0) return false;
+            State next = new State(refilled - 1, now);
+            if (state.compareAndSet(current, next)) return true;
         }
     }
 }

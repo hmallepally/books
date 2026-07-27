@@ -182,129 +182,15 @@ Why it matters: Problems like climbing stairs, decode ways, and tiling can be in
 ## Reusable Code Templates
 
 ### Template A: Binary Search
-```java
-// Standard Binary Search
-int binarySearch(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) return mid;
-        else if (nums[mid] < target) left = mid + 1;
-        else right = mid - 1;
-    }
-    return -1;
-}
-
-// Binary Search on Answer Space (Leftmost valid)
-int binarySearchAnswerSpace(int min, int max) {
-    int left = min, right = max;
-    int best = -1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (isValid(mid)) {
-            best = mid;
-            right = mid - 1; // Try to find a smaller valid answer
-        } else {
-            left = mid + 1;
-        }
-    }
-    return best;
-}
-```
-
+{{ inject('code_block_1.md') }}
 ### Template B: Monotonic Stack
-```java
-public int[] nextGreaterElement(int[] nums) {
-    int n = nums.length;
-    int[] result = new int[n];
-    Arrays.fill(result, -1);
-    Deque<Integer> stack = new ArrayDeque<>(); // stores indices
-    for (int i = 0; i < n; i++) {
-        // Maintain strictly decreasing stack
-        while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
-            int prevIndex = stack.pop();
-            result[prevIndex] = nums[i]; // Found next greater!
-        }
-        stack.push(i);
-    }
-    return result;
-}
-```
-
+{{ inject('code_block_2.md') }}
 ### Template C: 1D DP with State Compression
-```java
-public int dpStateCompression(int[] nums) {
-    if (nums.length == 0) return 0;
-    int prev2 = 0; // dp[i-2]
-    int prev1 = nums[0]; // dp[i-1]
-    for (int i = 1; i < nums.length; i++) {
-        int curr = Math.max(prev1, prev2 + nums[i]);
-        prev2 = prev1;
-        prev1 = curr;
-    }
-    return prev1;
-}
-```
-
+{{ inject('code_block_3.md') }}
 ### Template D: BFS with Level Tracking
-```java
-public int bfsLevel(Node start, Node target) {
-    Queue<Node> queue = new ArrayDeque<>();
-    Set<Node> visited = new HashSet<>();
-    queue.offer(start);
-    visited.add(start);
-    
-    int level = 0;
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i < size; i++) {
-            Node curr = queue.poll();
-            if (curr.equals(target)) return level;
-            
-            for (Node neighbor : curr.neighbors) {
-                if (!visited.contains(neighbor)) {
-                    visited.add(neighbor);
-                    queue.offer(neighbor);
-                }
-            }
-        }
-        level++; // Increment level after exploring all nodes at current depth
-    }
-    return -1;
-}
-```
-
+{{ inject('code_block_4.md') }}
 ### Template E: Topological Sort (Kahn's Algorithm)
-```java
-public List<Integer> topologicalSort(int numNodes, int[][] edges) {
-    var adj = new ArrayList<List<Integer>>();
-    int[] inDegree = new int[numNodes];
-    for (int i = 0; i < numNodes; i++) adj.add(new ArrayList<>());
-    
-    for (int[] edge : edges) {
-        adj.get(edge[1]).add(edge[0]); // edge[1] -> edge[0]
-        inDegree[edge[0]]++;
-    }
-    
-    var queue = new ArrayDeque<Integer>();
-    for (int i = 0; i < numNodes; i++) {
-        if (inDegree[i] == 0) queue.offer(i);
-    }
-    
-    List<Integer> order = new ArrayList<>();
-    while (!queue.isEmpty()) {
-        int curr = queue.poll();
-        order.add(curr);
-        for (int neighbor : adj.get(curr)) {
-            if (--inDegree[neighbor] == 0) {
-                queue.offer(neighbor);
-            }
-        }
-    }
-    return order.size() == numNodes ? order : new ArrayList<>(); // Empty if cycle exists
-}
-```
-
+{{ inject('code_block_5.md') }}
 * * *
 
 ## Solved Exemplar Problems
@@ -319,38 +205,7 @@ public List<Integer> topologicalSort(int numNodes, int[][] edges) {
 
 **Explanation:** We use the monotonic partition invariant. At any midpoint, at least one half of the array is strictly sorted. We identify the sorted half and check if the target falls within its range.
 
-```java
-public int search(int[] nums, int target) {
-    if (nums == null || nums.length == 0) return -1;
-    int left = 0, right = nums.length - 1;
-    
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) return mid;
-        
-        // Left half is sorted
-        if (nums[left] <= nums[mid]) {
-            if (nums[left] <= target && target < nums[mid]) {
-                right = mid - 1; // Target is in the sorted left half
-            } else {
-                left = mid + 1; // Target must be in the right half
-            }
-        } 
-        // Right half is sorted
-        else {
-            if (nums[mid] < target && target <= nums[right]) {
-                left = mid + 1; // Target is in the sorted right half
-            } else {
-                right = mid - 1; // Target must be in the left half
-            }
-        }
-    }
-    return -1;
-}
-// Time Complexity: O(log N)
-// Space Complexity: O(1)
-```
-
+{{ inject('code_block_6.md') }}
 * * *
 
 **2. Sliding Window Maximum**
@@ -362,36 +217,7 @@ public int search(int[] nums, int target) {
 
 **Explanation:** We maintain a deque of indices such that the values are in strictly decreasing order. The front of the deque always holds the maximum element's index for the current window. We remove elements from the front that fall out of the window.
 
-```java
-public int[] maxSlidingWindow(int[] nums, int k) {
-    if (nums == null || k <= 0) return new int[0];
-    int n = nums.length;
-    int[] res = new int[n - k + 1];
-    int resIndex = 0;
-    Deque<Integer> q = new ArrayDeque<>();
-    
-    for (int i = 0; i < n; i++) {
-        // Remove indices outside the current window
-        if (!q.isEmpty() && q.peekFirst() < i - k + 1) {
-            q.pollFirst();
-        }
-        // Remove smaller elements (maintain decreasing order)
-        while (!q.isEmpty() && nums[q.peekLast()] < nums[i]) {
-            q.pollLast();
-        }
-        q.offerLast(i);
-        
-        // Record max for the window
-        if (i >= k - 1) {
-            res[resIndex++] = nums[q.peekFirst()];
-        }
-    }
-    return res;
-}
-// Time Complexity: O(N) since each element is pushed/popped at most once
-// Space Complexity: O(K) for the deque
-```
-
+{{ inject('code_block_7.md') }}
 * * *
 
 **3. Longest Common Subsequence**
@@ -423,27 +249,7 @@ The bold diagonal cells show: C matches C (1), A matches A (2), T matches T (3).
 
 **Explanation:** `dp[i][j]` represents the LCS of the prefixes of length `i` and `j`. If characters match, we add 1 to the result of `dp[i-1][j-1]`. If not, we take the max of skipping a character in either string.
 
-```java
-public int longestCommonSubsequence(String text1, String text2) {
-    if (text1.length() < text2.length()) return longestCommonSubsequence(text2, text1);
-    int m = text1.length(), n = text2.length();
-    var prev = new int[n + 1];
-    var curr = new int[n + 1];
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            curr[j] = text1.charAt(i - 1) == text2.charAt(j - 1)
-                ? prev[j - 1] + 1
-                : Math.max(prev[j], curr[j - 1]);
-        }
-        var temp = prev; prev = curr; curr = temp;
-        java.util.Arrays.fill(curr, 0);
-    }
-    return prev[n];
-}
-// Time Complexity: O(M * N)
-// Space Complexity: O(min(M, N)) - Space compressed DP as taught in the vocabulary section.
-```
-
+{{ inject('code_block_8.md') }}
 * * *
 
 **4. Burst Balloons**
@@ -471,32 +277,7 @@ The three nested loops enumerate: interval length → starting position → whic
 
 **Explanation:** We think backwards: what is the LAST balloon to be burst in an interval `[left, right]`? This allows us to split the problem into independent subproblems. `dp[i][j]` is the max coins obtained from bursting balloons strictly between `i` and `j`.
 
-```java
-public int maxCoins(int[] nums) {
-    int n = nums.length;
-    int[] arr = new int[n + 2];
-    arr[0] = 1; arr[n + 1] = 1; // Padding with 1s
-    for (int i = 0; i < n; i++) arr[i + 1] = nums[i];
-    
-    int[][] dp = new int[n + 2][n + 2];
-    
-    // len is the length of the interval strictly between i and j
-    for (int len = 1; len <= n; len++) {
-        for (int i = 0; i <= n - len; i++) {
-            int j = i + len + 1;
-            // k is the index of the LAST balloon to burst in (i, j)
-            for (int k = i + 1; k < j; k++) {
-                int coins = arr[i] * arr[k] * arr[j] + dp[i][k] + dp[k][j];
-                dp[i][j] = Math.max(dp[i][j], coins);
-            }
-        }
-    }
-    return dp[0][n + 1];
-}
-// Time Complexity: O(N^3)
-// Space Complexity: O(N^2)
-```
-
+{{ inject('code_block_9.md') }}
 * * *
 
 **5. Maximum Product Subarray**
@@ -508,28 +289,7 @@ public int maxCoins(int[] nums) {
 
 **Explanation:** Since multiplying two negative numbers yields a positive number, we must track BOTH the maximum product and the minimum product ending at the current position.
 
-```java
-public int maxProduct(int[] nums) {
-    if (nums == null || nums.length == 0) return 0;
-    int maxVal = nums[0], minVal = nums[0], result = nums[0];
-    
-    for (int i = 1; i < nums.length; i++) {
-        // If current is negative, max and min will swap roles
-        if (nums[i] < 0) {
-            int temp = maxVal; 
-            maxVal = minVal; 
-            minVal = temp;
-        }
-        maxVal = Math.max(nums[i], maxVal * nums[i]);
-        minVal = Math.min(nums[i], minVal * nums[i]);
-        result = Math.max(result, maxVal);
-    }
-    return result;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(1)
-```
-
+{{ inject('code_block_10.md') }}
 * * *
 
 **6. Median of Two Sorted Arrays**
@@ -541,40 +301,7 @@ public int maxProduct(int[] nums) {
 
 **Explanation:** We binary search for the correct partition index in the smaller array such that the left halves of both arrays contain exactly half the total elements, and the largest element on the left is $\le$ the smallest element on the right.
 
-```java
-public double findMedianSortedArrays(int[] A, int[] B) {
-    if (A.length > B.length) return findMedianSortedArrays(B, A); // ensure A is smaller
-    int m = A.length, n = B.length;
-    int left = 0, right = m;
-    
-    while (left <= right) {
-        int i = (left + right) / 2; // partition A
-        int j = (m + n + 1) / 2 - i; // partition B
-        
-        int maxLeftA = (i == 0) ? Integer.MIN_VALUE : A[i - 1];
-        int minRightA = (i == m) ? Integer.MAX_VALUE : A[i];
-        int maxLeftB = (j == 0) ? Integer.MIN_VALUE : B[j - 1];
-        int minRightB = (j == n) ? Integer.MAX_VALUE : B[j];
-        
-        if (maxLeftA <= minRightB && maxLeftB <= minRightA) {
-            // Correct partition found
-            if ((m + n) % 2 == 0) {
-                return (Math.max(maxLeftA, maxLeftB) + Math.min(minRightA, minRightB)) / 2.0;
-            } else {
-                return Math.max(maxLeftA, maxLeftB);
-            }
-        } else if (maxLeftA > minRightB) {
-            right = i - 1; // move partition left in A
-        } else {
-            left = i + 1; // move partition right in A
-        }
-    }
-    return 0.0;
-}
-// Time Complexity: O(log(min(M, N)))
-// Space Complexity: O(1)
-```
-
+{{ inject('code_block_11.md') }}
 * * *
 
 **7. Trapping Rain Water**
@@ -586,29 +313,7 @@ public double findMedianSortedArrays(int[] A, int[] B) {
 
 **Explanation:** The amount of water above a bar depends on `min(max_left, max_right)`. We use two pointers from both ends, safely moving the pointer that points to the strictly smaller max bound, adding water along the way.
 
-```java
-public int trap(int[] height) {
-    if (height == null || height.length == 0) return 0;
-    int left = 0, right = height.length - 1;
-    int leftMax = 0, rightMax = 0, totalWater = 0;
-    
-    while (left < right) {
-        if (height[left] < height[right]) {
-            if (height[left] >= leftMax) leftMax = height[left];
-            else totalWater += leftMax - height[left];
-            left++;
-        } else {
-            if (height[right] >= rightMax) rightMax = height[right];
-            else totalWater += rightMax - height[right];
-            right--;
-        }
-    }
-    return totalWater;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(1)
-```
-
+{{ inject('code_block_12.md') }}
 * * *
 
 **8. Daily Temperatures**
@@ -621,26 +326,7 @@ public int trap(int[] height) {
 
 **Explanation:** We maintain a stack of indices representing days where we haven't found a warmer day yet (decreasing order). When we find a warmer day, we pop from the stack and compute the wait time.
 
-```java
-public int[] dailyTemperatures(int[] temperatures) {
-    int n = temperatures.length;
-    int[] res = new int[n];
-    Deque<Integer> stack = new ArrayDeque<>();
-    
-    for (int i = 0; i < n; i++) {
-        // While current temp is greater than temp at stack top
-        while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
-            int prevIndex = stack.pop();
-            res[prevIndex] = i - prevIndex;
-        }
-        stack.push(i);
-    }
-    return res;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(N)
-```
-
+{{ inject('code_block_13.md') }}
 * * *
 
 **9. Edit Distance / Levenshtein**
@@ -674,32 +360,7 @@ public int[] dailyTemperatures(int[] temperatures) {
 
 **Explanation:** `dp[i][j]` is the edit distance between `word1` prefix length `i` and `word2` prefix length `j`. If characters match, cost is `dp[i-1][j-1]`. Otherwise, cost is `1 + min(insert, delete, replace)`.
 
-```java
-public int minDistance(String word1, String word2) {
-    int m = word1.length(), n = word2.length();
-    int[][] dp = new int[m + 1][n + 1];
-    
-    // Base cases
-    for (int i = 0; i <= m; i++) dp[i][0] = i;
-    for (int j = 0; j <= n; j++) dp[0][j] = j;
-    
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
-                dp[i][j] = dp[i - 1][j - 1]; // No op
-            } else {
-                dp[i][j] = 1 + Math.min(dp[i - 1][j - 1], // Replace
-                               Math.min(dp[i - 1][j],     // Delete
-                                        dp[i][j - 1]));   // Insert
-            }
-        }
-    }
-    return dp[m][n];
-}
-// Time Complexity: O(M * N)
-// Space Complexity: O(M * N)
-```
-
+{{ inject('code_block_14.md') }}
 * * *
 
 **10. LRU Cache**
@@ -727,63 +388,7 @@ Notice: after `get(1)`, key 1 moved to head, saving it from eviction. Key 2, unt
 
 **Explanation:** The HashMap provides $\mathcal{O}(1)$ access to nodes. The Doubly Linked List maintains the eviction order. Moving a node to the head of the list designates it as most recently used.
 
-```java
-public class LRUCache {
-    class Node { 
-        int key, val; 
-        Node prev, next; 
-    }
-    private Map<Integer, Node> map = new HashMap<>();
-    private int capacity;
-    private Node head, tail;
-
-    public LRUCache(int capacity) {
-        this.capacity = capacity;
-        head = new Node(); 
-        tail = new Node();
-        head.next = tail; 
-        tail.prev = head; // Connect dummy head and tail
-    }
-    
-    public int get(int key) {
-        if (!map.containsKey(key)) return -1;
-        Node node = map.get(key);
-        remove(node); // Move to head (MRU)
-        insert(node);
-        return node.val;
-    }
-    
-    public void put(int key, int value) {
-        if (map.containsKey(key)) {
-            remove(map.get(key));
-        }
-        if (map.size() == capacity) {
-            map.remove(tail.prev.key);
-            remove(tail.prev); // Evict LRU
-        }
-        Node node = new Node(); 
-        node.key = key; 
-        node.val = value;
-        insert(node);
-        map.put(key, node);
-    }
-    
-    private void remove(Node node) {
-        node.prev.next = node.next; 
-        node.next.prev = node.prev;
-    }
-    
-    private void insert(Node node) { // Insert right after head
-        node.next = head.next; 
-        node.next.prev = node;
-        head.next = node; 
-        node.prev = head;
-    }
-}
-// Time Complexity: O(1) for both get and put
-// Space Complexity: O(Capacity)
-```
-
+{{ inject('code_block_15.md') }}
 * * *
 
 **11. Maximal Rectangle in Binary Matrix**
@@ -829,41 +434,7 @@ public class LRUCache {
 
 **Explanation:** We treat each row as the base of a histogram and update heights. We then run the $\mathcal{O}(N)$ "Largest Rectangle in Histogram" algorithm using a monotonic stack on each row.
 
-```java
-public int maximalRectangle(char[][] matrix) {
-    if (matrix == null || matrix.length == 0) return 0;
-    int cols = matrix[0].length;
-    int[] heights = new int[cols];
-    int maxArea = 0;
-    
-    for (char[] row : matrix) {
-        // Update histogram heights
-        for (int c = 0; c < cols; c++) {
-            heights[c] = (row[c] == '1') ? heights[c] + 1 : 0;
-        }
-        maxArea = Math.max(maxArea, maxHistogram(heights));
-    }
-    return maxArea;
-}
-
-private int maxHistogram(int[] heights) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    int max = 0, n = heights.length;
-    for (int i = 0; i <= n; i++) {
-        int h = (i == n) ? 0 : heights[i];
-        while (!stack.isEmpty() && h < heights[stack.peek()]) {
-            int height = heights[stack.pop()];
-            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
-            max = Math.max(max, height * width);
-        }
-        stack.push(i);
-    }
-    return max;
-}
-// Time Complexity: O(R * C)
-// Space Complexity: O(C)
-```
-
+{{ inject('code_block_16.md') }}
 * * *
 
 **12. Word Ladder**
@@ -875,42 +446,7 @@ private int maxHistogram(int[] heights) {
 
 **Explanation:** We use BFS because we want the shortest path in an unweighted graph. For each word, we generate all valid next mutations and enqueue them, tracking the level.
 
-```java
-public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-    Set<String> set = new HashSet<>(wordList);
-    if (!set.contains(endWord)) return 0;
-    
-    Queue<String> queue = new ArrayDeque<>();
-    queue.offer(beginWord);
-    int level = 1;
-    
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i < size; i++) { // Level-by-level processing
-            String curr = queue.poll();
-            char[] chars = curr.toCharArray();
-            for (int j = 0; j < chars.length; j++) {
-                char orig = chars[j];
-                for (char c = 'a'; c <= 'z'; c++) { // Try all mutations
-                    if (c == orig) continue;
-                    chars[j] = c;
-                    String next = new String(chars);
-                    if (next.equals(endWord)) return level + 1;
-                    if (set.remove(next)) { // remove serves as 'visited' check
-                        queue.offer(next);
-                    }
-                }
-                chars[j] = orig; // Backtrack
-            }
-        }
-        level++;
-    }
-    return 0;
-}
-// Time Complexity: O(M^2 * N) where M is word length, N is number of words
-// Space Complexity: O(M * N)
-```
-
+{{ inject('code_block_17.md') }}
 * * *
 
 **13. Coin Change**
@@ -922,25 +458,7 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
 
 **Explanation:** `dp[i]` is the minimum coins needed for amount `i`. We iterate through amounts and coins, taking the min of using the coin or not: `dp[i] = min(dp[i], dp[i - coin] + 1)`.
 
-```java
-public int coinChange(int[] coins, int amount) {
-    int[] dp = new int[amount + 1];
-    Arrays.fill(dp, amount + 1); // Fill with max invalid value
-    dp[0] = 0;
-    
-    for (int i = 1; i <= amount; i++) {
-        for (int coin : coins) {
-            if (i >= coin) {
-                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-            }
-        }
-    }
-    return dp[amount] > amount ? -1 : dp[amount];
-}
-// Time Complexity: O(Amount * N)
-// Space Complexity: O(Amount)
-```
-
+{{ inject('code_block_18.md') }}
 * * *
 
 **14. House Robber**
@@ -952,23 +470,7 @@ public int coinChange(int[] coins, int amount) {
 
 **Explanation:** The transition is `dp[i] = max(dp[i-1], dp[i-2] + nums[i])`. We only need to store the previous two values, saving space.
 
-```java
-public int rob(int[] nums) {
-    if (nums == null || nums.length == 0) return 0;
-    int prev1 = 0; // max so far excluding current
-    int prev2 = 0; // max so far including current (-2)
-    
-    for (int num : nums) {
-        int temp = Math.max(prev1, prev2 + num); // rob or don't rob
-        prev2 = prev1;
-        prev1 = temp;
-    }
-    return prev1;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(1)
-```
-
+{{ inject('code_block_19.md') }}
 * * *
 
 **15. Regular Expression Matching**
@@ -980,36 +482,7 @@ public int rob(int[] nums) {
 
 **Explanation:** Complex transition logic based on whether we see a `*`. We either treat `*` as zero occurrences (`dp[i][j-2]`) or multiple occurrences (`dp[i-1][j]` if the preceding char matches).
 
-```java
-public boolean isMatch(String s, String p) {
-    int m = s.length(), n = p.length();
-    boolean[][] dp = new boolean[m + 1][n + 1];
-    dp[0][0] = true;
-    
-    // Match empty string with patterns like a*b*
-    for (int j = 1; j <= n; j++) {
-        if (p.charAt(j - 1) == '*') dp[0][j] = dp[0][j - 2];
-    }
-    
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            if (p.charAt(j - 1) == '.' || p.charAt(j - 1) == s.charAt(i - 1)) {
-                dp[i][j] = dp[i - 1][j - 1]; // Single char match
-            } else if (p.charAt(j - 1) == '*') {
-                dp[i][j] = dp[i][j - 2]; // Match zero times
-                // If preceding char matches, match one or more times
-                if (p.charAt(j - 2) == '.' || p.charAt(j - 2) == s.charAt(i - 1)) {
-                    dp[i][j] = dp[i][j] || dp[i - 1][j];
-                }
-            }
-        }
-    }
-    return dp[m][n];
-}
-// Time Complexity: O(M * N)
-// Space Complexity: O(M * N)
-```
-
+{{ inject('code_block_20.md') }}
 * * *
 
 **16. Course Schedule II**
@@ -1021,37 +494,7 @@ public boolean isMatch(String s, String p) {
 
 **Explanation:** We count the in-degree of each course. A course with in-degree 0 has no prerequisites and can be taken. We enqueue it, take it, and decrement the in-degree of its neighbors.
 
-```java
-public int[] findOrder(int numCourses, int[][] prerequisites) {
-    var inDegree = new int[numCourses];
-    var adj = new ArrayList<List<Integer>>();
-    for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
-    
-    for (int[] p : prerequisites) {
-        adj.get(p[1]).add(p[0]);
-        inDegree[p[0]]++;
-    }
-    
-    Queue<Integer> q = new ArrayDeque<>();
-    for (int i = 0; i < numCourses; i++) {
-        if (inDegree[i] == 0) q.offer(i);
-    }
-    
-    int[] res = new int[numCourses];
-    int idx = 0;
-    while (!q.isEmpty()) {
-        int curr = q.poll();
-        res[idx++] = curr;
-        for (int next : adj.get(curr)) {
-            if (--inDegree[next] == 0) q.offer(next);
-        }
-    }
-    return idx == numCourses ? res : new int[0]; // If not all courses taken, cycle exists
-}
-// Time Complexity: O(V + E)
-// Space Complexity: O(V + E)
-```
-
+{{ inject('code_block_21.md') }}
 * * *
 
 **17. Partition Equal Subset Sum**
@@ -1063,28 +506,7 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
 
 **Explanation:** The problem translates to: "Is there a subset that sums exactly to `total_sum / 2`?" We use a 1D DP array where `dp[j]` is true if a sum `j` is achievable.
 
-```java
-public boolean canPartition(int[] nums) {
-    int sum = 0;
-    for (int num : nums) sum += num;
-    if (sum % 2 != 0) return false;
-    
-    int target = sum / 2;
-    boolean[] dp = new boolean[target + 1];
-    dp[0] = true;
-    
-    for (int num : nums) {
-        // Iterate backwards to avoid reusing the same element
-        for (int j = target; j >= num; j--) {
-            dp[j] = dp[j] || dp[j - num];
-        }
-    }
-    return dp[target];
-}
-// Time Complexity: O(N * Target)
-// Space Complexity: O(Target)
-```
-
+{{ inject('code_block_22.md') }}
 * * *
 
 **18. Decode Ways**
@@ -1096,31 +518,7 @@ public boolean canPartition(int[] nums) {
 
 **Explanation:** Very similar to Fibonacci. The number of ways to decode up to `i` is the ways to decode up to `i-1` (if single digit valid) plus the ways to decode up to `i-2` (if two digits valid).
 
-```java
-public int numDecodings(String s) {
-    if (s == null || s.isEmpty() || s.charAt(0) == '0') return 0;
-    int n = s.length();
-    int[] dp = new int[n + 1];
-    dp[0] = 1; 
-    dp[1] = 1;
-    
-    for (int i = 2; i <= n; i++) {
-        int oneDigit = Integer.parseInt(s.substring(i - 1, i));
-        int twoDigits = Integer.parseInt(s.substring(i - 2, i));
-        
-        if (oneDigit >= 1 && oneDigit <= 9) {
-            dp[i] += dp[i - 1];
-        }
-        if (twoDigits >= 10 && twoDigits <= 26) {
-            dp[i] += dp[i - 2];
-        }
-    }
-    return dp[n];
-}
-// Time Complexity: O(N)
-// Space Complexity: O(N) which can be optimized to O(1)
-```
-
+{{ inject('code_block_23.md') }}
 * * *
 
 **19. Stock Span**
@@ -1132,24 +530,7 @@ public int numDecodings(String s) {
 
 **Explanation:** Maintain a stack of pairs `{price, span}`. If the incoming price is greater than the top of the stack, pop the stack and accumulate the span. This maintains a strictly decreasing stack.
 
-```java
-public class StockSpanner {
-    // Array holds {price, span}
-    private Deque<int[]> stack = new ArrayDeque<>(); 
-    
-    public int next(int price) {
-        int span = 1;
-        while (!stack.isEmpty() && stack.peek()[0] <= price) {
-            span += stack.pop()[1]; // Accumulate previous spans
-        }
-        stack.push(new int[]{price, span});
-        return span;
-    }
-}
-// Time Complexity: Amortized O(1) per next() call
-// Space Complexity: O(N)
-```
-
+{{ inject('code_block_24.md') }}
 * * *
 
 **20. Longest Increasing Subsequence**
@@ -1161,29 +542,7 @@ public class StockSpanner {
 
 **Explanation:** We maintain an array `tails` where `tails[i]` stores the smallest tail of all increasing subsequences of length `i+1`. We binary search the position to update in `tails`.
 
-```java
-public int lengthOfLIS(int[] nums) {
-    int[] tails = new int[nums.length];
-    int size = 0;
-    for (int x : nums) {
-        int left = 0, right = size;
-        while (left != right) {
-            int mid = left + (right - left) / 2;
-            if (tails[mid] < x) {
-                left = mid + 1;
-            } else {
-                right = mid;
-            }
-        }
-        tails[left] = x;
-        if (left == size) size++; // Found a larger element, expand LIS
-    }
-    return size;
-}
-// Time Complexity: O(N log N)
-// Space Complexity: O(N)
-```
-
+{{ inject('code_block_25.md') }}
 * * *
 
 **21. Find Minimum in Rotated Sorted Array**
@@ -1194,20 +553,7 @@ public int lengthOfLIS(int[] nums) {
 **Pattern:** Binary Search
 
 **Explanation:** If `nums[mid] > nums[right]`, the minimum is in the right half. Else, the minimum is in the left half (including mid).
-```java
-public int findMin(int[] nums) {
-    int left = 0, right = nums.length - 1;
-    while (left < right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] > nums[right]) left = mid + 1;
-        else right = mid;
-    }
-    return nums[left];
-}
-// Time Complexity: O(log N)
-// Space Complexity: O(1)
-```
-
+{{ inject('code_block_26.md') }}
 * * *
 
 **22. Kth Smallest Element in Sorted Matrix**
@@ -1218,30 +564,7 @@ public int findMin(int[] nums) {
 **Pattern:** Binary Search on Answer Space
 
 **Explanation:** Binary search the value space `[min, max]`. Count how many elements are $\le$ mid. If count $< k$, `left = mid + 1`. Else `right = mid`.
-```java
-public int kthSmallest(int[][] matrix, int k) {
-    int n = matrix.length;
-    int left = matrix[0][0], right = matrix[n-1][n-1];
-    while (left < right) {
-        int mid = left + (right - left) / 2;
-        int count = countLessEqual(matrix, mid);
-        if (count < k) left = mid + 1;
-        else right = mid;
-    }
-    return left;
-}
-private int countLessEqual(int[][] matrix, int target) {
-    int n = matrix.length, i = n - 1, j = 0, count = 0;
-    while (i >= 0 && j < n) {
-        if (matrix[i][j] <= target) { count += i + 1; j++; }
-        else { i--; }
-    }
-    return count;
-}
-// Time Complexity: O(N log(Max - Min))
-// Space Complexity: O(1)
-```
-
+{{ inject('code_block_27.md') }}
 * * *
 
 **23. Jump Game II**
@@ -1252,22 +575,7 @@ private int countLessEqual(int[][] matrix, int target) {
 **Pattern:** Greedy BFS levels
 
 **Explanation:** We maintain the farthest reach for the current jump level. When `i == currentEnd`, we must make a jump and update `currentEnd = farthest`.
-```java
-public int jump(int[] nums) {
-    int jumps = 0, currentEnd = 0, farthest = 0;
-    for (int i = 0; i < nums.length - 1; i++) {
-        farthest = Math.max(farthest, i + nums[i]);
-        if (i == currentEnd) {
-            jumps++;
-            currentEnd = farthest;
-        }
-    }
-    return jumps;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(1)
-```
-
+{{ inject('code_block_28.md') }}
 * * *
 
 **24. Unique Paths**
@@ -1278,22 +586,7 @@ public int jump(int[] nums) {
 **Pattern:** 2D DP
 
 **Explanation:** `dp[i][j] = dp[i-1][j] + dp[i][j-1]`.
-```java
-public int uniquePaths(int m, int n) {
-    int[][] dp = new int[m][n];
-    for (int i = 0; i < m; i++) dp[i][0] = 1;
-    for (int j = 0; j < n; j++) dp[0][j] = 1;
-    for (int i = 1; i < m; i++) {
-        for (int j = 1; j < n; j++) {
-            dp[i][j] = dp[i-1][j] + dp[i][j-1];
-        }
-    }
-    return dp[m-1][n-1];
-}
-// Time Complexity: O(M * N)
-// Space Complexity: O(M * N) (can be optimized to O(N))
-```
-
+{{ inject('code_block_29.md') }}
 * * *
 
 **25. Maximum Subarray / Kadane's Algorithm**
@@ -1304,19 +597,7 @@ public int uniquePaths(int m, int n) {
 **Pattern:** DP / Greedy
 
 **Explanation:** At each step, either add the current element to the previous sum, or start a new subarray if the previous sum is negative.
-```java
-public int maxSubArray(int[] nums) {
-    int maxSum = nums[0], currentSum = nums[0];
-    for (int i = 1; i < nums.length; i++) {
-        currentSum = Math.max(nums[i], currentSum + nums[i]);
-        maxSum = Math.max(maxSum, currentSum);
-    }
-    return maxSum;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(1)
-```
-
+{{ inject('code_block_30.md') }}
 * * *
 
 **26. Climbing Stairs**
@@ -1327,21 +608,7 @@ public int maxSubArray(int[] nums) {
 **Pattern:** Fibonacci DP
 
 **Explanation:** `dp[i] = dp[i-1] + dp[i-2]`.
-```java
-public int climbStairs(int n) {
-    if (n <= 2) return n;
-    int prev2 = 1, prev1 = 2;
-    for (int i = 3; i <= n; i++) {
-        int curr = prev1 + prev2;
-        prev2 = prev1;
-        prev1 = curr;
-    }
-    return prev1;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(1)
-```
-
+{{ inject('code_block_31.md') }}
 * * *
 
 **27. Largest Rectangle in Histogram**
@@ -1352,25 +619,7 @@ public int climbStairs(int n) {
 **Pattern:** Monotonic Stack
 
 **Explanation:** Stack stores indices of strictly increasing heights. Pop when a smaller height is found, calculating area using the popped height as the bottleneck.
-```java
-public int largestRectangleArea(int[] heights) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    int maxArea = 0, n = heights.length;
-    for (int i = 0; i <= n; i++) {
-        int h = (i == n) ? 0 : heights[i];
-        while (!stack.isEmpty() && h < heights[stack.peek()]) {
-            int height = heights[stack.pop()];
-            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
-            maxArea = Math.max(maxArea, height * width);
-        }
-        stack.push(i);
-    }
-    return maxArea;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(N)
-```
-
+{{ inject('code_block_32.md') }}
 * * *
 
 **28. Merge K Sorted Lists**
@@ -1381,25 +630,7 @@ public int largestRectangleArea(int[] heights) {
 **Pattern:** Min-Heap
 
 **Explanation:** Put all list heads into a PriorityQueue. Extract the min, append to result, and insert the next node from the extracted list.
-```java
-public ListNode mergeKLists(ListNode[] lists) {
-    PriorityQueue<ListNode> pq = new PriorityQueue<>((a,b) -> a.val - b.val);
-    for (ListNode head : lists) {
-        if (head != null) pq.offer(head);
-    }
-    ListNode dummy = new ListNode(0), curr = dummy;
-    while (!pq.isEmpty()) {
-        ListNode minNode = pq.poll();
-        curr.next = minNode;
-        curr = curr.next;
-        if (minNode.next != null) pq.offer(minNode.next);
-    }
-    return dummy.next;
-}
-// Time Complexity: O(N log K)
-// Space Complexity: O(K)
-```
-
+{{ inject('code_block_33.md') }}
 * * *
 
 **29. Longest Valid Parentheses**
@@ -1410,26 +641,7 @@ public ListNode mergeKLists(ListNode[] lists) {
 **Pattern:** DP
 
 **Explanation:** `dp[i]` is the length of longest valid substring ending at `i`. If `s[i] == ')'` and `s[i-1] == '('`, `dp[i] = dp[i-2] + 2`. If `s[i-1] == ')'`, match earlier part.
-```java
-public int longestValidParentheses(String s) {
-    int maxLen = 0;
-    int[] dp = new int[s.length()];
-    for (int i = 1; i < s.length(); i++) {
-        if (s.charAt(i) == ')') {
-            if (s.charAt(i - 1) == '(') {
-                dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
-            } else if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == '(') {
-                dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
-            }
-            maxLen = Math.max(maxLen, dp[i]);
-        }
-    }
-    return maxLen;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(N)
-```
-
+{{ inject('code_block_34.md') }}
 * * *
 
 **30. Container With Most Water**
@@ -1440,23 +652,7 @@ public int longestValidParentheses(String s) {
 **Pattern:** Two-pointer
 
 **Explanation:** Area is `width * min(h[L], h[R])`. Move the pointer pointing to the shorter line to potentially find a taller line.
-```java
-public int maxArea(int[] height) {
-    int maxArea = 0;
-    int left = 0, right = height.length - 1;
-    while (left < right) {
-        int w = right - left;
-        int h = Math.min(height[left], height[right]);
-        maxArea = Math.max(maxArea, w * h);
-        if (height[left] < height[right]) left++;
-        else right--;
-    }
-    return maxArea;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(1)
-```
-
+{{ inject('code_block_35.md') }}
 * * *
 
 ## Practice Problem Bank
