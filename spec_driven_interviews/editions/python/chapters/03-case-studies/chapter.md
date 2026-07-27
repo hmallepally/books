@@ -210,6 +210,6 @@ To ensure zero-loss durability, ZenithTrade employs a write-ahead journal (WAJ) 
 
 If the Ledger database slows down or halts, the matching engine continues to process trades in memory without interruption. The event broker queues the trade events until the ledger recovers. This decoupling guarantees fault isolation and maintains a high-availability trading path."
 
-> * **STAR Moment: Bounded Context Isolation**
+> ⭐ **STAR Moment: Bounded Context Isolation**
 > 
 > During system design interviews, explain that microservice division should mirror DDD Bounded Contexts. Say: *"We will isolate the ZenithTrade Matching Engine from the AuraPay Ledger. If the ledger experiences a database write lag, our matching engine can continue to accept and queue orders in memory, preventing system-wide downtime."* This shows you design for fault isolation.

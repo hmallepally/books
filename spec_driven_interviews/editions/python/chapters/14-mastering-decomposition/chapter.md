@@ -268,6 +268,6 @@ Apply the Problem Analysis Canvas to the following 15 problem statements. Do not
 14. Calculate the edit distance between two strings. *(Hint: 2D Dynamic Programming)*
 15. Find all valid combinations of $k$ numbers that sum up to $n$. *(Hint: Backtracking)*
 
-> * **STAR Moment: The Synthesis Mindset**
+> ⭐ **STAR Moment: The Synthesis Mindset**
 >
 > The engineers who consistently score in the top percentile on technical assessments are not the ones who have memorized the most solutions. They are the ones who can see the hidden structure in novel problems. Every new problem is a remix of patterns you already know. Train your eyes to see the composition, and no assessment will ever surprise you.

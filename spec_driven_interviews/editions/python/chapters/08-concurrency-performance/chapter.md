@@ -280,6 +280,6 @@ Setting the pool size to 17 will yield *higher* overall throughput than setting 
 
 
 
-> * **STAR Moment: The Cache Invalidation Design**
+> ⭐ **STAR Moment: The Cache Invalidation Design**
 > 
 > When discussing performance during an interview, never say *"We will add a cache."* Say: *"We will implement a Cache-Aside pattern using Redis. To prevent stale reads in our double-entry ledger, we will use a transactional write-through strategy, invalidating cache keys atomically inside the database commit boundary to ensure absolute consistency."* This shows you understand caching boundaries in financial transaction systems.

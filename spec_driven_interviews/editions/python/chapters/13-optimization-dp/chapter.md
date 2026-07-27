@@ -30,11 +30,11 @@ The key insight that allows us to achieve $\mathcal{O}(\log N)$ time complexity 
 > **The Fundamental Invariant:** Whenever you split a Rotated Sorted Array into two halves using a midpoint `mid = left + (right - left) / 2`, **AT LEAST ONE OF THE TWO HALVES IS GUARANTEED TO BE STRICTLY MONOTONICALLY SORTED.**
 
 > **Proof by Exhaustion.** Consider array `A[lo..hi]` with midpoint `mid = (lo + hi) / 2`. The rotation point (the index where `A[i] > A[i+1]`) can only exist in one contiguous segment.
-> - **Case 1:** Rotation point is in `A[mid+1..hi]`. Then `A[lo..mid]` contains no rotation point, so `A[lo] $\leq$ A[lo+1] $\leq$ ... $\leq$ A[mid]` — the left half is sorted.
-> - **Case 2:** Rotation point is in `A[lo..mid]`. Then `A[mid+1..hi]` contains no rotation point, so `A[mid+1] $\leq$ ... $\leq$ A[hi]` — the right half is sorted.
+> - **Case 1:** Rotation point is in `A[mid+1..hi]`. Then `A[lo..mid]` contains no rotation point, so `A[lo] ≤ A[lo+1] ≤ ... ≤ A[mid]` — the left half is sorted.
+> - **Case 2:** Rotation point is in `A[lo..mid]`. Then `A[mid+1..hi]` contains no rotation point, so `A[mid+1] ≤ ... ≤ A[hi]` — the right half is sorted.
 > - **Case 3:** No rotation point exists in `A[lo..hi]` (entire subarray is sorted). Both halves are sorted.
 >
-> In all cases, at least one half is sorted. $\square$
+> In all cases, at least one half is sorted. ∎
 
 - If `nums[left] <= nums[mid]`: The **LEFT half** `[left ... mid]` is monotonically sorted.
 - If `nums[left] > nums[mid]`: The **RIGHT half** `[mid ... right]` is monotonically sorted.
@@ -363,7 +363,7 @@ def max_sliding_window(self, nums: list[int], k: int) -> list[int]:
 
 **Pattern:** 2D DP
 
-> WARNING: **Common Confusion: Subsequence $\neq$ Substring**
+> ⚠️ **Common Confusion: Subsequence ≠ Substring**
 >
 > A **substring** must be contiguous (`"BCD"` from `"ABCDE"`). A **subsequence** can skip characters but must preserve order (`"ACE"` from `"ABCDE"` — pick A, skip B, pick C, skip D, pick E). The order matters: `"ECA"` is **not** a valid subsequence of `"ABCDE"` because the characters appear in the wrong order.
 
@@ -374,11 +374,11 @@ def max_sliding_window(self, nums: list[int], k: int) -> list[int]:
 |  | "" | C | A | R | T |
 |---|---|---|---|---|---|
 | **""** | 0 | 0 | 0 | 0 | 0 |
-| **C** | 0 | **1** (up-left) | 1 ← | 1 ← | 1 ← |
-| **A** | 0 | 1 ↑ | **2** (up-left) | 2 ← | 2 ← |
-| **T** | 0 | 1 ↑ | 2 ↑ | 2 ↑ | **3** (up-left) |
+| **C** | 0 | **1** ↖ | 1 ← | 1 ← | 1 ← |
+| **A** | 0 | 1 ↑ | **2** ↖ | 2 ← | 2 ← |
+| **T** | 0 | 1 ↑ | 2 ↑ | 2 ↑ | **3** ↖ |
 
-- (up-left) (diagonal + 1): Characters **match** — extend the LCS we had before both characters.
+- ↖ (diagonal + 1): Characters **match** — extend the LCS we had before both characters.
 - ← or ↑ (max of left/above): Characters **don't match** — carry forward the best LCS from skipping one character.
 
 The bold diagonal cells show: C matches C (1), A matches A (2), T matches T (3). The "R" in "CART" is simply skipped. **LCS = "CAT", length 3.**
@@ -408,7 +408,7 @@ def longest_common_subsequence(self, text1: str, text2: str) -> int:
 * * *
 
 **4. Burst Balloons**
-> WARNING: **Assessment Realism Note:** Interval DP problems like Burst Balloons are extremely unlikely in timed assessments (the O(N³) derivation requires 30+ minutes of focused work). This exemplar is included for comprehensive pattern coverage. For timed assessment practice, prioritize the multi-source BFS, 1D DP, and monotonic stack problems in this chapter.
+> ⚠️ **Assessment Realism Note:** Interval DP problems like Burst Balloons are extremely unlikely in timed assessments (the O(N³) derivation requires 30+ minutes of focused work). This exemplar is included for comprehensive pattern coverage. For timed assessment practice, prioritize the multi-source BFS, 1D DP, and monotonic stack problems in this chapter.
 
 **Specification:** Maximize coins by bursting balloons. Bursting `nums[i]` yields `nums[i-1] * nums[i] * nums[i+1]` coins.
 
@@ -416,7 +416,7 @@ def longest_common_subsequence(self, text1: str, text2: str) -> int:
 
 **Pattern:** Interval DP
 
-> WARNING: **The Key Trick: Think BACKWARDS**
+> ⚠️ **The Key Trick: Think BACKWARDS**
 >
 > The natural instinct is to simulate bursting balloons left-to-right, but that creates dependency chaos — bursting balloon `i` changes the neighbors of balloon `i+1`. Instead, ask: **"Which balloon do I burst LAST?"** If balloon `k` is the *last* to burst in interval `(i, j)`, then at that moment only `arr[i]` and `arr[j]` remain as its neighbors. This makes the left and right subproblems *independent*.
 
@@ -591,9 +591,9 @@ def daily_temperatures(self, temperatures: list[int]) -> list[int]:
 
 **Pattern:** 2D DP
 
-> WARNING: **The Three Operations — Mapped to Table Directions**
+> ⚠️ **The Three Operations — Mapped to Table Directions**
 >
-> At each cell, you choose the cheapest of three operations: **Replace** ((up-left) diagonal + 1), **Delete** from word1 (↑ up + 1), **Insert** into word1 (← left + 1). If characters already match, the diagonal costs 0 (no operation needed).
+> At each cell, you choose the cheapest of three operations: **Replace** (↖ diagonal + 1), **Delete** from word1 (↑ up + 1), **Insert** into word1 (← left + 1). If characters already match, the diagonal costs 0 (no operation needed).
 
 ![Edit Distance Trace](visuals/edit_distance_trace.png){width=85%}
 
@@ -602,13 +602,13 @@ def daily_temperatures(self, temperatures: list[int]) -> list[int]:
 |  | "" | C | U | T |
 |---|---|---|---|---|
 | **""** | 0 | 1 | 2 | 3 |
-| **C** | 1 | **0** (up-left) | 1 | 2 |
-| **A** | 2 | 1 | **1** (up-left) | 2 |
-| **T** | 3 | 2 | 2 | **1** (up-left) |
+| **C** | 1 | **0** ↖ | 1 | 2 |
+| **A** | 2 | 1 | **1** ↖ | 2 |
+| **T** | 3 | 2 | 2 | **1** ↖ |
 
 - **Row 0 / Col 0** (base cases): Converting "" → "CUT" costs 3 inserts. Converting "CAT" → "" costs 3 deletes.
 - **dp[1][1]:** C = C → match! Free! Diagonal `dp[0][0]` = 0.
-- **dp[2][2]:** A $\neq$ U → mismatch. `1 + min(dp[1][1], dp[1][2], dp[2][1])` = `1 + min(0, 1, 1)` = **1** (replace A→U).
+- **dp[2][2]:** A ≠ U → mismatch. `1 + min(dp[1][1], dp[1][2], dp[2][1])` = `1 + min(0, 1, 1)` = **1** (replace A→U).
 - **dp[3][3]:** T = T → match! Diagonal `dp[2][2]` = 1. **Answer: 1 edit.**
 
 **Real-world use:** Spell checkers, DNA alignment, fuzzy string matching, and `git diff` all use variants of this algorithm.
@@ -644,7 +644,7 @@ def min_distance(self, word1: str, word2: str) -> int:
 
 **Pattern:** HashMap + Doubly Linked List
 
-> WARNING: **"Why no timestamp?" — Position IS the Timestamp**
+> ⚠️ **"Why no timestamp?" — Position IS the Timestamp**
 >
 > A common question is: "Shouldn't we store a timestamp for when each item was last used?" The answer is no — the **position in the linked list** is the timestamp. The node closest to HEAD was used most recently. The node closest to TAIL was used longest ago. Every `get()` or `put()` moves that node to the HEAD. No clock needed — the list order *is* the chronological record.
 
@@ -727,7 +727,7 @@ class LRUCache:
 
 **Pattern:** Histogram Reduction + Monotonic Stack
 
-> WARNING: **The Two-Step Intuition: Row Histograms + Monotonic Stack**
+> ⚠️ **The Two-Step Intuition: Row Histograms + Monotonic Stack**
 >
 > **Step 1 (Matrix $\rightarrow$ Histograms):** Process the matrix row by row. At each row, compute column heights. If `matrix[r][c] == '1'`, `heights[c] += 1`; if `'0'`, `heights[c] = 0`. Each row forms a 1D histogram.
 >
@@ -752,7 +752,7 @@ class LRUCache:
 | 3 | 2 | Push 3 | `[1, 3]` | — |
 | 4 | 2 | Push 4 | `[1, 3, 4]` | — |
 | 5 (sentinel) | 0 | `0 < 2` $\rightarrow$ Pop 4 (h=2) | `[1, 3]` | `height=2, width=5-3-1=1` $\rightarrow$ **2** |
-| 5 (sentinel) | 0 | `0 < 2` $\rightarrow$ Pop 3 (h=2) | `[1]` | `height=2, width=5-1-1=3` $\rightarrow$ **6** [x] |
+| 5 (sentinel) | 0 | `0 < 2` $\rightarrow$ Pop 3 (h=2) | `[1]` | `height=2, width=5-1-1=3` $\rightarrow$ **6** ✅ |
 | 5 (sentinel) | 0 | `0 < 1` $\rightarrow$ Pop 1 (h=1) | `[]` | `height=1, width=5` $\rightarrow$ **5** |
 
 **Explanation:** We treat each row as the base of a histogram and update heights. We then run the $\mathcal{O}(N)$ "Largest Rectangle in Histogram" algorithm using a monotonic stack on each row.

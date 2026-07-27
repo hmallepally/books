@@ -172,7 +172,7 @@ Update instances one at a time (or in small batches) behind the load balancer:
 - Best suited for stateless microservices with fast startup times.
 
 
-> * **STAR Moment: The Mocking Boundary**
+> ⭐ **STAR Moment: The Mocking Boundary**
 > 
 > In a technical interview, emphasize that you know *when* to mock. Say: *"We mock network calls and database interfaces in our unit tests to keep feedback loops fast. But we never mock our domain aggregates or value objects. Testing our business rules against actual domain structures guarantees that our core invariants are always enforced. For integration boundaries, we use Testcontainers against real Postgres and Kafka instances, and we validate API contracts using Pact before every deployment."* This shows you understand domain boundary protection and production-grade testing strategy.
 

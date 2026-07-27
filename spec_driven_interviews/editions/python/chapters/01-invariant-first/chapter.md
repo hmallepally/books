@@ -156,7 +156,7 @@ Prove the invariant for maintaining a monotonic deque that tracks the maximum el
 
 **Initialization:** The deque is empty before processing begins. Vacuously true.
 **Maintenance:** When processing element A[i]:
-1. Remove all indices from the back where A[deque.peekLast()] $\leq$ A[i] (maintains decreasing order)
+1. Remove all indices from the back where A[deque.peekLast()] ≤ A[i] (maintains decreasing order)
 2. Remove the front if deque.peekFirst() < i-K+1 (maintains window bounds)
 3. Add i to the back
 
@@ -167,6 +167,6 @@ After these operations, deque.peekFirst() always holds the index of the maximum 
 This proves the Monotonic Deque pattern [PAT-20] achieves O(N) total time for sliding window maximum.
 
 
-> * **STAR Moment: The $O(1)$ Failure Principle**
+> ⭐ **STAR Moment: The $O(1)$ Failure Principle**
 > 
 > A robust system fails fast and fails explicitly. The first lines of any method should always be pre-condition validation. If an input is invalid, fail immediately. Do not allow execution to proceed with corrupted or unexpected state, as this leads to hard-to-debug failures deep inside your call stack. In an interview, writing explicit input validations shows that you design for production safety, not just passing test suites.

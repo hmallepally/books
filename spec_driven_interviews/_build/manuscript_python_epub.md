@@ -122,7 +122,7 @@ To maximize the value of this manual, select the path that aligns with your care
   4. Read **Chapter 19 (Behavioral & Technical Leadership)** to prepare for the behavioral round with Technical STAR frameworks and full mock responses.
 
 
-> * **STAR Moment: The Invariant Principle**
+> ⭐ **STAR Moment: The Invariant Principle**
 > 
 > The best code is code that is correct by design. When you write a method, your first task is not to implement the algorithm, but to define the contract: what must be true *before* the method runs (pre-conditions), and what must be guaranteed *after* it completes (post-conditions). If you enforce these boundaries, the code inside the method almost writes itself.
 
@@ -406,7 +406,7 @@ Prove the invariant for maintaining a monotonic deque that tracks the maximum el
 
 **Initialization:** The deque is empty before processing begins. Vacuously true.
 **Maintenance:** When processing element A[i]:
-1. Remove all indices from the back where A[deque.peekLast()] $\leq$ A[i] (maintains decreasing order)
+1. Remove all indices from the back where A[deque.peekLast()] ≤ A[i] (maintains decreasing order)
 2. Remove the front if deque.peekFirst() < i-K+1 (maintains window bounds)
 3. Add i to the back
 
@@ -417,7 +417,7 @@ After these operations, deque.peekFirst() always holds the index of the maximum 
 This proves the Monotonic Deque pattern [PAT-20] achieves O(N) total time for sliding window maximum.
 
 
-> * **STAR Moment: The $O(1)$ Failure Principle**
+> ⭐ **STAR Moment: The $O(1)$ Failure Principle**
 > 
 > A robust system fails fast and fails explicitly. The first lines of any method should always be pre-condition validation. If an input is invalid, fail immediately. Do not allow execution to proceed with corrupted or unexpected state, as this leads to hard-to-debug failures deep inside your call stack. In an interview, writing explicit input validations shows that you design for production safety, not just passing test suites.
 
@@ -507,7 +507,7 @@ In modern assessment environments, particularly equal-weight assessments where a
 
 When confronted with novel, never-before-seen problems—problems explicitly designed to test engineering limits rather than memorization—decomposition is the *only* reliable strategy. It bridges the gap between the unknown problem domain and your known catalog of patterns, ensuring that you can always make structured, demonstrable progress.
 
-> * **STAR Moment: The Decomposition Discipline**
+> ⭐ **STAR Moment: The Decomposition Discipline**
 >
 > Before you write a single line of code, invest 3-5 minutes in decomposition. Write your analysis as comments at the top of your solution file. This serves three purposes: it clarifies your thinking, it provides partial credit if you run out of time, and it creates a roadmap that prevents you from getting lost during implementation.
 
@@ -724,7 +724,7 @@ To ensure zero-loss durability, ZenithTrade employs a write-ahead journal (WAJ) 
 
 If the Ledger database slows down or halts, the matching engine continues to process trades in memory without interruption. The event broker queues the trade events until the ledger recovers. This decoupling guarantees fault isolation and maintains a high-availability trading path."
 
-> * **STAR Moment: Bounded Context Isolation**
+> ⭐ **STAR Moment: Bounded Context Isolation**
 > 
 > During system design interviews, explain that microservice division should mirror DDD Bounded Contexts. Say: *"We will isolate the ZenithTrade Matching Engine from the AuraPay Ledger. If the ledger experiences a database write lag, our matching engine can continue to accept and queue orders in memory, preventing system-wide downtime."* This shows you design for fault isolation.
 
@@ -981,7 +981,7 @@ class SettlementProcessor:
 
 
 
-> * **STAR Moment: The Encapsulation Test**
+> ⭐ **STAR Moment: The Encapsulation Test**
 > 
 > When designing class structures in a technical interview, ask yourself: *Can this class enter an invalid state?* If a client developer can instantiate your object and set its properties to values that violate business rules, your encapsulation has failed. Build your validation boundaries directly into the constructors and state-transition methods of your domain objects.
 
@@ -1187,7 +1187,7 @@ SOLID principles are design heuristics, not commandments. Over-application creat
 > The senior engineer's skill is knowing WHEN to apply SOLID and when the cure is worse than the disease.
 
 
-> * **STAR Moment: The Mockability Test**
+> ⭐ **STAR Moment: The Mockability Test**
 > 
 > The ultimate test of a SOLID design is **mockability**. In a technical interview, explain that a correctly decoupled class can be unit-tested in isolation by mocking all of its interface dependencies. If you cannot test a method without spinning up a real database, an active web server, or a third-party messaging channel, your design violates the Dependency Inversion Principle.
 
@@ -1296,7 +1296,7 @@ Debugging streams can be difficult due to their lazy execution model. To inspect
    If a pipeline throws an exception, temporarily break the pipeline into separate intermediate variables to isolate the throwing operation in the stack trace.
 
 
-> * **STAR Moment: The Stateless Pipeline Principle**
+> ⭐ **STAR Moment: The Stateless Pipeline Principle**
 > 
 > A functional stream pipeline must never modify state variables outside the stream. If you write a `.forEach()` or `.map()` that mutates a shared list or updates a local counter, you have violated the functional contract. You lose thread safety, and your code cannot be parallelized. Keep your lambdas pure, stateless, and side-effect-free. In an interview, say: *"I use `collect()` and `reduce()` to accumulate results rather than mutating external variables, because stateless pipelines are safe to parallelize and easy to reason about."*
 
@@ -1494,7 +1494,7 @@ In senior interviews, you must connect patterns to the frameworks you use. Here 
 | **Template Method** | Spring `JdbcTemplate` | `JdbcTemplate` defines the skeleton of database execution (opening connection, statement preparation, cleanup) while letting subclasses map rows to domain objects. |
 
 
-> * **STAR Moment: The Framework Pattern Test**
+> ⭐ **STAR Moment: The Framework Pattern Test**
 > 
 > During system design interviews, explain design patterns in terms of the framework concepts the interviewer already knows. Instead of drawing a generic observer diagram, say: *"We will implement this like a Spring ApplicationEventPublisher or a Kafka Event Broker, decoupling the transactional write thread from the audit and search indexing consumers."* This shows you understand patterns in modern, production-grade architectures.
 
@@ -1781,7 +1781,7 @@ Setting the pool size to 17 will yield *higher* overall throughput than setting 
 
 
 
-> * **STAR Moment: The Cache Invalidation Design**
+> ⭐ **STAR Moment: The Cache Invalidation Design**
 > 
 > When discussing performance during an interview, never say *"We will add a cache."* Say: *"We will implement a Cache-Aside pattern using Redis. To prevent stale reads in our double-entry ledger, we will use a transactional write-through strategy, invalidating cache keys atomically inside the database commit boundary to ensure absolute consistency."* This shows you understand caching boundaries in financial transaction systems.
 
@@ -1847,7 +1847,7 @@ Before diving into the 25 canonical patterns, ensure you have instant recall of 
 
 ![Big-O Time Complexity Comparison Graph](editions/python/chapters/09-algorithms-assessment/visuals/big_o_comparison.jpg){width=85%}
 
-**The Constraint-to-Complexity Rule:** Read the problem constraints FIRST. If N $\leq$ 10^4, O(N²) is acceptable. If N $\leq$ 10^5, you need O(N log N) or better. If N $\leq$ 10^6, you need O(N). This single rule eliminates 50% of wrong algorithm choices before you write a line of code.
+**The Constraint-to-Complexity Rule:** Read the problem constraints FIRST. If N ≤ 10^4, O(N²) is acceptable. If N ≤ 10^5, you need O(N log N) or better. If N ≤ 10^6, you need O(N). This single rule eliminates 50% of wrong algorithm choices before you write a line of code.
 
 ![Constraint-to-Complexity Flowchart](../02-problem-decomposition/visuals/constraint_flowchart.jpg){width=85%}
 
@@ -2602,7 +2602,7 @@ public class Trie {
 
 **Diagnostic Trigger:** "Find the K-th largest/smallest", "Merge K sorted lists", "Schedule tasks by priority", or any problem requiring efficient access to the minimum or maximum element while dynamically inserting.
 
-**Invariant:** The heap property is maintained: for a min-heap, every parent node is $\leq$ its children. This guarantees O(1) access to the minimum and O(log N) insertion/extraction.
+**Invariant:** The heap property is maintained: for a min-heap, every parent node is ≤ its children. This guarantees O(1) access to the minimum and O(log N) insertion/extraction.
 
 **Canonical Skeleton:**
 ```java
@@ -4057,9 +4057,9 @@ $$S[r][c] = A[r\text{-}1][c\text{-}1] + S[r\text{-}1][c] + S[r][c\text{-}1] - S[
 
 $$S[2][2] = \underbrace{A[1][1]}_{5} + \underbrace{S[1][2]}_{3} + \underbrace{S[2][1]}_{5} - \underbrace{S[1][1]}_{1} = 12$$
 
-The two 5s come from different sources: `A[1][1] = 5` is the center cell of the original matrix, while `S[2][1] = 5` is the prefix sum of the first column (`1 + 4 = 5`). Verify: `S[2][2]` should equal `1 + 2 + 4 + 5 = 12` — the sum of all elements from `(0,0)` to `(1,1)`. [x]
+The two 5s come from different sources: `A[1][1] = 5` is the center cell of the original matrix, while `S[2][1] = 5` is the prefix sum of the first column (`1 + 4 = 5`). Verify: `S[2][2]` should equal `1 + 2 + 4 + 5 = 12` — the sum of all elements from `(0,0)` to `(1,1)`. ✓
 
-**Sanity check**: `S[3][3] = 45` equals `1+2+3+4+5+6+7+8+9 = 45`. [x]
+**Sanity check**: `S[3][3] = 45` equals `1+2+3+4+5+6+7+8+9 = 45`. ✓
 
 ![2D Prefix Sum — Construction via Inclusion-Exclusion (Trace)](editions/python/chapters/11-matrix-grid-patterns/visuals/prefix_sum_construction.png){width=85%}
 
@@ -6347,11 +6347,11 @@ The key insight that allows us to achieve $\mathcal{O}(\log N)$ time complexity 
 > **The Fundamental Invariant:** Whenever you split a Rotated Sorted Array into two halves using a midpoint `mid = left + (right - left) / 2`, **AT LEAST ONE OF THE TWO HALVES IS GUARANTEED TO BE STRICTLY MONOTONICALLY SORTED.**
 
 > **Proof by Exhaustion.** Consider array `A[lo..hi]` with midpoint `mid = (lo + hi) / 2`. The rotation point (the index where `A[i] > A[i+1]`) can only exist in one contiguous segment.
-> - **Case 1:** Rotation point is in `A[mid+1..hi]`. Then `A[lo..mid]` contains no rotation point, so `A[lo] $\leq$ A[lo+1] $\leq$ ... $\leq$ A[mid]` — the left half is sorted.
-> - **Case 2:** Rotation point is in `A[lo..mid]`. Then `A[mid+1..hi]` contains no rotation point, so `A[mid+1] $\leq$ ... $\leq$ A[hi]` — the right half is sorted.
+> - **Case 1:** Rotation point is in `A[mid+1..hi]`. Then `A[lo..mid]` contains no rotation point, so `A[lo] ≤ A[lo+1] ≤ ... ≤ A[mid]` — the left half is sorted.
+> - **Case 2:** Rotation point is in `A[lo..mid]`. Then `A[mid+1..hi]` contains no rotation point, so `A[mid+1] ≤ ... ≤ A[hi]` — the right half is sorted.
 > - **Case 3:** No rotation point exists in `A[lo..hi]` (entire subarray is sorted). Both halves are sorted.
 >
-> In all cases, at least one half is sorted. $\square$
+> In all cases, at least one half is sorted. ∎
 
 - If `nums[left] <= nums[mid]`: The **LEFT half** `[left ... mid]` is monotonically sorted.
 - If `nums[left] > nums[mid]`: The **RIGHT half** `[mid ... right]` is monotonically sorted.
@@ -6680,7 +6680,7 @@ def max_sliding_window(self, nums: list[int], k: int) -> list[int]:
 
 **Pattern:** 2D DP
 
-> WARNING: **Common Confusion: Subsequence $\neq$ Substring**
+> ⚠️ **Common Confusion: Subsequence ≠ Substring**
 >
 > A **substring** must be contiguous (`"BCD"` from `"ABCDE"`). A **subsequence** can skip characters but must preserve order (`"ACE"` from `"ABCDE"` — pick A, skip B, pick C, skip D, pick E). The order matters: `"ECA"` is **not** a valid subsequence of `"ABCDE"` because the characters appear in the wrong order.
 
@@ -6691,11 +6691,11 @@ def max_sliding_window(self, nums: list[int], k: int) -> list[int]:
 |  | "" | C | A | R | T |
 |---|---|---|---|---|---|
 | **""** | 0 | 0 | 0 | 0 | 0 |
-| **C** | 0 | **1** (up-left) | 1 ← | 1 ← | 1 ← |
-| **A** | 0 | 1 ↑ | **2** (up-left) | 2 ← | 2 ← |
-| **T** | 0 | 1 ↑ | 2 ↑ | 2 ↑ | **3** (up-left) |
+| **C** | 0 | **1** ↖ | 1 ← | 1 ← | 1 ← |
+| **A** | 0 | 1 ↑ | **2** ↖ | 2 ← | 2 ← |
+| **T** | 0 | 1 ↑ | 2 ↑ | 2 ↑ | **3** ↖ |
 
-- (up-left) (diagonal + 1): Characters **match** — extend the LCS we had before both characters.
+- ↖ (diagonal + 1): Characters **match** — extend the LCS we had before both characters.
 - ← or ↑ (max of left/above): Characters **don't match** — carry forward the best LCS from skipping one character.
 
 The bold diagonal cells show: C matches C (1), A matches A (2), T matches T (3). The "R" in "CART" is simply skipped. **LCS = "CAT", length 3.**
@@ -6725,7 +6725,7 @@ def longest_common_subsequence(self, text1: str, text2: str) -> int:
 * * *
 
 **4. Burst Balloons**
-> WARNING: **Assessment Realism Note:** Interval DP problems like Burst Balloons are extremely unlikely in timed assessments (the O(N³) derivation requires 30+ minutes of focused work). This exemplar is included for comprehensive pattern coverage. For timed assessment practice, prioritize the multi-source BFS, 1D DP, and monotonic stack problems in this chapter.
+> ⚠️ **Assessment Realism Note:** Interval DP problems like Burst Balloons are extremely unlikely in timed assessments (the O(N³) derivation requires 30+ minutes of focused work). This exemplar is included for comprehensive pattern coverage. For timed assessment practice, prioritize the multi-source BFS, 1D DP, and monotonic stack problems in this chapter.
 
 **Specification:** Maximize coins by bursting balloons. Bursting `nums[i]` yields `nums[i-1] * nums[i] * nums[i+1]` coins.
 
@@ -6733,7 +6733,7 @@ def longest_common_subsequence(self, text1: str, text2: str) -> int:
 
 **Pattern:** Interval DP
 
-> WARNING: **The Key Trick: Think BACKWARDS**
+> ⚠️ **The Key Trick: Think BACKWARDS**
 >
 > The natural instinct is to simulate bursting balloons left-to-right, but that creates dependency chaos — bursting balloon `i` changes the neighbors of balloon `i+1`. Instead, ask: **"Which balloon do I burst LAST?"** If balloon `k` is the *last* to burst in interval `(i, j)`, then at that moment only `arr[i]` and `arr[j]` remain as its neighbors. This makes the left and right subproblems *independent*.
 
@@ -6908,9 +6908,9 @@ def daily_temperatures(self, temperatures: list[int]) -> list[int]:
 
 **Pattern:** 2D DP
 
-> WARNING: **The Three Operations — Mapped to Table Directions**
+> ⚠️ **The Three Operations — Mapped to Table Directions**
 >
-> At each cell, you choose the cheapest of three operations: **Replace** ((up-left) diagonal + 1), **Delete** from word1 (↑ up + 1), **Insert** into word1 (← left + 1). If characters already match, the diagonal costs 0 (no operation needed).
+> At each cell, you choose the cheapest of three operations: **Replace** (↖ diagonal + 1), **Delete** from word1 (↑ up + 1), **Insert** into word1 (← left + 1). If characters already match, the diagonal costs 0 (no operation needed).
 
 ![Edit Distance Trace](editions/python/chapters/13-optimization-dp/visuals/edit_distance_trace.png){width=85%}
 
@@ -6919,13 +6919,13 @@ def daily_temperatures(self, temperatures: list[int]) -> list[int]:
 |  | "" | C | U | T |
 |---|---|---|---|---|
 | **""** | 0 | 1 | 2 | 3 |
-| **C** | 1 | **0** (up-left) | 1 | 2 |
-| **A** | 2 | 1 | **1** (up-left) | 2 |
-| **T** | 3 | 2 | 2 | **1** (up-left) |
+| **C** | 1 | **0** ↖ | 1 | 2 |
+| **A** | 2 | 1 | **1** ↖ | 2 |
+| **T** | 3 | 2 | 2 | **1** ↖ |
 
 - **Row 0 / Col 0** (base cases): Converting "" → "CUT" costs 3 inserts. Converting "CAT" → "" costs 3 deletes.
 - **dp[1][1]:** C = C → match! Free! Diagonal `dp[0][0]` = 0.
-- **dp[2][2]:** A $\neq$ U → mismatch. `1 + min(dp[1][1], dp[1][2], dp[2][1])` = `1 + min(0, 1, 1)` = **1** (replace A→U).
+- **dp[2][2]:** A ≠ U → mismatch. `1 + min(dp[1][1], dp[1][2], dp[2][1])` = `1 + min(0, 1, 1)` = **1** (replace A→U).
 - **dp[3][3]:** T = T → match! Diagonal `dp[2][2]` = 1. **Answer: 1 edit.**
 
 **Real-world use:** Spell checkers, DNA alignment, fuzzy string matching, and `git diff` all use variants of this algorithm.
@@ -6961,7 +6961,7 @@ def min_distance(self, word1: str, word2: str) -> int:
 
 **Pattern:** HashMap + Doubly Linked List
 
-> WARNING: **"Why no timestamp?" — Position IS the Timestamp**
+> ⚠️ **"Why no timestamp?" — Position IS the Timestamp**
 >
 > A common question is: "Shouldn't we store a timestamp for when each item was last used?" The answer is no — the **position in the linked list** is the timestamp. The node closest to HEAD was used most recently. The node closest to TAIL was used longest ago. Every `get()` or `put()` moves that node to the HEAD. No clock needed — the list order *is* the chronological record.
 
@@ -7044,7 +7044,7 @@ class LRUCache:
 
 **Pattern:** Histogram Reduction + Monotonic Stack
 
-> WARNING: **The Two-Step Intuition: Row Histograms + Monotonic Stack**
+> ⚠️ **The Two-Step Intuition: Row Histograms + Monotonic Stack**
 >
 > **Step 1 (Matrix $\rightarrow$ Histograms):** Process the matrix row by row. At each row, compute column heights. If `matrix[r][c] == '1'`, `heights[c] += 1`; if `'0'`, `heights[c] = 0`. Each row forms a 1D histogram.
 >
@@ -7069,7 +7069,7 @@ class LRUCache:
 | 3 | 2 | Push 3 | `[1, 3]` | — |
 | 4 | 2 | Push 4 | `[1, 3, 4]` | — |
 | 5 (sentinel) | 0 | `0 < 2` $\rightarrow$ Pop 4 (h=2) | `[1, 3]` | `height=2, width=5-3-1=1` $\rightarrow$ **2** |
-| 5 (sentinel) | 0 | `0 < 2` $\rightarrow$ Pop 3 (h=2) | `[1]` | `height=2, width=5-1-1=3` $\rightarrow$ **6** [x] |
+| 5 (sentinel) | 0 | `0 < 2` $\rightarrow$ Pop 3 (h=2) | `[1]` | `height=2, width=5-1-1=3` $\rightarrow$ **6** ✅ |
 | 5 (sentinel) | 0 | `0 < 1` $\rightarrow$ Pop 1 (h=1) | `[]` | `height=1, width=5` $\rightarrow$ **5** |
 
 **Explanation:** We treat each row as the base of a histogram and update heights. We then run the $\mathcal{O}(N)$ "Largest Rectangle in Histogram" algorithm using a monotonic stack on each row.
@@ -8179,7 +8179,7 @@ Apply the Problem Analysis Canvas to the following 15 problem statements. Do not
 14. Calculate the edit distance between two strings. *(Hint: 2D Dynamic Programming)*
 15. Find all valid combinations of $k$ numbers that sum up to $n$. *(Hint: Backtracking)*
 
-> * **STAR Moment: The Synthesis Mindset**
+> ⭐ **STAR Moment: The Synthesis Mindset**
 >
 > The engineers who consistently score in the top percentile on technical assessments are not the ones who have memorized the most solutions. They are the ones who can see the hidden structure in novel problems. Every new problem is a remix of patterns you already know. Train your eyes to see the composition, and no assessment will ever surprise you.
 
@@ -9203,7 +9203,7 @@ Modern system design interviews increasingly expect familiarity with container o
 
 **Serverless Trade-offs:** Lambda/Cloud Functions eliminate infrastructure management but introduce cold start latency (100ms-2s), vendor lock-in, and debugging complexity. Use for event-driven workloads (image processing, webhook handling), not for latency-critical paths.
 
-> * **STAR Moment: Bounded Context Isolation**
+> ⭐ **STAR Moment: Bounded Context Isolation**
 > 
 > During system design interviews, explain that microservice division should mirror DDD Bounded Contexts. Say: *"We will isolate the ZenithTrade Matching Engine from the AuraPay Ledger. If the ledger experiences a database write lag, our matching engine can continue to accept and queue orders in memory, preventing system-wide downtime."* This shows you design for fault isolation.
 
@@ -9432,7 +9432,7 @@ Expose endpoints (e.g., Prometheus Prometheus JMX/Micrometer) to collect perform
 - **Application Metrics:** API request rates, HTTP 5xx error counts, database connection pool saturation, and circuit breaker states.
 
 
-> * **STAR Moment: Compensating Transactions vs Rollback**
+> ⭐ **STAR Moment: Compensating Transactions vs Rollback**
 > 
 > In a system design interview, make sure to emphasize that a Saga cannot "rollback" in the traditional database sense, because the initial transactions have already been committed. Instead, we must write explicit **compensating transactions** (e.g., if a debit was committed, the compensation is a credit). You must design these compensating operations to be **idempotent**, as they may be retried multiple times during a network partition.
 
@@ -9650,7 +9650,7 @@ Even if a DBA has root access to the database tables or extracts a raw disk back
 
 
 
-> * **STAR Moment: The Security-First Architecture**
+> ⭐ **STAR Moment: The Security-First Architecture**
 > 
 > In a system design interview, explain the concept of *"auditing and perimeter isolation."* Show how you can use a separate network zone (VPC) for your Card Vault, with separate encryption keys managed by an HSM (Hardware Security Module) or Key Management Service (KMS), and separate access control roles. Decoupling data in this way reduces security risk and simplifies compliance audits.
 
@@ -9761,7 +9761,7 @@ To project executive presence and clear technical rounds on live video calls or 
 3. **The Trade-Off Verbalization:** Throughout the interview, constantly verbalize your architectural trade-offs (e.g., *"If we use Redis for rate limiting, we gain speed, but we must handle memory expiration and potential write consistency issues during partition events"*). Never present a design as "perfect."
 
 
-> * **STAR Moment: Speak in Metrics**
+> ⭐ **STAR Moment: Speak in Metrics**
 > 
 > When presenting your career accomplishments, translate every engineering activity into a business outcome. Never say: *"I rewrote the database queries."* Say: *"I optimized our query indexes, reducing database read latency by 60% and cutting our monthly database hosting cost by $12,000."* Executives and engineering leaders hire developers who understand the financial and operational impact of their code.
 
@@ -9940,7 +9940,7 @@ Update instances one at a time (or in small batches) behind the load balancer:
 - Best suited for stateless microservices with fast startup times.
 
 
-> * **STAR Moment: The Mocking Boundary**
+> ⭐ **STAR Moment: The Mocking Boundary**
 > 
 > In a technical interview, emphasize that you know *when* to mock. Say: *"We mock network calls and database interfaces in our unit tests to keep feedback loops fast. But we never mock our domain aggregates or value objects. Testing our business rules against actual domain structures guarantees that our core invariants are always enforced. For integration boundaries, we use Testcontainers against real Postgres and Kafka instances, and we validate API contracts using Pact before every deployment."* This shows you understand domain boundary protection and production-grade testing strategy.
 
@@ -10232,7 +10232,7 @@ Selecting the right broker technology depends on the architectural requirements:
 | **Schema Evolution** | Schema Registry (Avro/Protobuf) | No native schema support | No native schema support |
 
 
-> * **STAR Moment: The Ordering Guarantee**
+> ⭐ **STAR Moment: The Ordering Guarantee**
 > 
 > In a system design interview, explain: *"We will configure our payment topics with a partitioning key based on the ledger account ID. This guarantees that all transactions affecting a specific account are processed sequentially by a single thread in our consumer group, eliminating race conditions and balance corruption during high-frequency parallel events. We use the StickyAssignor with cooperative rebalancing to minimize processing pauses when consumers scale, and route poison messages to a Dead Letter Queue after three retry attempts to prevent partition blocking."* This shows deep understanding of partition routing, failure recovery, and operational maturity.
 
@@ -10450,7 +10450,7 @@ LLM inference costs scale directly with token volume. At enterprise scale, unopt
 4. **Self-Hosted Models:** For high-volume, latency-tolerant workloads, deploy open-source models (Llama, Mistral) on owned GPU infrastructure. Higher upfront cost but dramatically lower per-token cost at scale.
 
 
-> * **STAR Moment: The Full ML System Design**
+> ⭐ **STAR Moment: The Full ML System Design**
 > 
 > In a system design interview, demonstrate the complete picture: *"For the recommendation engine, we separate our architecture into three pipelines. The offline pipeline trains our ranking model using user interaction features stored in Feast, with weekly retraining triggered by data drift detection. The online pipeline retrieves candidate items via HNSW vector search, then re-ranks with a lightweight cross-encoder model, targeting sub-100ms p99 latency. We deploy new models in shadow mode first, comparing CTR and conversion rates against the incumbent via A/B testing before promotion. For cost control, we route simple classification queries to GPT-4o-mini and reserve frontier models for complex reasoning."* This shows end-to-end ML engineering maturity.
 
@@ -10580,9 +10580,9 @@ To make back-of-the-envelope calculations, memorize these rough access latency s
 | **Main Memory reference (DDR5)** | 50 ns | 50 sec |
 | **Compress 1K bytes with Zippy** | 3,000 ns | 50 min |
 | **Send 2K bytes over 1 Gbps network** | 20,000 ns | 5.5 hours |
-| **NVMe SSD random read** | 10-20 $\mu$s | ~3-6 hours |
-| **NVMe SSD sequential 1MB read** | 100-200 $\mu$s | ~1-2 days |
-| **Round trip within same datacenter** | 250-500 $\mu$s | ~3-6 days |
+| **NVMe SSD random read** | 10-20 μs | ~3-6 hours |
+| **NVMe SSD sequential 1MB read** | 100-200 μs | ~1-2 days |
+| **Round trip within same datacenter** | 250-500 μs | ~3-6 days |
 | **HDD seek** | 2-5 ms | ~1-2 months |
 | **Read 1MB sequentially from Disk** | 20,000,000 ns | 7.5 months |
 | **Send packet CA to Netherlands to CA** | 150,000,000 ns | 4.7 years |

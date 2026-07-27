@@ -123,9 +123,9 @@ To make back-of-the-envelope calculations, memorize these rough access latency s
 | **Main Memory reference (DDR5)** | 50 ns | 50 sec |
 | **Compress 1K bytes with Zippy** | 3,000 ns | 50 min |
 | **Send 2K bytes over 1 Gbps network** | 20,000 ns | 5.5 hours |
-| **NVMe SSD random read** | 10-20 $\mu$s | ~3-6 hours |
-| **NVMe SSD sequential 1MB read** | 100-200 $\mu$s | ~1-2 days |
-| **Round trip within same datacenter** | 250-500 $\mu$s | ~3-6 days |
+| **NVMe SSD random read** | 10-20 μs | ~3-6 hours |
+| **NVMe SSD sequential 1MB read** | 100-200 μs | ~1-2 days |
+| **Round trip within same datacenter** | 250-500 μs | ~3-6 days |
 | **HDD seek** | 2-5 ms | ~1-2 months |
 | **Read 1MB sequentially from Disk** | 20,000,000 ns | 7.5 months |
 | **Send packet CA to Netherlands to CA** | 150,000,000 ns | 4.7 years |

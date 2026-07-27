@@ -250,6 +250,6 @@ class SettlementProcessor:
 
 
 
-> * **STAR Moment: The Encapsulation Test**
+> ⭐ **STAR Moment: The Encapsulation Test**
 > 
 > When designing class structures in a technical interview, ask yourself: *Can this class enter an invalid state?* If a client developer can instantiate your object and set its properties to values that violate business rules, your encapsulation has failed. Build your validation boundaries directly into the constructors and state-transition methods of your domain objects.

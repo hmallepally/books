@@ -254,6 +254,6 @@ Even if a DBA has root access to the database tables or extracts a raw disk back
 
 
 
-> * **STAR Moment: The Security-First Architecture**
+> ⭐ **STAR Moment: The Security-First Architecture**
 > 
 > In a system design interview, explain the concept of *"auditing and perimeter isolation."* Show how you can use a separate network zone (VPC) for your Card Vault, with separate encryption keys managed by an HSM (Hardware Security Module) or Key Management Service (KMS), and separate access control roles. Decoupling data in this way reduces security risk and simplifies compliance audits.

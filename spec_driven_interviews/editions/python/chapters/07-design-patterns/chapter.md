@@ -191,6 +191,6 @@ In senior interviews, you must connect patterns to the frameworks you use. Here 
 | **Template Method** | Spring `JdbcTemplate` | `JdbcTemplate` defines the skeleton of database execution (opening connection, statement preparation, cleanup) while letting subclasses map rows to domain objects. |
 
 
-> * **STAR Moment: The Framework Pattern Test**
+> ⭐ **STAR Moment: The Framework Pattern Test**
 > 
 > During system design interviews, explain design patterns in terms of the framework concepts the interviewer already knows. Instead of drawing a generic observer diagram, say: *"We will implement this like a Spring ApplicationEventPublisher or a Kafka Event Broker, decoupling the transactional write thread from the audit and search indexing consumers."* This shows you understand patterns in modern, production-grade architectures.

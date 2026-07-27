@@ -83,6 +83,6 @@ In modern assessment environments, particularly equal-weight assessments where a
 
 When confronted with novel, never-before-seen problems—problems explicitly designed to test engineering limits rather than memorization—decomposition is the *only* reliable strategy. It bridges the gap between the unknown problem domain and your known catalog of patterns, ensuring that you can always make structured, demonstrable progress.
 
-> * **STAR Moment: The Decomposition Discipline**
+> ⭐ **STAR Moment: The Decomposition Discipline**
 >
 > Before you write a single line of code, invest 3-5 minutes in decomposition. Write your analysis as comments at the top of your solution file. This serves three purposes: it clarifies your thinking, it provides partial credit if you run out of time, and it creates a roadmap that prevents you from getting lost during implementation.

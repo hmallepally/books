@@ -181,6 +181,6 @@ Selecting the right broker technology depends on the architectural requirements:
 | **Schema Evolution** | Schema Registry (Avro/Protobuf) | No native schema support | No native schema support |
 
 
-> * **STAR Moment: The Ordering Guarantee**
+> ⭐ **STAR Moment: The Ordering Guarantee**
 > 
 > In a system design interview, explain: *"We will configure our payment topics with a partitioning key based on the ledger account ID. This guarantees that all transactions affecting a specific account are processed sequentially by a single thread in our consumer group, eliminating race conditions and balance corruption during high-frequency parallel events. We use the StickyAssignor with cooperative rebalancing to minimize processing pauses when consumers scale, and route poison messages to a Dead Letter Queue after three retry attempts to prevent partition blocking."* This shows deep understanding of partition routing, failure recovery, and operational maturity.

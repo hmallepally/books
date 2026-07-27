@@ -57,6 +57,6 @@ Debugging streams can be difficult due to their lazy execution model. To inspect
    If a pipeline throws an exception, temporarily break the pipeline into separate intermediate variables to isolate the throwing operation in the stack trace.
 
 
-> * **STAR Moment: The Stateless Pipeline Principle**
+> ⭐ **STAR Moment: The Stateless Pipeline Principle**
 > 
 > A functional stream pipeline must never modify state variables outside the stream. If you write a `.forEach()` or `.map()` that mutates a shared list or updates a local counter, you have violated the functional contract. You lose thread safety, and your code cannot be parallelized. Keep your lambdas pure, stateless, and side-effect-free. In an interview, say: *"I use `collect()` and `reduce()` to accumulate results rather than mutating external variables, because stateless pipelines are safe to parallelize and easy to reason about."*

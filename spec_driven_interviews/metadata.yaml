@@ -45,5 +45,19 @@ header-includes:
   - \renewcommand{\arraystretch}{1.6}
   - \usepackage{colortbl}
   - \definecolor{tableRowAlt}{HTML}{F1F5F9}
+  - \usepackage{fontspec}
+  - \setmainfont{Latin Modern Roman}
+  - \newfontfamily{\emojifont}{Segoe UI Emoji}
+  - \usepackage{newunicodechar}
+  - \newunicodechar{⭐}{{\emojifont ⭐}}
+  - \newunicodechar{✅}{{\emojifont ✅}}
+  - \newunicodechar{✓}{{\emojifont ✓}}
+  - \newunicodechar{⚠}{{\emojifont ⚠}}
+  - \newunicodechar{↖}{{\emojifont ↖}}
+  - \newunicodechar{≤}{$\leq$}
+  - \newunicodechar{≥}{$\geq$}
+  - \newunicodechar{≠}{$\neq$}
+  - \newunicodechar{μ}{$\mu$}
+  - \newunicodechar{∎}{$\blacksquare$}
   - \sloppy
 ---

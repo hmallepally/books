@@ -131,6 +131,6 @@ SOLID principles are design heuristics, not commandments. Over-application creat
 > The senior engineer's skill is knowing WHEN to apply SOLID and when the cure is worse than the disease.
 
 
-> * **STAR Moment: The Mockability Test**
+> ⭐ **STAR Moment: The Mockability Test**
 > 
 > The ultimate test of a SOLID design is **mockability**. In a technical interview, explain that a correctly decoupled class can be unit-tested in isolation by mocking all of its interface dependencies. If you cannot test a method without spinning up a real database, an active web server, or a third-party messaging channel, your design violates the Dependency Inversion Principle.

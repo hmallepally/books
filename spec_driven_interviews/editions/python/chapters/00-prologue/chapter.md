@@ -120,7 +120,7 @@ To maximize the value of this manual, select the path that aligns with your care
   4. Read **Chapter 19 (Behavioral & Technical Leadership)** to prepare for the behavioral round with Technical STAR frameworks and full mock responses.
 
 
-> * **STAR Moment: The Invariant Principle**
+> ⭐ **STAR Moment: The Invariant Principle**
 > 
 > The best code is code that is correct by design. When you write a method, your first task is not to implement the algorithm, but to define the contract: what must be true *before* the method runs (pre-conditions), and what must be guaranteed *after* it completes (post-conditions). If you enforce these boundaries, the code inside the method almost writes itself.
 
