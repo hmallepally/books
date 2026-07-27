@@ -40,5 +40,10 @@ header-includes:
   - \renewenvironment{quote}{\begin{customquote}}{\end{customquote}}
   - \usepackage[htt]{hyphenat}
   - \usepackage{microtype}
+  - \usepackage{booktabs}
+  - \usepackage{array}
+  - \renewcommand{\arraystretch}{1.6}
+  - \usepackage{colortbl}
+  - \definecolor{tableRowAlt}{HTML}{F1F5F9}
   - \sloppy
 ---
