@@ -255,7 +255,9 @@ When designing load tests, avoid these common mistakes:
 
 When load testing data-intensive applications, connection pool sizing is a common bottleneck. As discussed in earlier chapters, the optimal pool size formula is:
 
-$$\text{Pool Size} = T_n \times (C_m - 1) + 1$$
+```
+Pool Size = Tn * (Cm - 1) + 1
+```
 
 Where $T_n$ = number of threads, $C_m$ = maximum concurrent queries per thread.
 

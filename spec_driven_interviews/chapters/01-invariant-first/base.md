@@ -75,7 +75,9 @@ We define two pointers, `left` and `right`, defining our active search range $[l
 
 - **The Loop Invariant:** *If target is present in the array, it must reside within the index boundaries:*
 
-$$\text{Invariant } P(left, right): \text{target} \in nums[left \dots right]$$
+```
+Invariant P(left, right): target in nums[left...right]
+```
 
 ### Mathematical Proof of Correctness
 To prove the algorithm is correct, we must prove three properties of our loop invariant:

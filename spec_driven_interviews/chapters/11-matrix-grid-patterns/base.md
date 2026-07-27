@@ -73,9 +73,13 @@ Prefix Sum Array S (row 0 and column 0 are all zeros):
 
 **Cell-by-cell trace for S[2][2] = 12:**
 
-$$S[r][c] = A[r\text{-}1][c\text{-}1] + S[r\text{-}1][c] + S[r][c\text{-}1] - S[r\text{-}1][c\text{-}1]$$
+```
+S[r][c] = A[r-1][c-1] + S[r-1][c] + S[r][c-1] - S[r-1][c-1]
+```
 
-$$S[2][2] = \underbrace{A[1][1]}_{5} + \underbrace{S[1][2]}_{3} + \underbrace{S[2][1]}_{5} - \underbrace{S[1][1]}_{1} = 12$$
+```
+S[2][2] = A[1][1] (5) + S[1][2] (3) + S[2][1] (5) - S[1][1] (1) = 12
+```
 
 The two 5s come from different sources: `A[1][1] = 5` is the center cell of the original matrix, while `S[2][1] = 5` is the prefix sum of the first column (`1 + 4 = 5`). Verify: `S[2][2]` should equal `1 + 2 + 4 + 5 = 12` — the sum of all elements from `(0,0)` to `(1,1)`. ✓
 
@@ -85,7 +89,9 @@ The two 5s come from different sources: `A[1][1] = 5` is the center cell of the 
 
 **Understanding the Query — Inclusion-Exclusion.** To find the sum of a sub-rectangle from `(r1, c1)` to `(r2, c2)`, we carve it out of the full prefix sum using four overlapping rectangles:
 
-$$\text{query}(r_1, c_1, r_2, c_2) = S[r_2\text{+}1][c_2\text{+}1] - S[r_1][c_2\text{+}1] - S[r_2\text{+}1][c_1] + S[r_1][c_1]$$
+```
+query(r1, c1, r2, c2) = S[r2+1][c2+1] - S[r1][c2+1] - S[r2+1][c1] + S[r1][c1]
+```
 
 **The `+1` rule**: `+1` means "include this boundary." The middle two terms are *crossed* — each keeps one dimension full and chops the other:
 
@@ -98,7 +104,9 @@ $$\text{query}(r_1, c_1, r_2, c_2) = S[r_2\text{+}1][c_2\text{+}1] - S[r_1][c_2\
 
 **Worked query**: Sum of sub-rectangle `(1,1)` to `(2,2)` — cells `{5, 6, 8, 9}` = 28:
 
-$$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
+```
+S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28
+```
 
 ![2D Prefix Sum — Query via Inclusion-Exclusion](visuals/prefix_sum_2d_query.png){width=85%}
 

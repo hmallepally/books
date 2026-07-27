@@ -10,10 +10,15 @@ This chapter covers Hard-tier of the General Coding Assessments (Hard difficulty
 A **Rotated Sorted Array** is an array that was originally sorted in ascending order (with unique elements), but has been shifted (rotated) at some unknown pivot index $K$.
 
 For example, consider the original sorted array:
-$$\text{Original Sorted Array: } [0, 1, 2, 4, 5, 6, 7]$$
+```
+Original Sorted Array: [0, 1, 2, 4, 5, 6, 7]
+```
 
 If we rotate this array at pivot index $K = 3$ (shifting elements from index 3 onwards to the front), we get:
-$$\text{Rotated Sorted Array: } [4, 5, 6, 7, 0, 1, 2]$$
+
+```
+Rotated Sorted Array: [4, 5, 6, 7, 0, 1, 2]
+```
 
 Notice what happened:
 
