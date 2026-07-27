@@ -1,6 +1,6 @@
-# Q2 Mastery — 2D Matrix Traversal, Grid Simulations, and State Machine Processing
+# Medium-tier Mastery — 2D Matrix Traversal, Grid Simulations, and State Machine Processing
 
-This chapter covers Q2 of the CodeSignal GCA (Medium difficulty, ~15 minutes target time). Q2 tests multidimensional array processing, grid boundary control, BFS/DFS flood fill, and step-by-step state machine simulation.
+This chapter covers Medium-tier of the General Coding Assessments (Medium difficulty, ~15 minutes target time). Medium-tier tests multidimensional array processing, grid boundary control, BFS/DFS flood fill, and step-by-step state machine simulation.
 
 ## Essential Terminology & Vocabulary
 
@@ -986,7 +986,7 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 ```java
 public int orangesRotting(int[][] grid) {
-  Queue<int[]> q = new LinkedList<>();
+  Queue<int[]> q = new ArrayDeque<>();
   int fresh = 0, m = grid.length, n = grid[0].length;
   for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) {
@@ -1075,7 +1075,7 @@ public int minimumEffortPath(int[][] heights) {
 private boolean canReach(int[][] h, int limit) {
   int m = h.length, n = h[0].length;
   boolean[][] vis = new boolean[m][n];
-  Queue<int[]> q = new LinkedList<>();
+  Queue<int[]> q = new ArrayDeque<>();
   q.offer(new int[]{0, 0}); vis[0][0] = true;
   int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
   

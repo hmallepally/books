@@ -21,25 +21,25 @@ When you master the 24 patterns below, you no longer need to memorize hundreds o
 
 ---
 
-## General Coding Assessment (GCA) Tactics
+## General Coding Assessment (general coding assessment) Tactics
 
-Standardized online coding assessments (e.g., CodeSignal GCA, HackerRank, or Codility) evaluate speed, accuracy, and edge-case handling under severe time constraints. The most common format is the **70-Minute, 4-Question Speed Run**.
+Standardized online coding assessments (e.g., General Coding Assessments, HackerRank, or Codility) evaluate speed, accuracy, and edge-case handling under severe time constraints. The most common format is the **70-Minute, 4-Question Speed Run**.
 
 ### The 4-Question Blueprint
 
 | Question | Difficulty | Target Time | Primary Pattern Types | Tactical Rule |
 |---|---|---|---|---|
-| **Q1** | Easy | 5–8 Min | `[PAT-01]`, `[PAT-02]` | Write clean, brute-force code immediately. Do not over-optimize. |
-| **Q2** | Medium | 10–12 Min | `[PAT-03]`, `[PAT-06]`, `[PAT-10]` | Watch for array bounds and off-by-one errors. |
-| **Q3** | Medium-Hard | 15–20 Min | `[PAT-04]`, `[PAT-13]`, `[PAT-14]` | Identify the window state or queue batching early. |
-| **Q4** | Hard | 20–25 Min | `[PAT-05]`, `[PAT-09]`, `[PAT-11]`, `[PAT-19]` | If brute force is $O(N^2)$, look for a monotonic property or DP state. |
+| **Easy-tier** | Easy | 5–8 Min | `[PAT-01]`, `[PAT-02]` | Write clean, brute-force code immediately. Do not over-optimize. |
+| **Medium-tier** | Medium | 10–12 Min | `[PAT-03]`, `[PAT-06]`, `[PAT-10]` | Watch for array bounds and off-by-one errors. |
+| **Medium-Hard-tier** | Medium-Hard | 15–20 Min | `[PAT-04]`, `[PAT-13]`, `[PAT-14]` | Identify the window state or queue batching early. |
+| **Hard-tier** | Hard | 20–25 Min | `[PAT-05]`, `[PAT-09]`, `[PAT-11]`, `[PAT-19]` | If brute force is $O(N^2)$, look for a monotonic property or DP state. |
 
-### The 70-Minute GCA Master Plan
+### The 70-Minute general coding assessment Master Plan
 
 1. **The 3-Minute Limit:** If you get stuck on a compile or logic bug for more than 3 minutes, comment out your changes, revert to your last working baseline, and rethink your boundary conditions.
 2. **Never print in a loop:** Printing to standard output inside loops kills execution speed and causes hidden test timeouts.
 3. **Submit immediately:** Once your solution passes visible test cases, submit it and move on.
-4. **Strategic Order (1 -> 2 -> 4 -> 3):** On platforms like CodeSignal, Q4 is often worth significantly more points than Q3 and is usually more deterministic (e.g., Monotonic Stack or Binary Search) than Q3, which can involve tedious simulation.
+4. **Strategic Order (1 -> 2 -> 4 -> 3):** On platforms like automated testing platforms, Hard-tier is often worth significantly more points than Medium-Hard-tier and is usually more deterministic (e.g., Monotonic Stack or Binary Search) than Medium-Hard-tier, which can involve tedious simulation.
 
 ---
 
@@ -104,7 +104,7 @@ public int removeDuplicates(int[] nums) {
 - **Canonical Code Skeleton:**
 ```java
 public int subarraySumEqualsK(int[] nums, int k) {
-    Map<Integer, Integer> prefCounts = new HashMap<>();
+    var prefCounts = new HashMap<Integer, Integer>();
     prefCounts.put(0, 1);
     int currentSum = 0, count = 0;
 
@@ -161,8 +161,8 @@ public int longestSubarray(int[] nums, int k) {
 - **Canonical Code Skeleton:**
 ```java
 public int[] maxSlidingWindow(int[] nums, int k) {
-    Deque<Integer> deque = new ArrayDeque<>();
-    int[] res = new int[nums.length - k + 1];
+    var deque = new ArrayDeque<Integer>();
+    var res = new int[nums.length - k + 1];
     int idx = 0;
 
     for (int i = 0; i < nums.length; i++) {
@@ -234,7 +234,7 @@ public boolean hasCycle(ListNode head) {
 - **Canonical Code Skeleton:**
 ```java
 public boolean isValidParentheses(String s) {
-    Deque<Character> stack = new ArrayDeque<>();
+    var stack = new ArrayDeque<Character>();
     for (char c : s.toCharArray()) {
         if (c == '(') stack.push(')');
         else if (c == '{') stack.push('}');
@@ -257,7 +257,7 @@ public boolean isValidParentheses(String s) {
 - **Canonical Code Skeleton:**
 ```java
 public int[] dailyTemperatures(int[] temps) {
-    int[] ans = new int[temps.length];
+    var ans = new int[temps.length];
     Deque<Integer> stack = new ArrayDeque<>(); // Stores INDICES
 
     for (int i = 0; i < temps.length; i++) {
@@ -368,7 +368,7 @@ public void backtrack(List<List<Integer>> res, List<Integer> path, int[] nums, b
 ```java
 public int shortestPath(char[][] grid, int startR, int startC) {
     int rows = grid.length, cols = grid[0].length;
-    Queue<int[]> queue = new LinkedList<>();
+    var queue = new ArrayDeque<int[]>();
     boolean[][] visited = new boolean[rows][cols];
 
     queue.offer(new int[]{startR, startC});
@@ -410,7 +410,7 @@ public int shortestPath(char[][] grid, int startR, int startC) {
 ```java
 public int orangesRotting(int[][] grid) {
     int rows = grid.length, cols = grid[0].length;
-    Queue<int[]> queue = new LinkedList<>();
+    var queue = new ArrayDeque<int[]>();
     int freshCount = 0;
 
     for (int r = 0; r < rows; r++) {
@@ -488,15 +488,15 @@ private void dfsSink(char[][] grid, int r, int c) {
 - **Canonical Code Skeleton:**
 ```java
 public int[] findOrder(int numCourses, int[][] prerequisites) {
-    int[] inDegree = new int[numCourses];
-    List<List<Integer>> adj = new ArrayList<>();
+    var inDegree = new int[numCourses];
+    var adj = new ArrayList<List<Integer>>();
     for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
     for (int[] p : prerequisites) {
         adj.get(p[1]).add(p[0]);
         inDegree[p[0]]++;
     }
 
-    Queue<Integer> queue = new LinkedList<>();
+    var queue = new ArrayDeque<Integer>();
     for (int i = 0; i < numCourses; i++) if (inDegree[i] == 0) queue.offer(i);
 
     int[] order = new int[numCourses];
@@ -563,9 +563,9 @@ public int networkDelayTime(int[][] times, int n, int k) {
         adj.computeIfAbsent(t[0], x -> new ArrayList<>()).add(new int[]{t[1], t[2]});
     }
 
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]); // [node, dist]
+    var pq = new PriorityQueue<int[]>((a, b) -> a[1] - b[1]); // [node, dist]
     pq.offer(new int[]{k, 0});
-    Map<Integer, Integer> dist = new HashMap<>();
+    var dist = new HashMap<Integer, Integer>();
 
     while (!pq.isEmpty()) {
         int[] curr = pq.poll();
@@ -708,7 +708,7 @@ public int minMeetingRooms(int[][] intervals) {
     if (intervals == null || intervals.length == 0) return 0;
     Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
 
-    PriorityQueue<Integer> minHeap = new PriorityQueue<>(); // Stores end times
+    var minHeap = new PriorityQueue<Integer>(); // Stores end times
     minHeap.offer(intervals[0][1]);
 
     for (int i = 1; i < intervals.length; i++) {

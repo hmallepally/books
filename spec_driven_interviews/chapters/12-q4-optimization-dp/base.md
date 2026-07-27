@@ -1,6 +1,6 @@
-# Q4 Mastery — Algorithmic Optimization: Binary Search Variants, Monotonic Structures, Dynamic Programming, and Graph Algorithms
+# Hard-tier Mastery — Algorithmic Optimization: Binary Search Variants, Monotonic Structures, Dynamic Programming, and Graph Algorithms
 
-This chapter covers Q4 of the CodeSignal GCA (Hard difficulty, ~25 minutes target time). Q4 is the most challenging question testing optimal $\mathcal{O}(\log N)$ or $\mathcal{O}(N)$ solutions, DP state transitions, and graph algorithms.
+This chapter covers Hard-tier of the General Coding Assessments (Hard difficulty, ~25 minutes target time). Hard-tier is the most challenging question testing optimal $\mathcal{O}(\log N)$ or $\mathcal{O}(N)$ solutions, DP state transitions, and graph algorithms.
 
 ## Essential Terminology & Vocabulary
 
@@ -242,7 +242,7 @@ public int dpStateCompression(int[] nums) {
 ### Template D: BFS with Level Tracking
 ```java
 public int bfsLevel(Node start, Node target) {
-    Queue<Node> queue = new LinkedList<>();
+    Queue<Node> queue = new ArrayDeque<>();
     Set<Node> visited = new HashSet<>();
     queue.offer(start);
     visited.add(start);
@@ -270,7 +270,7 @@ public int bfsLevel(Node start, Node target) {
 ### Template E: Topological Sort (Kahn's Algorithm)
 ```java
 public List<Integer> topologicalSort(int numNodes, int[][] edges) {
-    List<List<Integer>> adj = new ArrayList<>();
+    var adj = new ArrayList<List<Integer>>();
     int[] inDegree = new int[numNodes];
     for (int i = 0; i < numNodes; i++) adj.add(new ArrayList<>());
     
@@ -279,7 +279,7 @@ public List<Integer> topologicalSort(int numNodes, int[][] edges) {
         inDegree[edge[0]]++;
     }
     
-    Queue<Integer> queue = new LinkedList<>();
+    var queue = new ArrayDeque<Integer>();
     for (int i = 0; i < numNodes; i++) {
         if (inDegree[i] == 0) queue.offer(i);
     }
@@ -868,7 +868,7 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
     Set<String> set = new HashSet<>(wordList);
     if (!set.contains(endWord)) return 0;
     
-    Queue<String> queue = new LinkedList<>();
+    Queue<String> queue = new ArrayDeque<>();
     queue.offer(beginWord);
     int level = 1;
     
@@ -1011,8 +1011,8 @@ public boolean isMatch(String s, String p) {
 
 ```java
 public int[] findOrder(int numCourses, int[][] prerequisites) {
-    int[] inDegree = new int[numCourses];
-    List<List<Integer>> adj = new ArrayList<>();
+    var inDegree = new int[numCourses];
+    var adj = new ArrayList<List<Integer>>();
     for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
     
     for (int[] p : prerequisites) {
@@ -1020,7 +1020,7 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
         inDegree[p[0]]++;
     }
     
-    Queue<Integer> q = new LinkedList<>();
+    Queue<Integer> q = new ArrayDeque<>();
     for (int i = 0; i < numCourses; i++) {
         if (inDegree[i] == 0) q.offer(i);
     }

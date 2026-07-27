@@ -1,4 +1,4 @@
-# Q3 Mastery — Dynamic Sliding Windows, HashMap Frequency Signatures, and Prefix Sum Analytics
+# Medium-Hard-tier Mastery — Dynamic Sliding Windows, HashMap Frequency Signatures, and Prefix Sum Analytics
 
 ## Essential Terminology & Vocabulary
 

@@ -1,6 +1,6 @@
-# Q1 Mastery — Implementation Speed, In-Place Transformations, and String Processing
+# Easy-tier Mastery — Implementation Speed, In-Place Transformations, and String Processing
 
-The first question (Q1) on the CodeSignal General Coding Assessment (GCA) is designed to evaluate fundamental implementation speed, boundary correctness, and memory hygiene. You have roughly **8 minutes** to solve Q1. While categorized as "Easy," Q1 is where candidates most frequently drop valuable points — not because the problem is hard, but because they rush and introduce off-by-one errors, forget null checks, or use inefficient string concatenation. A perfect Q1 score is the foundation of a 750+ GCA result.
+The first question (Easy-tier) on the automated testing platforms General Coding Assessment (general coding assessment) is designed to evaluate fundamental implementation speed, boundary correctness, and memory hygiene. You have roughly **8 minutes** to solve Easy-tier. While categorized as "Easy," Easy-tier is where candidates most frequently drop valuable points — not because the problem is hard, but because they rush and introduce off-by-one errors, forget null checks, or use inefficient string concatenation. A perfect Easy-tier score is the foundation of a 750+ general coding assessment result.
 
 This chapter teaches you the core vocabulary, the reusable pointer archetypes, 20 fully solved exemplar problems with detailed explanations, and 30 concrete practice problems with strategic hints.
 
@@ -8,12 +8,12 @@ This chapter teaches you the core vocabulary, the reusable pointer archetypes, 2
 
 ## Essential Terminology & Vocabulary
 
-Before solving any Q1 problem, you must internalize these foundational concepts. Each one maps directly to a class of problems you will encounter on the exam.
+Before solving any Easy-tier problem, you must internalize these foundational concepts. Each one maps directly to a class of problems you will encounter on the exam.
 
 ### In-Place Mutation
 An algorithm is **in-place** if it transforms the input using $\mathcal{O}(1)$ auxiliary space (excluding the input itself). In Java, arrays are mutable references — you can overwrite `arr[i]` directly. Strings, however, are **immutable objects** — every modification creates a new heap allocation.
 
-**Why it matters on Q1:** Many Q1 problems explicitly require in-place modification. If you allocate a new array when the spec says "in-place," you lose points even if the output is correct.
+**Why it matters on Easy-tier:** Many Easy-tier problems explicitly require in-place modification. If you allocate a new array when the spec says "in-place," you lose points even if the output is correct.
 
 ### Read/Write Pointer Pattern
 A two-pointer technique where:
@@ -49,7 +49,7 @@ Two pointers start at opposite ends (`left = 0`, `right = len - 1`) and move tow
 ![Two-Pointer Convergence — Palindrome Verification](visuals/two_pointer_convergence.png){width=85%}
 
 ### Run-Length Encoding (RLE)
-Compress consecutive identical elements into `(element, count)` pairs. `"aaabbc"` becomes `"a3b2c1"`. The read pointer tracks the current run; the write pointer emits compressed output. This is a classic Q1 problem that combines the Read/Write pattern with counting.
+Compress consecutive identical elements into `(element, count)` pairs. `"aaabbc"` becomes `"a3b2c1"`. The read pointer tracks the current run; the write pointer emits compressed output. This is a classic Easy-tier problem that combines the Read/Write pattern with counting.
 
 ### String Immutability & StringBuilder
 In Java, `String` is immutable. The expression `s += char` inside a loop creates a **new String object on every iteration**, copying all previous characters. For a string of length $N$, this produces $\mathcal{O}(N^2)$ total character copies. Always use `StringBuilder` for loop-based string construction — it maintains a resizable `char[]` buffer internally and runs in amortized $\mathcal{O}(N)$.
@@ -90,7 +90,7 @@ Why it matters: It avoids complex single-pass logic and significantly reduces bu
 
 ### Greedy Forward Scan
 This strategy involves processing an array from left to right sequentially. At each step, you make the locally optimal choice without looking back.
-Why it matters: It is heavily used in array change problems (like bumping each element above the previous) and similar Q1 tasks.
+Why it matters: It is heavily used in array change problems (like bumping each element above the previous) and similar Easy-tier tasks.
 
 ### Modular Arithmetic Basics
 This encompasses foundational modulo operations for cyclic or remainder logic. Examples include using `n % 2` for parity, `n % k` for divisibility, and `(a + b - 1) / b` for ceiling division.
@@ -710,7 +710,7 @@ public int[] plusOne(int[] digits) {
 * * *
 
 
-The following problems are drawn directly from the CodeSignal Arcade and GCA Q1 question bank. They emphasize boundary arithmetic, simple simulations, and filter-sort-reinsert patterns that appear frequently on actual assessments.
+The following problems are drawn directly from the automated testing platforms Arcade and general coding assessment Easy-tier question bank. They emphasize boundary arithmetic, simple simulations, and filter-sort-reinsert patterns that appear frequently on actual assessments.
 
 * * *
 
@@ -1004,7 +1004,7 @@ public int matrixElementsSum(int[][] matrix) {
 **Example:** `[1, 3, 2, 1]` → `false`. `[1, 3, 2]` → `true` (remove `3` → `[1, 2]`).
 
 **Pattern:** Count violations (positions where `arr[i] >= arr[i+1]`). If zero violations, it is already increasing. If exactly one violation at position `i`, check two removal candidates: removing `arr[i]` or removing `arr[i+1]`. If either removal produces a valid increasing sequence around the gap, return `true`. If more than one violation, return `false`.
-**This is one of the trickiest Q1 problems.** The naive approach of "just remove one element and re-check" is $\mathcal{O}(N^2)$. The optimal approach is $\mathcal{O}(N)$.
+**This is one of the trickiest Easy-tier problems.** The naive approach of "just remove one element and re-check" is $\mathcal{O}(N^2)$. The optimal approach is $\mathcal{O}(N)$.
 
 ```java
 public boolean almostIncreasingSequence(int[] sequence) {
@@ -1071,7 +1071,7 @@ public String reverseInParentheses(String s) {
 
 ## Practice Problem Bank
 
-The following 30 problems cover every Q1 pattern you may encounter on the CodeSignal GCA. Each includes a full specification, concrete examples, input constraints, and a strategic hint pointing you toward the correct pattern.
+The following 30 problems cover every Easy-tier pattern you may encounter on the General Coding Assessments. Each includes a full specification, concrete examples, input constraints, and a strategic hint pointing you toward the correct pattern.
 
 * * *
 
