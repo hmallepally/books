@@ -77,7 +77,8 @@ def build_pdf(edition):
     print(f"Combined manuscript written to: {manuscript_path}")
 
     # 2. Run Pandoc to generate PDF
-    pdf_output_name = f"Spec_Driven_Coding_Interviews_{edition.capitalize()}_Edition.pdf"
+    lang_label = 'CSharp' if edition == 'csharp' else edition.capitalize()
+    pdf_output_name = f"{lang_label}_Edition.pdf"
     pdf_output_path = os.path.join(base_dir, pdf_output_name)
     metadata_path = os.path.join(base_dir, 'metadata.yaml')
     
@@ -136,10 +137,8 @@ def build_epub(edition):
     print(f"Combined manuscript written to: {manuscript_path}")
 
     # 2. Run Pandoc to generate EPUB
-    lang_label = edition.capitalize()
-    if edition == 'csharp':
-        lang_label = 'CSharp'
-    epub_output_name = f"Spec_Driven_Coding_Interviews_{lang_label}_Edition.epub"
+    lang_label = 'CSharp' if edition == 'csharp' else edition.capitalize()
+    epub_output_name = f"{lang_label}_Edition.epub"
     epub_output_path = os.path.join(base_dir, epub_output_name)
     metadata_path = os.path.join(base_dir, 'metadata.yaml')
     
