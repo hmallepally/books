@@ -22,8 +22,15 @@ The following resources and literature have profoundly shaped the methodology, p
 - Mallepally, H. (2025). *Spec-driven secure development*. Amazon KDP.
 - Skelton, M., & Pais, M. (2019). *Team topologies: Organizing business and technology teams for fast flow*. IT Revolution Press.
 
+<b>Architecture and Design</b>
+
+- Newman, S. (2021). *Building Microservices* (2nd ed.). O'Reilly Media.
+- Ousterhout, J. (2021). *A Philosophy of Software Design* (2nd ed.). Yaknyam Press.
+- Tanenbaum, A. S., & Steen, M. v. (2023). *Distributed Systems* (4th ed.). Pearson.
+
 <b>Industry Standards and Guidelines</b>
 
 - International Software Testing Qualifications Board (ISTQB). (2018). *Certified tester foundation level syllabus* (v3.1.1). https://www.istqb.org/
 - ISO/IEC/IEEE. (2022). *ISO/IEC/IEEE 29119-1:2022 Software and systems engineering --- Software testing --- Part 1: General concepts*. IEEE. https://standards.ieee.org/
 - OWASP Foundation. (2023). *OWASP API security project top 10*. https://owasp.org/www-project-api-security/
+- PCI Security Standards Council. (2024). *Payment Card Industry Data Security Standard (PCI-DSS) v4.0.1*. https://www.pcisecuritystandards.org/

@@ -490,6 +490,12 @@ International Institute of Business Analysis. (2015). *A guide to the business a
 
 Mallepally, H. (2025). *Spec-driven software development: A practical guide for modern engineering teams*. Evergreen Enterprise.
 
+Newman, S. (2021). *Building microservices* (2nd ed.). O'Reilly Media.
+
+Ousterhout, J. (2021). *A philosophy of software design* (2nd ed.). Yaknyam Press.
+
+PCI Security Standards Council. (2024). *Payment card industry data security standard (PCI-DSS) v4.0.1*. https://www.pcisecuritystandards.org/
+
 Scaled Agile, Inc. (2021). *SAFe 5.0 reference guide: Scaled agile framework for lean enterprises* (2nd ed.). Addison-Wesley Professional.
 
 Schwaber, K., & Sutherland, J. (2020). *The Scrum guide: The definitive guide to Scrum: The rules of the game*. Scrum.org. https://scrumguides.org/scrum-guide.html
@@ -497,6 +503,8 @@ Schwaber, K., & Sutherland, J. (2020). *The Scrum guide: The definitive guide to
 Semler, R. (1993). *Maverick: The success story behind the world's most unusual workplace*. Warner Books.
 
 Skelton, M., & Pais, M. (2019). *Team topologies: Organizing business and technology teams for fast flow*. IT Revolution Press.
+
+Tanenbaum, A. S., & Steen, M. v. (2023). *Distributed systems* (4th ed.). Pearson.
 
 ---
 *End of Chapter 16*

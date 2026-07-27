@@ -1,8 +1,5 @@
 
 
-\part{The Quality Paradigm - Today and Tomorrow}
-
-
 # Prologue: The Sidekick Problem {.unnumbered}
 
 > *"Quality cannot be tested into a product; it must be designed into it. Yet, for decades, we have relegated the people responsible for quality to the end of the line, handing them a finished product and asking them to find the mistakes we already made."*
@@ -377,7 +374,7 @@ To ground the concepts of Quality Engineering in reality, this book relies on th
 By mastering the nuances of these three systems, you will build the mental models necessary to dissect any domain an interviewer or employer presents to you.
 
 
-\bigskip
+***
 
 
 ## Environment 1: MedPortal --- Healthcare Patient Portal
@@ -440,7 +437,7 @@ We will use these scenarios in later chapters to demonstrate manual testing tech
 > *   **Shift-Left Security:** They don't wait for a penetration test. They define the RBAC matrices as executable specifications that guide the AI agent's code generation, ensuring security is built into the architecture, not tested onto it.
 
 
-\bigskip
+***
 
 
 ## Environment 2: TradeForge --- Real-Time Trading Engine
@@ -496,7 +493,7 @@ Financial systems operate under intense scrutiny from bodies like the SEC, FINRA
 > *   **Performance as a Specification:** They write specifications where latency is a strict invariant. If an AI-generated code optimization causes the 99th percentile latency to creep from 800 microseconds to 1.2 milliseconds, the CI pipeline fails the build instantly.
 
 
-\bigskip
+***
 
 
 ## Environment 3: CartFlow --- Retail Checkout Flow
@@ -553,7 +550,7 @@ Retail compliance focuses heavily on consumer protection and financial security.
 > *   **Data-Driven Specifications:** Working with the Product Specialist, they use historical data to identify the top 5% of cart permutations that generate 80% of revenue, ensuring the AI agents prioritize generating tests for those specific flows first.
 
 
-\bigskip
+***
 
 
 ## Conclusion: The Domain is the Differentiator
@@ -582,7 +579,7 @@ The goal of this book---and specifically the SDSD-POD methodology---is to guide 
 This model serves a dual intent. First, it offers practical value for today's interviews by helping candidates properly contextualize their current skills, frame their past experiences, and identify exactly what level of role they are applying for. Second, it presents a compelling vision for tomorrow's Quality Partner, detailing the mindset, skills, and strategic influence required to remain indispensable in a rapidly evolving technological ecosystem. By understanding each level, candidates can articulate their growth, and interviewers can calibrate their assessments to evaluate true potential.
 
 
-\bigskip
+***
 
 
 ## Level 1: The Test Executor
@@ -628,7 +625,7 @@ For the rest of the day, they continue down the list of assigned test cases, mar
 The Test Executor is a commodity role. Because their work is purely procedural and repetitive, it is the most vulnerable to being outsourced to cheaper labor markets and, increasingly, the most vulnerable to being replaced entirely by AI-driven test execution agents. They add minimal strategic value because they only find bugs after the expensive work of development has already been completed. Their feedback loop is too long, and their impact is purely reactive.
 
 
-\bigskip
+***
 
 
 ## Level 2: The Test Designer
@@ -671,7 +668,7 @@ When the feature is finally deployed, they execute their thoughtfully designed t
 While highly valuable, the Test Designer still largely operates in a reactive paradigm. They are excellent at finding complex bugs, but they are still testing code that has already been written. Fixing the architectural flaws they uncover is expensive, causes significant rework for developers, and ultimately delays the release schedule. They are improving the testing process, but they are not yet fundamentally altering the development lifecycle.
 
 
-\bigskip
+***
 
 
 ## Level 3: The Quality Advocate
@@ -712,7 +709,7 @@ At 3:30 PM, they pair-program with a junior developer to help them write better 
 The Quality Advocate is highly effective and heavily sought after in the industry. However, they are still often viewed as a support role---the developer's technical sidekick. They are automating tests based on the developer's architecture, but they are not necessarily defining the business invariants or owning the domain architecture themselves. They are making the engine run smoother, but they aren't steering the ship.
 
 
-\bigskip
+***
 
 
 ## Level 4: The Quality Partner (The SDSD Target)
@@ -752,7 +749,7 @@ By 3:00 PM, the AI has generated the boilerplate Playwright UI tests for the new
 The shift from Level 3 to Level 4 is the most difficult transition in the model. It requires moving from a technical implementation mindset (how do I automate this?) to an architectural and domain mindset (what is the immutable truth of this system, and how do I enforce it?). It requires extreme confidence and the ability to push back against poorly defined requirements. 
 
 
-\bigskip
+***
 
 
 ## Level 5: The Quality Architect
@@ -790,7 +787,7 @@ They spend their remaining time collaborating with the Site Reliability Engineer
 > Look for systemic thinkers. Give them a scenario involving a struggling engineering organization of 200 developers with a broken, slow release process. Ask them to design a 12-month quality transformation strategy. A Level 5 candidate will focus on culture, developer experience (DevEx), CI/CD architecture, and automated quality gates, not on which specific UI testing tool to adopt.
 
 
-\bigskip
+***
 
 
 ## Self-Assessment Checklist
@@ -837,7 +834,7 @@ To determine your current level and map your future trajectory, honestly answer 
 *   [ ] I define the organizational quality culture, moving teams away from legacy "testing phases" toward continuous quality engineering.
 
 
-\bigskip
+***
 
 
 ## The 90-Day Transition Plan: Leveling Up
@@ -881,9 +878,6 @@ The goal is to move from local team impact to global organizational transformati
 The era of the Level 1 and Level 2 Test Executor is rapidly coming to a close. As AI democratizes the ability to write basic code and execute mundane test scripts, the premium skill in software engineering is shifting entirely toward specifying what the code should do and architecting robust systems to mathematically prove it does exactly that under pressure. 
 
 By understanding exactly where you sit on the Quality Partner Maturity Model today, you can systematically target the gaps in your knowledge and chart a course for tomorrow. The rest of this manual is meticulously designed to equip you with the specific domain expertise, automation architecture skills, and behavioral leadership frameworks required to reach Level 4, thrive in the SDSD-POD era, and become an indispensable Quality Partner.
-
-
-\part{Manual Mastery \& Domain Expertise}
 
 
 # Quality Concepts & Test Strategy
@@ -2554,9 +2548,6 @@ You cannot be a Quality Partner without incorporating security into your API tes
 > *Ideal Answer:* "Hardcoding test data is an anti-pattern. I use pre-request scripts (in Postman) or dynamic payload generation (in Karate/REST-assured) to generate unique data like UUIDs or timestamps for every request. For data that requires a specific state, I use the API itself to create the necessary prerequisite data in a `BeforeSuite` or `Background` step, and then use that dynamically generated data for the core test, ensuring test isolation and stability."
 
 
-\part{Test Automation \& Performance}
-
-
 # Web Test Automation Frameworks
 
 > *"Automation is not about writing code that clicks buttons. It is about engineering a maintainable system that provides rapid, deterministic feedback on business risk."*
@@ -3004,7 +2995,7 @@ The Quality Partner understands that performance is a fundamental architectural 
 This chapter is your deep dive into the world of performance engineering. We will cover the fundamentals, dissect the three dominant tools in the industry (JMeter, k6, and Gatling), and explore how to analyze complex results. Throughout, we will anchor our examples in **TradeForge**, the high-frequency trading exchange introduced in Chapter 2, where latency is literally money.
 
 
-\bigskip
+***
 
 
 ## Part 1: Performance Testing Fundamentals
@@ -3039,7 +3030,7 @@ Common bottlenecks include:
 - **Database Locks:** Poorly designed database queries or transaction isolation levels cause concurrent requests to block one another.
 
 
-\bigskip
+***
 
 
 ## Part 2: Types of Performance Testing
@@ -3079,7 +3070,7 @@ Unlike a load test, which typically ramps up traffic gradually, a spike test hit
 This is distinct from concurrent user load. Volume testing focuses on the database. If TradeForge's ledger table has 1 million rows, a query might take 10ms. If the table grows to 10 billion rows over a year, does that same query now take 5 seconds? Volume testing involves artificially bloating the database and then running standard functional and load tests.
 
 
-\bigskip
+***
 
 
 ## Part 3: JMeter Deep Dive
@@ -3122,7 +3113,7 @@ A single laptop can only generate so much load. If you try to run 20,000 threads
 JMeter solves this with **Distributed Testing**. You configure one JMeter instance as the "Controller" (Master) and several instances on separate servers as "Workers" (Slaves). The Controller sends the test plan to the Workers, the Workers execute the load against the target system, and they send the aggregated results back to the Controller.
 
 
-\bigskip
+***
 
 
 ## Part 4: k6 - Modern Developer-Friendly Load Testing
@@ -3178,7 +3169,7 @@ export default function () {
 In k6, you are not limited to just HTTP response times. You can create custom `Trend`, `Counter`, `Rate`, and `Gauge` metrics. For instance, you could parse the TradeForge response, extract the "order matching time" reported by the backend engine, and create a custom Trend metric to track that specific internal timing independently of the network latency.
 
 
-\bigskip
+***
 
 
 ## Part 5: Gatling - The CI-Friendly Scala DSL
@@ -3212,7 +3203,7 @@ setUp(
 The `heavisideUsers` profile is particularly famous in Gatling; it perfectly simulates the traffic surge of a sudden market event in TradeForge.
 
 
-\bigskip
+***
 
 
 ## Part 6: Tool Comparison Table
@@ -3227,7 +3218,7 @@ The `heavisideUsers` profile is particularly famous in Gatling; it perfectly sim
 | **Best For...** | Legacy protocols, teams who prefer GUIs | Modern DevOps teams, heavy CI/CD, JS developers | Complex traffic shaping, teams familiar with JVM |
 
 
-\bigskip
+***
 
 
 ## Part 7: Interpreting Results - The Math of Performance
@@ -3261,7 +3252,7 @@ When you graph Concurrent Users (X-axis) against Throughput (Y-axis), the line w
 The point where the line begins to flatten is the **Saturation Point**. The system is fully utilized. Adding more users will not increase throughput; it will only increase response time (queueing) until the system ultimately crashes (the drop-off). A Quality Partner identifies the saturation point and ensures the infrastructure is designed to autoscale *before* that point is reached.
 
 
-\bigskip
+***
 
 
 ## Part 8: CI/CD Pipeline Integration
@@ -3281,7 +3272,7 @@ In an SDSD-POD model, small, focused performance tests are run in the CI/CD pipe
 This shift-left approach to performance ensures that architectural degradation is caught immediately, not in a frantic stress test weeks later.
 
 
-\bigskip
+***
 
 
 ## Worked Example: TradeForge Order Matching
@@ -3307,7 +3298,7 @@ Instead, the Quality Partner:
 > "In a previous role testing a high-throughput API, the team was celebrating because the average response time was 40ms. I implemented k6 scripts with p99 and p99.9 thresholds. I discovered that while the average was fine, the p99.9 was over 4 seconds, indicating that 1 in 1000 requests was timing out completely due to a database lock contention issue. We fixed the DB index, bringing the p99.9 down to 80ms, preventing catastrophic failures during our peak retail season."
 
 
-\bigskip
+***
 
 
 ## Conclusion
@@ -3618,7 +3609,7 @@ This chapter bridges the gap between test creation and test execution. We will d
 ![CI/CD Pipeline](chapters/11-cicd-shift-left/visuals/cicd_pipeline.png){width=85%}
 
 
-\bigskip
+***
 
 
 ## The Test Pyramid in Practice
@@ -3678,7 +3669,7 @@ The "ideal" pyramid shape warps depending on the system architecture.
 > *Result:* "We reduced the CI run time from 4 hours to 18 minutes, completely inverted the test pyramid, and eliminated false positives caused by UI rendering delays."
 
 
-\bigskip
+***
 
 
 ## Shift-Left Testing: Thinking Earlier, Not Just Testing Earlier
@@ -3701,7 +3692,7 @@ True Shift-Left means shifting the *thinking* about quality to the left, long be
 If you are writing test cases after the developer has opened a Pull Request, you have already shifted right.
 
 
-\bigskip
+***
 
 
 ## GitHub Actions for Test Automation
@@ -3778,7 +3769,7 @@ jobs:
 4.  **Artifacts:** When a test fails in a headless CI environment, you need evidence. The `upload-artifact` step ensures that HTML reports, screenshots, and video traces are saved and attached to the GitHub Action run for analysis.
 
 
-\bigskip
+***
 
 
 ## Jenkins Pipeline Integration
@@ -3873,7 +3864,7 @@ pipeline {
 4.  **Post Actions (Notifications & Reporting):** The `post` block defines what happens after the pipeline finishes. Automated Slack notifications and JUnit/Allure report generation are hallmarks of a mature pipeline.
 
 
-\bigskip
+***
 
 
 ## Parallel Execution and Test Splitting
@@ -3897,7 +3888,7 @@ Once tests are isolated, how do you divide them across runners?
 3.  **By Sharding (Dynamic Splitting):** Modern frameworks like Playwright can automatically divide the suite into equal "shards." You tell Playwright you have 5 runners, and it mathematically distributes the tests so all 5 runners finish at approximately the same time. This is the most efficient strategy.
 
 
-\bigskip
+***
 
 
 ## Managing Flaky Tests
@@ -3926,7 +3917,7 @@ When a test is identified as flaky (e.g., it fails on main, but passes on a retr
 4.  **Fix or Delete.** A quarantined test must be fixed within a sprint, or it must be deleted. A test in quarantine for 6 months is technical debt.
 
 
-\bigskip
+***
 
 
 ## Test Reporting and Visibility
@@ -3940,7 +3931,7 @@ A CI pipeline that runs 5,000 tests and simply outputs `SUCCESS` or `FAILURE` in
 *   **Datadog / Grafana:** For API and Performance testing, exporting test metrics directly into the company's observability stack allows the Quality team to monitor test health on the same dashboards developers use to monitor production health.
 
 
-\bigskip
+***
 
 
 ## Quality Gates: When to Block a Deployment
@@ -3959,7 +3950,7 @@ A Quality Partner knows that in a microservice architecture with 20,000 tests, d
 5.  **The Performance Gate:** Using a tool like k6 to run a 2-minute load test. The gate fails if the P95 latency degrades by more than 10% compared to the baseline on the main branch.
 
 
-\bigskip
+***
 
 
 ## The SDSD-POD CI/CD: Quality Partners in the Pipeline
@@ -3975,7 +3966,7 @@ When AI agents are generating code based on specifications, the CI/CD pipeline b
 3.  **Observability as Testing:** The Quality Partner shifts-right, configuring the CI/CD pipeline to deploy to a canary environment, running synthetic tests against live production traffic, and triggering an automatic rollback if error rates spike.
 
 
-\bigskip
+***
 
 
 ## Interview Mastery: CI/CD & Shift-Left
@@ -4006,7 +3997,7 @@ Stop asking candidates to recite the definition of Continuous Integration. Inste
 *   *"When is it acceptable for a CI pipeline to deploy with failing tests?"* (Listen for an understanding of quality gates, risk thresholds, and test quarantine).
 
 
-\bigskip
+***
 
 
 ## Conclusion
@@ -4033,7 +4024,7 @@ This chapter is built with our **dual intent**. First, we will equip you with th
 Throughout this chapter, we will continuously return to our three system-scale environments: **MedPortal** (Healthcare Patient Portal), **TradeForge** (Real-Time Trading Engine), and **CartFlow** (Retail Checkout Flow). These domains will provide the necessary context to demonstrate that your approach to test management scales to enterprise complexity.
 
 
-\bigskip
+***
 
 
 ## The Anatomy of a Perfect Defect Report
@@ -4125,7 +4116,7 @@ Never force a developer to recreate the evidence if you already have it. Provide
 *   For TradeForge, attach the exact FIX protocol message hex dump that triggered the latency spike.
 
 
-\bigskip
+***
 
 
 ## The Art of Reproduction: Minimal Reproduction Cases (MRCs)
@@ -4167,7 +4158,7 @@ To create an MRC here, you do not rely on clicking through the UI for an hour. Y
 > "Instead of arguing in the Jira ticket, I realized my defect report lacked a Minimal Reproduction Case. The bug only occurred due to network jitter causing the frontend to retry the request without an idempotency key. I wrote a small k6 load testing script that simulated 50 concurrent checkouts while intentionally injecting 2-second network delays and dropping 5% of TCP packets. I attached the script to the ticket, went to the developer's desk, and we ran the script together on his local environment. The double-charge triggered immediately. By providing a programmatic MRC, we moved from an adversarial 'yes it is/no it isn't' debate to a collaborative debugging session. He fixed the missing idempotency key that afternoon."
 
 
-\bigskip
+***
 
 
 ## The Defect Lifecycle
@@ -4194,7 +4185,7 @@ Not all defects follow the happy path. You must understand the divergent branche
 *   **Works As Designed (WAD):** A critical branch. The system is behaving exactly as the requirements specify, but the tester interpreted the requirement incorrectly, or the requirement itself is flawed. In a Quality Partner model, a WAD resolution often triggers a discussion about updating the specification, rather than simply closing the ticket.
 
 
-\bigskip
+***
 
 
 ## Test Case Management Tools Comparison
@@ -4230,7 +4221,7 @@ Unlike Zephyr and Xray, TestRail is a standalone web application that integrates
 > A Test Executor will talk about clicking buttons in Xray. A Quality Partner will discuss API webhooks, JSON result parsing, and mapping automated test tags to Jira requirement IDs.
 
 
-\bigskip
+***
 
 
 ## Metrics That Matter vs. Vanity Metrics
@@ -4280,7 +4271,7 @@ A Quality Partner advocates for metrics that measure business risk, system stabi
 *   *Why it matters:* Flaky tests destroy developer trust in automation. If the pipeline fails 30% of the time for no reason, developers will start ignoring the red builds, rendering the entire automation suite useless. A Quality Partner tracks this ruthlessly and quarantines flaky tests immediately.
 
 
-\bigskip
+***
 
 
 ## Traceability: From Requirement to Defect
@@ -4313,7 +4304,7 @@ With proper test management, you don't just say, "Yes, we tested it." You provid
 This level of rigor is what separates a Quality Partner from a manual tester. You are not just clicking buttons; you are maintaining the chain of custody for system integrity.
 
 
-\bigskip
+***
 
 
 ## Non-Functional Requirements (NFR) Testing Checklist
@@ -4353,7 +4344,7 @@ A Quality Partner champions NFRs from day one. Below is a comprehensive NFR chec
 In an interview, if you are asked to design a test plan for a new feature, you must explicitly include an NFR section. If you only list functional tests, you cap your seniority level immediately.
 
 
-\bigskip
+***
 
 
 ## The Quality Partner Approach: From Bug Reporter to Specification Validator
@@ -4389,7 +4380,7 @@ By the time the code reaches the Quality Partner for exploratory testing, the fu
 You are no longer a test executor validating acceptance criteria. You are a domain expert validating the architecture of the business logic. 
 
 
-\bigskip
+***
 
 
 ## Interview Mastery: Test Management & Defects
@@ -4421,7 +4412,7 @@ Let's put this philosophy into practice. Below are common behavioral and technic
 *   **Result:** "The VP immediately understood the risk. We abandoned the 'tests per sprint' KPI and adopted Requirement Coverage as our North Star metric. This shifted the team's focus from writing *more* code to writing *valuable* code, ultimately reducing our production incidents by 20% that quarter."
 
 
-\bigskip
+***
 
 
 ## Conclusion: The Ultimate Bridge
@@ -4469,9 +4460,6 @@ When reporting on quality, tailor your dashboard to your audience:
 **Question:** "What metrics do you track and why?"
 
 **Model Answer:** "I avoid vanity metrics like 'total tests run'. Instead, I focus on metrics that measure business risk and team efficiency. My primary metric is Defect Leakage, as it tells me if our test strategy is actually catching what matters to users. I also track Defect Density to identify problematic areas in the codebase that might need refactoring, and MTTR to ensure we are resilient when issues inevitably occur."
-
-
-\part{The Future-State Quality Partner}
 
 
 <center><b>Chapter 13: AI-Augmented Quality Engineering</b></center>
@@ -4626,7 +4614,7 @@ Our dual intent remains the same: we want you to ace the practical interviews of
 > Interviewers are highly sensitive to stagnation. If your resume shows five years of experience, but it's really just the same one year of experience repeated five times, it will show. Be prepared to discuss a time you realized your skills were becoming outdated and the exact steps you took to pivot and upskill. Frame your learning as a strategic benefit to the company, not just personal curiosity.
 
 
-\bigskip
+***
 
 
 ## The T-Shaped QE: Deep Domain Expertise + Broad Technical Skills
@@ -4665,7 +4653,7 @@ Developing this T-shape requires extreme intentionality. You cannot simply wait 
 > Assess the horizontal bar by asking cross-functional questions. "If our automated suite starts failing randomly only in the staging environment, but passes locally, how would you investigate the root cause?" A narrow QE will blame flaky locators. A T-shaped QE will investigate database state, network latency, environment configurations, and deployment parity.
 
 
-\bigskip
+***
 
 
 ## The Learning Flywheel: Learn, Apply, Teach, Publish
@@ -4708,7 +4696,7 @@ By consciously moving through these four phases---Learn, Apply, Teach, Publish--
 > In a behavioral interview, use the Flywheel to structure your response to questions like, "Tell me about a time you learned a new technology." Don't just say, "I watched a video on Cypress." Say, "I learned Cypress, built a PoC for our login flow (Apply), presented the results to the team to get buy-in (Teach), and documented our new best practices on the engineering wiki (Publish)."
 
 
-\bigskip
+***
 
 
 ## The 'Teach to Learn' Mentoring Model
@@ -4741,7 +4729,7 @@ Instead of just handing them a list of automated tests to fix, you employ the "T
 Mentoring builds strong, resilient teams. A culture of teaching ensures that knowledge is distributed, not siloed. As you help others spin their learning flywheels, you elevate the entire organization, proving that true quality engineering is as much about cultivating people as it is about validating code.
 
 
-\bigskip
+***
 
 
 ## Engaging with Communities
@@ -4775,7 +4763,7 @@ While global platforms are fantastic, local and virtual meetups provide crucial 
 Presenting a 10-minute lightning talk at a local meetup about a specific challenge you solved in CartFlow---perhaps how you optimized your test data generation strategy---is a fantastic, low-stakes way to enter the "Publish" phase of the learning flywheel. It builds your confidence in public speaking, establishes your professional reputation, and connects you with peers who can offer fresh insights and potentially open doors for future career opportunities.
 
 
-\bigskip
+***
 
 
 ## Certifications With Honest Value Assessment
@@ -4828,7 +4816,7 @@ A certification might prove you can generate a load profile, but it doesn't prov
 > Do not use certifications as a primary filtering mechanism. A candidate with no certifications but a public GitHub repo showing a beautifully architected Playwright framework integrated with GitHub Actions is vastly superior to a candidate with five certifications who cannot explain the difference between a 401 and a 403 HTTP status code. Use certifications as a conversation starter, not a conclusion.
 
 
-\bigskip
+***
 
 
 ## The Career Evolution Path
@@ -4870,7 +4858,7 @@ At this stage, you move decisively beyond technical execution to become a strate
 This is the pinnacle of technical quality leadership. You define the overarching quality vision and strategy for the entire organization. You evaluate and select new tools, design enterprise-level automation frameworks that span multiple products, and ensure that quality practices align with broader business goals. You are responsible for the health of the entire ecosystem, not just individual applications. You think in terms of years and major architectural shifts.
 
 
-\bigskip
+***
 
 
 ## Publishing Thought Leadership: Building Your Professional Brand
@@ -4903,7 +4891,7 @@ Speaking takes thought leadership to the ultimate level. Crafting a presentation
 Building a public brand ensures that when you are ready for your next career move, opportunities will seek you out.
 
 
-\bigskip
+***
 
 
 ## The Ultimate Transition: From Quality Partner to Product Specialist
@@ -5233,9 +5221,6 @@ By asking these questions, you position yourself as a leader who understands the
 <li>Always pivot negative situations (like a production escape) into positive lessons learned and systemic improvements.</li>
 <li>Remember that as a QE Lead, your ultimate goal is to make the entire engineering organization care as deeply about quality as you do.</li>
 </ul>
-
-
-\part{Interview Mastery \& Reference}
 
 
 <center><b>Chapter 16: 15 Full Mock Interview Sets</b></center>
@@ -5600,7 +5585,7 @@ Pragmatism and backlog hygiene. Does the candidate understand that holding onto 
 - **5 (Exceptional)**: Executes a strategic triage, implements automated hygiene rules (auto-close stale bugs), and shifts the team's culture to stop logging cosmetic issues that will never be prioritized.
 
 
-\bigskip
+***
 
 
 <b>Part 2: Automation Quality Engineering Sets</b>
@@ -5877,7 +5862,7 @@ Strategy for managing mobile infrastructure and risk.
 - **5 (Exceptional)**: Discusses covering specific hardware boundary conditions in the matrix (e.g., ensuring one device has a notch, one has a small screen, one runs the oldest supported OS).
 
 
-\bigskip
+***
 
 
 <b>Part 3: Quality Partner (SDET / Architect) Sets</b>
