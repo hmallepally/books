@@ -395,7 +395,7 @@ Notice: after `get(1)`, key 1 moved to head, saving it from eviction. Key 2, unt
 **Specification:** Find the largest rectangle containing only `1`s in a 2D binary matrix.
 
 **Example:** Input matrix $\rightarrow$ Output `6` (formed by the 2x3 rectangle of 1s in rows 1-2, cols 2-4):
-```
+```text
 1 0 1 0 0
 1 0 1 1 1
 1 1 1 1 1
