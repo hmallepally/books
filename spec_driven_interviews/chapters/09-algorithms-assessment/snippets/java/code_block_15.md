@@ -1,6 +1,6 @@
 ```java
 public boolean isValid(String s) {
-    Stack<Character> stack = new Stack<>();
+    Deque<Character> stack = new ArrayDeque<>();
     for (char c : s.toCharArray()) {
         if (c == '(' || c == '{' || c == '[') {
             stack.push(c);

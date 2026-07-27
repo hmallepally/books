@@ -128,6 +128,20 @@ $$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
 
 {{ inject('code_block_5.md') }}Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
+**Trace Walkthrough** (input: `3x3 matrix`):
+
+| Step | Row | Col | Direction | Value | Action |
+|------|-----|-----|-----------|-------|--------|
+| 1    | 0   | 0   | Right     | 1     | Add to result |
+| 2    | 0   | 1   | Right     | 2     | Add to result |
+| 3    | 0   | 2   | Right     | 3     | Add, contract top bound |
+| 4    | 1   | 2   | Down      | 6     | Add to result |
+| 5    | 2   | 2   | Down      | 9     | Add, contract right bound |
+| 6    | 2   | 1   | Left      | 8     | Add to result |
+| 7    | 2   | 0   | Left      | 7     | Add, contract bottom bound |
+| 8    | 1   | 0   | Up        | 4     | Add, contract left bound |
+| 9    | 1   | 1   | Right     | 5     | Add, contract top bound |
+
 * * *
 **3. Set Matrix Zeros**
 **Specification:** Given an $m \times n$ integer matrix, if an element is 0, set its entire row and column to 0's in-place.
@@ -260,6 +274,14 @@ $$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
 
 {{ inject('code_block_16.md') }}Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
 
+**Trace Walkthrough** (input: `Sudoku with duplicate 5s in row 0`):
+
+| Step | Row | Col | Value | Encoded Strings | Action |
+|------|-----|-----|-------|-----------------|--------|
+| 1    | 0   | 0   | 5     | "5 in row 0", "5 in col 0", "5 in block 0-0" | Add to HashSet (Success) |
+| 2    | 0   | 1   | 3     | "3 in row 0", "3 in col 1", "3 in block 0-0" | Add to HashSet (Success) |
+| 3    | 0   | 4   | 5     | "5 in row 0", "5 in col 4", "5 in block 0-1" | Add to HashSet (Collision on "5 in row 0") -> Return false |
+
 * * *
 **14. Island Perimeter**
 **Specification:** You are given row x col grid representing a map where 1 is land and 0 is water. Calculate the perimeter of the island.
@@ -283,6 +305,15 @@ $$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
 **Explanation:** Construct a 2D prefix sum array. Then iterate through all possible bottom-right corners `(i,j)` of size $K \times K$, extracting the sum in $\mathcal{O}(1)$ time.
 
 {{ inject('code_block_18.md') }}Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+
+**Trace Walkthrough** (input: `mat=[[1,2,3],[4,5,6],[7,8,9]], K=2`):
+
+| Step | Row | Col | Value | Action |
+|------|-----|-----|-------|--------|
+| 1    | 2   | 2   | 12    | Query (2,2) with K=2: 12 - 0 - 0 + 0 = 12 |
+| 2    | 2   | 3   | 16    | Query (2,3) with K=2: 18 - 0 - 2 + 0 = 16 |
+| 3    | 3   | 2   | 24    | Query (3,2) with K=2: 27 - 3 - 0 + 0 = 24 |
+| 4    | 3   | 3   | 28    | Query (3,3) with K=2: 45 - 6 - 12 + 1 = 28 (Max) |
 
 * * *
 **16. Number of Islands**
@@ -439,6 +470,18 @@ $$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
 **Explanation:** Add all initially rotten oranges to a queue. Use BFS level-by-level to rot adjacent oranges. Track minutes. Finally, check if any fresh oranges remain.
 
 {{ inject('code_block_31.md') }}Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+
+**Trace Walkthrough** (input: `[[2,1,1],[1,1,0],[0,1,1]]`):
+
+| Step | Row | Col | Minute | Value | Action |
+|------|-----|-----|--------|-------|--------|
+| 1    | 0   | 0   | 0      | 2     | Initial rotten, enqueue |
+| 2    | 0   | 1   | 1      | 1->2  | Rot right neighbor, enqueue |
+| 3    | 1   | 0   | 1      | 1->2  | Rot bottom neighbor, enqueue |
+| 4    | 0   | 2   | 2      | 1->2  | Rot right neighbor, enqueue |
+| 5    | 1   | 1   | 2      | 1->2  | Rot bottom neighbor, enqueue |
+| 6    | 2   | 1   | 3      | 1->2  | Rot bottom neighbor, enqueue |
+| 7    | 2   | 2   | 4      | 1->2  | Rot right neighbor, enqueue |
 
 * * *
 **29. Surrounded Regions**

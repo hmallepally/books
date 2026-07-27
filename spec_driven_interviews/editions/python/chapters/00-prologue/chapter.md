@@ -175,6 +175,29 @@ For lead and staff engineers focused on system design and architecture.
 - **Keep a 'mistake log'** to track patterns you consistently get wrong.
 - **On rest day**, revisit your mistake log, not new material.
 
+### 14-Day Architectural Strategy Sprint (Persona C: Engineering Manager/Director)
+
+You lead teams but haven't personally coded in assessments recently. Your edge is architectural judgment and leadership — this plan leverages that while rebuilding algorithmic fluency.
+
+| Day | Focus | Chapters | Time |
+|-----|-------|----------|------|
+| 1 | Invariant-First Mindset + Decomposition Framework | Ch 1-2 | 2h |
+| 2 | Case Study Architectures (AuraPay, ZenithTrade) | Ch 3 | 1.5h |
+| 3 | SOLID Trade-offs + Design Patterns (Strategic View) | Ch 5, 7 | 2h |
+| 4 | Concurrency & Connection Pool Sizing | Ch 8 | 2h |
+| 5 | Pattern Catalog: Top 10 Most-Asked (PAT-01 to PAT-10) | Ch 9 | 2.5h |
+| 6 | Implementation Drill: Arrays + HashMaps | Ch 10, 12 | 2h |
+| 7 | Mock Assessment Set 1-3 (Timed) | Ch 15 | 2h |
+| 8 | System Architecture Deep Dive | Ch 16 | 2.5h |
+| 9 | Resiliency + Database Compliance | Ch 17-18 | 2h |
+| 10 | Behavioral Leadership: STAR Framework + All 5 Scenarios | Ch 19 | 2h |
+| 11 | Message Brokers + AI/ML Architecture | Ch 21-22 | 2h |
+| 12 | Mock Assessment Set 4-6 (Timed) + Review Weak Patterns | Ch 15, 9 | 2.5h |
+| 13 | System Design Mock: Pick 2 Consumer Archetypes | Ch 16 | 2h |
+| 14 | Full Mock Day: 1 Coding Assessment + 1 System Design + 1 Behavioral | Ch 15, 16, 19 | 3h |
+
+**Manager's Edge:** On Days 8-11, practice explaining your architectural decisions aloud. Interviewers evaluate managers on communication clarity as much as technical depth. On Day 14, simulate a full interview loop with time pressure.
+
 ## The 28-Day Comprehensive Plan (All Personas)
 
 For candidates targeting roles requiring thorough mastery of both coding and system design.

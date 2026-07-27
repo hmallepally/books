@@ -25,22 +25,22 @@ After the loop, `arr[0..write-1]` contains the filtered result. This pattern sol
 
 ![Read/Write Pointer — In-Place Array Compaction](visuals/read_write_pointer.png){width=85%}
 
-### Character Frequency Array (`int[256]` or `int[26]`)
-A fixed-size integer array indexed by character ASCII value. `counts['a']++` increments the counter at index 97. This provides:
+### Character Frequency Array (Fixed-Size, 256 or 26 Slots)
+A fixed-size integer array indexed by character code point. Incrementing the counter at a character's index provides:
 
 - $\mathcal{O}(1)$ per lookup/update (direct array access, no hashing)
-- Zero heap allocations (lives on the stack)
+- Zero heap allocations (lives on the stack in compiled languages)
 - Deterministic performance (no hash collisions)
 
-Use `int[26]` when input is guaranteed lowercase English letters only (`c - 'a'`). Use `int[256]` when input may contain any ASCII character.
+Use a 26-slot array when input is guaranteed lowercase English letters only (offset by `'a'`). Use a 256-slot array when input may contain any ASCII character.
 
-**Comparison with HashMap:**
+**Comparison with HashMap/Dictionary:**
 
-| Attribute | `int[256]` | `HashMap<Character, Integer>` |
+| Attribute | Fixed-Size Array (256) | HashMap / Dictionary |
 | :--- | :--- | :--- |
 | Access Time | $\mathcal{O}(1)$ direct | $\mathcal{O}(1)$ amortized (hash collisions possible) |
-| Memory | 1 KB fixed on stack | Variable heap allocations |
-| GC Pressure | Zero | High (autoboxing `char` → `Character`) |
+| Memory | ~1 KB fixed | Variable heap allocations |
+| GC Pressure | Zero | Higher (key/value boxing in some languages) |
 | When to Use | ASCII text, known char range | Unicode, arbitrary key types |
 
 ### Symmetrical Two-Pointer Convergence
@@ -213,6 +213,15 @@ public int compress(char[] chars) {
 // Time: O(N), Space: O(1) auxiliary
 ```
 
+
+**Trace Walkthrough** (input: `['a','a','b','b','c','c','c']`):
+
+| Step | read | write | Action | State |
+|------|------|-------|--------|-------|
+| Init | 0    | 0     | Start  | `['a','a','b','b','c','c','c']` |
+| 1    | 2    | 2     | Run 'a' len 2 | `['a','2','b','b','c','c','c']` |
+| 2    | 4    | 4     | Run 'b' len 2 | `['a','2','b','2','c','c','c']` |
+| 3    | 7    | 6     | Run 'c' len 3 | `['a','2','b','2','c','3','c']` |
 * * *
 
 **3. Valid Palindrome with Non-Alphanumeric Skipping**
@@ -1036,6 +1045,14 @@ public boolean almostIncreasingSequence(int[] sequence) {
 // Time: O(N), Space: O(1)
 ```
 
+
+**Trace Walkthrough** (input: `[1, 3, 2, 1]`):
+
+| Step | i | nums[i] | nums[i+1] | Violation? | Action | State (Violations) |
+|------|---|---------|-----------|------------|--------|--------------------|
+| 1    | 0 | 1       | 3         | No         | Continue | 0 |
+| 2    | 1 | 3       | 2         | Yes        | Check removals | 1 |
+| 3    | 2 | 2       | 1         | Yes        | Return false   | >1 |
 * * *
 
 **32. Reverse Parentheses (Nested String Reversal)**
@@ -1067,6 +1084,18 @@ public String reverseInParentheses(String s) {
 // Time: O(N^2) worst case for nested reversals, Space: O(N)
 ```
 
+
+**Trace Walkthrough** (input: `"(u(love)i)"`):
+
+| Step | char | Action | Stack | Current String |
+|------|------|--------|-------|----------------|
+| 1    | '('  | Push new | `[""]` | `""` |
+| 2    | 'u'  | Append   | `[""]` | `"u"` |
+| 3    | '('  | Push new | `["", "u"]` | `""` |
+| 4    | 'l'..'e' | Append | `["", "u"]` | `"love"` |
+| 5    | ')'  | Pop & Reverse | `[""]` | `"uevol"` |
+| 6    | 'i'  | Append   | `[""]` | `"uevoli"` |
+| 7    | ')'  | Pop & Reverse | `[]` | `"iloveu"` |
 * * *
 
 ## Practice Problem Bank

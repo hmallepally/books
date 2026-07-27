@@ -147,6 +147,19 @@ Update instances one at a time (or in small batches) behind the load balancer:
 > 
 > In a technical interview, emphasize that you know *when* to mock. Say: *"We mock network calls and database interfaces in our unit tests to keep feedback loops fast. But we never mock our domain aggregates or value objects. Testing our business rules against actual domain structures guarantees that our core invariants are always enforced. For integration boundaries, we use Testcontainers against real Postgres and Kafka instances, and we validate API contracts using Pact before every deployment."* This shows you understand domain boundary protection and production-grade testing strategy.
 
+### Mock Interview Transcript: Microservices Testing Strategy
+
+> **Interviewer:** How would you design a testing strategy for a microservices architecture with 30+ services?
+> **Candidate:** I'd structure it around the testing pyramid. We'd have extensive unit tests for domain logic. For integration boundaries, we'd use Testcontainers to spin up real databases locally. To manage the 30+ services communicating, we'd rely heavily on consumer-driven contract testing using Pact to ensure API compatibility without spinning up the entire mesh.
+> **Interviewer:** How do you test cross-service transactions, like a payment saga that hits five different services?
+> **Candidate:** For complex sagas, relying only on contract tests isn't enough. We'd need a targeted End-to-End test environment, but to avoid flakiness, we'd test the saga orchestrator specifically by mocking the participant responses, and then rely on synthetic monitoring in production. 
+> **Interviewer:** What if a deployment passes all tests but still causes issues in production? What's your rollback strategy?
+> **Candidate:** Actually, let me reconsider the standard pipeline... Instead of just relying on rollbacks, we should use feature flags and progressive delivery. We deploy the new code hidden behind a flag. We turn it on for 1% of users—a canary deployment. If error rates spike, we just toggle the flag off. It's much faster and safer than a full infrastructure rollback.
+> **Interviewer:** And how do you ensure the system is resilient to infrastructure failures?
+> **Candidate:** We'd employ chaos engineering. During off-peak hours, we randomly terminate instances or inject network latency to ensure our circuit breakers and bulkheads work as designed.
+
+**Technical Summary:** The candidate demonstrated a mature understanding of testing at scale by emphasizing contract testing over brittle E2E tests, utilizing feature flags for rapid canary rollbacks, and incorporating chaos engineering to proactively validate system resilience.
+
 ## Performance Testing & Load Validation
 
 Performance testing is a critical step in CI/CD pipelines to ensure systems remain reliable under expected and unexpected traffic. Rather than waiting for production outages, modern engineering teams validate performance continuously using different load profiles.

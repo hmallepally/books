@@ -177,6 +177,29 @@ For lead and staff engineers focused on system design and architecture.
 - **Keep a 'mistake log'** to track patterns you consistently get wrong.
 - **On rest day**, revisit your mistake log, not new material.
 
+### 14-Day Architectural Strategy Sprint (Persona C: Engineering Manager/Director)
+
+You lead teams but haven't personally coded in assessments recently. Your edge is architectural judgment and leadership — this plan leverages that while rebuilding algorithmic fluency.
+
+| Day | Focus | Chapters | Time |
+|-----|-------|----------|------|
+| 1 | Invariant-First Mindset + Decomposition Framework | Ch 1-2 | 2h |
+| 2 | Case Study Architectures (AuraPay, ZenithTrade) | Ch 3 | 1.5h |
+| 3 | SOLID Trade-offs + Design Patterns (Strategic View) | Ch 5, 7 | 2h |
+| 4 | Concurrency & Connection Pool Sizing | Ch 8 | 2h |
+| 5 | Pattern Catalog: Top 10 Most-Asked (PAT-01 to PAT-10) | Ch 9 | 2.5h |
+| 6 | Implementation Drill: Arrays + HashMaps | Ch 10, 12 | 2h |
+| 7 | Mock Assessment Set 1-3 (Timed) | Ch 15 | 2h |
+| 8 | System Architecture Deep Dive | Ch 16 | 2.5h |
+| 9 | Resiliency + Database Compliance | Ch 17-18 | 2h |
+| 10 | Behavioral Leadership: STAR Framework + All 5 Scenarios | Ch 19 | 2h |
+| 11 | Message Brokers + AI/ML Architecture | Ch 21-22 | 2h |
+| 12 | Mock Assessment Set 4-6 (Timed) + Review Weak Patterns | Ch 15, 9 | 2.5h |
+| 13 | System Design Mock: Pick 2 Consumer Archetypes | Ch 16 | 2h |
+| 14 | Full Mock Day: 1 Coding Assessment + 1 System Design + 1 Behavioral | Ch 15, 16, 19 | 3h |
+
+**Manager's Edge:** On Days 8-11, practice explaining your architectural decisions aloud. Interviewers evaluate managers on communication clarity as much as technical depth. On Day 14, simulate a full interview loop with time pressure.
+
 ## The 28-Day Comprehensive Plan (All Personas)
 
 For candidates targeting roles requiring thorough mastery of both coding and system design.
@@ -2609,22 +2632,22 @@ After the loop, `arr[0..write-1]` contains the filtered result. This pattern sol
 
 ![Read/Write Pointer — In-Place Array Compaction](editions/python/chapters/10-implementation-patterns/visuals/read_write_pointer.png){width=85%}
 
-### Character Frequency Array (`int[256]` or `int[26]`)
-A fixed-size integer array indexed by character ASCII value. `counts['a']++` increments the counter at index 97. This provides:
+### Character Frequency Array (Fixed-Size, 256 or 26 Slots)
+A fixed-size integer array indexed by character code point. Incrementing the counter at a character's index provides:
 
 - $\mathcal{O}(1)$ per lookup/update (direct array access, no hashing)
-- Zero heap allocations (lives on the stack)
+- Zero heap allocations (lives on the stack in compiled languages)
 - Deterministic performance (no hash collisions)
 
-Use `int[26]` when input is guaranteed lowercase English letters only (`c - 'a'`). Use `int[256]` when input may contain any ASCII character.
+Use a 26-slot array when input is guaranteed lowercase English letters only (offset by `'a'`). Use a 256-slot array when input may contain any ASCII character.
 
-**Comparison with HashMap:**
+**Comparison with HashMap/Dictionary:**
 
-| Attribute | `int[256]` | `HashMap<Character, Integer>` |
+| Attribute | Fixed-Size Array (256) | HashMap / Dictionary |
 | :--- | :--- | :--- |
 | Access Time | $\mathcal{O}(1)$ direct | $\mathcal{O}(1)$ amortized (hash collisions possible) |
-| Memory | 1 KB fixed on stack | Variable heap allocations |
-| GC Pressure | Zero | High (autoboxing `char` → `Character`) |
+| Memory | ~1 KB fixed | Variable heap allocations |
+| GC Pressure | Zero | Higher (key/value boxing in some languages) |
 | When to Use | ASCII text, known char range | Unicode, arbitrary key types |
 
 ### Symmetrical Two-Pointer Convergence
@@ -2787,6 +2810,15 @@ def compress(self, chars: list[str]) -> int:
     return write
 # Time: O(N), Space: O(1) auxiliary
 ```
+
+**Trace Walkthrough** (input: `['a','a','b','b','c','c','c']`):
+
+| Step | read | write | Action | State |
+|------|------|-------|--------|-------|
+| Init | 0    | 0     | Start  | `['a','a','b','b','c','c','c']` |
+| 1    | 2    | 2     | Run 'a' len 2 | `['a','2','b','b','c','c','c']` |
+| 2    | 4    | 4     | Run 'b' len 2 | `['a','2','b','2','c','c','c']` |
+| 3    | 7    | 6     | Run 'c' len 3 | `['a','2','b','2','c','3','c']` |
 * * *
 
 **3. Valid Palindrome with Non-Alphanumeric Skipping**
@@ -3508,6 +3540,14 @@ def almost_increasing_sequence(self, sequence: list[int]) -> bool:
     return False
 # Time: O(N), Space: O(1)
 ```
+
+**Trace Walkthrough** (input: `[1, 3, 2, 1]`):
+
+| Step | i | nums[i] | nums[i+1] | Violation? | Action | State (Violations) |
+|------|---|---------|-----------|------------|--------|--------------------|
+| 1    | 0 | 1       | 3         | No         | Continue | 0 |
+| 2    | 1 | 3       | 2         | Yes        | Check removals | 1 |
+| 3    | 2 | 2       | 1         | Yes        | Return false   | >1 |
 * * *
 
 **32. Reverse Parentheses (Nested String Reversal)**
@@ -3534,6 +3574,18 @@ def reverse_in_parentheses(self, s: str) -> str:
     return "".join(stack[0])
 # Time: O(N^2) worst case for nested reversals, Space: O(N)
 ```
+
+**Trace Walkthrough** (input: `"(u(love)i)"`):
+
+| Step | char | Action | Stack | Current String |
+|------|------|--------|-------|----------------|
+| 1    | '('  | Push new | `[""]` | `""` |
+| 2    | 'u'  | Append   | `[""]` | `"u"` |
+| 3    | '('  | Push new | `["", "u"]` | `""` |
+| 4    | 'l'..'e' | Append | `["", "u"]` | `"love"` |
+| 5    | ')'  | Pop & Reverse | `[""]` | `"uevol"` |
+| 6    | 'i'  | Append   | `[""]` | `"uevoli"` |
+| 7    | ')'  | Pop & Reverse | `[]` | `"iloveu"` |
 * * *
 
 ## Practice Problem Bank
@@ -4061,6 +4113,20 @@ def spiral_order(self, matrix: list[list[int]]) -> list[int]:
     return res
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
+**Trace Walkthrough** (input: `3x3 matrix`):
+
+| Step | Row | Col | Direction | Value | Action |
+|------|-----|-----|-----------|-------|--------|
+| 1    | 0   | 0   | Right     | 1     | Add to result |
+| 2    | 0   | 1   | Right     | 2     | Add to result |
+| 3    | 0   | 2   | Right     | 3     | Add, contract top bound |
+| 4    | 1   | 2   | Down      | 6     | Add to result |
+| 5    | 2   | 2   | Down      | 9     | Add, contract right bound |
+| 6    | 2   | 1   | Left      | 8     | Add to result |
+| 7    | 2   | 0   | Left      | 7     | Add, contract bottom bound |
+| 8    | 1   | 0   | Up        | 4     | Add, contract left bound |
+| 9    | 1   | 1   | Right     | 5     | Add, contract top bound |
+
 * * *
 **3. Set Matrix Zeros**
 **Specification:** Given an $m \times n$ integer matrix, if an element is 0, set its entire row and column to 0's in-place.
@@ -4350,6 +4416,14 @@ def is_valid_sudoku(self, board: list[list[str]]) -> bool:
     return True
 ```Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
 
+**Trace Walkthrough** (input: `Sudoku with duplicate 5s in row 0`):
+
+| Step | Row | Col | Value | Encoded Strings | Action |
+|------|-----|-----|-------|-----------------|--------|
+| 1    | 0   | 0   | 5     | "5 in row 0", "5 in col 0", "5 in block 0-0" | Add to HashSet (Success) |
+| 2    | 0   | 1   | 3     | "3 in row 0", "3 in col 1", "3 in block 0-0" | Add to HashSet (Success) |
+| 3    | 0   | 4   | 5     | "5 in row 0", "5 in col 4", "5 in block 0-1" | Add to HashSet (Collision on "5 in row 0") -> Return false |
+
 * * *
 **14. Island Perimeter**
 **Specification:** You are given row x col grid representing a map where 1 is land and 0 is water. Calculate the perimeter of the island.
@@ -4397,6 +4471,15 @@ def max_sum(self, mat: list[list[int]], k: int) -> int:
             max_val = max(max_val, s)
     return max_val
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+
+**Trace Walkthrough** (input: `mat=[[1,2,3],[4,5,6],[7,8,9]], K=2`):
+
+| Step | Row | Col | Value | Action |
+|------|-----|-----|-------|--------|
+| 1    | 2   | 2   | 12    | Query (2,2) with K=2: 12 - 0 - 0 + 0 = 12 |
+| 2    | 2   | 3   | 16    | Query (2,3) with K=2: 18 - 0 - 2 + 0 = 16 |
+| 3    | 3   | 2   | 24    | Query (3,2) with K=2: 27 - 3 - 0 + 0 = 24 |
+| 4    | 3   | 3   | 28    | Query (3,3) with K=2: 45 - 6 - 12 + 1 = 28 (Max) |
 
 * * *
 **16. Number of Islands**
@@ -4755,6 +4838,18 @@ def oranges_rotting(self, grid: list[list[int]]) -> int:
         
     return mins if fresh == 0 else -1
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+
+**Trace Walkthrough** (input: `[[2,1,1],[1,1,0],[0,1,1]]`):
+
+| Step | Row | Col | Minute | Value | Action |
+|------|-----|-----|--------|-------|--------|
+| 1    | 0   | 0   | 0      | 2     | Initial rotten, enqueue |
+| 2    | 0   | 1   | 1      | 1->2  | Rot right neighbor, enqueue |
+| 3    | 1   | 0   | 1      | 1->2  | Rot bottom neighbor, enqueue |
+| 4    | 0   | 2   | 2      | 1->2  | Rot right neighbor, enqueue |
+| 5    | 1   | 1   | 2      | 1->2  | Rot bottom neighbor, enqueue |
+| 6    | 2   | 1   | 3      | 1->2  | Rot bottom neighbor, enqueue |
+| 7    | 2   | 2   | 4      | 1->2  | Rot right neighbor, enqueue |
 
 * * *
 **29. Surrounded Regions**
@@ -9266,6 +9361,21 @@ Named after the watertight compartments of a ship's hull. The **Bulkhead Pattern
 
 > **Why "Bulkhead"?** On a cargo ship, bulkheads are vertical walls that divide the hull into sealed compartments. If one compartment floods, the bulkheads prevent water from spreading to adjacent compartments — the ship stays afloat. In software, we partition thread pools and connection pools the same way: one failing dependency can drain its own pool without sinking the entire application.
 
+### Mock Interview Transcript: Cascading Failures
+
+> **Interviewer:** Your payment service is experiencing cascading failures. Walk me through your approach to stop the bleeding and restore stability.
+> **Candidate:** First, we need to halt the cascade. I would ensure we have circuit breakers wrapping our downstream calls to the payment gateway. If the failure rate spikes, the breaker trips to the open state, immediately returning an error instead of blocking threads. 
+> **Interviewer:** Good. But if the breaker is open, all payments fail. Do you have a fallback?
+> **Candidate:** We can implement a fallback strategy, like queuing the payment request in an outbox or Kafka topic for deferred processing, or serving a cached "payment pending" response to the user.
+> **Interviewer:** What happens if your fallback also fails, say the queue broker is unreachable?
+> **Candidate:** Actually, let me reconsider... If the fallback infrastructure is also down, we must fail gracefully. We return a clear 503 Service Unavailable to the client. We shouldn't try complex secondary fallbacks because that introduces more points of failure during an incident. We'd rely on bulkhead isolation to ensure this doesn't bring down unrelated services, like the user profile service.
+> **Interviewer:** Makes sense. How do you decide the timeout thresholds before tripping the circuit breaker?
+> **Candidate:** We shouldn't guess. We derive them from our SLAs and historical p99 latencies. If p99 is normally 200ms, a timeout of 500ms might be appropriate. For retries, we'd use exponential backoff with jitter to avoid overwhelming the recovering service.
+> **Interviewer:** And how do you test this?
+> **Candidate:** We'd use chaos engineering, deliberately injecting latency into the payment gateway in a staging environment to observe the breaker state transitions and bulkhead thread pools.
+
+**Technical Summary:** The candidate effectively utilized circuit breakers to fail fast, bulkhead isolation to protect the broader system, and exponential backoff for retries. They correctly identified that complex fallbacks can exacerbate outages and demonstrated a data-driven approach to setting timeout thresholds using p99 metrics.
+
 
 ## Microservices Observability
 
@@ -9465,6 +9575,21 @@ For compliance frameworks like SOC2, you must maintain a tamper-proof audit trai
 3.  **Immutable Databases:** Utilize native ledger databases (like Amazon QLDB) or WORM (Write Once, Read Many) storage to mathematically guarantee data immutability.
 
 ![Cryptographic Audit Trail Chain](editions/python/chapters/18-database-compliance/visuals/audit_trail.png){width=85%}
+
+
+### Mock Interview Transcript: PCI-DSS and GDPR Compliance
+
+> **Interviewer:** Design a database schema for a financial system that must comply with PCI-DSS and GDPR. How do you approach the storage of sensitive data?
+> **Candidate:** For PCI-DSS, the most critical step is reducing the audit scope. I would implement a tokenization vault. The main transaction ledger would only store a non-reversible token. The actual Primary Account Numbers (PANs) are stored in an isolated, highly secured vault database, encrypted at rest using AES-256-GCM.
+> **Interviewer:** That handles PCI. What about GDPR and the Right to be Forgotten?
+> **Candidate:** For GDPR, we need to guarantee deletion of PII. However, our financial ledgers must remain immutable for SOC2 compliance.
+> **Interviewer:** Exactly. How do you handle a GDPR deletion request for data that's referenced in immutable audit logs?
+> **Candidate:** Good question, I hadn't thought about the audit log specifically... Ah, we can use crypto-shredding. When a user is created, we generate a unique KMS encryption key for their PII. We encrypt their PII before writing it to the immutable ledger. When a GDPR deletion is requested, we permanently destroy their specific key in the KMS. The audit log remains cryptographically unbroken, but the PII becomes unrecoverable mathematical noise.
+> **Interviewer:** How do you ensure the key itself isn't compromised?
+> **Candidate:** We'd enforce strict IAM roles, ensuring only the encryption service can access the KMS, and we'd log every decryption request to a separate, append-only CloudTrail log. 
+> **Interviewer:** Very solid. 
+
+**Technical Summary:** The candidate successfully navigated conflicting compliance requirements by decoupling sensitive data via a tokenization vault (PCI-DSS) and employing crypto-shredding (GDPR) to satisfy deletion mandates without compromising the immutability of financial audit trails.
 
 
 ## Hardening the Data Tier & Audits
@@ -9783,6 +9908,19 @@ Update instances one at a time (or in small batches) behind the load balancer:
 > 
 > In a technical interview, emphasize that you know *when* to mock. Say: *"We mock network calls and database interfaces in our unit tests to keep feedback loops fast. But we never mock our domain aggregates or value objects. Testing our business rules against actual domain structures guarantees that our core invariants are always enforced. For integration boundaries, we use Testcontainers against real Postgres and Kafka instances, and we validate API contracts using Pact before every deployment."* This shows you understand domain boundary protection and production-grade testing strategy.
 
+### Mock Interview Transcript: Microservices Testing Strategy
+
+> **Interviewer:** How would you design a testing strategy for a microservices architecture with 30+ services?
+> **Candidate:** I'd structure it around the testing pyramid. We'd have extensive unit tests for domain logic. For integration boundaries, we'd use Testcontainers to spin up real databases locally. To manage the 30+ services communicating, we'd rely heavily on consumer-driven contract testing using Pact to ensure API compatibility without spinning up the entire mesh.
+> **Interviewer:** How do you test cross-service transactions, like a payment saga that hits five different services?
+> **Candidate:** For complex sagas, relying only on contract tests isn't enough. We'd need a targeted End-to-End test environment, but to avoid flakiness, we'd test the saga orchestrator specifically by mocking the participant responses, and then rely on synthetic monitoring in production. 
+> **Interviewer:** What if a deployment passes all tests but still causes issues in production? What's your rollback strategy?
+> **Candidate:** Actually, let me reconsider the standard pipeline... Instead of just relying on rollbacks, we should use feature flags and progressive delivery. We deploy the new code hidden behind a flag. We turn it on for 1% of users—a canary deployment. If error rates spike, we just toggle the flag off. It's much faster and safer than a full infrastructure rollback.
+> **Interviewer:** And how do you ensure the system is resilient to infrastructure failures?
+> **Candidate:** We'd employ chaos engineering. During off-peak hours, we randomly terminate instances or inject network latency to ensure our circuit breakers and bulkheads work as designed.
+
+**Technical Summary:** The candidate demonstrated a mature understanding of testing at scale by emphasizing contract testing over brittle E2E tests, utilizing feature flags for rapid canary rollbacks, and incorporating chaos engineering to proactively validate system resilience.
+
 ## Performance Testing & Load Validation
 
 Performance testing is a critical step in CI/CD pipelines to ensure systems remain reliable under expected and unexpected traffic. Rather than waiting for production outages, modern engineering teams validate performance continuously using different load profiles.
@@ -10004,6 +10142,20 @@ When a consumer repeatedly fails to process a message (e.g., due to a malformed 
 - A separate monitoring service reads the DLQ, alerts the operations team, and supports manual inspection and replay.
 
 
+### Mock Interview Transcript: Consumer Group Rebalancing
+
+> **Interviewer:** Your Kafka consumer group is experiencing rebalancing storms. The consumers keep dropping and rejoining, causing massive processing delays. How do you diagnose and fix this?
+> **Candidate:** A rebalance storm usually means consumers are failing to send heartbeats or taking too long to process batches. I'd first check the `session.timeout.ms` and `max.poll.interval.ms` metrics. If our message processing is database-heavy, the consumer might exceed the poll interval, causing Kafka to assume it's dead. I'd tune `max.poll.records` down so the consumer processes smaller batches and polls more frequently.
+> **Interviewer:** That stabilizes the group. But what if one partition has 10x the traffic of the others because of a highly active user?
+> **Candidate:** That's a hot partition problem. Our partition key is likely skewed. Good question, I hadn't thought about skewed keys in this context... We could append a random salt to the key for that specific heavy user to distribute their events across partitions, though that breaks strict global ordering for them. If order is required, we'd need to scale vertically by increasing the consumer's thread pool, or optimizing the database writes.
+> **Interviewer:** Let's say the rebalancing was caused by a malformed message crashing the consumer. How do you handle poison pill messages?
+> **Candidate:** We wrap the deserialization and processing logic in a `try-catch` block. If a message fails validation after a few retries, we acknowledge the offset and forward the payload to a Dead Letter Queue (DLQ).
+> **Interviewer:** How can we minimize the impact when we legitimately need to restart consumers for a deployment?
+> **Candidate:** We'd enable static group membership by setting `group.instance.id`, and use the cooperative sticky assignor so only the partitions belonging to the restarting node are temporarily paused.
+
+**Technical Summary:** The candidate effectively diagnosed rebalancing storms by identifying poll interval exhaustion, proposed Dead Letter Queues for poison pill messages, and utilized static group membership with cooperative rebalancing to minimize deployment disruptions. They correctly identified the trade-offs of handling hot partitions.
+
+
 ## Event Schema Evolution
 
 As your system evolves, the structure of event payloads will change. Adding new fields, renaming properties, or changing data types can break downstream consumers if not managed carefully:
@@ -10170,6 +10322,20 @@ When adapting LLMs to domain-specific tasks, choose the right approach:
 
 > **Rule of Thumb:** Start with prompt engineering. Move to RAG if the model needs access to private or frequently updated data. Fine-tune only when prompt engineering consistently fails to produce the required output format or domain accuracy.
 
+### Multimodal AI: Beyond Text
+
+Modern AI systems increasingly process multiple modalities — text, images, audio, and video — within unified architectures. Interview questions are beginning to reflect this shift.
+
+**Architectural Patterns for Multimodal Systems:**
+
+**1. Vision-Language Models (VLMs):** Systems like GPT-4o and Gemini accept both images and text as input. The architectural pattern involves a visual encoder (often a Vision Transformer) that produces embedding tokens, which are concatenated with text tokens before being processed by the language model. For AuraPay, this enables check deposit processing: the VLM reads the check image, extracts the amount and payee, and populates the transaction record — replacing a fragile OCR pipeline.
+
+**2. Audio Processing Pipelines:** Real-time transcription (Whisper, Deepgram) feeds into LLM reasoning. The key architectural decision is streaming vs. batch: streaming transcription adds 200-500ms latency but enables real-time agent responses, while batch processing is simpler and more accurate. ZenithTrade uses streaming transcription for compliance monitoring of trader phone calls.
+
+**3. Multimodal RAG:** Instead of retrieving only text chunks, multimodal RAG indexes images, diagrams, and tables alongside text. Document understanding models (like LayoutLM) preserve spatial relationships in scanned documents. This is critical for ChiramTrust's regulatory document processing, where table structures contain compliance data that pure text extraction would lose.
+
+**Interview Tip:** When asked about an AI/ML system, always clarify which modalities the system needs to handle. A document processing pipeline that handles scanned PDFs requires fundamentally different architecture than one processing structured text.
+
 ### Agentic Tool-Use Patterns
 LLMs can be orchestrated as **agents** that decide which tools to call based on user intent:
 
@@ -10220,6 +10386,19 @@ AuraPay processes 50,000 transactions per second. Its fraud detection pipeline c
 
 **ZenithTrade: LLM-Powered Compliance Checker**
 ZenithTrade's regulatory compliance team reviews 200+ SEC filings weekly. Their LLM pipeline uses Retrieval-Augmented Generation (RAG) to cross-reference new filings against the firm's internal compliance rulebook (12,000 rules). The system generates structured compliance reports highlighting potential violations, with confidence scores and source citations. Human compliance officers review flagged items — the LLM augments but never replaces human judgment on regulatory decisions.
+
+### Mock Interview Transcript: RAG Pipeline Design
+
+> **Interviewer:** Design a RAG pipeline for a customer support chatbot that handles 10,000 queries/hour. Walk me through the architecture.
+> **Candidate:** First, we need to vectorize our support documentation. We'd use semantic chunking to keep logical sections together, pass them through an embedding model like text-embedding-3-small, and store the vectors in a specialized vector database like Pinecone or Weaviate. When a user queries, we embed the query, perform an approximate nearest neighbor search to retrieve the top 5 chunks, and inject them into the LLM prompt.
+> **Interviewer:** What's your latency budget for this, and how do you meet it at 10,000 queries/hour?
+> **Candidate:** 10,000 an hour is roughly 3 queries a second. Our biggest bottleneck is the LLM inference time. To reduce latency and API costs, I'd implement semantic caching using Redis. We convert the incoming query to a vector and check if we have a 95%+ similarity match with a previous query. If so, we return the cached response immediately.
+> **Interviewer:** How do you handle hallucinations? If the bot gives wrong refund instructions, it's a huge liability.
+> **Candidate:** Actually, let me reconsider the prompt structure... We must constrain the model. In the system prompt, we explicitly instruct it to answer *only* using the provided context. If the answer isn't in the chunks, it must reply "I don't know" and escalate to a human. We'd also run a cross-encoder re-ranker after retrieval to ensure only highly relevant context is passed to the LLM.
+> **Interviewer:** How do you prevent users from jailbreaking the bot to ignore those instructions?
+> **Candidate:** We'd place a security filter gateway in front of the LLM to scan for prompt injection signatures, and use input sanitization to strip out command-like phrasing before embedding.
+
+**Technical Summary:** The candidate successfully designed a robust RAG pipeline, incorporating semantic chunking and vector search. They addressed scale and latency via semantic caching, mitigated hallucinations through strict prompt constraints and re-ranking, and prioritized security with a prompt injection gateway.
 
 ## Cost Optimization for LLM-Powered Systems
 
@@ -10301,6 +10480,39 @@ When writing code in a timed assessment or live coding session, run through this
 
 - **Cycle Detection:** Does the list contain a cycle? (Will your loop run infinitely?)
 - **Empty / Head-Tail Manipulations:** Does the code crash on pointer references (e.g., `node.next.next`) when handling lists of length 1 or 2?
+
+### Defensive Coding Checklist for Assessments
+
+Before submitting any solution in a timed assessment, verify these guards:
+
+**Input Validation**
+- [ ] Null/None check on input arrays, strings, and objects
+- [ ] Empty collection check (length == 0)
+- [ ] Single-element edge case
+- [ ] Negative number handling (if applicable)
+- [ ] Integer overflow risk (use long for running sums)
+
+**Boundary Conditions**
+- [ ] First element and last element processed correctly
+- [ ] Off-by-one errors in loop bounds (< vs <=)
+- [ ] Window/pointer doesn't exceed array bounds
+- [ ] Division by zero guarded
+- [ ] Modulo with negative numbers: use ((x % k) + k) % k
+
+**Data Structure Edge Cases**
+- [ ] HashMap: handle missing keys (getOrDefault)
+- [ ] Stack/Deque: check isEmpty() before peek/pop
+- [ ] Priority Queue: verify comparator handles equal elements
+- [ ] Graph: handle disconnected components
+- [ ] Tree: handle null left/right children
+
+**Output Verification**
+- [ ] Return type matches specification exactly
+- [ ] Empty result case handled (return empty list, not null)
+- [ ] Results sorted if specification requires ordering
+- [ ] No duplicate entries if specification requires unique values
+
+> **Time Budget:** Spend the final 2 minutes of any timed problem running through this checklist mentally. It catches 80% of edge-case failures.
 
 
 ## Distributed Systems Cheat Sheet

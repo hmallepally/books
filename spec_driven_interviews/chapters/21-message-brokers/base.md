@@ -95,6 +95,20 @@ When a consumer repeatedly fails to process a message (e.g., due to a malformed 
 - A separate monitoring service reads the DLQ, alerts the operations team, and supports manual inspection and replay.
 
 
+### Mock Interview Transcript: Consumer Group Rebalancing
+
+> **Interviewer:** Your Kafka consumer group is experiencing rebalancing storms. The consumers keep dropping and rejoining, causing massive processing delays. How do you diagnose and fix this?
+> **Candidate:** A rebalance storm usually means consumers are failing to send heartbeats or taking too long to process batches. I'd first check the `session.timeout.ms` and `max.poll.interval.ms` metrics. If our message processing is database-heavy, the consumer might exceed the poll interval, causing Kafka to assume it's dead. I'd tune `max.poll.records` down so the consumer processes smaller batches and polls more frequently.
+> **Interviewer:** That stabilizes the group. But what if one partition has 10x the traffic of the others because of a highly active user?
+> **Candidate:** That's a hot partition problem. Our partition key is likely skewed. Good question, I hadn't thought about skewed keys in this context... We could append a random salt to the key for that specific heavy user to distribute their events across partitions, though that breaks strict global ordering for them. If order is required, we'd need to scale vertically by increasing the consumer's thread pool, or optimizing the database writes.
+> **Interviewer:** Let's say the rebalancing was caused by a malformed message crashing the consumer. How do you handle poison pill messages?
+> **Candidate:** We wrap the deserialization and processing logic in a `try-catch` block. If a message fails validation after a few retries, we acknowledge the offset and forward the payload to a Dead Letter Queue (DLQ).
+> **Interviewer:** How can we minimize the impact when we legitimately need to restart consumers for a deployment?
+> **Candidate:** We'd enable static group membership by setting `group.instance.id`, and use the cooperative sticky assignor so only the partitions belonging to the restarting node are temporarily paused.
+
+**Technical Summary:** The candidate effectively diagnosed rebalancing storms by identifying poll interval exhaustion, proposed Dead Letter Queues for poison pill messages, and utilized static group membership with cooperative rebalancing to minimize deployment disruptions. They correctly identified the trade-offs of handling hot partitions.
+
+
 ## Event Schema Evolution
 
 As your system evolves, the structure of event payloads will change. Adding new fields, renaming properties, or changing data types can break downstream consumers if not managed carefully:

@@ -64,6 +64,39 @@ When writing code in a timed assessment or live coding session, run through this
 - **Cycle Detection:** Does the list contain a cycle? (Will your loop run infinitely?)
 - **Empty / Head-Tail Manipulations:** Does the code crash on pointer references (e.g., `node.next.next`) when handling lists of length 1 or 2?
 
+### Defensive Coding Checklist for Assessments
+
+Before submitting any solution in a timed assessment, verify these guards:
+
+**Input Validation**
+- [ ] Null/None check on input arrays, strings, and objects
+- [ ] Empty collection check (length == 0)
+- [ ] Single-element edge case
+- [ ] Negative number handling (if applicable)
+- [ ] Integer overflow risk (use long for running sums)
+
+**Boundary Conditions**
+- [ ] First element and last element processed correctly
+- [ ] Off-by-one errors in loop bounds (< vs <=)
+- [ ] Window/pointer doesn't exceed array bounds
+- [ ] Division by zero guarded
+- [ ] Modulo with negative numbers: use ((x % k) + k) % k
+
+**Data Structure Edge Cases**
+- [ ] HashMap: handle missing keys (getOrDefault)
+- [ ] Stack/Deque: check isEmpty() before peek/pop
+- [ ] Priority Queue: verify comparator handles equal elements
+- [ ] Graph: handle disconnected components
+- [ ] Tree: handle null left/right children
+
+**Output Verification**
+- [ ] Return type matches specification exactly
+- [ ] Empty result case handled (return empty list, not null)
+- [ ] Results sorted if specification requires ordering
+- [ ] No duplicate entries if specification requires unique values
+
+> **Time Budget:** Spend the final 2 minutes of any timed problem running through this checklist mentally. It catches 80% of edge-case failures.
+
 
 ## Distributed Systems Cheat Sheet
 
