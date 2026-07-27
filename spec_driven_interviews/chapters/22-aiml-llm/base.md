@@ -49,7 +49,7 @@ Machine learning models degrade over time as the real-world distribution shifts 
 In ML system design interviews, you must explain the right evaluation metric for the use case:
 
 | Metric | Formula | Best For | Pitfall |
-|---|---|---|---|
+|:-----------------|:--------------------------------------------|:----------------------------------------|:----------------------------------------|
 | **Precision** | `TP / (TP + FP)` | Fraud detection (minimize false alarms) | Misses real fraud if too conservative |
 | **Recall** | `TP / (TP + FN)` | Medical diagnosis (catch all positives) | Too many false positives annoy users |
 | **F1-Score** | `2 * (Precision * Recall) / (Precision + Recall)` | Balanced classification tasks | Hides class imbalance issues |

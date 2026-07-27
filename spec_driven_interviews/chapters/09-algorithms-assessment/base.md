@@ -28,7 +28,7 @@ Standardized online coding assessments (e.g., General Coding Assessments, Hacker
 ### The 4-Question Blueprint
 
 | Question | Difficulty | Target Time | Primary Pattern Types | Tactical Rule |
-|---|---|---|---|---|
+|:-----------------|:------------|:------------|:----------------------|:-------------------------------------------------------------------|
 | **Easy-tier** | Easy | 5–8 Min | `[PAT-01]`, `[PAT-02]` | Write clean, brute-force code immediately. Do not over-optimize. |
 | **Medium-tier** | Medium | 10–12 Min | `[PAT-03]`, `[PAT-06]`, `[PAT-10]` | Watch for array bounds and off-by-one errors. |
 | **Medium-Hard-tier** | Medium-Hard | 15–20 Min | `[PAT-04]`, `[PAT-13]`, `[PAT-14]` | Identify the window state or queue batching early. |

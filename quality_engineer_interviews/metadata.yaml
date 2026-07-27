@@ -7,9 +7,13 @@ language: "en-US"
 documentclass: book
 classoption:
   - openany
-  - oneside
+  - twoside
 fontsize: 11pt
-geometry: "margin=1in"
+geometry:
+  - top=1in
+  - bottom=1in
+  - inner=1.125in
+  - outer=0.875in
 toc: true
 toc-depth: 1
 number-sections: true
