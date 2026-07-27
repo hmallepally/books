@@ -164,7 +164,7 @@ We use Redis to store request timestamps. A sliding window rate limiter maintain
 
 When designing distributed systems, you must prevent cascading failures where one slow service consumes all resources on upstream callers.
 
-```
+```text
 [Client] ---> [API Gateway] ---> [Exchange Service] ---> [Slow Ledger Service]
                                  (Threads Exhausted)
 ```
