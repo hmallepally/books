@@ -265,7 +265,8 @@ public int lengthOfLongestSubstringKDistinct(String s, int k) {
 
 * * *
 
-**6. Minimum Window Substring**
+**6. Minimum Window Substring (Hard)**
+*Note: This problem is universally classified as Hard on major platforms. While it uses the sliding window pattern from this chapter, its implementation complexity—managing two frequency maps, a `formed` counter, and a contraction loop—places it at the highest difficulty tier.*
 **Specification:** Given strings s and t, find the minimum substring of s containing all characters in t.
 
 **Example:** `s = "ADOBECODEBANC", t = "ABC"` -> Output: `"BANC"`
@@ -495,7 +496,7 @@ public boolean checkSubarraySum(int[] nums, int k) {
     int sum = 0;
     for (int i = 0; i < nums.length; i++) {
         sum += nums[i];
-        int mod = k == 0 ? sum : sum % k;
+        int mod = k == 0 ? sum : ((sum % k) + k) % k;
         if (map.containsKey(mod)) {
             if (i - map.get(mod) > 1) return true; // Length >= 2
         } else {

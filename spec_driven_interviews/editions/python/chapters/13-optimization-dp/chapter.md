@@ -29,6 +29,13 @@ The key insight that allows us to achieve $\mathcal{O}(\log N)$ time complexity 
 
 > **The Fundamental Invariant:** Whenever you split a Rotated Sorted Array into two halves using a midpoint `mid = left + (right - left) / 2`, **AT LEAST ONE OF THE TWO HALVES IS GUARANTEED TO BE STRICTLY MONOTONICALLY SORTED.**
 
+> **Proof by Exhaustion.** Consider array `A[lo..hi]` with midpoint `mid = (lo + hi) / 2`. The rotation point (the index where `A[i] > A[i+1]`) can only exist in one contiguous segment.
+> - **Case 1:** Rotation point is in `A[mid+1..hi]`. Then `A[lo..mid]` contains no rotation point, so `A[lo] ≤ A[lo+1] ≤ ... ≤ A[mid]` — the left half is sorted.
+> - **Case 2:** Rotation point is in `A[lo..mid]`. Then `A[mid+1..hi]` contains no rotation point, so `A[mid+1] ≤ ... ≤ A[hi]` — the right half is sorted.
+> - **Case 3:** No rotation point exists in `A[lo..hi]` (entire subarray is sorted). Both halves are sorted.
+>
+> In all cases, at least one half is sorted. ∎
+
 - If `nums[left] <= nums[mid]`: The **LEFT half** `[left ... mid]` is monotonically sorted.
 - If `nums[left] > nums[mid]`: The **RIGHT half** `[mid ... right]` is monotonically sorted.
 
@@ -303,6 +310,7 @@ public List<Integer> topologicalSort(int numNodes, int[][] edges) {
 ## Solved Exemplar Problems
 
 **1. Search in Rotated Sorted Array**
+*Note: This classic Medium problem demonstrates parametric binary search. It serves as a foundation before the harder optimization problems that follow.*
 **Specification:** Given an integer array sorted in ascending order (with distinct values) and rotated at an unknown pivot, find the index of `target`.
 
 **Example:** `nums = [4,5,6,7,0,1,2]`, `target = 0` $\rightarrow$ output `4`.
@@ -417,27 +425,30 @@ The bold diagonal cells show: C matches C (1), A matches A (2), T matches T (3).
 
 ```java
 public int longestCommonSubsequence(String text1, String text2) {
+    if (text1.length() < text2.length()) return longestCommonSubsequence(text2, text1);
     int m = text1.length(), n = text2.length();
-    int[][] dp = new int[m + 1][n + 1];
-    
+    var prev = new int[n + 1];
+    var curr = new int[n + 1];
     for (int i = 1; i <= m; i++) {
         for (int j = 1; j <= n; j++) {
-            if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
-                dp[i][j] = dp[i - 1][j - 1] + 1; // Match found
-            } else {
-                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]); // Skip char
-            }
+            curr[j] = text1.charAt(i - 1) == text2.charAt(j - 1)
+                ? prev[j - 1] + 1
+                : Math.max(prev[j], curr[j - 1]);
         }
+        var temp = prev; prev = curr; curr = temp;
+        java.util.Arrays.fill(curr, 0);
     }
-    return dp[m][n];
+    return prev[n];
 }
 // Time Complexity: O(M * N)
-// Space Complexity: O(M * N)
+// Space Complexity: O(min(M, N)) - Space compressed DP as taught in the vocabulary section.
 ```
 
 * * *
 
 **4. Burst Balloons**
+> ⚠️ **Assessment Realism Note:** Interval DP problems like Burst Balloons are extremely unlikely in timed assessments (the O(N³) derivation requires 30+ minutes of focused work). This exemplar is included for comprehensive pattern coverage. For timed assessment practice, prioritize the multi-source BFS, 1D DP, and monotonic stack problems in this chapter.
+
 **Specification:** Maximize coins by bursting balloons. Bursting `nums[i]` yields `nums[i-1] * nums[i] * nums[i+1]` coins.
 
 **Example:** `nums = [3,1,5,8]` $\rightarrow$ output `167`.
@@ -601,6 +612,7 @@ public int trap(int[] height) {
 * * *
 
 **8. Daily Temperatures**
+*Note: While placed in this chapter for its use of the Monotonic Stack pattern [PAT-19], this problem is a Medium-difficulty gateway to the pattern. Use it as a warm-up before tackling the harder exemplars below.*
 **Specification:** Find the number of days you have to wait after each day to get a warmer temperature.
 
 **Example:** `[73,74,75,71,69,72,76,73]` $\rightarrow$ output `[1,1,4,2,1,1,0,0]`.

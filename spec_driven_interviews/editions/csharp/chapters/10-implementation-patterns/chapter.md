@@ -550,14 +550,14 @@ public String[] transformWords(String[] words) {
 
 **Example:** `"abacbc"` → `true` (each of `a`, `b`, `c` appears 2 times). `"aaabb"` → `false`.
 
-**Pattern:** Frequency array + validation scan. Count all characters, then verify every non-zero count matches.
+**Pattern:** Frequency array + validation scan. Count all characters (using a size 128 array to handle the full ASCII range), then verify every non-zero count matches.
 
 ```java
 public boolean areOccurrencesEqual(String s) {
     if (s == null || s.isEmpty()) return true;
 
-    int[] counts = new int[26];
-    for (char c : s.toCharArray()) counts[c - 'a']++;
+    int[] counts = new int[128];
+    for (char c : s.toCharArray()) counts[(int) c]++;
 
     int expected = 0;
     for (int count : counts) {

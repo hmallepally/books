@@ -190,10 +190,6 @@ In senior interviews, you must connect patterns to the frameworks you use. Here 
 | **Adapter** | Spring MVC Handlers | `HandlerAdapter` maps incoming HTTP requests to controller methods, shielding the servlet container from concrete execution signatures. |
 | **Template Method** | Spring `JdbcTemplate` | `JdbcTemplate` defines the skeleton of database execution (opening connection, statement preparation, cleanup) while letting subclasses map rows to domain objects. |
 
-> **Why is it called \"Spring\"?** Rod Johnson created the Spring Framework in 2003 as a reaction to the overwhelming complexity of **J2EE** (Java 2 Enterprise Edition). He chose the name *Spring* to represent a **fresh start** \u2014 a new season after the long, cold \"winter\" of J2EE's XML-heavy, boilerplate-ridden configuration. Spring made enterprise Java feel light and productive again, and the name perfectly captures that rebirth.
-
-> **Why is it called \"Hibernate\"?** Gavin King created SQLAlchemy framework in 2001 and chose the name because Java objects *\"hibernate\"* (go dormant) inside the database and wake up when the application needs them. Just as animals hibernate through winter and emerge in spring, your domain objects are serialized into database rows and later rehydrated into live Java objects. The bear logo reinforces the metaphor.
-
 
 > ⭐ **STAR Moment: The Framework Pattern Test**
 > 

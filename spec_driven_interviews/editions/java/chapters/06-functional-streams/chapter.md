@@ -99,94 +99,9 @@ By declaring the operations as a stream pipeline, the code becomes a readable tr
 2.  **Collect** the results by grouping by the merchant ID and adding their amounts.
 
 
-## Understanding Method References (`::` Syntax)
+## Core Stream Operations
 
-In Java, the `::` operator is a **method reference** — a shorthand for a lambda expression that simply delegates to an existing method. Method references make stream pipelines more readable by replacing verbose lambdas with direct method pointers.
-
-There are four types of method references:
-
-**1. Static Method Reference — `ClassName::staticMethod`**
-
-Calls a static method. The stream element is passed as the argument.
-
-```java
-// Lambda form:
-.map(s -> Integer.parseInt(s))
-// Method reference form:
-.map(Integer::parseInt)
-```
-
-**2. Instance Method on a Specific Object — `instance::method`**
-
-Calls an instance method on a specific, already-existing object.
-
-```java
-TransactionValidator validator = new TransactionValidator();
-// Lambda form:
-.filter(tx -> validator.isValid(tx))
-// Method reference form:
-.filter(validator::isValid)
-```
-
-**3. Instance Method on the Stream Element — `ClassName::instanceMethod`**
-
-Calls an instance method on each element flowing through the stream. The element itself becomes the `this` reference.
-
-```java
-// Lambda form:
-.map(tx -> tx.amount())
-// Method reference form:
-.map(TransactionRecord::amount)
-
-// Lambda form:
-.map(s -> s.toUpperCase())
-// Method reference form:
-.map(String::toUpperCase)
-```
-
-**4. Constructor Reference — `ClassName::new`**
-
-Calls a constructor to create new objects from stream elements.
-
-```java
-// Lambda form:
-.map(name -> new Merchant(name))
-// Method reference form:
-.map(Merchant::new)
-```
-
-> **Interview Signal:** Using method references consistently signals that you write idiomatic, clean functional code. When reviewing a pipeline in a live coding session, interviewers expect `Transaction::amount` over `tx -> tx.amount()`.
-
-
-## Stream Operations Deep-Dive
-
-Every stream pipeline consists of three parts: a **source**, zero or more **intermediate operations** (lazy), and exactly one **terminal operation** (triggers execution).
-
-### Key Intermediate Operations (Lazy — Build the Pipeline)
-
-| Operation | Purpose | Example |
-|---|---|---|
-| `filter(Predicate)` | Keep elements matching a condition | `.filter(tx -> tx.amount() > 100)` |
-| `map(Function)` | Transform each element to a new value | `.map(Transaction::merchantId)` |
-| `flatMap(Function)` | Flatten nested collections into a single stream | `.flatMap(tx -> tx.items().stream())` |
-| `distinct()` | Remove duplicate elements (uses `.equals()`) | `.distinct()` |
-| `sorted()` | Sort elements (natural order or by Comparator) | `.sorted()` |
-| `peek(Consumer)` | Inspect elements without modifying (for debugging) | `.peek(tx -> log.info(tx))` |
-| `limit(n)` | Take only the first N elements | `.limit(10)` |
-| `skip(n)` | Skip the first N elements | `.skip(5)` |
-
-### Key Terminal Operations (Eager — Trigger Execution)
-
-| Operation | Purpose | Example |
-|---|---|---|
-| `collect(Collector)` | Accumulate into a collection or summary | `.collect(Collectors.toList())` |
-| `forEach(Consumer)` | Perform an action on each element | `.forEach(System.out::println)` |
-| `reduce(identity, BinaryOp)` | Combine all elements into a single result | `.reduce(BigDecimal.ZERO, BigDecimal::add)` |
-| `count()` | Count elements | `.count()` |
-| `findFirst()` | Return the first element (wrapped in Optional) | `.findFirst()` |
-| `anyMatch(Predicate)` | Check if any element satisfies a condition | `.anyMatch(tx -> tx.isFraud())` |
-| `allMatch(Predicate)` | Check if all elements satisfy a condition | `.allMatch(tx -> tx.amount() > 0)` |
-| `toArray()` | Collect into an array | `.toArray(String[]::new)` |
+This chapter assumes working fluency with Java Streams, Kotlin sequences, C# LINQ, and Python comprehensions.
 
 ### Collectors: The Power of `collect()`
 

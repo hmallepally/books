@@ -522,18 +522,22 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Pattern:** HashSet Encoding Trick.
 
-**Explanation:** We iterate through the grid. For each cell, we create a string encoding its presence in its row, column, and block (e.g., `"5 in row 0"`). If `HashSet.add()` returns false, a duplicate exists.
+**Explanation:** We iterate through the grid. For each cell, we encode its presence in its row, column, and block as unique integers to avoid slow string concatenations. If `HashSet.add()` returns false, a duplicate exists.
 
 ```java
 public boolean isValidSudoku(char[][] board) {
-  Set<String> seen = new HashSet<>();
+  Set<Integer> seen = new HashSet<>();
   for (int i = 0; i < 9; ++i) {
     for (int j = 0; j < 9; ++j) {
       char number = board[i][j];
       if (number != '.') {
-        if (!seen.add(number + " in row " + i) ||
-            !seen.add(number + " in col " + j) ||
-            !seen.add(number + " in block " + i/3 + "-" + j/3))
+        int boxIdx = (i / 3) * 3 + j / 3;
+        int rowKey = number * 100 + i;
+        int colKey = number * 100 + j + 27;
+        int boxKey = number * 100 + boxIdx + 54;
+        if (!seen.add(rowKey) ||
+            !seen.add(colKey) ||
+            !seen.add(boxKey))
           return false;
       }
     }

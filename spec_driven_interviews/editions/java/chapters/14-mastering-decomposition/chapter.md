@@ -12,6 +12,18 @@ Real assessment problems—especially those found in equal-weight peer assessmen
 
 This capstone chapter is your synthesis training ground. It is designed to elevate your analytical capabilities, teaching you how to systematically dissect intricate problems, identify the interlocking sub-components, and construct robust, optimal solutions through the deliberate composition of the canonical patterns.
 
+## The Cognitive Derivation Process
+
+When you encounter a truly novel problem—one that doesn't immediately map to a known pattern—follow this derivation process:
+
+1. **Generate the smallest non-trivial example** (n=3 or n=4) and solve it BY HAND on paper. Track what your brain does.
+2. **Identify the decision you make at each step.** Are you choosing the maximum? The nearest? The first valid? This reveals the algorithm class (greedy, search, optimization).
+3. **Ask: "What information do I need from the past, and what do I need about the future?"** If you need past information → prefix arrays or DP. If you need future information → suffix arrays, reverse iteration, or monotonic stacks.
+4. **Ask: "Can I solve a smaller version of this problem and combine the results?"** If yes → divide and conquer or recursive DP.
+5. **Ask: "Does the order of processing matter?"** If no → consider sorting first. If yes → the original order is a constraint you must preserve.
+
+This is NOT pattern matching. This is the fundamental analytical skill that GENERATES pattern recognition.
+
 ## The Problem Analysis Canvas
 
 To navigate complex problem spaces effectively, we must formalize the 5-step decomposition framework introduced in Chapter 2 into a rigorous, repeatable structure. The **Problem Analysis Canvas** is a mental and textual template you should apply to every problem you encounter. In an assessment setting, writing this canvas out in comments serves as both your architectural blueprint and a clear signal of your structured thinking to evaluators.

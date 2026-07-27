@@ -281,7 +281,7 @@ Setting the pool size to 17 will yield *higher* overall throughput than setting 
 
 ![HikariCP Connection Pool Sizing](visuals/hikaricp_formula.png){width=85%}
 
-> **Why is it called "Hikari"?** The name is not a person — **Hikari (光)** is the Japanese word for **"light."** Creator Brett Wooldridge was working in Japan when he built it, frustrated by the bloat and slowness of existing connection pools (C3P0, DBCP, BoneCP). He designed HikariCP to be *light* in weight (~130KB jar, zero dependencies), *light* in speed (fastest JDBC pool ever benchmarked), and *light* in complexity. His obsession with zero-overhead engineering — using `ConcurrentBag` instead of `LinkedBlockingQueue` to eliminate lock contention, and a custom `FastList` to skip array bounds checks — made it so fast that Spring Boot adopted it as the **default connection pool** starting in version 2.0 (2018). Today, if you add `spring-boot-starter-data-jpa` to your project, HikariCP is already running under the hood. Fun fact: Japan's famous bullet train (Shinkansen) has a service tier called *Hikari* — the name fits perfectly.
+
 
 
 > ⭐ **STAR Moment: The Cache Invalidation Design**

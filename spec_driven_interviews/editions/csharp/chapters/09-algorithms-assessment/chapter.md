@@ -324,6 +324,18 @@ public int shipWithinDays(int[] weights, int days) {
     }
     return lo;
 }
+
+private boolean canShip(int[] weights, int days, int capacity) {
+    int dayCount = 1, currentLoad = 0;
+    for (int w : weights) {
+        if (currentLoad + w > capacity) {
+            dayCount++;
+            currentLoad = 0;
+        }
+        currentLoad += w;
+    }
+    return dayCount <= days;
+}
 ```
 - **Diagnostic Triggers:** "Find minimum capacity", "Koko eating bananas", "Split array largest sum".
 - **Boundary Conditions:** Define correct range bounds `[lo, hi]` upfront.

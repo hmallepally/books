@@ -152,23 +152,17 @@ public class TokenBucket {
         this.lastRefillTimestamp = new AtomicLong(System.currentTimeMillis());
     }
 
-    public synchronized boolean allowRequest() {
-        refill();
-        if (tokens.get() > 0) {
-            tokens.decrementAndGet();
-            return true;
-        }
-        return false;
-    }
-
-    private void refill() {
-        long now = System.currentTimeMillis();
-        long elapsedTime = now - lastRefillTimestamp.get();
-        long tokensToAdd = (elapsedTime / 1000) * refillTokensPerSecond;
-        
-        if (tokensToAdd > 0) {
-            tokens.set(Math.min(capacity, tokens.get() + tokensToAdd));
-            lastRefillTimestamp.set(now);
+    public boolean allowRequest() {
+        while (true) {
+            long now = System.nanoTime();
+            long currentTokens = tokens.get();
+            long elapsed = now - lastRefillTimestamp.get();
+            long newTokens = Math.min(capacity, currentTokens + elapsed * refillTokensPerSecond / 1_000_000_000L);
+            if (newTokens <= 0) return false;
+            if (tokens.compareAndSet(currentTokens, newTokens - 1)) {
+                lastRefillTimestamp.set(now);
+                return true;
+            }
         }
     }
 }

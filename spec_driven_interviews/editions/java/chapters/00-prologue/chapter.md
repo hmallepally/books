@@ -129,58 +129,78 @@ To maximize the value of this manual, select the path that aligns with your care
 
 This manual is designed for a dual audience. For individual engineers preparing for standardized online coding assessments (such as CodeSignal, HackerRank, Codility, or employer-proprietary platforms), it provides a concrete, pattern-based approach to conquer algorithmic challenges under severe time constraints. For engineering leads and managers returning to coding assessments after years of management, it serves as a tactical refresher to translate high-level architectural knowledge back into executable, robust code. Treat this not just as a book, but as a systematic training plan.
 
-## The 14-Day Crash Course (2 Weeks)
+## The 14-Day Algorithmic Sprint (Persona A)
 
-For experienced engineers who need results fast. Follow this intensive schedule to rebuild your coding muscle memory quickly.
+For mid-to-senior engineers targeting algorithmic assessments. Follow this intensive schedule to rebuild coding muscle memory.
 
 | Day | Focus Area | Chapters | Practice Target | Time |
 |---|---|---|---|---|
-| 1 | Foundations & Mindset | Prologue, Ch 1-3 (Invariants, Decomposition & Case Studies) | Read and internalize the Invariant-First strategy | 3-4 hrs |
-| 2 | OOP & SOLID Refresher | Ch 4-5 | Review patterns, do 5 practice problems mentally | 2-3 hrs |
-| 3 | Streams & Design Patterns | Ch 6-7 | Write 3 stream pipelines from memory | 2-3 hrs |
-| 4 | Concurrency & Core Algorithms | Ch 8-9 | Memorize Big-O table, implement 5 core algorithms | 3-4 hrs |
-| 5 | Easy-Tier Patterns | Ch 10 | Solve 15 implementation problems under 8-min timer each | 4-5 hrs |
-| 6 | Medium-Tier Patterns | Ch 11 | Solve 10 matrix/grid problems under 15-min timer | 4-5 hrs |
-| 7 | REST DAY | Review weak areas from Days 5-6 | Light review only | 1-2 hrs |
-| 8 | Medium-Hard Patterns | Ch 12 | Solve 10 sliding window/hashmap problems | 4-5 hrs |
-| 9 | Hard-Tier Patterns | Ch 13 | Solve 8 DP/graph problems | 4-5 hrs |
-| 10 | Capstone + Mock Day 1 | Ch 14, Ch 15 Sets 1-5 | Capstone walkthroughs + full timed sessions (2 sets) | 4 hrs |
-| 11 | Mock Exam Day 2 | Ch 15 Sets 6-10 | Full timed sessions (2 sets) | 4 hrs |
-| 12 | System Design | Ch 16-18 | Practice one mock system design interview | 3-4 hrs |
-| 13 | Behavioral + AI/ML | Ch 19-22 | Write 5 STAR stories, review AI/ML concepts | 3-4 hrs |
-| 14 | Final Review & Mock | Ch 15 Sets 11-15, Ch 23 Appendix | Full mock exam + review weak patterns | 4-5 hrs |
+| 1 | Foundations | Prologue, Ch 1-2 | Read Invariant-First strategy & Decomposition | 3-4 hrs |
+| 2 | Core Algorithms | Ch 8-9 | Memorize Big-O table, implement 5 core algorithms | 3-4 hrs |
+| 3 | Easy-Tier Patterns | Ch 10 | Solve 15 implementation problems under 8-min timer | 4-5 hrs |
+| 4 | Medium-Tier Grid | Ch 11 | Solve 10 matrix/grid problems under 15-min timer | 4-5 hrs |
+| 5 | Medium-Tier Window | Ch 12 | Solve 10 sliding window/hashmap problems | 4-5 hrs |
+| 6 | REST DAY | Review weak areas | Light review only | 1-2 hrs |
+| 7 | Hard-Tier Patterns | Ch 13 | Solve 8 DP/graph problems | 4-5 hrs |
+| 8 | Decomposition Capstone | Ch 14 | Capstone walkthroughs | 3-4 hrs |
+| 9 | Mock Exam Day 1 | Ch 15 Sets 1-4 | Full timed sessions (4 sets) | 4 hrs |
+| 10 | Mock Exam Day 2 | Ch 15 Sets 5-8 | Full timed sessions (4 sets) | 4 hrs |
+| 11 | Mock Exam Day 3 | Ch 15 Sets 9-12 | Full timed sessions (4 sets) | 4 hrs |
+| 12 | Mock Exam Day 4 | Ch 15 Sets 13-16 | Full timed sessions (4 sets) | 4 hrs |
+| 13 | Mock Exam Day 5 | Ch 15 Sets 17-20 | Full timed sessions (4 sets) | 4 hrs |
+| 14 | Final Review & Prep | Ch 23 Appendix | Final review and preparation | 4-5 hrs |
+
+## The 14-Day System Design Sprint (Persona B)
+
+For lead and staff engineers focused on system design and architecture.
+
+| Day | Focus Area | Chapters | Practice Target | Time |
+|---|---|---|---|---|
+| 1 | Foundations & Case Studies | Prologue, Ch 1-3 | Internalize case studies and design boundaries | 3-4 hrs |
+| 2 | OOP & SOLID | Ch 4-5 | Domain boundaries and strict SOLID inversion | 3-4 hrs |
+| 3 | Functional Streams | Ch 6 | Imperative-vs-stream optimizations | 2-3 hrs |
+| 4 | Design Patterns | Ch 7 | Enterprise framework pattern recognition | 3-4 hrs |
+| 5 | Architecture Fundamentals | Ch 16 | System boundaries and API design | 4-5 hrs |
+| 6 | REST DAY | Review weak areas | Light review only | 1-2 hrs |
+| 7 | Integration & Resiliency | Ch 17 | Outbox, Saga, rate limiting, distributed tracing | 4-5 hrs |
+| 8 | Database Design | Ch 18 | Storage engines, sharding, compliance | 4-5 hrs |
+| 9 | Leadership & Testing | Ch 19-20 | STAR frameworks and CI/CD policies | 4 hrs |
+| 10 | Event Streaming | Ch 21 | Kafka internals, exactly-once semantics | 4 hrs |
+| 11 | AI/ML Design | Ch 22 | Vector DBs and RAG pipelines | 4 hrs |
+| 12 | Mock Interview Prep 1 | Ch 16-18 Review | Practice mock design sessions | 4 hrs |
+| 13 | Mock Interview Prep 2 | Ch 19-22 Review | Practice mock design sessions | 4 hrs |
+| 14 | Final Review | Ch 23 Appendix | Final exam preparation | 4 hrs |
 
 - **Start each day** by reviewing the terminology section of the relevant chapter.
-- **Time yourself on EVERY problem** — accuracy without speed is not enough for modern assessments.
 - **Keep a 'mistake log'** to track patterns you consistently get wrong.
 - **On rest day**, revisit your mistake log, not new material.
 
-## The 28-Day Deep Dive (4 Weeks)
+## The 28-Day Comprehensive Plan (All Personas)
 
-For candidates targeting Staff/Principal roles or those wanting thorough mastery, this comprehensive plan builds enduring architectural and algorithmic skills.
+For candidates targeting roles requiring thorough mastery of both coding and system design.
 
-**Week 1: Foundations & Design Thinking (Chapters 1-9)**
+**Week 1: Foundations & Design Thinking (Personas A, B, C)**
 
 - Day 1-2: Invariants, Decomposition, Case Studies, OOP (Ch 1-4)
 - Day 3-4: SOLID, Streams, Design Patterns (Ch 5-7)
 - Day 5-6: Concurrency, Core Algorithms Blueprint (Ch 8-9)
 - Day 7: Review + implement 10 algorithms from memory
 
-**Week 2: Algorithm Mastery (Chapters 10-13)**
+**Week 2: Algorithm Mastery (Persona A Focus)**
 
 - Day 8-9: Easy-Tier patterns (Ch 10) — solve ALL exemplar problems
 - Day 10-11: Medium-Tier patterns (Ch 11) — solve ALL exemplar problems
 - Day 12-13: Medium-Hard patterns (Ch 12) — solve ALL exemplar problems
 - Day 14: Hard-Tier patterns (Ch 13) — start with 15 problems
 
-**Week 3: Advanced Algorithms + System Design (Chapters 13-18)**
+**Week 3: Advanced Algorithms + System Design (Personas A, B, C)**
 
-- Day 15-16: Finish Hard-Tier patterns (Ch 13) + Capstone Decomposition (Ch 14)
-- Day 17-18: Mock assessments (Ch 15 Sets 1-10, two per day)
-- Day 19-20: System Architecture (Ch 16), Resiliency (Ch 17), Database Design (Ch 18)
+- Day 15-16: Finish Hard-Tier patterns (Ch 13) + Capstone Decomposition (Ch 14) (Persona A)
+- Day 17-18: Mock assessments (Ch 15 Sets 1-10, two per day) (Persona A)
+- Day 19-20: System Architecture (Ch 16), Resiliency (Ch 17), Database Design (Ch 18) (Persona B, C)
 - Day 21: Review + identify weakest algorithm pattern
 
-**Week 4: Polish & Exam Readiness (Chapters 19-24 + Review)**
+**Week 4: Polish & Exam Readiness (Personas B, C Focus)**
 
 - Day 22-23: Behavioral Leadership (Ch 19) + Testing/CI-CD (Ch 20)
 - Day 24-25: Message Brokers (Ch 21), AI/ML (Ch 22) + final mock assessments (Ch 15 Sets 11-20)
