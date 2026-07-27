@@ -27,7 +27,8 @@ The following code illustrates unit testing our decoupled `TransactionProcessor`
 
 ```python
 import unittest
-from unittest.mock import Mock, call
+from unittest.mock import Mock, ANY
+from decimal import Decimal
 
 class TestTransactionProcessor(unittest.TestCase):
     def test_successful_transfer_enforces_invariants(self):
@@ -36,24 +37,25 @@ class TestTransactionProcessor(unittest.TestCase):
         mock_calculator = Mock()
         mock_sender = Mock()
 
-        source = LedgerAccount("acc-source", 100.00, "USD")
-        destination = LedgerAccount("acc-dest", 50.00, "USD")
+        source = LedgerAccount("acc-source", Decimal("100.00"), "USD")
+        destination = LedgerAccount("acc-dest", Decimal("50.00"), "USD")
 
-        mock_repo.find_by_id.side_effect = lambda uid: source if uid == "acc-source" else destination
-        mock_calculator.calculate_fee.return_value = 0.0
+        mock_repo.find_by_id.side_effect = lambda id: source if id == "acc-source" else destination
+        mock_calculator.calculate_fee.return_value = Decimal("0.00")
 
         processor = TransactionProcessor(mock_repo, mock_calculator, mock_sender)
 
         # Act
-        processor.process_transfer("acc-source", "acc-dest", 30.0)
+        processor.process_transfer("acc-source", "acc-dest", Decimal("30.00"))
 
         # Assert state invariants updated
-        self.assertEqual(70.0, source.balance)
-        self.assertEqual(80.0, destination.balance)
+        self.assertEqual(Decimal("70.00"), source.get_balance())
+        self.assertEqual(Decimal("80.00"), destination.get_balance())
 
         # Assert repository saved both
-        mock_repo.save.assert_has_calls([call(source), call(destination)])
-        mock_sender.send_notification.assert_called_once()
+        mock_repo.save.assert_any_call(source)
+        mock_repo.save.assert_any_call(destination)
+        mock_sender.send_notification.assert_called_with(ANY)
 ```
 
 By utilizing mock objects, we verify that the processor correctly coordinates the transfer, updates balance invariants, and calls the persistence layer, without requiring an active database connection.

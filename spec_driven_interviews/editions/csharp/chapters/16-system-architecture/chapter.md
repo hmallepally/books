@@ -142,32 +142,54 @@ The token bucket algorithm maintains a bucket that holds a maximum number of tok
 
 **When to use:** API gateways and per-user throttling (e.g., Stripe, Amazon API Gateway).
 
-```java
-import java.util.concurrent.atomic.AtomicLong;
+```csharp
+using System;
+using System.Diagnostics;
+using System.Threading;
 
-public class TokenBucket {
-    private record State(long tokens, long timestampNanos) {}
+public class TokenBucket 
+{
+    private class State 
+    {
+        public long Tokens { get; }
+        public long TimestampNanos { get; }
+
+        public State(long tokens, long timestampNanos) 
+        {
+            Tokens = tokens;
+            TimestampNanos = timestampNanos;
+        }
+    }
     
-    private final AtomicReference<State> state;
-    private final long maxTokens;
-    private final long refillRatePerSecond;
+    private State _state;
+    private readonly long _maxTokens;
+    private readonly long _refillRatePerSecond;
 
-    public TokenBucket(long maxTokens, long refillRatePerSecond) {
-        this.maxTokens = maxTokens;
-        this.refillRatePerSecond = refillRatePerSecond;
-        this.state = new AtomicReference<>(new State(maxTokens, System.nanoTime()));
+    public TokenBucket(long maxTokens, long refillRatePerSecond) 
+    {
+        _maxTokens = maxTokens;
+        _refillRatePerSecond = refillRatePerSecond;
+        _state = new State(maxTokens, Stopwatch.GetTimestamp());
     }
 
-    public boolean allowRequest() {
-        while (true) {
-            State current = state.get();
-            long now = System.nanoTime();
-            long elapsed = now - current.timestampNanos();
-            long refilled = Math.min(maxTokens,
-                current.tokens() + elapsed * refillRatePerSecond / 1_000_000_000L);
+    public bool AllowRequest() 
+    {
+        while (true) 
+        {
+            State current = Volatile.Read(ref _state);
+            long now = Stopwatch.GetTimestamp();
+            long elapsed = now - current.TimestampNanos;
+            
+            long refilled = Math.Min(_maxTokens,
+                current.Tokens + elapsed * _refillRatePerSecond / 1_000_000_000L);
+                
             if (refilled <= 0) return false;
+            
             State next = new State(refilled - 1, now);
-            if (state.compareAndSet(current, next)) return true;
+            if (Interlocked.CompareExchange(ref _state, next, current) == current) 
+            {
+                return true;
+            }
         }
     }
 }
@@ -207,30 +229,42 @@ In a Cache-Aside pattern, the application is fully responsible for managing the 
 **Pros:** Only requested data is cached, avoiding unnecessary memory usage. The system remains available (reading directly from the DB) even if the cache fails.
 **Cons:** Introduces a cache miss penalty (latency spike) and risks serving stale data if not carefully invalidated.
 
-```java
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
+```csharp
+using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Distributed;
+using System.Text.Json;
+using System.Collections.Generic;
 
-@Service
-public class UserService {
-    private final UserRepository dbRepository;
-    private final RedisTemplate<String, User> redisTemplate;
+public class UserService 
+{
+    private readonly IUserRepository _dbRepository;
+    private readonly IDistributedCache _cache;
 
-    public UserService(UserRepository dbRepository, RedisTemplate<String, User> redisTemplate) {
-        this.dbRepository = dbRepository;
-        this.redisTemplate = redisTemplate;
+    public UserService(IUserRepository dbRepository, IDistributedCache cache) 
+    {
+        _dbRepository = dbRepository;
+        _cache = cache;
     }
 
-    public User getUser(String userId) {
-        String cacheKey = "user:" + userId;
-        User user = redisTemplate.opsForValue().get(cacheKey);
+    public User GetUser(string userId) 
+    {
+        string cacheKey = $"user:{userId}";
+        string cachedUser = _cache.GetString(cacheKey);
         
-        if (user == null) {
-            // Cache miss: read from DB
-            user = dbRepository.findById(userId).orElseThrow();
-            // Populate cache
-            redisTemplate.opsForValue().set(cacheKey, user);
+        if (cachedUser != null) 
+        {
+            return JsonSerializer.Deserialize<User>(cachedUser);
         }
+
+        // Cache miss: read from DB
+        User user = _dbRepository.FindById(userId);
+        if (user == null) 
+        {
+            throw new KeyNotFoundException();
+        }
+        
+        // Populate cache
+        _cache.SetString(cacheKey, JsonSerializer.Serialize(user));
         return user;
     }
 }

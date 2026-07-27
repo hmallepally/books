@@ -142,35 +142,31 @@ The token bucket algorithm maintains a bucket that holds a maximum number of tok
 
 **When to use:** API gateways and per-user throttling (e.g., Stripe, Amazon API Gateway).
 
-```java
-import java.util.concurrent.atomic.AtomicLong;
+```python
+import time
+import threading
 
-public class TokenBucket {
-    private record State(long tokens, long timestampNanos) {}
-    
-    private final AtomicReference<State> state;
-    private final long maxTokens;
-    private final long refillRatePerSecond;
+class TokenBucket:
+    def __init__(self, max_tokens: int, refill_rate_per_second: int):
+        self.max_tokens = max_tokens
+        self.refill_rate_per_second = refill_rate_per_second
+        self.tokens = max_tokens
+        self.timestamp_nanos = time.monotonic_ns()
+        self.lock = threading.Lock()
 
-    public TokenBucket(long maxTokens, long refillRatePerSecond) {
-        this.maxTokens = maxTokens;
-        this.refillRatePerSecond = refillRatePerSecond;
-        this.state = new AtomicReference<>(new State(maxTokens, System.nanoTime()));
-    }
-
-    public boolean allowRequest() {
-        while (true) {
-            State current = state.get();
-            long now = System.nanoTime();
-            long elapsed = now - current.timestampNanos();
-            long refilled = Math.min(maxTokens,
-                current.tokens() + elapsed * refillRatePerSecond / 1_000_000_000L);
-            if (refilled <= 0) return false;
-            State next = new State(refilled - 1, now);
-            if (state.compareAndSet(current, next)) return true;
-        }
-    }
-}
+    def allow_request(self) -> bool:
+        with self.lock:
+            now = time.monotonic_ns()
+            elapsed = now - self.timestamp_nanos
+            refilled = min(self.max_tokens, 
+                self.tokens + elapsed * self.refill_rate_per_second // 1_000_000_000)
+            
+            if refilled <= 0:
+                return False
+                
+            self.tokens = refilled - 1
+            self.timestamp_nanos = now
+            return True
 ```
 
 ### Leaky Bucket Algorithm
@@ -207,33 +203,25 @@ In a Cache-Aside pattern, the application is fully responsible for managing the 
 **Pros:** Only requested data is cached, avoiding unnecessary memory usage. The system remains available (reading directly from the DB) even if the cache fails.
 **Cons:** Introduces a cache miss penalty (latency spike) and risks serving stale data if not carefully invalidated.
 
-```java
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
+```python
+class UserService:
+    def __init__(self, db_repository, redis_client):
+        self.db_repository = db_repository
+        self.redis_client = redis_client
 
-@Service
-public class UserService {
-    private final UserRepository dbRepository;
-    private final RedisTemplate<String, User> redisTemplate;
-
-    public UserService(UserRepository dbRepository, RedisTemplate<String, User> redisTemplate) {
-        this.dbRepository = dbRepository;
-        this.redisTemplate = redisTemplate;
-    }
-
-    public User getUser(String userId) {
-        String cacheKey = "user:" + userId;
-        User user = redisTemplate.opsForValue().get(cacheKey);
+    def get_user(self, user_id: str):
+        cache_key = f"user:{user_id}"
+        user = self.redis_client.get(cache_key)
         
-        if (user == null) {
-            // Cache miss: read from DB
-            user = dbRepository.findById(userId).orElseThrow();
-            // Populate cache
-            redisTemplate.opsForValue().set(cacheKey, user);
-        }
-        return user;
-    }
-}
+        if user is None:
+            # Cache miss: read from DB
+            user = self.db_repository.find_by_id(user_id)
+            if user is None:
+                raise ValueError("User not found")
+            # Populate cache
+            self.redis_client.set(cache_key, user)
+            
+        return user
 ```
 
 ### Write-Through Cache

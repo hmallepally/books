@@ -28,11 +28,12 @@ The following code illustrates unit testing our decoupled `TransactionProcessor`
 ```csharp
 using Moq;
 using Xunit;
+using System.Diagnostics;
 
-public class TransactionProcessorTests
+public class TransactionProcessorTest 
 {
     [Fact]
-    public void TestSuccessfulTransfer_EnforcesInvariants()
+    public void TestSuccessfulTransfer_EnforcesInvariants() 
     {
         // Arrange Mock Dependencies
         var mockRepo = new Mock<ILedgerRepository>();
@@ -52,13 +53,13 @@ public class TransactionProcessorTests
         processor.ProcessTransfer("acc-source", "acc-dest", 30.00m);
 
         // Assert state invariants updated
-        Assert.Equal(70.00m, source.Balance);
-        Assert.Equal(80.00m, destination.Balance);
+        Assert.Equal(70.00m, source.GetBalance());
+        Assert.Equal(80.00m, destination.GetBalance());
 
         // Assert repository saved both
         mockRepo.Verify(r => r.Save(source), Times.Once);
         mockRepo.Verify(r => r.Save(destination), Times.Once);
-        mockSender.Verify(s => s.SendNotification(It.IsAny<TransactionEvent>()), Times.Once);
+        mockSender.Verify(s => s.SendNotification(It.IsAny<object>()), Times.Once);
     }
 }
 ```

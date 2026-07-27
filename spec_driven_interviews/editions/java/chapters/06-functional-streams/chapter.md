@@ -109,12 +109,12 @@ Debugging streams can be difficult due to their lazy execution model. To inspect
 1. **Injecting `peek()` for Logging:**
    Use the `.peek()` intermediate operation to log elements as they flow through specific stages of the pipeline:
    ```java
-   transactions.stream()
-       .filter(t -> t.amount() > 100)
-       .peek(t -> log.debug("Passed Filter: {}", t.id()))
-       .map(Transaction::merchantId)
-       .collect(Collectors.toList());
-   ```
+transactions.stream()
+    .filter(t -> t.amount() > 100)
+    .peek(t -> log.debug("Passed Filter: {}", t.id()))
+    .map(Transaction::merchantId)
+    .collect(Collectors.toList());
+```
 
 2. **Utilizing IDE Stream Debuggers:**
    Modern IDEs (like IntelliJ IDEA or Visual Studio) contain visual stream debuggers. When you set a breakpoint on a stream statement, the debugger can render a visual representation of how elements are filtered and mapped at each stage.

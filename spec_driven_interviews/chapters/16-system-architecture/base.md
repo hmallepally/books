@@ -142,36 +142,7 @@ The token bucket algorithm maintains a bucket that holds a maximum number of tok
 
 **When to use:** API gateways and per-user throttling (e.g., Stripe, Amazon API Gateway).
 
-```java
-import java.util.concurrent.atomic.AtomicLong;
-
-public class TokenBucket {
-    private record State(long tokens, long timestampNanos) {}
-    
-    private final AtomicReference<State> state;
-    private final long maxTokens;
-    private final long refillRatePerSecond;
-
-    public TokenBucket(long maxTokens, long refillRatePerSecond) {
-        this.maxTokens = maxTokens;
-        this.refillRatePerSecond = refillRatePerSecond;
-        this.state = new AtomicReference<>(new State(maxTokens, System.nanoTime()));
-    }
-
-    public boolean allowRequest() {
-        while (true) {
-            State current = state.get();
-            long now = System.nanoTime();
-            long elapsed = now - current.timestampNanos();
-            long refilled = Math.min(maxTokens,
-                current.tokens() + elapsed * refillRatePerSecond / 1_000_000_000L);
-            if (refilled <= 0) return false;
-            State next = new State(refilled - 1, now);
-            if (state.compareAndSet(current, next)) return true;
-        }
-    }
-}
-```
+{{ inject('token_bucket.md') }}
 
 ### Leaky Bucket Algorithm
 In the leaky bucket algorithm, incoming requests enter a FIFO queue (the bucket). The system processes requests from the queue at a strictly constant rate. If the queue is full, new requests are discarded. Unlike the token bucket, it entirely smooths out bursts, ensuring a perfectly constant output rate.
@@ -207,34 +178,7 @@ In a Cache-Aside pattern, the application is fully responsible for managing the 
 **Pros:** Only requested data is cached, avoiding unnecessary memory usage. The system remains available (reading directly from the DB) even if the cache fails.
 **Cons:** Introduces a cache miss penalty (latency spike) and risks serving stale data if not carefully invalidated.
 
-```java
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
-
-@Service
-public class UserService {
-    private final UserRepository dbRepository;
-    private final RedisTemplate<String, User> redisTemplate;
-
-    public UserService(UserRepository dbRepository, RedisTemplate<String, User> redisTemplate) {
-        this.dbRepository = dbRepository;
-        this.redisTemplate = redisTemplate;
-    }
-
-    public User getUser(String userId) {
-        String cacheKey = "user:" + userId;
-        User user = redisTemplate.opsForValue().get(cacheKey);
-        
-        if (user == null) {
-            // Cache miss: read from DB
-            user = dbRepository.findById(userId).orElseThrow();
-            // Populate cache
-            redisTemplate.opsForValue().set(cacheKey, user);
-        }
-        return user;
-    }
-}
-```
+{{ inject('user_service.md') }}
 
 ### Write-Through Cache
 Under Write-Through caching, the application writes data to the cache and the database simultaneously (often abstracted so the application only writes to the cache, which synchronously updates the DB).

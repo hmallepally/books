@@ -90,6 +90,7 @@ public int firstUniqueChar(String s) {
     return -1;
 }
 ```
+
 - **Diagnostic Triggers:** "First non-repeating character", "Anagram check", "Character frequency".
 - **Boundary Conditions:** Ensure array size covers the domain (`256` for ASCII, `26` for lowercase English).
 - **Real-World Application:** High-speed network packet inspection, audit log frequency counting.
@@ -113,6 +114,7 @@ public int removeDuplicates(int[] nums) {
     return write;
 }
 ```
+
 - **Diagnostic Triggers:** "In-place removal", "Compact array", "Move zeroes to end".
 - **Boundary Conditions:** Handle empty array or single-element array upfront.
 - **Real-World Application:** Memory defragmentation, log stream sanitization.
@@ -140,6 +142,7 @@ public int subarraySumEqualsK(int[] nums, int k) {
     return count;
 }
 ```
+
 - **Diagnostic Triggers:** "Subarray sum equals K", "Range sum queries", "Equal number of 0s and 1s".
 - **Boundary Conditions:** Always initialize `prefCounts.put(0, 1)` to account for subarrays starting at index 0.
 - **Real-World Application:** Financial ledger balance auditing, telemetry interval aggregation.
@@ -170,6 +173,7 @@ public int longestSubarray(int[] nums, int k) {
     return result;
 }
 ```
+
 - **Diagnostic Triggers:** "Longest/shortest subarray satisfying condition X", "At most K distinct elements".
 - **Boundary Conditions:** Set-based windows must shrink BEFORE expanding; HashMap/Sum-based windows expand FIRST then shrink.
 - **Real-World Application:** Sliding-window rate limiters, network throughput monitoring.
@@ -196,6 +200,7 @@ public int[] maxSlidingWindow(int[] nums, int k) {
     return res;
 }
 ```
+
 - **Diagnostic Triggers:** "Maximum/minimum in every window of size K".
 - **Boundary Conditions:** Deque stores INDICES, not values. Window is full when `i >= k - 1`.
 - **Real-World Application:** Real-time SLA monitoring, financial tick-data peak detection.
@@ -219,6 +224,7 @@ public int[] twoSumSorted(int[] nums, int target) {
     return new int[0];
 }
 ```
+
 - **Diagnostic Triggers:** "Sorted array + find pair", "Container with most water", "Palindrome validation".
 - **Boundary Conditions:** Array MUST be sorted. Loop condition is `left < right` (pointers must not overlap for pairs).
 - **Real-World Application:** Order matching engines, debit-credit balance pairing.
@@ -241,6 +247,7 @@ public boolean hasCycle(ListNode head) {
     return false;
 }
 ```
+
 - **Diagnostic Triggers:** "Detect cycle in linked list", "Find duplicate number", "Happy number".
 - **Boundary Conditions:** Check `fast != null && fast.next != null` to avoid `NullPointerException`.
 - **Real-World Application:** Circular reference detection in graph engines, deadlock detection.
@@ -266,6 +273,7 @@ public boolean isValidParentheses(String s) {
     return stack.isEmpty();
 }
 ```
+
 - **Diagnostic Triggers:** "Valid parentheses", "Evaluate expression", "Simplify file path".
 - **Boundary Conditions:** Stack must be empty at the end. Check `stack.isEmpty()` before popping.
 - **Real-World Application:** JSON/XML syntax parsers, compiler AST validation, undo stacks.
@@ -292,6 +300,7 @@ public int[] dailyTemperatures(int[] temps) {
     return ans;
 }
 ```
+
 - **Diagnostic Triggers:** "Next greater element", "Daily temperatures", "Largest rectangle in histogram".
 - **Boundary Conditions:** Store INDICES on stack, not values. Unresolved items remain `0` or `-1`.
 - **Real-World Application:** Stock price drop alerts, automated threshold breach notifications.
@@ -323,6 +332,7 @@ public int searchRotated(int[] nums, int target) {
     return -1;
 }
 ```
+
 - **Diagnostic Triggers:** "Search in rotated sorted array", "Find minimum in rotated sorted array".
 - **Boundary Conditions:** Use `nums[left] <= nums[mid]` (with `<=`) to handle single-element partitions.
 - **Real-World Application:** Distributed partition log search, sharded database key lookups.
@@ -359,6 +369,7 @@ private boolean canShip(int[] weights, int days, int capacity) {
     return dayCount <= days;
 }
 ```
+
 - **Diagnostic Triggers:** "Find minimum capacity", "Koko eating bananas", "Split array largest sum".
 - **Boundary Conditions:** Define correct range bounds `[lo, hi]` upfront.
 - **Real-World Application:** Capacity planning, thread pool sizing, rate limit optimization.
@@ -386,6 +397,7 @@ public void backtrack(List<List<Integer>> res, List<Integer> path, int[] nums, b
     }
 }
 ```
+
 - **Diagnostic Triggers:** "Generate all permutations/combinations", "Sudoku solver", "N-Queens".
 - **Boundary Conditions:** Always make a deep copy `new ArrayList<>(path)` when adding to results.
 - **Real-World Application:** Constraint satisfaction solvers, security permission path traversal.
@@ -430,6 +442,7 @@ public int shortestPath(char[][] grid, int startR, int startC) {
     return -1;
 }
 ```
+
 - **Diagnostic Triggers:** "Shortest path in grid", "Minimum steps to reach goal", "Word ladder".
 - **Boundary Conditions:** ALWAYS mark `visited = true` on `offer()`, NOT on `poll()`.
 - **Real-World Application:** Network routing protocols, social network distance calculation.
@@ -475,6 +488,7 @@ public int orangesRotting(int[][] grid) {
     return freshCount == 0 ? minutes : -1;
 }
 ```
+
 - **Diagnostic Triggers:** "Rotting oranges", "Walls and gates", "Multi-point fire propagation".
 - **Boundary Conditions:** Track remaining fresh target count to avoid extra minute increment.
 - **Real-World Application:** Multi-datacenter cache invalidation, rumor/virus propagation modeling.
@@ -509,6 +523,7 @@ private void dfsSink(char[][] grid, int r, int c) {
     dfsSink(grid, r, c - 1);
 }
 ```
+
 - **Diagnostic Triggers:** "Number of islands", "Surrounded regions", "Flood fill".
 - **Boundary Conditions:** Base case must check bounds BEFORE accessing `grid[r][c]`.
 - **Real-World Application:** Image segmentation, cluster isolation, GIS landmass detection.
@@ -545,6 +560,7 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
     return idx == numCourses ? order : new int[0];
 }
 ```
+
 - **Diagnostic Triggers:** "Course schedule", "Task dependency ordering", "Build order".
 - **Boundary Conditions:** Return empty array if `idx != numCourses` (cycle detected).
 - **Real-World Application:** Maven/Gradle build execution, CI/CD pipeline stage ordering.
@@ -579,6 +595,7 @@ class UnionFind {
     }
 }
 ```
+
 - **Diagnostic Triggers:** "Redundant connection", "Number of connected components", "Accounts merge".
 - **Boundary Conditions:** Path compression `parent[i] = find(parent[i])` is essential for optimal speed.
 - **Real-World Application:** Network topology clustering, distributed consensus membership tracking.
@@ -618,6 +635,7 @@ public int networkDelayTime(int[][] times, int n, int k) {
     return dist.size() == n ? dist.values().stream().max(Integer::compare).get() : -1;
 }
 ```
+
 - **Diagnostic Triggers:** "Network delay time", "Cheapest flight within K stops", "Shortest path with weights".
 - **Boundary Conditions:** PriorityQueue stores `[node, total_distance]`. Skip already finalized nodes (`dist.containsKey(node)`).
 - **Real-World Application:** Latency-based API gateway routing, Google Maps route optimization.
@@ -644,6 +662,7 @@ public int rob(int[] nums) {
     return prev1;
 }
 ```
+
 - **Diagnostic Triggers:** "House robber", "Climbing stairs", "Min cost climbing stairs".
 - **Boundary Conditions:** Handle single-element input upfront.
 - **Real-World Application:** Capacity allocation, CPU time-slot scheduling.
@@ -671,6 +690,7 @@ public int coinChange(int[] coins, int amount) {
     return dp[amount] > amount ? -1 : dp[amount];
 }
 ```
+
 - **Diagnostic Triggers:** "Coin change", "Partition equal subset sum", "Knapsack capacity".
 - **Boundary Conditions:** Fill array with sentinel value (`amount + 1`) representing infinity.
 - **Real-World Application:** Resource packing in cloud instances, currency change calculators.
@@ -698,6 +718,7 @@ public int minPathSum(int[][] grid) {
     return dp[rows - 1][cols - 1];
 }
 ```
+
 - **Diagnostic Triggers:** "Minimum path sum", "Unique paths in grid", "Dungeon game".
 - **Boundary Conditions:** Initialize first row and first column carefully.
 - **Real-World Application:** Cost-effective data routing across grid-structured networks.
@@ -726,6 +747,7 @@ public int longestCommonSubsequence(String text1, String text2) {
     return dp[m][n];
 }
 ```
+
 - **Diagnostic Triggers:** "Longest common subsequence", "Edit distance", "Wildcard matching".
 - **Boundary Conditions:** Matrix dimensions are `(m + 1) x (n + 1)`. Access chars using `i - 1` and `j - 1`.
 - **Real-World Application:** Git diff algorithms, DNA sequence alignment, text similarity search.
@@ -754,6 +776,7 @@ public int minMeetingRooms(int[][] intervals) {
     return minHeap.size();
 }
 ```
+
 - **Diagnostic Triggers:** "Meeting rooms II", "Merge intervals", "Non-overlapping intervals".
 - **Boundary Conditions:** Always sort intervals by start time `a[0] - b[0]` first.
 - **Real-World Application:** Calendar scheduling engines, hotel room allocation, cloud VM provisioning.
@@ -804,6 +827,7 @@ public class Trie {
     }
 }
 ```
+
 - **Diagnostic Triggers:** "Implement Trie", "Word search II (grid + dictionary)", "Replace words / autocomplete".
 - **Boundary Conditions:** Use `c - 'a'` for lowercase alphabets. Set `isWord = true` at termination node.
 - **Real-World Application:** Autocomplete search suggestions, IP routing prefix tables, spell checkers.
@@ -833,6 +857,7 @@ public int[] topKFrequent(int[] nums, int k) {
     return minHeap.stream().mapToInt(Map.Entry::getKey).toArray();
 }
 ```
+
 
 **Complexity:** O(N log K) time, O(N + K) space.
 

@@ -78,18 +78,19 @@ The following catalog defines the 24 fundamental patterns of computational probl
 - **Invariant:** When the input domain is finite (e.g., ASCII characters, digits $0..9$), a fixed-size array (`int[256]`) provides $O(1)$ direct-indexing lookup without hash overhead.
 - **Mental Model:** Use the array index itself as the key.
 - **Canonical Code Skeleton:**
-```java
-public int firstUniqueChar(String s) {
+```csharp
+public int FirstUniqueChar(string s)
+{
     int[] counts = new int[256];
-    for (int i = 0; i < s.length(); i++) {
-        counts[s.charAt(i)]++;
-    }
-    for (int i = 0; i < s.length(); i++) {
-        if (counts[s.charAt(i)] == 1) return i;
+    foreach (char c in s) counts[c]++;
+    for (int i = 0; i < s.Length; i++)
+    {
+        if (counts[s[i]] == 1) return i;
     }
     return -1;
 }
 ```
+
 - **Diagnostic Triggers:** "First non-repeating character", "Anagram check", "Character frequency".
 - **Boundary Conditions:** Ensure array size covers the domain (`256` for ASCII, `26` for lowercase English).
 - **Real-World Application:** High-speed network packet inspection, audit log frequency counting.
@@ -101,18 +102,22 @@ public int firstUniqueChar(String s) {
 - **Invariant:** A `write` pointer tracks the boundary of valid elements while a `read` pointer scans the array, mutating data in-place in $O(1)$ extra space.
 - **Mental Model:** Filter or compact elements in a single pass without allocating a new array.
 - **Canonical Code Skeleton:**
-```java
-public int removeDuplicates(int[] nums) {
-    if (nums.length == 0) return 0;
+```csharp
+public int RemoveDuplicates(int[] nums)
+{
+    if (nums.Length == 0) return 0;
     int write = 1;
-    for (int read = 1; read < nums.length; read++) {
-        if (nums[read] != nums[read - 1]) {
+    for (int read = 1; read < nums.Length; read++)
+    {
+        if (nums[read] != nums[read - 1])
+        {
             nums[write++] = nums[read];
         }
     }
     return write;
 }
 ```
+
 - **Diagnostic Triggers:** "In-place removal", "Compact array", "Move zeroes to end".
 - **Boundary Conditions:** Handle empty array or single-element array upfront.
 - **Real-World Application:** Memory defragmentation, log stream sanitization.
@@ -124,22 +129,26 @@ public int removeDuplicates(int[] nums) {
 - **Invariant:** The sum of elements between indices $i$ and $j$ equals `prefix[j + 1] - prefix[i]`, turning range sum queries into $O(1)$ operations.
 - **Mental Model:** Precompute cumulative totals so any subarray sum is computed by subtraction.
 - **Canonical Code Skeleton:**
-```java
-public int subarraySumEqualsK(int[] nums, int k) {
-    var prefCounts = new HashMap<Integer, Integer>();
-    prefCounts.put(0, 1);
+```csharp
+public int SubarraySumEqualsK(int[] nums, int k)
+{
+    var prefCounts = new Dictionary<int, int>();
+    prefCounts[0] = 1;
     int currentSum = 0, count = 0;
 
-    for (int num : nums) {
+    foreach (int num in nums)
+    {
         currentSum += num;
-        if (prefCounts.containsKey(currentSum - k)) {
-            count += prefCounts.get(currentSum - k);
+        if (prefCounts.TryGetValue(currentSum - k, out int val))
+        {
+            count += val;
         }
-        prefCounts.put(currentSum, prefCounts.getOrDefault(currentSum, 0) + 1);
+        prefCounts[currentSum] = prefCounts.GetValueOrDefault(currentSum, 0) + 1;
     }
     return count;
 }
 ```
+
 - **Diagnostic Triggers:** "Subarray sum equals K", "Range sum queries", "Equal number of 0s and 1s".
 - **Boundary Conditions:** Always initialize `prefCounts.put(0, 1)` to account for subarrays starting at index 0.
 - **Real-World Application:** Financial ledger balance auditing, telemetry interval aggregation.
@@ -153,23 +162,27 @@ public int subarraySumEqualsK(int[] nums, int k) {
 - **Invariant:** Maintain a window `[left...right]`. Expand `right` to include elements. When constraint is violated, shrink from `left` until valid.
 - **Mental Model:** An expanding and contracting net scanning an array.
 - **Canonical Code Skeleton:**
-```java
-public int longestSubarray(int[] nums, int k) {
+```csharp
+public int LongestSubarray(int[] nums, int k)
+{
     int left = 0, result = 0, zeroCount = 0;
 
-    for (int right = 0; right < nums.length; right++) {
+    for (int right = 0; right < nums.Length; right++)
+    {
         if (nums[right] == 0) zeroCount++;
 
-        while (zeroCount > k) {
+        while (zeroCount > k)
+        {
             if (nums[left] == 0) zeroCount--;
             left++; // Always advance left during shrink
         }
 
-        result = Math.max(result, right - left + 1);
+        result = Math.Max(result, right - left + 1);
     }
     return result;
 }
 ```
+
 - **Diagnostic Triggers:** "Longest/shortest subarray satisfying condition X", "At most K distinct elements".
 - **Boundary Conditions:** Set-based windows must shrink BEFORE expanding; HashMap/Sum-based windows expand FIRST then shrink.
 - **Real-World Application:** Sliding-window rate limiters, network throughput monitoring.
@@ -181,21 +194,24 @@ public int longestSubarray(int[] nums, int k) {
 - **Invariant:** Maintain a `Deque` of indices where corresponding values are strictly decreasing from front to back. Front always holds the maximum of the current window.
 - **Mental Model:** A sliding window of fixed size $K$ that tracks max/min in $O(1)$ amortized time.
 - **Canonical Code Skeleton:**
-```java
-public int[] maxSlidingWindow(int[] nums, int k) {
-    var deque = new ArrayDeque<Integer>();
-    var res = new int[nums.length - k + 1];
+```csharp
+public int[] MaxSlidingWindow(int[] nums, int k)
+{
+    var deque = new LinkedList<int>();
+    var res = new int[nums.Length - k + 1];
     int idx = 0;
 
-    for (int i = 0; i < nums.length; i++) {
-        while (!deque.isEmpty() && deque.peekFirst() < i - k + 1) deque.pollFirst(); // Expire
-        while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) deque.pollLast(); // Kill weaker
-        deque.offerLast(i);
-        if (i >= k - 1) res[idx++] = nums[deque.peekFirst()];
+    for (int i = 0; i < nums.Length; i++)
+    {
+        while (deque.Count > 0 && deque.First.Value < i - k + 1) deque.RemoveFirst(); // Expire
+        while (deque.Count > 0 && nums[deque.Last.Value] < nums[i]) deque.RemoveLast(); // Kill weaker
+        deque.AddLast(i);
+        if (i >= k - 1) res[idx++] = nums[deque.First.Value];
     }
     return res;
 }
 ```
+
 - **Diagnostic Triggers:** "Maximum/minimum in every window of size K".
 - **Boundary Conditions:** Deque stores INDICES, not values. Window is full when `i >= k - 1`.
 - **Real-World Application:** Real-time SLA monitoring, financial tick-data peak detection.
@@ -207,18 +223,21 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 - **Invariant:** Two pointers start at opposite ends (`left = 0`, `right = n - 1`) of a sorted array and move inward based on comparison with target.
 - **Mental Model:** Squeezing the search space from both boundaries.
 - **Canonical Code Skeleton:**
-```java
-public int[] twoSumSorted(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left < right) {
+```csharp
+public int[] TwoSumSorted(int[] nums, int target)
+{
+    int left = 0, right = nums.Length - 1;
+    while (left < right)
+    {
         int sum = nums[left] + nums[right];
-        if (sum == target) return new int[]{left, right};
+        if (sum == target) return new int[] { left, right };
         else if (sum < target) left++;
         else right--;
     }
     return new int[0];
 }
 ```
+
 - **Diagnostic Triggers:** "Sorted array + find pair", "Container with most water", "Palindrome validation".
 - **Boundary Conditions:** Array MUST be sorted. Loop condition is `left < right` (pointers must not overlap for pairs).
 - **Real-World Application:** Order matching engines, debit-credit balance pairing.
@@ -230,10 +249,12 @@ public int[] twoSumSorted(int[] nums, int target) {
 - **Invariant:** `slow` moves 1 step while `fast` moves 2 steps. If a cycle exists, `fast` will eventually catch `slow`.
 - **Mental Model:** Two runners on a circular track.
 - **Canonical Code Skeleton:**
-```java
-public boolean hasCycle(ListNode head) {
+```csharp
+public bool HasCycle(ListNode head)
+{
     ListNode slow = head, fast = head;
-    while (fast != null && fast.next != null) {
+    while (fast != null && fast.next != null)
+    {
         slow = slow.next;
         fast = fast.next.next;
         if (slow == fast) return true;
@@ -241,6 +262,7 @@ public boolean hasCycle(ListNode head) {
     return false;
 }
 ```
+
 - **Diagnostic Triggers:** "Detect cycle in linked list", "Find duplicate number", "Happy number".
 - **Boundary Conditions:** Check `fast != null && fast.next != null` to avoid `NullPointerException`.
 - **Real-World Application:** Circular reference detection in graph engines, deadlock detection.
@@ -254,18 +276,21 @@ public boolean hasCycle(ListNode head) {
 - **Invariant:** Push open symbols onto a stack. When a closing symbol is encountered, pop and verify it matches the expected opening symbol.
 - **Mental Model:** Last-in, first-out validation of nested structures.
 - **Canonical Code Skeleton:**
-```java
-public boolean isValidParentheses(String s) {
-    var stack = new ArrayDeque<Character>();
-    for (char c : s.toCharArray()) {
-        if (c == '(') stack.push(')');
-        else if (c == '{') stack.push('}');
-        else if (c == '[') stack.push(']');
-        else if (stack.isEmpty() || stack.pop() != c) return false;
+```csharp
+public bool IsValidParentheses(string s)
+{
+    var stack = new Stack<char>();
+    foreach (char c in s)
+    {
+        if (c == '(') stack.Push(')');
+        else if (c == '{') stack.Push('}');
+        else if (c == '[') stack.Push(']');
+        else if (stack.Count == 0 || stack.Pop() != c) return false;
     }
-    return stack.isEmpty();
+    return stack.Count == 0;
 }
 ```
+
 - **Diagnostic Triggers:** "Valid parentheses", "Evaluate expression", "Simplify file path".
 - **Boundary Conditions:** Stack must be empty at the end. Check `stack.isEmpty()` before popping.
 - **Real-World Application:** JSON/XML syntax parsers, compiler AST validation, undo stacks.
@@ -277,21 +302,25 @@ public boolean isValidParentheses(String s) {
 - **Invariant:** Stack holds unresolved element indices in decreasing order. When a larger element arrives, it pops colder elements and resolves their answers.
 - **Mental Model:** A waiting room where people stay until someone taller arrives to liberate them.
 - **Canonical Code Skeleton:**
-```java
-public int[] dailyTemperatures(int[] temps) {
-    var ans = new int[temps.length];
-    Deque<Integer> stack = new ArrayDeque<>(); // Stores INDICES
+```csharp
+public int[] DailyTemperatures(int[] temps)
+{
+    var ans = new int[temps.Length];
+    var stack = new Stack<int>(); // Stores INDICES
 
-    for (int i = 0; i < temps.length; i++) {
-        while (!stack.isEmpty() && temps[stack.peek()] < temps[i]) {
-            int prevIdx = stack.pop();
+    for (int i = 0; i < temps.Length; i++)
+    {
+        while (stack.Count > 0 && temps[stack.Peek()] < temps[i])
+        {
+            int prevIdx = stack.Pop();
             ans[prevIdx] = i - prevIdx;
         }
-        stack.push(i);
+        stack.Push(i);
     }
     return ans;
 }
 ```
+
 - **Diagnostic Triggers:** "Next greater element", "Daily temperatures", "Largest rectangle in histogram".
 - **Boundary Conditions:** Store INDICES on stack, not values. Unresolved items remain `0` or `-1`.
 - **Real-World Application:** Stock price drop alerts, automated threshold breach notifications.
@@ -305,17 +334,22 @@ public int[] dailyTemperatures(int[] temps) {
 - **Invariant:** In a rotated sorted array, at least one half (left or right) is always strictly sorted.
 - **Mental Model:** Halving search space by identifying the sorted partition.
 - **Canonical Code Skeleton:**
-```java
-public int searchRotated(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {
+```csharp
+public int SearchRotated(int[] nums, int target)
+{
+    int left = 0, right = nums.Length - 1;
+    while (left <= right)
+    {
         int mid = left + (right - left) / 2;
         if (nums[mid] == target) return mid;
 
-        if (nums[left] <= nums[mid]) { // Left half sorted (MUST use <=)
+        if (nums[left] <= nums[mid]) // Left half sorted (MUST use <=)
+        {
             if (nums[left] <= target && target < nums[mid]) right = mid - 1;
             else left = mid + 1;
-        } else { // Right half sorted
+        }
+        else // Right half sorted
+        {
             if (nums[mid] < target && target <= nums[right]) left = mid + 1;
             else right = mid - 1;
         }
@@ -323,6 +357,7 @@ public int searchRotated(int[] nums, int target) {
     return -1;
 }
 ```
+
 - **Diagnostic Triggers:** "Search in rotated sorted array", "Find minimum in rotated sorted array".
 - **Boundary Conditions:** Use `nums[left] <= nums[mid]` (with `<=`) to handle single-element partitions.
 - **Real-World Application:** Distributed partition log search, sharded database key lookups.
@@ -334,23 +369,32 @@ public int searchRotated(int[] nums, int target) {
 - **Invariant:** When the answer lies within a known numeric range `[min...max]` and a predicate function `feasible(x)` is monotonic, binary search finds the optimal value.
 - **Mental Model:** Guess the answer, test if it works, halve the range.
 - **Canonical Code Skeleton:**
-```java
-public int shipWithinDays(int[] weights, int days) {
+```csharp
+public int ShipWithinDays(int[] weights, int days)
+{
     int lo = 0, hi = 0;
-    for (int w : weights) { lo = Math.max(lo, w); hi += w; }
+    foreach (int w in weights)
+    {
+        lo = Math.Max(lo, w);
+        hi += w;
+    }
 
-    while (lo < hi) {
+    while (lo < hi)
+    {
         int mid = lo + (hi - lo) / 2;
-        if (canShip(weights, days, mid)) hi = mid; // Try smaller capacity
+        if (CanShip(weights, days, mid)) hi = mid; // Try smaller capacity
         else lo = mid + 1;                         // Must increase capacity
     }
     return lo;
 }
 
-private boolean canShip(int[] weights, int days, int capacity) {
+private bool CanShip(int[] weights, int days, int capacity)
+{
     int dayCount = 1, currentLoad = 0;
-    for (int w : weights) {
-        if (currentLoad + w > capacity) {
+    foreach (int w in weights)
+    {
+        if (currentLoad + w > capacity)
+        {
             dayCount++;
             currentLoad = 0;
         }
@@ -359,6 +403,7 @@ private boolean canShip(int[] weights, int days, int capacity) {
     return dayCount <= days;
 }
 ```
+
 - **Diagnostic Triggers:** "Find minimum capacity", "Koko eating bananas", "Split array largest sum".
 - **Boundary Conditions:** Define correct range bounds `[lo, hi]` upfront.
 - **Real-World Application:** Capacity planning, thread pool sizing, rate limit optimization.
@@ -370,22 +415,26 @@ private boolean canShip(int[] weights, int days, int capacity) {
 - **Invariant:** Explore decision paths recursively; when a path violates constraints, backtrack (undo state change) and try the next branch.
 - **Mental Model:** Exploring a maze by dropping breadcrumbs and stepping back when hitting a dead end.
 - **Canonical Code Skeleton:**
-```java
-public void backtrack(List<List<Integer>> res, List<Integer> path, int[] nums, boolean[] used) {
-    if (path.size() == nums.length) {
-        res.add(new ArrayList<>(path));
+```csharp
+public void Backtrack(List<IList<int>> res, List<int> path, int[] nums, bool[] used)
+{
+    if (path.Count == nums.Length)
+    {
+        res.Add(new List<int>(path));
         return;
     }
-    for (int i = 0; i < nums.length; i++) {
+    for (int i = 0; i < nums.Length; i++)
+    {
         if (used[i]) continue;
         used[i] = true;
-        path.add(nums[i]);
-        backtrack(res, path, nums, used); // Recurse
-        path.remove(path.size() - 1);     // Undo (backtrack)
+        path.Add(nums[i]);
+        Backtrack(res, path, nums, used); // Recurse
+        path.RemoveAt(path.Count - 1);    // Undo (backtrack)
         used[i] = false;
     }
 }
 ```
+
 - **Diagnostic Triggers:** "Generate all permutations/combinations", "Sudoku solver", "N-Queens".
 - **Boundary Conditions:** Always make a deep copy `new ArrayList<>(path)` when adding to results.
 - **Real-World Application:** Constraint satisfaction solvers, security permission path traversal.
@@ -399,29 +448,38 @@ public void backtrack(List<List<Integer>> res, List<Integer> path, int[] nums, b
 - **Invariant:** Queue processes nodes layer-by-layer (`int size = queue.size()`). First time target is popped = shortest path in unweighted graph/grid.
 - **Mental Model:** Water ripples expanding outward in concentric circles.
 - **Canonical Code Skeleton:**
-```java
-public int shortestPath(char[][] grid, int startR, int startC) {
-    int rows = grid.length, cols = grid[0].length;
-    var queue = new ArrayDeque<int[]>();
-    boolean[][] visited = new boolean[rows][cols];
+```csharp
+public int ShortestPath(char[][] grid, int startR, int startC)
+{
+    int rows = grid.Length, cols = grid[0].Length;
+    var queue = new Queue<int[]>();
+    bool[][] visited = new bool[rows][];
+    for (int i = 0; i < rows; i++) visited[i] = new bool[cols];
 
-    queue.offer(new int[]{startR, startC});
+    queue.Enqueue(new int[] { startR, startC });
     visited[startR][startC] = true; // Mark visited ON PUSH
     int steps = 0;
-    int[][] DIRS = {{1,0},{-1,0},{0,1},{0,-1}};
+    int[][] DIRS = new int[][] {
+        new int[] { 1, 0 }, new int[] { -1, 0 },
+        new int[] { 0, 1 }, new int[] { 0, -1 }
+    };
 
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i < size; i++) {
-            int[] curr = queue.poll();
+    while (queue.Count > 0)
+    {
+        int size = queue.Count;
+        for (int i = 0; i < size; i++)
+        {
+            int[] curr = queue.Dequeue();
             if (grid[curr[0]][curr[1]] == 'E') return steps;
 
-            for (int[] d : DIRS) {
+            foreach (int[] d in DIRS)
+            {
                 int nr = curr[0] + d[0], nc = curr[1] + d[1];
-                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols 
-                    && !visited[nr][nc] && grid[nr][nc] != 'X') {
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols
+                    && !visited[nr][nc] && grid[nr][nc] != 'X')
+                {
                     visited[nr][nc] = true; // MARK ON PUSH!
-                    queue.offer(new int[]{nr, nc});
+                    queue.Enqueue(new int[] { nr, nc });
                 }
             }
         }
@@ -430,6 +488,7 @@ public int shortestPath(char[][] grid, int startR, int startC) {
     return -1;
 }
 ```
+
 - **Diagnostic Triggers:** "Shortest path in grid", "Minimum steps to reach goal", "Word ladder".
 - **Boundary Conditions:** ALWAYS mark `visited = true` on `offer()`, NOT on `poll()`.
 - **Real-World Application:** Network routing protocols, social network distance calculation.
@@ -441,33 +500,44 @@ public int shortestPath(char[][] grid, int startR, int startC) {
 - **Invariant:** Push ALL starting origin points into the Queue at time $t=0$. The wavefront expands from all origins simultaneously.
 - **Mental Model:** Multiple fires starting at different spots and spreading at equal speed.
 - **Canonical Code Skeleton:**
-```java
-public int orangesRotting(int[][] grid) {
-    int rows = grid.length, cols = grid[0].length;
-    var queue = new ArrayDeque<int[]>();
+```csharp
+public int OrangesRotting(int[][] grid)
+{
+    int rows = grid.Length, cols = grid[0].Length;
+    var queue = new Queue<int[]>();
     int freshCount = 0;
 
-    for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < cols; c++) {
-            if (grid[r][c] == 2) queue.offer(new int[]{r, c}); // Push ALL sources
+    for (int r = 0; r < rows; r++)
+    {
+        for (int c = 0; c < cols; c++)
+        {
+            if (grid[r][c] == 2) queue.Enqueue(new int[] { r, c }); // Push ALL sources
             else if (grid[r][c] == 1) freshCount++;
         }
     }
     if (freshCount == 0) return 0;
+    
     int minutes = 0;
-    int[][] DIRS = {{1,0},{-1,0},{0,1},{0,-1}};
+    int[][] DIRS = new int[][] {
+        new int[] { 1, 0 }, new int[] { -1, 0 },
+        new int[] { 0, 1 }, new int[] { 0, -1 }
+    };
 
-    while (!queue.isEmpty() && freshCount > 0) {
-        int size = queue.size();
+    while (queue.Count > 0 && freshCount > 0)
+    {
+        int size = queue.Count;
         minutes++;
-        for (int i = 0; i < size; i++) {
-            int[] curr = queue.poll();
-            for (int[] d : DIRS) {
+        for (int i = 0; i < size; i++)
+        {
+            int[] curr = queue.Dequeue();
+            foreach (int[] d in DIRS)
+            {
                 int nr = curr[0] + d[0], nc = curr[1] + d[1];
-                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1) {
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1)
+                {
                     grid[nr][nc] = 2; // Mutate grid as visited
                     freshCount--;
-                    queue.offer(new int[]{nr, nc});
+                    queue.Enqueue(new int[] { nr, nc });
                 }
             }
         }
@@ -475,6 +545,7 @@ public int orangesRotting(int[][] grid) {
     return freshCount == 0 ? minutes : -1;
 }
 ```
+
 - **Diagnostic Triggers:** "Rotting oranges", "Walls and gates", "Multi-point fire propagation".
 - **Boundary Conditions:** Track remaining fresh target count to avoid extra minute increment.
 - **Real-World Application:** Multi-datacenter cache invalidation, rumor/virus propagation modeling.
@@ -486,29 +557,35 @@ public int orangesRotting(int[][] grid) {
 - **Invariant:** Traverse connected component recursively; mutate cell value (`'1' -> '0'`) to mark visited and eliminate memory overhead.
 - **Mental Model:** Sinking an island as you walk over it so you never visit it again.
 - **Canonical Code Skeleton:**
-```java
-public int numIslands(char[][] grid) {
+```csharp
+public int NumIslands(char[][] grid)
+{
     int count = 0;
-    for (int r = 0; r < grid.length; r++) {
-        for (int c = 0; c < grid[0].length; c++) {
-            if (grid[r][c] == '1') {
+    for (int r = 0; r < grid.Length; r++)
+    {
+        for (int c = 0; c < grid[0].Length; c++)
+        {
+            if (grid[r][c] == '1')
+            {
                 count++;
-                dfsSink(grid, r, c);
+                DfsSink(grid, r, c);
             }
         }
     }
     return count;
 }
 
-private void dfsSink(char[][] grid, int r, int c) {
-    if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] == '0') return;
+private void DfsSink(char[][] grid, int r, int c)
+{
+    if (r < 0 || r >= grid.Length || c < 0 || c >= grid[0].Length || grid[r][c] == '0') return;
     grid[r][c] = '0'; // Sink cell
-    dfsSink(grid, r + 1, c);
-    dfsSink(grid, r - 1, c);
-    dfsSink(grid, r, c + 1);
-    dfsSink(grid, r, c - 1);
+    DfsSink(grid, r + 1, c);
+    DfsSink(grid, r - 1, c);
+    DfsSink(grid, r, c + 1);
+    DfsSink(grid, r, c - 1);
 }
 ```
+
 - **Diagnostic Triggers:** "Number of islands", "Surrounded regions", "Flood fill".
 - **Boundary Conditions:** Base case must check bounds BEFORE accessing `grid[r][c]`.
 - **Real-World Application:** Image segmentation, cluster isolation, GIS landmass detection.
@@ -520,31 +597,36 @@ private void dfsSink(char[][] grid, int r, int c) {
 - **Invariant:** Process nodes with in-degree 0 first. Reduces in-degree of neighbors. If processed count $< N$, a cycle exists.
 - **Mental Model:** Resolving build dependencies in order.
 - **Canonical Code Skeleton:**
-```java
-public int[] findOrder(int numCourses, int[][] prerequisites) {
+```csharp
+public int[] FindOrder(int numCourses, int[][] prerequisites)
+{
     var inDegree = new int[numCourses];
-    var adj = new ArrayList<List<Integer>>();
-    for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
-    for (int[] p : prerequisites) {
-        adj.get(p[1]).add(p[0]);
+    var adj = new List<List<int>>();
+    for (int i = 0; i < numCourses; i++) adj.Add(new List<int>());
+    foreach (int[] p in prerequisites)
+    {
+        adj[p[1]].Add(p[0]);
         inDegree[p[0]]++;
     }
 
-    var queue = new ArrayDeque<Integer>();
-    for (int i = 0; i < numCourses; i++) if (inDegree[i] == 0) queue.offer(i);
+    var queue = new Queue<int>();
+    for (int i = 0; i < numCourses; i++) if (inDegree[i] == 0) queue.Enqueue(i);
 
     int[] order = new int[numCourses];
     int idx = 0;
-    while (!queue.isEmpty()) {
-        int curr = queue.poll();
+    while (queue.Count > 0)
+    {
+        int curr = queue.Dequeue();
         order[idx++] = curr;
-        for (int neighbor : adj.get(curr)) {
-            if (--inDegree[neighbor] == 0) queue.offer(neighbor);
+        foreach (int neighbor in adj[curr])
+        {
+            if (--inDegree[neighbor] == 0) queue.Enqueue(neighbor);
         }
     }
     return idx == numCourses ? order : new int[0];
 }
 ```
+
 - **Diagnostic Triggers:** "Course schedule", "Task dependency ordering", "Build order".
 - **Boundary Conditions:** Return empty array if `idx != numCourses` (cycle detected).
 - **Real-World Application:** Maven/Gradle build execution, CI/CD pipeline stage ordering.
@@ -556,20 +638,30 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
 - **Invariant:** Maintain connected sets using parent pointers with path compression and rank optimization for near $O(1)$ amortized `find` and `union`.
 - **Mental Model:** Merging social groups and checking if two people share the same root leader.
 - **Canonical Code Skeleton:**
-```java
-class UnionFind {
-    int[] parent, rank;
-    public UnionFind(int n) {
-        parent = new int[n]; rank = new int[n];
+```csharp
+public class UnionFind
+{
+    private int[] parent;
+    private int[] rank;
+
+    public UnionFind(int n)
+    {
+        parent = new int[n];
+        rank = new int[n];
         for (int i = 0; i < n; i++) parent[i] = i;
     }
-    public int find(int i) {
+
+    public int Find(int i)
+    {
         if (parent[i] == i) return i;
-        return parent[i] = find(parent[i]); // Path compression
+        return parent[i] = Find(parent[i]); // Path compression
     }
-    public boolean union(int i, int j) {
-        int rootI = find(i), rootJ = find(j);
-        if (rootI != rootJ) {
+
+    public bool Union(int i, int j)
+    {
+        int rootI = Find(i), rootJ = Find(j);
+        if (rootI != rootJ)
+        {
             if (rank[rootI] < rank[rootJ]) parent[rootI] = rootJ;
             else if (rank[rootI] > rank[rootJ]) parent[rootJ] = rootI;
             else { parent[rootJ] = rootI; rank[rootI]++; }
@@ -579,6 +671,7 @@ class UnionFind {
     }
 }
 ```
+
 - **Diagnostic Triggers:** "Redundant connection", "Number of connected components", "Accounts merge".
 - **Boundary Conditions:** Path compression `parent[i] = find(parent[i])` is essential for optimal speed.
 - **Real-World Application:** Network topology clustering, distributed consensus membership tracking.
@@ -590,34 +683,42 @@ class UnionFind {
 - **Invariant:** Use a `PriorityQueue` ordered by distance. Always expand the unvisited node with the smallest tentative distance.
 - **Mental Model:** Exploring shortest path on a map with varying road costs.
 - **Canonical Code Skeleton:**
-```java
-public int networkDelayTime(int[][] times, int n, int k) {
-    Map<Integer, List<int[]>> adj = new HashMap<>();
-    for (int[] t : times) {
-        adj.computeIfAbsent(t[0], x -> new ArrayList<>()).add(new int[]{t[1], t[2]});
+```csharp
+public int NetworkDelayTime(int[][] times, int n, int k)
+{
+    var adj = new Dictionary<int, List<int[]>>();
+    foreach (int[] t in times)
+    {
+        if (!adj.ContainsKey(t[0])) adj[t[0]] = new List<int[]>();
+        adj[t[0]].Add(new int[] { t[1], t[2] });
     }
 
-    var pq = new PriorityQueue<int[]>((a, b) -> a[1] - b[1]); // [node, dist]
-    pq.offer(new int[]{k, 0});
-    var dist = new HashMap<Integer, Integer>();
+    var pq = new PriorityQueue<int, int>(); // [node, dist] ordered by dist
+    pq.Enqueue(k, 0);
+    var dist = new Dictionary<int, int>();
 
-    while (!pq.isEmpty()) {
-        int[] curr = pq.poll();
-        int node = curr[0], d = curr[1];
-        if (dist.containsKey(node)) continue;
-        dist.put(node, d);
+    while (pq.Count > 0)
+    {
+        pq.TryDequeue(out int node, out int d);
+        
+        if (dist.ContainsKey(node)) continue;
+        dist[node] = d;
 
-        if (adj.containsKey(node)) {
-            for (int[] edge : adj.get(node)) {
-                if (!dist.containsKey(edge[0])) {
-                    pq.offer(new int[]{edge[0], d + edge[1]});
+        if (adj.ContainsKey(node))
+        {
+            foreach (int[] edge in adj[node])
+            {
+                if (!dist.ContainsKey(edge[0]))
+                {
+                    pq.Enqueue(edge[0], d + edge[1]);
                 }
             }
         }
     }
-    return dist.size() == n ? dist.values().stream().max(Integer::compare).get() : -1;
+    return dist.Count == n ? dist.Values.Max() : -1;
 }
 ```
+
 - **Diagnostic Triggers:** "Network delay time", "Cheapest flight within K stops", "Shortest path with weights".
 - **Boundary Conditions:** PriorityQueue stores `[node, total_distance]`. Skip already finalized nodes (`dist.containsKey(node)`).
 - **Real-World Application:** Latency-based API gateway routing, Google Maps route optimization.
@@ -631,19 +732,22 @@ public int networkDelayTime(int[][] times, int n, int k) {
 - **Invariant:** State `dp[i]` depends only on `dp[i - 1]` and `dp[i - 2]`. Space can be optimized from $O(N)$ array to 2 variables (`prev1`, `prev2`).
 - **Mental Model:** Making optimal choice between taking current item or skipping it.
 - **Canonical Code Skeleton:**
-```java
-public int rob(int[] nums) {
-    if (nums == null || nums.length == 0) return 0;
+```csharp
+public int Rob(int[] nums)
+{
+    if (nums == null || nums.Length == 0) return 0;
     int prev2 = 0, prev1 = 0;
 
-    for (int num : nums) {
-        int curr = Math.max(prev1, prev2 + num); // Skip vs Take
+    foreach (int num in nums)
+    {
+        int curr = Math.Max(prev1, prev2 + num); // Skip vs Take
         prev2 = prev1;
         prev1 = curr;
     }
     return prev1;
 }
 ```
+
 - **Diagnostic Triggers:** "House robber", "Climbing stairs", "Min cost climbing stairs".
 - **Boundary Conditions:** Handle single-element input upfront.
 - **Real-World Application:** Capacity allocation, CPU time-slot scheduling.
@@ -655,22 +759,27 @@ public int rob(int[] nums) {
 - **Invariant:** `dp[w]` represents max value for capacity `w`. Iterate items and update capacity backwards for 0/1 (use item once) or forwards for unbounded (use item infinitely).
 - **Mental Model:** Packing a backpack with items to maximize value without exceeding weight capacity.
 - **Canonical Code Skeleton (Coin Change - Unbounded):**
-```java
-public int coinChange(int[] coins, int amount) {
+```csharp
+public int CoinChange(int[] coins, int amount)
+{
     int[] dp = new int[amount + 1];
-    Arrays.fill(dp, amount + 1);
+    Array.Fill(dp, amount + 1);
     dp[0] = 0;
 
-    for (int i = 1; i <= amount; i++) {
-        for (int coin : coins) {
-            if (i - coin >= 0) {
-                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+    for (int i = 1; i <= amount; i++)
+    {
+        foreach (int coin in coins)
+        {
+            if (i - coin >= 0)
+            {
+                dp[i] = Math.Min(dp[i], dp[i - coin] + 1);
             }
         }
     }
     return dp[amount] > amount ? -1 : dp[amount];
 }
 ```
+
 - **Diagnostic Triggers:** "Coin change", "Partition equal subset sum", "Knapsack capacity".
 - **Boundary Conditions:** Fill array with sentinel value (`amount + 1`) representing infinity.
 - **Real-World Application:** Resource packing in cloud instances, currency change calculators.
@@ -682,22 +791,27 @@ public int coinChange(int[] coins, int amount) {
 - **Invariant:** `dp[r][c]` represents min/max value to reach cell `(r, c)`, which depends on `dp[r - 1][c]` (from top) and `dp[r][c - 1]` (from left).
 - **Mental Model:** Walking down and right on a grid accumulating values.
 - **Canonical Code Skeleton:**
-```java
-public int minPathSum(int[][] grid) {
-    int rows = grid.length, cols = grid[0].length;
-    int[][] dp = new int[rows][cols];
+```csharp
+public int MinPathSum(int[][] grid)
+{
+    int rows = grid.Length, cols = grid[0].Length;
+    int[][] dp = new int[rows][];
+    for (int i = 0; i < rows; i++) dp[i] = new int[cols];
 
-    for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < cols; c++) {
+    for (int r = 0; r < rows; r++)
+    {
+        for (int c = 0; c < cols; c++)
+        {
             if (r == 0 && c == 0) dp[r][c] = grid[r][c];
             else if (r == 0) dp[r][c] = dp[r][c - 1] + grid[r][c];
             else if (c == 0) dp[r][c] = dp[r - 1][c] + grid[r][c];
-            else dp[r][c] = Math.min(dp[r - 1][c], dp[r][c - 1]) + grid[r][c];
+            else dp[r][c] = Math.Min(dp[r - 1][c], dp[r][c - 1]) + grid[r][c];
         }
     }
     return dp[rows - 1][cols - 1];
 }
 ```
+
 - **Diagnostic Triggers:** "Minimum path sum", "Unique paths in grid", "Dungeon game".
 - **Boundary Conditions:** Initialize first row and first column carefully.
 - **Real-World Application:** Cost-effective data routing across grid-structured networks.
@@ -709,23 +823,31 @@ public int minPathSum(int[][] grid) {
 - **Invariant:** `dp[i][j]` represents optimal alignment score for prefix `s1[0..i-1]` and `s2[0..j-1]`.
 - **Mental Model:** 2D grid matching characters of two strings.
 - **Canonical Code Skeleton (Longest Common Subsequence):**
-```java
-public int longestCommonSubsequence(String text1, String text2) {
-    int m = text1.length(), n = text2.length();
-    int[][] dp = new int[m + 1][n + 1];
+```csharp
+public int LongestCommonSubsequence(string text1, string text2)
+{
+    int m = text1.Length, n = text2.Length;
+    int[][] dp = new int[m + 1][];
+    for (int i = 0; i <= m; i++) dp[i] = new int[n + 1];
 
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+    for (int i = 1; i <= m; i++)
+    {
+        for (int j = 1; j <= n; j++)
+        {
+            if (text1[i - 1] == text2[j - 1])
+            {
                 dp[i][j] = 1 + dp[i - 1][j - 1];
-            } else {
-                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+            }
+            else
+            {
+                dp[i][j] = Math.Max(dp[i - 1][j], dp[i][j - 1]);
             }
         }
     }
     return dp[m][n];
 }
 ```
+
 - **Diagnostic Triggers:** "Longest common subsequence", "Edit distance", "Wildcard matching".
 - **Boundary Conditions:** Matrix dimensions are `(m + 1) x (n + 1)`. Access chars using `i - 1` and `j - 1`.
 - **Real-World Application:** Git diff algorithms, DNA sequence alignment, text similarity search.
@@ -737,23 +859,27 @@ public int longestCommonSubsequence(String text1, String text2) {
 - **Invariant:** Sort intervals by start time. Use a pointer or heap to process overlapping boundaries.
 - **Mental Model:** Sweeping a vertical timeline left-to-right across time intervals.
 - **Canonical Code Skeleton:**
-```java
-public int minMeetingRooms(int[][] intervals) {
-    if (intervals == null || intervals.length == 0) return 0;
-    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+```csharp
+public int MinMeetingRooms(int[][] intervals)
+{
+    if (intervals == null || intervals.Length == 0) return 0;
+    Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
 
-    var minHeap = new PriorityQueue<Integer>(); // Stores end times
-    minHeap.offer(intervals[0][1]);
+    var minHeap = new PriorityQueue<int, int>(); // Stores end times
+    minHeap.Enqueue(intervals[0][1], intervals[0][1]);
 
-    for (int i = 1; i < intervals.length; i++) {
-        if (intervals[i][0] >= minHeap.peek()) {
-            minHeap.poll(); // Room freed up!
+    for (int i = 1; i < intervals.Length; i++)
+    {
+        if (intervals[i][0] >= minHeap.Peek())
+        {
+            minHeap.Dequeue(); // Room freed up!
         }
-        minHeap.offer(intervals[i][1]); // Allocate room
+        minHeap.Enqueue(intervals[i][1], intervals[i][1]); // Allocate room
     }
-    return minHeap.size();
+    return minHeap.Count;
 }
 ```
+
 - **Diagnostic Triggers:** "Meeting rooms II", "Merge intervals", "Non-overlapping intervals".
 - **Boundary Conditions:** Always sort intervals by start time `a[0] - b[0]` first.
 - **Real-World Application:** Calendar scheduling engines, hotel room allocation, cloud VM provisioning.
@@ -765,45 +891,54 @@ public int minMeetingRooms(int[][] intervals) {
 - **Invariant:** Tree structure where each node represents a character. Root-to-node path forms a string prefix, enabling $O(L)$ word lookup where $L$ is word length.
 - **Mental Model:** Dictionary tree branching by character.
 - **Canonical Code Skeleton:**
-```java
-class TrieNode {
-    TrieNode[] children = new TrieNode[26];
-    boolean isWord = false;
+```csharp
+public class TrieNode
+{
+    public TrieNode[] Children = new TrieNode[26];
+    public bool IsWord = false;
 }
 
-public class Trie {
+public class Trie
+{
     private TrieNode root = new TrieNode();
 
-    public void insert(String word) {
+    public void Insert(string word)
+    {
         TrieNode curr = root;
-        for (char c : word.toCharArray()) {
+        foreach (char c in word)
+        {
             int idx = c - 'a';
-            if (curr.children[idx] == null) curr.children[idx] = new TrieNode();
-            curr = curr.children[idx];
+            if (curr.Children[idx] == null) curr.Children[idx] = new TrieNode();
+            curr = curr.Children[idx];
         }
-        curr.isWord = true;
+        curr.IsWord = true;
     }
 
-    public boolean search(String word) {
-        TrieNode node = getNode(word);
-        return node != null && node.isWord;
+    public bool Search(string word)
+    {
+        TrieNode node = GetNode(word);
+        return node != null && node.IsWord;
     }
 
-    public boolean startsWith(String prefix) {
-        return getNode(prefix) != null;
+    public bool StartsWith(string prefix)
+    {
+        return GetNode(prefix) != null;
     }
 
-    private TrieNode getNode(String str) {
+    private TrieNode GetNode(string str)
+    {
         TrieNode curr = root;
-        for (char c : str.toCharArray()) {
+        foreach (char c in str)
+        {
             int idx = c - 'a';
-            if (curr.children[idx] == null) return null;
-            curr = curr.children[idx];
+            if (curr.Children[idx] == null) return null;
+            curr = curr.Children[idx];
         }
         return curr;
     }
 }
 ```
+
 - **Diagnostic Triggers:** "Implement Trie", "Word search II (grid + dictionary)", "Replace words / autocomplete".
 - **Boundary Conditions:** Use `c - 'a'` for lowercase alphabets. Set `isWord = true` at termination node.
 - **Real-World Application:** Autocomplete search suggestions, IP routing prefix tables, spell checkers.
@@ -817,22 +952,32 @@ public class Trie {
 **Invariant:** The heap property is maintained: for a min-heap, every parent node is ≤ its children. This guarantees O(1) access to the minimum and O(log N) insertion/extraction.
 
 **Canonical Skeleton:**
-```java
-public int[] topKFrequent(int[] nums, int k) {
-    var freqMap = new HashMap<Integer, Integer>();
-    for (int n : nums) freqMap.merge(n, 1, Integer::sum);
-    
-    var minHeap = new PriorityQueue<Map.Entry<Integer, Integer>>(
-        Comparator.comparingInt(Map.Entry::getValue));
-    
-    for (var entry : freqMap.entrySet()) {
-        minHeap.offer(entry);
-        if (minHeap.size() > k) minHeap.poll();
+```csharp
+public int[] TopKFrequent(int[] nums, int k)
+{
+    var freqMap = new Dictionary<int, int>();
+    foreach (int n in nums)
+    {
+        freqMap[n] = freqMap.GetValueOrDefault(n, 0) + 1;
     }
-    
-    return minHeap.stream().mapToInt(Map.Entry::getKey).toArray();
+
+    var minHeap = new PriorityQueue<int, int>();
+
+    foreach (var entry in freqMap)
+    {
+        minHeap.Enqueue(entry.Key, entry.Value);
+        if (minHeap.Count > k) minHeap.Dequeue();
+    }
+
+    var result = new int[k];
+    for (int i = 0; i < k; i++)
+    {
+        result[i] = minHeap.Dequeue();
+    }
+    return result;
 }
 ```
+
 
 **Complexity:** O(N log K) time, O(N + K) space.
 

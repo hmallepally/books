@@ -25,7 +25,7 @@ Unit tests are the foundation of the pyramid. They validate the internal logic o
 
 The following code illustrates unit testing our decoupled `TransactionProcessor` by mocking its repository and notification interfaces:
 
-{{ inject('code_block_1.md') }}
+{{ inject('test_example.md') }}
 
 By utilizing mock objects, we verify that the processor correctly coordinates the transfer, updates balance invariants, and calls the persistence layer, without requiring an active database connection.
 

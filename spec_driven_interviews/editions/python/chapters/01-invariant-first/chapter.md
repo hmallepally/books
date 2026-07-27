@@ -119,31 +119,27 @@ The loop terminates when `left > right`.
 ### Implementation (Step 4)
 Because we have proved our updates mathematically, we do not need to guess the loop conditions:
 
-```java
-public int binarySearch(int[] nums, int target) {
-    // 1. Enforce Pre-conditions
-    if (nums == null || nums.length == 0) {
-        return -1;
-    }
+```python
+def binary_search(nums: list[int], target: int) -> int:
+    # 1. Enforce Pre-conditions
+    if not nums:
+        return -1
 
-    int left = 0;
-    int right = nums.length - 1;
+    left = 0
+    right = len(nums) - 1
 
-    // Maintain Invariant: target is in nums[left...right]
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
+    # Maintain Invariant: target is in nums[left...right]
+    while left <= right:
+        mid = left + (right - left) // 2
 
-        if (nums[mid] == target) {
-            return mid; // Post-condition satisfied
-        } else if (nums[mid] < target) {
-            left = mid + 1; // Invariant maintained
-        } else {
-            right = mid - 1; // Invariant maintained
-        }
-    }
+        if nums[mid] == target:
+            return mid  # Post-condition satisfied
+        elif nums[mid] < target:
+            left = mid + 1  # Invariant maintained
+        else:
+            right = mid - 1  # Invariant maintained
 
-    return -1; // Search range is empty -> target not in nums
-}
+    return -1  # Search range is empty -> target not in nums
 ```
 
 By applying this invariant-first approach, we eliminate all cognitive overhead. We do not need to "dry-run" multiple edge cases or guess boundary updates. The math guarantees the correctness of our implementation.

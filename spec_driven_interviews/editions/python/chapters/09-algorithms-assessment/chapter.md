@@ -78,18 +78,17 @@ The following catalog defines the 24 fundamental patterns of computational probl
 - **Invariant:** When the input domain is finite (e.g., ASCII characters, digits $0..9$), a fixed-size array (`int[256]`) provides $O(1)$ direct-indexing lookup without hash overhead.
 - **Mental Model:** Use the array index itself as the key.
 - **Canonical Code Skeleton:**
-```java
-public int firstUniqueChar(String s) {
-    int[] counts = new int[256];
-    for (int i = 0; i < s.length(); i++) {
-        counts[s.charAt(i)]++;
-    }
-    for (int i = 0; i < s.length(); i++) {
-        if (counts[s.charAt(i)] == 1) return i;
-    }
-    return -1;
-}
+```python
+def first_unique_char(s: str) -> int:
+    counts = [0] * 256
+    for c in s:
+        counts[ord(c)] += 1
+    for i, c in enumerate(s):
+        if counts[ord(c)] == 1:
+            return i
+    return -1
 ```
+
 - **Diagnostic Triggers:** "First non-repeating character", "Anagram check", "Character frequency".
 - **Boundary Conditions:** Ensure array size covers the domain (`256` for ASCII, `26` for lowercase English).
 - **Real-World Application:** High-speed network packet inspection, audit log frequency counting.
@@ -101,18 +100,18 @@ public int firstUniqueChar(String s) {
 - **Invariant:** A `write` pointer tracks the boundary of valid elements while a `read` pointer scans the array, mutating data in-place in $O(1)$ extra space.
 - **Mental Model:** Filter or compact elements in a single pass without allocating a new array.
 - **Canonical Code Skeleton:**
-```java
-public int removeDuplicates(int[] nums) {
-    if (nums.length == 0) return 0;
-    int write = 1;
-    for (int read = 1; read < nums.length; read++) {
-        if (nums[read] != nums[read - 1]) {
-            nums[write++] = nums[read];
-        }
-    }
-    return write;
-}
+```python
+def remove_duplicates(nums: list[int]) -> int:
+    if not nums:
+        return 0
+    write = 1
+    for read in range(1, len(nums)):
+        if nums[read] != nums[read - 1]:
+            nums[write] = nums[read]
+            write += 1
+    return write
 ```
+
 - **Diagnostic Triggers:** "In-place removal", "Compact array", "Move zeroes to end".
 - **Boundary Conditions:** Handle empty array or single-element array upfront.
 - **Real-World Application:** Memory defragmentation, log stream sanitization.
@@ -124,22 +123,24 @@ public int removeDuplicates(int[] nums) {
 - **Invariant:** The sum of elements between indices $i$ and $j$ equals `prefix[j + 1] - prefix[i]`, turning range sum queries into $O(1)$ operations.
 - **Mental Model:** Precompute cumulative totals so any subarray sum is computed by subtraction.
 - **Canonical Code Skeleton:**
-```java
-public int subarraySumEqualsK(int[] nums, int k) {
-    var prefCounts = new HashMap<Integer, Integer>();
-    prefCounts.put(0, 1);
-    int currentSum = 0, count = 0;
+```python
+from collections import defaultdict
 
-    for (int num : nums) {
-        currentSum += num;
-        if (prefCounts.containsKey(currentSum - k)) {
-            count += prefCounts.get(currentSum - k);
-        }
-        prefCounts.put(currentSum, prefCounts.getOrDefault(currentSum, 0) + 1);
-    }
-    return count;
-}
+def subarray_sum(nums: list[int], k: int) -> int:
+    pref_counts = defaultdict(int)
+    pref_counts[0] = 1
+    current_sum = 0
+    count = 0
+    
+    for num in nums:
+        current_sum += num
+        if current_sum - k in pref_counts:
+            count += pref_counts[current_sum - k]
+        pref_counts[current_sum] += 1
+        
+    return count
 ```
+
 - **Diagnostic Triggers:** "Subarray sum equals K", "Range sum queries", "Equal number of 0s and 1s".
 - **Boundary Conditions:** Always initialize `prefCounts.put(0, 1)` to account for subarrays starting at index 0.
 - **Real-World Application:** Financial ledger balance auditing, telemetry interval aggregation.
@@ -153,23 +154,26 @@ public int subarraySumEqualsK(int[] nums, int k) {
 - **Invariant:** Maintain a window `[left...right]`. Expand `right` to include elements. When constraint is violated, shrink from `left` until valid.
 - **Mental Model:** An expanding and contracting net scanning an array.
 - **Canonical Code Skeleton:**
-```java
-public int longestSubarray(int[] nums, int k) {
-    int left = 0, result = 0, zeroCount = 0;
-
-    for (int right = 0; right < nums.length; right++) {
-        if (nums[right] == 0) zeroCount++;
-
-        while (zeroCount > k) {
-            if (nums[left] == 0) zeroCount--;
-            left++; // Always advance left during shrink
-        }
-
-        result = Math.max(result, right - left + 1);
-    }
-    return result;
-}
+```python
+def longest_subarray(nums: list[int], k: int) -> int:
+    left = 0
+    result = 0
+    zero_count = 0
+    
+    for right in range(len(nums)):
+        if nums[right] == 0:
+            zero_count += 1
+            
+        while zero_count > k:
+            if nums[left] == 0:
+                zero_count -= 1
+            left += 1
+            
+        result = max(result, right - left + 1)
+        
+    return result
 ```
+
 - **Diagnostic Triggers:** "Longest/shortest subarray satisfying condition X", "At most K distinct elements".
 - **Boundary Conditions:** Set-based windows must shrink BEFORE expanding; HashMap/Sum-based windows expand FIRST then shrink.
 - **Real-World Application:** Sliding-window rate limiters, network throughput monitoring.
@@ -181,21 +185,25 @@ public int longestSubarray(int[] nums, int k) {
 - **Invariant:** Maintain a `Deque` of indices where corresponding values are strictly decreasing from front to back. Front always holds the maximum of the current window.
 - **Mental Model:** A sliding window of fixed size $K$ that tracks max/min in $O(1)$ amortized time.
 - **Canonical Code Skeleton:**
-```java
-public int[] maxSlidingWindow(int[] nums, int k) {
-    var deque = new ArrayDeque<Integer>();
-    var res = new int[nums.length - k + 1];
-    int idx = 0;
+```python
+from collections import deque
 
-    for (int i = 0; i < nums.length; i++) {
-        while (!deque.isEmpty() && deque.peekFirst() < i - k + 1) deque.pollFirst(); // Expire
-        while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) deque.pollLast(); // Kill weaker
-        deque.offerLast(i);
-        if (i >= k - 1) res[idx++] = nums[deque.peekFirst()];
-    }
-    return res;
-}
+def max_sliding_window(nums: list[int], k: int) -> list[int]:
+    dq = deque()
+    res = []
+    
+    for i in range(len(nums)):
+        while dq and dq[0] < i - k + 1:
+            dq.popleft() # Expire
+        while dq and nums[dq[-1]] < nums[i]:
+            dq.pop() # Kill weaker
+        dq.append(i)
+        if i >= k - 1:
+            res.append(nums[dq[0]])
+            
+    return res
 ```
+
 - **Diagnostic Triggers:** "Maximum/minimum in every window of size K".
 - **Boundary Conditions:** Deque stores INDICES, not values. Window is full when `i >= k - 1`.
 - **Real-World Application:** Real-time SLA monitoring, financial tick-data peak detection.
@@ -207,18 +215,20 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 - **Invariant:** Two pointers start at opposite ends (`left = 0`, `right = n - 1`) of a sorted array and move inward based on comparison with target.
 - **Mental Model:** Squeezing the search space from both boundaries.
 - **Canonical Code Skeleton:**
-```java
-public int[] twoSumSorted(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left < right) {
-        int sum = nums[left] + nums[right];
-        if (sum == target) return new int[]{left, right};
-        else if (sum < target) left++;
-        else right--;
-    }
-    return new int[0];
-}
+```python
+def two_sum_sorted(nums: list[int], target: int) -> list[int]:
+    left, right = 0, len(nums) - 1
+    while left < right:
+        curr_sum = nums[left] + nums[right]
+        if curr_sum == target:
+            return [left, right]
+        elif curr_sum < target:
+            left += 1
+        else:
+            right -= 1
+    return []
 ```
+
 - **Diagnostic Triggers:** "Sorted array + find pair", "Container with most water", "Palindrome validation".
 - **Boundary Conditions:** Array MUST be sorted. Loop condition is `left < right` (pointers must not overlap for pairs).
 - **Real-World Application:** Order matching engines, debit-credit balance pairing.
@@ -230,17 +240,17 @@ public int[] twoSumSorted(int[] nums, int target) {
 - **Invariant:** `slow` moves 1 step while `fast` moves 2 steps. If a cycle exists, `fast` will eventually catch `slow`.
 - **Mental Model:** Two runners on a circular track.
 - **Canonical Code Skeleton:**
-```java
-public boolean hasCycle(ListNode head) {
-    ListNode slow = head, fast = head;
-    while (fast != null && fast.next != null) {
-        slow = slow.next;
-        fast = fast.next.next;
-        if (slow == fast) return true;
-    }
-    return false;
-}
+```python
+def has_cycle(head: 'ListNode') -> bool:
+    slow, fast = head, head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            return True
+    return False
 ```
+
 - **Diagnostic Triggers:** "Detect cycle in linked list", "Find duplicate number", "Happy number".
 - **Boundary Conditions:** Check `fast != null && fast.next != null` to avoid `NullPointerException`.
 - **Real-World Application:** Circular reference detection in graph engines, deadlock detection.
@@ -254,18 +264,21 @@ public boolean hasCycle(ListNode head) {
 - **Invariant:** Push open symbols onto a stack. When a closing symbol is encountered, pop and verify it matches the expected opening symbol.
 - **Mental Model:** Last-in, first-out validation of nested structures.
 - **Canonical Code Skeleton:**
-```java
-public boolean isValidParentheses(String s) {
-    var stack = new ArrayDeque<Character>();
-    for (char c : s.toCharArray()) {
-        if (c == '(') stack.push(')');
-        else if (c == '{') stack.push('}');
-        else if (c == '[') stack.push(']');
-        else if (stack.isEmpty() || stack.pop() != c) return false;
-    }
-    return stack.isEmpty();
-}
+```python
+def is_valid_parentheses(s: str) -> bool:
+    stack = []
+    for c in s:
+        if c == '(':
+            stack.append(')')
+        elif c == '{':
+            stack.append('}')
+        elif c == '[':
+            stack.append(']')
+        elif not stack or stack.pop() != c:
+            return False
+    return len(stack) == 0
 ```
+
 - **Diagnostic Triggers:** "Valid parentheses", "Evaluate expression", "Simplify file path".
 - **Boundary Conditions:** Stack must be empty at the end. Check `stack.isEmpty()` before popping.
 - **Real-World Application:** JSON/XML syntax parsers, compiler AST validation, undo stacks.
@@ -277,21 +290,20 @@ public boolean isValidParentheses(String s) {
 - **Invariant:** Stack holds unresolved element indices in decreasing order. When a larger element arrives, it pops colder elements and resolves their answers.
 - **Mental Model:** A waiting room where people stay until someone taller arrives to liberate them.
 - **Canonical Code Skeleton:**
-```java
-public int[] dailyTemperatures(int[] temps) {
-    var ans = new int[temps.length];
-    Deque<Integer> stack = new ArrayDeque<>(); // Stores INDICES
-
-    for (int i = 0; i < temps.length; i++) {
-        while (!stack.isEmpty() && temps[stack.peek()] < temps[i]) {
-            int prevIdx = stack.pop();
-            ans[prevIdx] = i - prevIdx;
-        }
-        stack.push(i);
-    }
-    return ans;
-}
+```python
+def daily_temperatures(temps: list[int]) -> list[int]:
+    ans = [0] * len(temps)
+    stack = [] # Stores INDICES
+    
+    for i in range(len(temps)):
+        while stack and temps[stack[-1]] < temps[i]:
+            prev_idx = stack.pop()
+            ans[prev_idx] = i - prev_idx
+        stack.append(i)
+        
+    return ans
 ```
+
 - **Diagnostic Triggers:** "Next greater element", "Daily temperatures", "Largest rectangle in histogram".
 - **Boundary Conditions:** Store INDICES on stack, not values. Unresolved items remain `0` or `-1`.
 - **Real-World Application:** Stock price drop alerts, automated threshold breach notifications.
@@ -305,24 +317,27 @@ public int[] dailyTemperatures(int[] temps) {
 - **Invariant:** In a rotated sorted array, at least one half (left or right) is always strictly sorted.
 - **Mental Model:** Halving search space by identifying the sorted partition.
 - **Canonical Code Skeleton:**
-```java
-public int searchRotated(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) return mid;
-
-        if (nums[left] <= nums[mid]) { // Left half sorted (MUST use <=)
-            if (nums[left] <= target && target < nums[mid]) right = mid - 1;
-            else left = mid + 1;
-        } else { // Right half sorted
-            if (nums[mid] < target && target <= nums[right]) left = mid + 1;
-            else right = mid - 1;
-        }
-    }
-    return -1;
-}
+```python
+def search_rotated(nums: list[int], target: int) -> int:
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
+            return mid
+            
+        if nums[left] <= nums[mid]: # Left half sorted (MUST use <=)
+            if nums[left] <= target < nums[mid]:
+                right = mid - 1
+            else:
+                left = mid + 1
+        else: # Right half sorted
+            if nums[mid] < target <= nums[right]:
+                left = mid + 1
+            else:
+                right = mid - 1
+    return -1
 ```
+
 - **Diagnostic Triggers:** "Search in rotated sorted array", "Find minimum in rotated sorted array".
 - **Boundary Conditions:** Use `nums[left] <= nums[mid]` (with `<=`) to handle single-element partitions.
 - **Real-World Application:** Distributed partition log search, sharded database key lookups.
@@ -334,31 +349,30 @@ public int searchRotated(int[] nums, int target) {
 - **Invariant:** When the answer lies within a known numeric range `[min...max]` and a predicate function `feasible(x)` is monotonic, binary search finds the optimal value.
 - **Mental Model:** Guess the answer, test if it works, halve the range.
 - **Canonical Code Skeleton:**
-```java
-public int shipWithinDays(int[] weights, int days) {
-    int lo = 0, hi = 0;
-    for (int w : weights) { lo = Math.max(lo, w); hi += w; }
+```python
+def ship_within_days(weights: list[int], days: int) -> int:
+    lo, hi = max(weights), sum(weights)
+    
+    def can_ship(capacity: int) -> bool:
+        day_count = 1
+        current_load = 0
+        for w in weights:
+            if current_load + w > capacity:
+                day_count += 1
+                current_load = 0
+            current_load += w
+        return day_count <= days
 
-    while (lo < hi) {
-        int mid = lo + (hi - lo) / 2;
-        if (canShip(weights, days, mid)) hi = mid; // Try smaller capacity
-        else lo = mid + 1;                         // Must increase capacity
-    }
-    return lo;
-}
-
-private boolean canShip(int[] weights, int days, int capacity) {
-    int dayCount = 1, currentLoad = 0;
-    for (int w : weights) {
-        if (currentLoad + w > capacity) {
-            dayCount++;
-            currentLoad = 0;
-        }
-        currentLoad += w;
-    }
-    return dayCount <= days;
-}
+    while lo < hi:
+        mid = lo + (hi - lo) // 2
+        if can_ship(mid):
+            hi = mid # Try smaller capacity
+        else:
+            lo = mid + 1 # Must increase capacity
+            
+    return lo
 ```
+
 - **Diagnostic Triggers:** "Find minimum capacity", "Koko eating bananas", "Split array largest sum".
 - **Boundary Conditions:** Define correct range bounds `[lo, hi]` upfront.
 - **Real-World Application:** Capacity planning, thread pool sizing, rate limit optimization.
@@ -370,22 +384,22 @@ private boolean canShip(int[] weights, int days, int capacity) {
 - **Invariant:** Explore decision paths recursively; when a path violates constraints, backtrack (undo state change) and try the next branch.
 - **Mental Model:** Exploring a maze by dropping breadcrumbs and stepping back when hitting a dead end.
 - **Canonical Code Skeleton:**
-```java
-public void backtrack(List<List<Integer>> res, List<Integer> path, int[] nums, boolean[] used) {
-    if (path.size() == nums.length) {
-        res.add(new ArrayList<>(path));
-        return;
-    }
-    for (int i = 0; i < nums.length; i++) {
-        if (used[i]) continue;
-        used[i] = true;
-        path.add(nums[i]);
-        backtrack(res, path, nums, used); // Recurse
-        path.remove(path.size() - 1);     // Undo (backtrack)
-        used[i] = false;
-    }
-}
+```python
+def backtrack(res: list[list[int]], path: list[int], nums: list[int], used: list[bool]) -> None:
+    if len(path) == len(nums):
+        res.append(list(path))
+        return
+        
+    for i in range(len(nums)):
+        if used[i]:
+            continue
+        used[i] = True
+        path.append(nums[i])
+        backtrack(res, path, nums, used) # Recurse
+        path.pop() # Undo (backtrack)
+        used[i] = False
 ```
+
 - **Diagnostic Triggers:** "Generate all permutations/combinations", "Sudoku solver", "N-Queens".
 - **Boundary Conditions:** Always make a deep copy `new ArrayList<>(path)` when adding to results.
 - **Real-World Application:** Constraint satisfaction solvers, security permission path traversal.
@@ -399,37 +413,36 @@ public void backtrack(List<List<Integer>> res, List<Integer> path, int[] nums, b
 - **Invariant:** Queue processes nodes layer-by-layer (`int size = queue.size()`). First time target is popped = shortest path in unweighted graph/grid.
 - **Mental Model:** Water ripples expanding outward in concentric circles.
 - **Canonical Code Skeleton:**
-```java
-public int shortestPath(char[][] grid, int startR, int startC) {
-    int rows = grid.length, cols = grid[0].length;
-    var queue = new ArrayDeque<int[]>();
-    boolean[][] visited = new boolean[rows][cols];
+```python
+from collections import deque
 
-    queue.offer(new int[]{startR, startC});
-    visited[startR][startC] = true; // Mark visited ON PUSH
-    int steps = 0;
-    int[][] DIRS = {{1,0},{-1,0},{0,1},{0,-1}};
-
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i < size; i++) {
-            int[] curr = queue.poll();
-            if (grid[curr[0]][curr[1]] == 'E') return steps;
-
-            for (int[] d : DIRS) {
-                int nr = curr[0] + d[0], nc = curr[1] + d[1];
-                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols 
-                    && !visited[nr][nc] && grid[nr][nc] != 'X') {
-                    visited[nr][nc] = true; // MARK ON PUSH!
-                    queue.offer(new int[]{nr, nc});
-                }
-            }
-        }
-        steps++;
-    }
-    return -1;
-}
+def shortest_path(grid: list[list[str]], start_r: int, start_c: int) -> int:
+    rows, cols = len(grid), len(grid[0])
+    queue = deque([(start_r, start_c)])
+    visited = [[False] * cols for _ in range(rows)]
+    visited[start_r][start_c] = True # Mark visited ON PUSH
+    
+    steps = 0
+    dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+    
+    while queue:
+        size = len(queue)
+        for _ in range(size):
+            curr_r, curr_c = queue.popleft()
+            if grid[curr_r][curr_c] == 'E':
+                return steps
+                
+            for dr, dc in dirs:
+                nr, nc = curr_r + dr, curr_c + dc
+                if (0 <= nr < rows and 0 <= nc < cols and 
+                    not visited[nr][nc] and grid[nr][nc] != 'X'):
+                    visited[nr][nc] = True # MARK ON PUSH!
+                    queue.append((nr, nc))
+        steps += 1
+        
+    return -1
 ```
+
 - **Diagnostic Triggers:** "Shortest path in grid", "Minimum steps to reach goal", "Word ladder".
 - **Boundary Conditions:** ALWAYS mark `visited = true` on `offer()`, NOT on `poll()`.
 - **Real-World Application:** Network routing protocols, social network distance calculation.
@@ -441,40 +454,42 @@ public int shortestPath(char[][] grid, int startR, int startC) {
 - **Invariant:** Push ALL starting origin points into the Queue at time $t=0$. The wavefront expands from all origins simultaneously.
 - **Mental Model:** Multiple fires starting at different spots and spreading at equal speed.
 - **Canonical Code Skeleton:**
-```java
-public int orangesRotting(int[][] grid) {
-    int rows = grid.length, cols = grid[0].length;
-    var queue = new ArrayDeque<int[]>();
-    int freshCount = 0;
+```python
+from collections import deque
 
-    for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < cols; c++) {
-            if (grid[r][c] == 2) queue.offer(new int[]{r, c}); // Push ALL sources
-            else if (grid[r][c] == 1) freshCount++;
-        }
-    }
-    if (freshCount == 0) return 0;
-    int minutes = 0;
-    int[][] DIRS = {{1,0},{-1,0},{0,1},{0,-1}};
-
-    while (!queue.isEmpty() && freshCount > 0) {
-        int size = queue.size();
-        minutes++;
-        for (int i = 0; i < size; i++) {
-            int[] curr = queue.poll();
-            for (int[] d : DIRS) {
-                int nr = curr[0] + d[0], nc = curr[1] + d[1];
-                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1) {
-                    grid[nr][nc] = 2; // Mutate grid as visited
-                    freshCount--;
-                    queue.offer(new int[]{nr, nc});
-                }
-            }
-        }
-    }
-    return freshCount == 0 ? minutes : -1;
-}
+def oranges_rotting(grid: list[list[int]]) -> int:
+    rows, cols = len(grid), len(grid[0])
+    queue = deque()
+    fresh_count = 0
+    
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == 2:
+                queue.append((r, c)) # Push ALL sources
+            elif grid[r][c] == 1:
+                fresh_count += 1
+                
+    if fresh_count == 0:
+        return 0
+        
+    minutes = 0
+    dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+    
+    while queue and fresh_count > 0:
+        size = len(queue)
+        minutes += 1
+        for _ in range(size):
+            curr_r, curr_c = queue.popleft()
+            for dr, dc in dirs:
+                nr, nc = curr_r + dr, curr_c + dc
+                if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == 1:
+                    grid[nr][nc] = 2 # Mutate grid as visited
+                    fresh_count -= 1
+                    queue.append((nr, nc))
+                    
+    return minutes if fresh_count == 0 else -1
 ```
+
 - **Diagnostic Triggers:** "Rotting oranges", "Walls and gates", "Multi-point fire propagation".
 - **Boundary Conditions:** Track remaining fresh target count to avoid extra minute increment.
 - **Real-World Application:** Multi-datacenter cache invalidation, rumor/virus propagation modeling.
@@ -486,29 +501,27 @@ public int orangesRotting(int[][] grid) {
 - **Invariant:** Traverse connected component recursively; mutate cell value (`'1' -> '0'`) to mark visited and eliminate memory overhead.
 - **Mental Model:** Sinking an island as you walk over it so you never visit it again.
 - **Canonical Code Skeleton:**
-```java
-public int numIslands(char[][] grid) {
-    int count = 0;
-    for (int r = 0; r < grid.length; r++) {
-        for (int c = 0; c < grid[0].length; c++) {
-            if (grid[r][c] == '1') {
-                count++;
-                dfsSink(grid, r, c);
-            }
-        }
-    }
-    return count;
-}
+```python
+def num_islands(grid: list[list[str]]) -> int:
+    def dfs_sink(r: int, c: int) -> None:
+        if r < 0 or r >= len(grid) or c < 0 or c >= len(grid[0]) or grid[r][c] == '0':
+            return
+        grid[r][c] = '0' # Sink cell
+        dfs_sink(r + 1, c)
+        dfs_sink(r - 1, c)
+        dfs_sink(r, c + 1)
+        dfs_sink(r, c - 1)
 
-private void dfsSink(char[][] grid, int r, int c) {
-    if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] == '0') return;
-    grid[r][c] = '0'; // Sink cell
-    dfsSink(grid, r + 1, c);
-    dfsSink(grid, r - 1, c);
-    dfsSink(grid, r, c + 1);
-    dfsSink(grid, r, c - 1);
-}
+    count = 0
+    for r in range(len(grid)):
+        for c in range(len(grid[0])):
+            if grid[r][c] == '1':
+                count += 1
+                dfs_sink(r, c)
+                
+    return count
 ```
+
 - **Diagnostic Triggers:** "Number of islands", "Surrounded regions", "Flood fill".
 - **Boundary Conditions:** Base case must check bounds BEFORE accessing `grid[r][c]`.
 - **Real-World Application:** Image segmentation, cluster isolation, GIS landmass detection.
@@ -520,31 +533,31 @@ private void dfsSink(char[][] grid, int r, int c) {
 - **Invariant:** Process nodes with in-degree 0 first. Reduces in-degree of neighbors. If processed count $< N$, a cycle exists.
 - **Mental Model:** Resolving build dependencies in order.
 - **Canonical Code Skeleton:**
-```java
-public int[] findOrder(int numCourses, int[][] prerequisites) {
-    var inDegree = new int[numCourses];
-    var adj = new ArrayList<List<Integer>>();
-    for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
-    for (int[] p : prerequisites) {
-        adj.get(p[1]).add(p[0]);
-        inDegree[p[0]]++;
-    }
+```python
+from collections import deque
 
-    var queue = new ArrayDeque<Integer>();
-    for (int i = 0; i < numCourses; i++) if (inDegree[i] == 0) queue.offer(i);
-
-    int[] order = new int[numCourses];
-    int idx = 0;
-    while (!queue.isEmpty()) {
-        int curr = queue.poll();
-        order[idx++] = curr;
-        for (int neighbor : adj.get(curr)) {
-            if (--inDegree[neighbor] == 0) queue.offer(neighbor);
-        }
-    }
-    return idx == numCourses ? order : new int[0];
-}
+def find_order(num_courses: int, prerequisites: list[list[int]]) -> list[int]:
+    in_degree = [0] * num_courses
+    adj = [[] for _ in range(num_courses)]
+    
+    for dest, src in prerequisites:
+        adj[src].append(dest)
+        in_degree[dest] += 1
+        
+    queue = deque([i for i in range(num_courses) if in_degree[i] == 0])
+    
+    order = []
+    while queue:
+        curr = queue.popleft()
+        order.append(curr)
+        for neighbor in adj[curr]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+                
+    return order if len(order) == num_courses else []
 ```
+
 - **Diagnostic Triggers:** "Course schedule", "Task dependency ordering", "Build order".
 - **Boundary Conditions:** Return empty array if `idx != numCourses` (cycle detected).
 - **Real-World Application:** Maven/Gradle build execution, CI/CD pipeline stage ordering.
@@ -556,29 +569,35 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
 - **Invariant:** Maintain connected sets using parent pointers with path compression and rank optimization for near $O(1)$ amortized `find` and `union`.
 - **Mental Model:** Merging social groups and checking if two people share the same root leader.
 - **Canonical Code Skeleton:**
-```java
-class UnionFind {
-    int[] parent, rank;
-    public UnionFind(int n) {
-        parent = new int[n]; rank = new int[n];
-        for (int i = 0; i < n; i++) parent[i] = i;
-    }
-    public int find(int i) {
-        if (parent[i] == i) return i;
-        return parent[i] = find(parent[i]); // Path compression
-    }
-    public boolean union(int i, int j) {
-        int rootI = find(i), rootJ = find(j);
-        if (rootI != rootJ) {
-            if (rank[rootI] < rank[rootJ]) parent[rootI] = rootJ;
-            else if (rank[rootI] > rank[rootJ]) parent[rootJ] = rootI;
-            else { parent[rootJ] = rootI; rank[rootI]++; }
-            return true;
-        }
-        return false; // Already connected!
-    }
-}
+```python
+class UnionFind:
+    def __init__(self, n: int):
+        self.parent = list(range(n))
+        self.rank = [0] * n
+        
+    def find(self, i: int) -> int:
+        if self.parent[i] == i:
+            return i
+        self.parent[i] = self.find(self.parent[i]) # Path compression
+        return self.parent[i]
+        
+    def union(self, i: int, j: int) -> bool:
+        root_i = self.find(i)
+        root_j = self.find(j)
+        
+        if root_i != root_j:
+            if self.rank[root_i] < self.rank[root_j]:
+                self.parent[root_i] = root_j
+            elif self.rank[root_i] > self.rank[root_j]:
+                self.parent[root_j] = root_i
+            else:
+                self.parent[root_j] = root_i
+                self.rank[root_i] += 1
+            return True
+            
+        return False # Already connected!
 ```
+
 - **Diagnostic Triggers:** "Redundant connection", "Number of connected components", "Accounts merge".
 - **Boundary Conditions:** Path compression `parent[i] = find(parent[i])` is essential for optimal speed.
 - **Real-World Application:** Network topology clustering, distributed consensus membership tracking.
@@ -590,34 +609,32 @@ class UnionFind {
 - **Invariant:** Use a `PriorityQueue` ordered by distance. Always expand the unvisited node with the smallest tentative distance.
 - **Mental Model:** Exploring shortest path on a map with varying road costs.
 - **Canonical Code Skeleton:**
-```java
-public int networkDelayTime(int[][] times, int n, int k) {
-    Map<Integer, List<int[]>> adj = new HashMap<>();
-    for (int[] t : times) {
-        adj.computeIfAbsent(t[0], x -> new ArrayList<>()).add(new int[]{t[1], t[2]});
-    }
+```python
+import heapq
+from collections import defaultdict
 
-    var pq = new PriorityQueue<int[]>((a, b) -> a[1] - b[1]); // [node, dist]
-    pq.offer(new int[]{k, 0});
-    var dist = new HashMap<Integer, Integer>();
-
-    while (!pq.isEmpty()) {
-        int[] curr = pq.poll();
-        int node = curr[0], d = curr[1];
-        if (dist.containsKey(node)) continue;
-        dist.put(node, d);
-
-        if (adj.containsKey(node)) {
-            for (int[] edge : adj.get(node)) {
-                if (!dist.containsKey(edge[0])) {
-                    pq.offer(new int[]{edge[0], d + edge[1]});
-                }
-            }
-        }
-    }
-    return dist.size() == n ? dist.values().stream().max(Integer::compare).get() : -1;
-}
+def network_delay_time(times: list[list[int]], n: int, k: int) -> int:
+    adj = defaultdict(list)
+    for u, v, w in times:
+        adj[u].append((v, w))
+        
+    pq = [(0, k)] # [dist, node]
+    dist_map = {}
+    
+    while pq:
+        d, node = heapq.heappop(pq)
+        
+        if node in dist_map:
+            continue
+        dist_map[node] = d
+        
+        for neighbor, weight in adj[node]:
+            if neighbor not in dist_map:
+                heapq.heappush(pq, (d + weight, neighbor))
+                
+    return max(dist_map.values()) if len(dist_map) == n else -1
 ```
+
 - **Diagnostic Triggers:** "Network delay time", "Cheapest flight within K stops", "Shortest path with weights".
 - **Boundary Conditions:** PriorityQueue stores `[node, total_distance]`. Skip already finalized nodes (`dist.containsKey(node)`).
 - **Real-World Application:** Latency-based API gateway routing, Google Maps route optimization.
@@ -631,19 +648,20 @@ public int networkDelayTime(int[][] times, int n, int k) {
 - **Invariant:** State `dp[i]` depends only on `dp[i - 1]` and `dp[i - 2]`. Space can be optimized from $O(N)$ array to 2 variables (`prev1`, `prev2`).
 - **Mental Model:** Making optimal choice between taking current item or skipping it.
 - **Canonical Code Skeleton:**
-```java
-public int rob(int[] nums) {
-    if (nums == null || nums.length == 0) return 0;
-    int prev2 = 0, prev1 = 0;
-
-    for (int num : nums) {
-        int curr = Math.max(prev1, prev2 + num); // Skip vs Take
-        prev2 = prev1;
-        prev1 = curr;
-    }
-    return prev1;
-}
+```python
+def rob(nums: list[int]) -> int:
+    if not nums:
+        return 0
+    prev2, prev1 = 0, 0
+    
+    for num in nums:
+        curr = max(prev1, prev2 + num) # Skip vs Take
+        prev2 = prev1
+        prev1 = curr
+        
+    return prev1
 ```
+
 - **Diagnostic Triggers:** "House robber", "Climbing stairs", "Min cost climbing stairs".
 - **Boundary Conditions:** Handle single-element input upfront.
 - **Real-World Application:** Capacity allocation, CPU time-slot scheduling.
@@ -655,22 +673,19 @@ public int rob(int[] nums) {
 - **Invariant:** `dp[w]` represents max value for capacity `w`. Iterate items and update capacity backwards for 0/1 (use item once) or forwards for unbounded (use item infinitely).
 - **Mental Model:** Packing a backpack with items to maximize value without exceeding weight capacity.
 - **Canonical Code Skeleton (Coin Change - Unbounded):**
-```java
-public int coinChange(int[] coins, int amount) {
-    int[] dp = new int[amount + 1];
-    Arrays.fill(dp, amount + 1);
-    dp[0] = 0;
-
-    for (int i = 1; i <= amount; i++) {
-        for (int coin : coins) {
-            if (i - coin >= 0) {
-                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-            }
-        }
-    }
-    return dp[amount] > amount ? -1 : dp[amount];
-}
+```python
+def coin_change(coins: list[int], amount: int) -> int:
+    dp = [amount + 1] * (amount + 1)
+    dp[0] = 0
+    
+    for i in range(1, amount + 1):
+        for coin in coins:
+            if i - coin >= 0:
+                dp[i] = min(dp[i], dp[i - coin] + 1)
+                
+    return -1 if dp[amount] > amount else dp[amount]
 ```
+
 - **Diagnostic Triggers:** "Coin change", "Partition equal subset sum", "Knapsack capacity".
 - **Boundary Conditions:** Fill array with sentinel value (`amount + 1`) representing infinity.
 - **Real-World Application:** Resource packing in cloud instances, currency change calculators.
@@ -682,22 +697,25 @@ public int coinChange(int[] coins, int amount) {
 - **Invariant:** `dp[r][c]` represents min/max value to reach cell `(r, c)`, which depends on `dp[r - 1][c]` (from top) and `dp[r][c - 1]` (from left).
 - **Mental Model:** Walking down and right on a grid accumulating values.
 - **Canonical Code Skeleton:**
-```java
-public int minPathSum(int[][] grid) {
-    int rows = grid.length, cols = grid[0].length;
-    int[][] dp = new int[rows][cols];
-
-    for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < cols; c++) {
-            if (r == 0 && c == 0) dp[r][c] = grid[r][c];
-            else if (r == 0) dp[r][c] = dp[r][c - 1] + grid[r][c];
-            else if (c == 0) dp[r][c] = dp[r - 1][c] + grid[r][c];
-            else dp[r][c] = Math.min(dp[r - 1][c], dp[r][c - 1]) + grid[r][c];
-        }
-    }
-    return dp[rows - 1][cols - 1];
-}
+```python
+def min_path_sum(grid: list[list[int]]) -> int:
+    rows, cols = len(grid), len(grid[0])
+    dp = [[0] * cols for _ in range(rows)]
+    
+    for r in range(rows):
+        for c in range(cols):
+            if r == 0 and c == 0:
+                dp[r][c] = grid[r][c]
+            elif r == 0:
+                dp[r][c] = dp[r][c - 1] + grid[r][c]
+            elif c == 0:
+                dp[r][c] = dp[r - 1][c] + grid[r][c]
+            else:
+                dp[r][c] = min(dp[r - 1][c], dp[r][c - 1]) + grid[r][c]
+                
+    return dp[rows - 1][cols - 1]
 ```
+
 - **Diagnostic Triggers:** "Minimum path sum", "Unique paths in grid", "Dungeon game".
 - **Boundary Conditions:** Initialize first row and first column carefully.
 - **Real-World Application:** Cost-effective data routing across grid-structured networks.
@@ -709,23 +727,21 @@ public int minPathSum(int[][] grid) {
 - **Invariant:** `dp[i][j]` represents optimal alignment score for prefix `s1[0..i-1]` and `s2[0..j-1]`.
 - **Mental Model:** 2D grid matching characters of two strings.
 - **Canonical Code Skeleton (Longest Common Subsequence):**
-```java
-public int longestCommonSubsequence(String text1, String text2) {
-    int m = text1.length(), n = text2.length();
-    int[][] dp = new int[m + 1][n + 1];
-
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
-                dp[i][j] = 1 + dp[i - 1][j - 1];
-            } else {
-                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-            }
-        }
-    }
-    return dp[m][n];
-}
+```python
+def longest_common_subsequence(text1: str, text2: str) -> int:
+    m, n = len(text1), len(text2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+    
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if text1[i - 1] == text2[j - 1]:
+                dp[i][j] = 1 + dp[i - 1][j - 1]
+            else:
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+                
+    return dp[m][n]
 ```
+
 - **Diagnostic Triggers:** "Longest common subsequence", "Edit distance", "Wildcard matching".
 - **Boundary Conditions:** Matrix dimensions are `(m + 1) x (n + 1)`. Access chars using `i - 1` and `j - 1`.
 - **Real-World Application:** Git diff algorithms, DNA sequence alignment, text similarity search.
@@ -737,23 +753,24 @@ public int longestCommonSubsequence(String text1, String text2) {
 - **Invariant:** Sort intervals by start time. Use a pointer or heap to process overlapping boundaries.
 - **Mental Model:** Sweeping a vertical timeline left-to-right across time intervals.
 - **Canonical Code Skeleton:**
-```java
-public int minMeetingRooms(int[][] intervals) {
-    if (intervals == null || intervals.length == 0) return 0;
-    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+```python
+import heapq
 
-    var minHeap = new PriorityQueue<Integer>(); // Stores end times
-    minHeap.offer(intervals[0][1]);
-
-    for (int i = 1; i < intervals.length; i++) {
-        if (intervals[i][0] >= minHeap.peek()) {
-            minHeap.poll(); // Room freed up!
-        }
-        minHeap.offer(intervals[i][1]); // Allocate room
-    }
-    return minHeap.size();
-}
+def min_meeting_rooms(intervals: list[list[int]]) -> int:
+    if not intervals:
+        return 0
+    intervals.sort(key=lambda x: x[0])
+    
+    min_heap = [intervals[0][1]] # Stores end times
+    
+    for i in range(1, len(intervals)):
+        if intervals[i][0] >= min_heap[0]:
+            heapq.heappop(min_heap) # Room freed up!
+        heapq.heappush(min_heap, intervals[i][1]) # Allocate room
+        
+    return len(min_heap)
 ```
+
 - **Diagnostic Triggers:** "Meeting rooms II", "Merge intervals", "Non-overlapping intervals".
 - **Boundary Conditions:** Always sort intervals by start time `a[0] - b[0]` first.
 - **Real-World Application:** Calendar scheduling engines, hotel room allocation, cloud VM provisioning.
@@ -765,45 +782,40 @@ public int minMeetingRooms(int[][] intervals) {
 - **Invariant:** Tree structure where each node represents a character. Root-to-node path forms a string prefix, enabling $O(L)$ word lookup where $L$ is word length.
 - **Mental Model:** Dictionary tree branching by character.
 - **Canonical Code Skeleton:**
-```java
-class TrieNode {
-    TrieNode[] children = new TrieNode[26];
-    boolean isWord = false;
-}
+```python
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_word = False
 
-public class Trie {
-    private TrieNode root = new TrieNode();
-
-    public void insert(String word) {
-        TrieNode curr = root;
-        for (char c : word.toCharArray()) {
-            int idx = c - 'a';
-            if (curr.children[idx] == null) curr.children[idx] = new TrieNode();
-            curr = curr.children[idx];
-        }
-        curr.isWord = true;
-    }
-
-    public boolean search(String word) {
-        TrieNode node = getNode(word);
-        return node != null && node.isWord;
-    }
-
-    public boolean startsWith(String prefix) {
-        return getNode(prefix) != null;
-    }
-
-    private TrieNode getNode(String str) {
-        TrieNode curr = root;
-        for (char c : str.toCharArray()) {
-            int idx = c - 'a';
-            if (curr.children[idx] == null) return null;
-            curr = curr.children[idx];
-        }
-        return curr;
-    }
-}
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+        
+    def insert(self, word: str) -> None:
+        curr = self.root
+        for c in word:
+            if c not in curr.children:
+                curr.children[c] = TrieNode()
+            curr = curr.children[c]
+        curr.is_word = True
+        
+    def search(self, word: str) -> bool:
+        node = self._get_node(word)
+        return node is not None and node.is_word
+        
+    def starts_with(self, prefix: str) -> bool:
+        return self._get_node(prefix) is not None
+        
+    def _get_node(self, s: str) -> 'TrieNode':
+        curr = self.root
+        for c in s:
+            if c not in curr.children:
+                return None
+            curr = curr.children[c]
+        return curr
 ```
+
 - **Diagnostic Triggers:** "Implement Trie", "Word search II (grid + dictionary)", "Replace words / autocomplete".
 - **Boundary Conditions:** Use `c - 'a'` for lowercase alphabets. Set `isWord = true` at termination node.
 - **Real-World Application:** Autocomplete search suggestions, IP routing prefix tables, spell checkers.
@@ -817,22 +829,22 @@ public class Trie {
 **Invariant:** The heap property is maintained: for a min-heap, every parent node is ≤ its children. This guarantees O(1) access to the minimum and O(log N) insertion/extraction.
 
 **Canonical Skeleton:**
-```java
-public int[] topKFrequent(int[] nums, int k) {
-    var freqMap = new HashMap<Integer, Integer>();
-    for (int n : nums) freqMap.merge(n, 1, Integer::sum);
+```python
+import heapq
+from collections import Counter
+
+def top_k_frequent(nums: list[int], k: int) -> list[int]:
+    freq_map = Counter(nums)
     
-    var minHeap = new PriorityQueue<Map.Entry<Integer, Integer>>(
-        Comparator.comparingInt(Map.Entry::getValue));
-    
-    for (var entry : freqMap.entrySet()) {
-        minHeap.offer(entry);
-        if (minHeap.size() > k) minHeap.poll();
-    }
-    
-    return minHeap.stream().mapToInt(Map.Entry::getKey).toArray();
-}
+    min_heap = []
+    for num, count in freq_map.items():
+        heapq.heappush(min_heap, (count, num))
+        if len(min_heap) > k:
+            heapq.heappop(min_heap)
+            
+    return [num for count, num in min_heap]
 ```
+
 
 **Complexity:** O(N log K) time, O(N + K) space.
 

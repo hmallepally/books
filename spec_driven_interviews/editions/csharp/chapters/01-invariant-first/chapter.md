@@ -119,25 +119,33 @@ The loop terminates when `left > right`.
 ### Implementation (Step 4)
 Because we have proved our updates mathematically, we do not need to guess the loop conditions:
 
-```java
-public int binarySearch(int[] nums, int target) {
+```csharp
+public int BinarySearch(int[] nums, int target) 
+{
     // 1. Enforce Pre-conditions
-    if (nums == null || nums.length == 0) {
+    if (nums == null || nums.Length == 0) 
+    {
         return -1;
     }
 
     int left = 0;
-    int right = nums.length - 1;
+    int right = nums.Length - 1;
 
     // Maintain Invariant: target is in nums[left...right]
-    while (left <= right) {
+    while (left <= right) 
+    {
         int mid = left + (right - left) / 2;
 
-        if (nums[mid] == target) {
+        if (nums[mid] == target) 
+        {
             return mid; // Post-condition satisfied
-        } else if (nums[mid] < target) {
+        } 
+        else if (nums[mid] < target) 
+        {
             left = mid + 1; // Invariant maintained
-        } else {
+        } 
+        else 
+        {
             right = mid - 1; // Invariant maintained
         }
     }
