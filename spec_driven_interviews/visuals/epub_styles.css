@@ -1,0 +1,139 @@
+/* Custom EPUB Styles for Kindle KDP */
+
+/* Headings */
+h1 {
+    color: #1E3A8A;
+    font-size: 1.6em;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    page-break-before: always;
+}
+
+h2 {
+    color: #B45309;
+    font-size: 1.3em;
+    margin-top: 1.2em;
+    margin-bottom: 0.4em;
+}
+
+h3 {
+    color: #0D9488;
+    font-size: 1.1em;
+    margin-top: 1em;
+    margin-bottom: 0.3em;
+}
+
+/* Paragraphs & Sizing */
+p {
+    font-size: 1em;
+    line-height: 1.5;
+    margin-bottom: 0.8em;
+}
+
+/* Callout Boxes (Blockquotes) */
+blockquote {
+    background-color: #F8FAFC;
+    border-left: 4px solid #3B82F6;
+    padding: 10px 15px;
+    margin: 1.5em 0;
+    color: #1E293B;
+}
+
+/* Dark Mode support for blockquotes */
+@media (prefers-color-scheme: dark) {
+    blockquote {
+        background-color: #1E293B;
+        border-left: 4px solid #3B82F6;
+        color: #F8FAFC;
+    }
+}
+
+/* Code Blocks */
+pre, code {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.9em;
+}
+
+pre {
+    background-color: #F1F5F9;
+    border: 1px solid #E2E8F0;
+    border-radius: 4px;
+    padding: 12px;
+    margin: 1.5em 0;
+    overflow-x: auto;
+    white-space: pre-wrap; /* Wrap long lines on small Kindle screens */
+}
+
+/* Dark Mode support for code blocks */
+@media (prefers-color-scheme: dark) {
+    pre {
+        background-color: #0F172A;
+        border: 1px solid #334155;
+        color: #F1F5F9;
+    }
+}
+
+/* Syntax Highlighting */
+code span.kw { color: #0033B3; font-weight: bold; } /* Keyword */
+code span.dt { color: #0033B3; }                    /* DataType */
+code span.co { color: #8C8C8C; font-style: italic; } /* Comment */
+code span.st { color: #067D17; }                    /* String */
+code span.op { color: #000000; }                    /* Operator */
+code span.fu { color: #00627A; }                    /* Function */
+code span.ex { color: #00627A; }                    /* Extension/Library function */
+code span.bn { color: #1750EB; }                    /* BaseN (numbers) */
+code span.fl { color: #1750EB; }                    /* Float */
+code span.ch { color: #067D17; }                    /* Char */
+code span.va { color: #000000; }                    /* Variable */
+
+/* Dark Mode syntax highlighting adjustments */
+@media (prefers-color-scheme: dark) {
+    code span.kw { color: #38BDF8; font-weight: bold; }
+    code span.dt { color: #38BDF8; }
+    code span.co { color: #94A3B8; }
+    code span.st { color: #4ADE80; }
+    code span.op { color: #F1F5F9; }
+    code span.fu { color: #38BDF8; }
+    code span.ex { color: #38BDF8; }
+    code span.bn { color: #F59E0B; }
+    code span.fl { color: #F59E0B; }
+    code span.ch { color: #4ADE80; }
+    code span.va { color: #F1F5F9; }
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5em 0;
+}
+
+th, td {
+    padding: 8px 12px;
+    border: 1px solid #CBD5E1;
+    text-align: left;
+}
+
+th {
+    background-color: #E2E8F0;
+    color: #1E3A8A;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #F8FAFC;
+}
+
+/* Dark Mode support for tables */
+@media (prefers-color-scheme: dark) {
+    th, td {
+        border: 1px solid #475569;
+    }
+    th {
+        background-color: #334155;
+        color: #F8FAFC;
+    }
+    tr:nth-child(even) {
+        background-color: #1E293B;
+    }
+}

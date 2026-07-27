@@ -156,10 +156,19 @@ def build_epub(edition):
             '--epub-chapter-level=1',
         ]
         
-        # Add cover image if it exists
-        cover_path = os.path.join(base_dir, 'visuals', 'cover.png')
+        # Add cover image if it exists (check language-specific cover first, then fallback to cover.png)
+        cover_filename = f"{edition}_cover.jpg"
+        cover_path = os.path.join(base_dir, 'visuals', cover_filename)
+        if not os.path.exists(cover_path):
+            cover_path = os.path.join(base_dir, 'visuals', 'cover.png')
+            
         if os.path.exists(cover_path):
             cmd.extend(['--epub-cover-image', cover_path])
+
+        # Add stylesheet if it exists
+        css_path = os.path.join(base_dir, 'visuals', 'epub_styles.css')
+        if os.path.exists(css_path):
+            cmd.extend(['--css', css_path])
         
         result = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding='utf-8', errors='replace')
         print(f"EPUB generated successfully: {epub_output_name}")

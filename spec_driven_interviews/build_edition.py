@@ -42,7 +42,10 @@ def inject_snippets(base_content, snippets_dir, lang):
         if not os.path.exists(snippet_path):
             raise FileNotFoundError(f"Snippet not found: {snippet_path}")
         with open(snippet_path, 'r', encoding='utf-8') as sf:
-            return sf.read()
+            content = sf.read()
+        if not content.endswith('\n'):
+            content += '\n'
+        return content
 
     return re.sub(pattern, replacer, base_content)
 

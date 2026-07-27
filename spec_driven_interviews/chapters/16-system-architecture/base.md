@@ -71,6 +71,7 @@ A single matching engine instance cannot handle all trading instruments globally
 ### Consistent Hashing for Instrument Sharding
 
 ![Consistent Hashing Ring — Distributed Key Routing](visuals/consistent_hashing.jpg){width=85%}
+
 Instead of traditional modulo sharding (`hash(instrumentId) % nodeCount`), which causes massive data reshuffling when nodes are added or removed, ZenithTrade utilizes a **Consistent Hash Ring**:
 
 1.  **The Ring:** The hash space is mapped onto a circular ring (e.g., 0 to $2^{32} - 1$).
