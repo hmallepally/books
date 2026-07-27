@@ -1,0 +1,9 @@
+﻿---
+title: "Test"
+documentclass: book
+classoption:
+  - openany
+  - oneside
+fontsize: 11pt
+geometry: "margin=1in"
+---
