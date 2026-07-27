@@ -33,41 +33,6 @@ By declaring the operations as a stream pipeline, the code becomes a readable tr
 2.  **Collect** the results by grouping by the merchant ID and adding their amounts.
 
 
-## Core Stream Operations
-
-This chapter assumes working fluency with Java Streams, Kotlin sequences, C# LINQ, and Python comprehensions.
-
-### Collectors: The Power of `collect()`
-
-The `Collectors` utility class provides powerful aggregation operations:
-
-```java
-// Group transactions by merchant, summing amounts
-Map<UUID, BigDecimal> volumeByMerchant = transactions.stream()
-    .collect(Collectors.groupingBy(
-        TransactionRecord::merchantId,
-        Collectors.reducing(BigDecimal.ZERO, TransactionRecord::amount, BigDecimal::add)
-    ));
-
-// Partition transactions into two groups: above/below threshold
-Map<Boolean, List<TransactionRecord>> partitioned = transactions.stream()
-    .collect(Collectors.partitioningBy(tx -> tx.amount().compareTo(threshold) > 0));
-
-// Join merchant names into a comma-separated string
-String merchantList = merchants.stream()
-    .map(Merchant::name)
-    .collect(Collectors.joining(", "));
-
-// Compute statistics on amounts
-DoubleSummaryStatistics stats = transactions.stream()
-    .mapToDouble(tx -> tx.amount().doubleValue())
-    .summaryStatistics();
-// stats.getAverage(), stats.getMax(), stats.getMin(), stats.getCount()
-```
-
-
-
-
 
 ## Debugging Functional Pipelines
 

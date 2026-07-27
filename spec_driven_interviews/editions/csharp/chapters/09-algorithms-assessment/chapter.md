@@ -785,3 +785,31 @@ public class Trie {
 - **Diagnostic Triggers:** "Implement Trie", "Word search II (grid + dictionary)", "Replace words / autocomplete".
 - **Boundary Conditions:** Use `c - 'a'` for lowercase alphabets. Set `isWord = true` at termination node.
 - **Real-World Application:** Autocomplete search suggestions, IP routing prefix tables, spell checkers.
+
+---
+
+### [PAT-25] Priority Queue / Min-Max Heap
+
+**Diagnostic Trigger:** "Find the K-th largest/smallest", "Merge K sorted lists", "Schedule tasks by priority", or any problem requiring efficient access to the minimum or maximum element while dynamically inserting.
+
+**Invariant:** The heap property is maintained: for a min-heap, every parent node is ≤ its children. This guarantees O(1) access to the minimum and O(log N) insertion/extraction.
+
+**Canonical Skeleton:**
+```java
+public int[] topKFrequent(int[] nums, int k) {
+    var freqMap = new HashMap<Integer, Integer>();
+    for (int n : nums) freqMap.merge(n, 1, Integer::sum);
+    
+    var minHeap = new PriorityQueue<Map.Entry<Integer, Integer>>(
+        Comparator.comparingInt(Map.Entry::getValue));
+    
+    for (var entry : freqMap.entrySet()) {
+        minHeap.offer(entry);
+        if (minHeap.size() > k) minHeap.poll();
+    }
+    
+    return minHeap.stream().mapToInt(Map.Entry::getKey).toArray();
+}
+```
+
+**Complexity:** O(N log K) time, O(N + K) space.

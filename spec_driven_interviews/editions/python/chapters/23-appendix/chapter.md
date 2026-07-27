@@ -82,18 +82,22 @@ In system design interviews, refer to these rules of thumb to justify your infra
 
 To make back-of-the-envelope calculations, memorize these rough access latency scales:
 
-| Operation | Time (ns) | Time (Human Scale) |
+| Operation | Time | Time (Human Scale) |
 |---|---|---|
-| **L1 Cache reference** | 0.5 ns | 0.5 sec |
+| **L1 Cache reference** | 1 ns | 1 sec |
 | **Branch mispredict** | 5 ns | 5 sec |
-| **L2 Cache reference** | 7 ns | 7 sec |
-| **Main Memory reference (RAM)** | 100 ns | 1.6 min |
+| **L2 Cache reference** | 4 ns | 4 sec |
+| **Main Memory reference (DDR5)** | 50 ns | 50 sec |
 | **Compress 1K bytes with Zippy** | 3,000 ns | 50 min |
 | **Send 2K bytes over 1 Gbps network** | 20,000 ns | 5.5 hours |
-| **Read 1MB sequentially from SSD** | 1,000,000 ns | 11.5 days |
-| **Round trip within same datacenter** | 500,000 ns | 5.7 days |
+| **NVMe SSD random read** | 10-20 μs | ~3-6 hours |
+| **NVMe SSD sequential 1MB read** | 100-200 μs | ~1-2 days |
+| **Round trip within same datacenter** | 250-500 μs | ~3-6 days |
+| **HDD seek** | 2-5 ms | ~1-2 months |
 | **Read 1MB sequentially from Disk** | 20,000,000 ns | 7.5 months |
 | **Send packet CA to Netherlands to CA** | 150,000,000 ns | 4.7 years |
+
+These numbers reflect 2024 NVMe Gen4/5 SSDs and DDR5 RAM. Original latency numbers by Jeff Dean (2012) have been updated. Cloud VM performance may vary based on instance type and IO throttling.
 
 
 ## Day of the Interview Checklist

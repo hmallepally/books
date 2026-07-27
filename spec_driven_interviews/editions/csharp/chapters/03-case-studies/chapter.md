@@ -147,7 +147,7 @@ namespace AuraPay.Domain
 In the following chapters, we will use these domain classes to demonstrate OOP design, SOLID boundary enforcement, Java Streams collection processing, and database concurrency controls.
 
 
-## ZenithTrade: High-Frequency Matching Engine (Exercise)
+## ZenithTrade: High-Frequency Matching Engine (Reference Architecture)
 
 ZenithTrade is a high-frequency, low-latency order matching engine. It is designed to process incoming buy and sell limit orders and execute matches in real time.
 
@@ -157,7 +157,7 @@ ZenithTrade is a high-frequency, low-latency order matching engine. It is design
 - **Sub-Millisecond Latency:** The engine must execute order matching with minimal latency, avoiding memory allocations and garbage collection pauses.
 - **Data Structure Mastery:** Utilizes custom priority queues, heaps, and double-ended queues for low-overhead bookkeeping.
 
-### Exercise Starter Scaffolding
+### Reference Architecture Starter Scaffolding
 To begin implementing the ZenithTrade engine, use the following `Order` entity as your starting point. It establishes the basic structure of a limit order, enforcing invariants like positive price and quantity:
 
 ```csharp
@@ -183,10 +183,10 @@ public class Order
 }
 ```
 
-This case study is left as an exercise for the reader to apply the algorithmic patterns, concurrency models, and performance optimizations detailed in Part III.
+These architectures serve as running case studies throughout the book. You will implement components of each system as you learn the patterns in Parts II, III, and IV. Do not attempt to design these systems now — let the patterns guide you.
 
 
-## ChiramTrust: Decentralized Identity Consent Wallet (Exercise)
+## ChiramTrust: Decentralized Identity Consent Wallet (Reference Architecture)
 
 ChiramTrust is a decentralized identity wallet that allows users to store credentials locally, negotiate sharing terms with verifiers, and establish consensus-based recovery.
 
@@ -212,7 +212,7 @@ By the properties of polynomial interpolation:
    
 2.  **Any $T - 1$ or fewer guardians** possess a system of equations with infinite solutions, revealing absolutely zero information about the secret key $S$.
 
-### Exercise Starter Scaffolding
+### Reference Architecture Starter Scaffolding
 
 To implement the ChiramTrust wallet, use the following `DidConsentRecord` aggregate root as your starting point. It handles W3C identifier validation and thread-safe consent scope modifications:
 
@@ -251,6 +251,8 @@ Here is a mock interview dialogue showing how to apply the Bounded Context Isola
 **Interviewer:** *"If the AuraPay Ledger database experiences a write lag or becomes temporarily unavailable, how does that affect ZenithTrade's matching engine? How do you prevent ledger issues from cascading and bringing down the trading platform?"*
 
 **Candidate:** "We enforce strict Bounded Context Isolation. The ZenithTrade matching engine runs entirely in-memory and communicates with the AuraPay Ledger asynchronously via a transaction event stream. When an order matches, the matching engine commits the trade to its local state and publishes a `TradeExecuted` event. The Ledger service consumes this event and updates account balances. 
+
+To ensure zero-loss durability, ZenithTrade employs a write-ahead journal (WAJ) inspired by the LMAX Disruptor architecture. Every order and match event is sequentially appended to a persistent ring buffer on NVMe storage BEFORE the in-memory state is updated. On node failure, the engine replays the journal to reconstruct its complete order book state. Additionally, periodic snapshots compress the journal, enabling sub-second recovery times. This design achieves both the microsecond latency of in-memory processing and the durability guarantees required by financial regulators."
 
 If the Ledger database slows down or halts, the matching engine continues to process trades in memory without interruption. The event broker queues the trade events until the ledger recovers. This decoupling guarantees fault isolation and maintains a high-availability trading path."
 

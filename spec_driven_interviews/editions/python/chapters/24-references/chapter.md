@@ -65,3 +65,13 @@ Subramanian, S. (2015). *Python Concurrency with asyncio*. Manning Publications.
 Tanenbaum, A. S., & Van Steen, M. (2007). *Distributed Systems: Principles and Paradigms*. Prentice Hall.
 
 W3C. (2022). *Decentralized Identifiers (DIDs) v1.0*. World Wide Web Consortium. https://www.w3.org/TR/did-core/
+
+Vaswani, A., Shazeer, N., Parmar, N., et al. (2017). Attention Is All You Need. *Advances in Neural Information Processing Systems*, 30. https://arxiv.org/abs/1706.03762
+
+Lewis, P., Perez, E., Piktus, A., et al. (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. *Advances in Neural Information Processing Systems*, 33. https://arxiv.org/abs/2005.11401
+
+Elhemaly, M., Gallagher, N., Tang, B., et al. (2022). Amazon DynamoDB: A Scalable, Predictably Performant, and Fully Managed NoSQL Database Service. *Proceedings of USENIX ATC '22*.
+
+Forsgren, N., Humble, J., & Kim, G. (2018). *Accelerate: The Science of Lean Software and DevOps*. IT Revolution.
+
+Burns, B., Beda, J., Hightower, K., & Evenson, L. (2022). *Kubernetes: Up and Running* (3rd ed.). O'Reilly.

@@ -108,7 +108,7 @@ Tier 2 problems are the standard for rigorous technical screens. They cannot be 
 *   **Restatement:** Locate a specific rank-order element in unsorted data.
 *   **Constraints:** Sorting takes $O(N \log N)$. Can we achieve $O(N)$ average time?
 *   **Sub-Problems:** 1. Partition the array around a pivot. 2. Decide which partition to explore based on the pivot's final index.
-*   **Pattern Mapping:** Partitioning logic maps to QuickSelect, which is a variation of **[PAT-11] Binary Search on Answer Space**, combined with **[PAT-02] Two-Pointer Partitioning**. Alternatively, managing the top K elements maps to **[PAT-15] Priority Queue (Min-Heap)**.
+*   **Pattern Mapping:** Partitioning logic maps to QuickSelect, which is a variation of **[PAT-11] Binary Search on Answer Space**, combined with **[PAT-02] Two-Pointer Partitioning**. Alternatively, managing the top K elements maps to **[PAT-25] Priority Queue (Min-Heap)**.
 *   **Approach (Heap):** Maintain a Min-Heap of size K. Iterate the array; push elements. If heap exceeds K, pop. The root of the heap is the Kth largest. Time $O(N \log K)$.
 
 #### Example 3: Merging Multiple Streams
@@ -117,7 +117,7 @@ Tier 2 problems are the standard for rigorous technical screens. They cannot be 
 **Analysis:**
 *   **Restatement:** Combine multiple ordered sequences into one ordered sequence.
 *   **Sub-Problems:** 1. Continuously identify the smallest current element across $K$ heads. 2. Append to a new list and advance the corresponding pointer.
-*   **Pattern Mapping:** Finding the minimum among $K$ dynamic candidates is exactly what a **[PAT-15] Priority Queue** is for. Processing them sequentially resembles **[PAT-13] Level-by-Level Processing**.
+*   **Pattern Mapping:** Finding the minimum among $K$ dynamic candidates is exactly what a **[PAT-25] Priority Queue** is for. Processing them sequentially resembles **[PAT-13] Level-by-Level Processing**.
 *   **Approach:** Push the head of each list into a Min-Heap. While heap is not empty, pop the smallest node, append to result, and if the popped node has a `next`, push `next` into the heap.
 
 #### Example 4: Substring Anagrams
@@ -135,7 +135,7 @@ Tier 2 problems are the standard for rigorous technical screens. They cannot be 
 **Analysis:**
 *   **Restatement:** Detect if a directed graph of dependencies contains any cycles.
 *   **Sub-Problems:** 1. Model the dependencies as a graph. 2. Traverse the graph to ensure all nodes can be visited without encountering back-edges.
-*   **Pattern Mapping:** Dependency resolution strictly maps to **[PAT-17] Topological Sort**. The traversal mechanism is inherently **[PAT-13] BFS (Kahn's Algorithm)**.
+*   **Pattern Mapping:** Dependency resolution strictly maps to **[PAT-16] Topological Sort**. The traversal mechanism is inherently **[PAT-13] BFS (Kahn's Algorithm)**.
 *   **Approach:** Build an adjacency list and an in-degree array. Push nodes with in-degree 0 to a queue. Process BFS, decrementing in-degrees of neighbors. If a neighbor hits 0, queue it. If the count of processed nodes equals $N$, no cycles exist.
 
 ### Tier 3: Multi-Pattern Synthesis (Capstone Challenges)

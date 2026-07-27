@@ -310,7 +310,7 @@ public List<Integer> topologicalSort(int numNodes, int[][] edges) {
 ## Solved Exemplar Problems
 
 **1. Search in Rotated Sorted Array**
-*Note: This classic Medium problem demonstrates parametric binary search. It serves as a foundation before the harder optimization problems that follow.*
+**Difficulty Classification:** This problem is classified as Medium on all major assessment platforms. It appears in this chapter because it demonstrates the advanced application of the Binary Search pattern [PAT-10] with a modified invariant. For assessment preparation, treat this as a medium-tier warm-up before tackling the harder DP and graph problems in this chapter.
 **Specification:** Given an integer array sorted in ascending order (with distinct values) and rotated at an unknown pivot, find the index of `target`.
 
 **Example:** `nums = [4,5,6,7,0,1,2]`, `target = 0` $\rightarrow$ output `4`.

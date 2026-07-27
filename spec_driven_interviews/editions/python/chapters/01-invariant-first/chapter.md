@@ -12,9 +12,7 @@ This approach is fragile. In the pressure of a live interview or a timed online 
 This is the "hack-and-test" methodology, and it signals to the interviewer that you lack structural discipline. A senior engineer or manager must demonstrate a systematic, predictable approach to code correctness. The solution is the **Invariant-First Strategy**.
 
 
-## Escaping the Syntax Trap
 
-This book assumes fluency in your primary language's type system, collection APIs, and standard library. If you find yourself struggling with basic syntax during practice, dedicate focused time to language mastery before tackling algorithmic patterns.
 
 
 ## Defining the Invariant Wall
@@ -147,6 +145,24 @@ public int binarySearch(int[] nums, int target) {
 ```
 
 By applying this invariant-first approach, we eliminate all cognitive overhead. We do not need to "dry-run" multiple edge cases or guess boundary updates. The math guarantees the correctness of our implementation.
+
+### Invariant Proof #2: The Sliding Window Maximum
+
+Prove the invariant for maintaining a monotonic deque that tracks the maximum element in a sliding window of size K:
+
+**Invariant:** At every step, the deque contains indices in strictly decreasing order of their corresponding values, and all indices are within the current window [i-K+1, i].
+
+**Initialization:** The deque is empty before processing begins. Vacuously true.
+**Maintenance:** When processing element A[i]:
+1. Remove all indices from the back where A[deque.peekLast()] ≤ A[i] (maintains decreasing order)
+2. Remove the front if deque.peekFirst() < i-K+1 (maintains window bounds)
+3. Add i to the back
+
+After these operations, deque.peekFirst() always holds the index of the maximum element in the current window.
+
+**Termination:** After processing all N elements, we have extracted N-K+1 window maximums, each in O(1) amortized time.
+
+This proves the Monotonic Deque pattern [PAT-20] achieves O(N) total time for sliding window maximum.
 
 
 > ⭐ **STAR Moment: The $O(1)$ Failure Principle**

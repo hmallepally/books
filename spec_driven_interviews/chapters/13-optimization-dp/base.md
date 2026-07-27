@@ -310,7 +310,7 @@ public List<Integer> topologicalSort(int numNodes, int[][] edges) {
 ## Solved Exemplar Problems
 
 **1. Search in Rotated Sorted Array**
-**Difficulty Classification:** This problem is classified as Medium on all major assessment platforms. It appears in this chapter because it demonstrates the advanced application of the Binary Search pattern [PAT-10] with a modified invariant. For assessment preparation, treat this as a medium-tier warm-up before tackling the harder DP and graph problems in this chapter.
+**Difficulty Classification:** This problem is classified as Medium on all major assessment platforms. It appears in this chapter because it demonstrates the advanced application of the Binary Search pattern **[PAT-10] Monotonic Partition Binary Search** with a modified invariant. For assessment preparation, treat this as a medium-tier warm-up before tackling the harder DP and graph problems in this chapter.
 **Specification:** Given an integer array sorted in ascending order (with distinct values) and rotated at an unknown pivot, find the index of `target`.
 
 **Example:** `nums = [4,5,6,7,0,1,2]`, `target = 0` $\rightarrow$ output `4`.
@@ -612,7 +612,7 @@ public int trap(int[] height) {
 * * *
 
 **8. Daily Temperatures**
-*Note: While placed in this chapter for its use of the Monotonic Stack pattern [PAT-19], this problem is a Medium-difficulty gateway to the pattern. Use it as a warm-up before tackling the harder exemplars below.*
+*Note: While placed in this chapter for its use of the Monotonic Stack pattern **[PAT-09] Monotonic Stack ("The Waiting Room")**, this problem is a Medium-difficulty gateway to the pattern. Use it as a warm-up before tackling the harder exemplars below.*
 **Specification:** Find the number of days you have to wait after each day to get a warmer temperature.
 
 **Example:** `[73,74,75,71,69,72,76,73]` $\rightarrow$ output `[1,1,4,2,1,1,0,0]`.

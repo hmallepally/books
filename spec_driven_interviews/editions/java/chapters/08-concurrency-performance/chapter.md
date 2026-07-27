@@ -277,6 +277,8 @@ $$(8 \times 2) + 1 = 17\ Connections$$
 
 Setting the pool size to 17 will yield *higher* overall throughput than setting it to 100, due to the minimization of CPU context switching and disk spindle thrashing.
 
+**Important Context:** This formula was derived empirically by the PostgreSQL community for spinning disk (HDD) workloads where 'Effective Spindle Count' represents physical disk heads. For modern NVMe SSDs and cloud-managed databases (e.g., Aurora, Cloud SQL), this formula is a starting point, not a universal law. Cloud databases often recommend pool sizes of 2-5× CPU cores. Always benchmark with your specific database engine and storage backend.
+
 ![HikariCP Connection Pool Sizing](visuals/hikaricp_formula.png){width=85%}
 
 

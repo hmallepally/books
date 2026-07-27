@@ -196,6 +196,21 @@ Frameworks like Spring Boot (Java), ASP.NET Core (C#), and FastAPI/Dependency In
 To adhere to OCP, frameworks use AOP to apply cross-cutting concerns (such as transactions, security, and logging) to service boundaries dynamically using **Proxy decorators**. For instance, adding `@Transactional` in Spring Boot or `[Transaction]` in ASP.NET Core wraps the service class in a proxy container, injecting commit and rollback logic without modifying the service's source code.
 
 
+### When SOLID Hurts: The Trade-off Analysis
+
+SOLID principles are design heuristics, not commandments. Over-application creates its own category of architectural failures:
+
+**Interface Segregation Overdose:** Splitting every interface into single-method contracts creates an explosion of types. A microservice with 47 single-method interfaces has replaced coupling with cognitive overload. The team spends more time navigating the interface graph than building features.
+
+**Dependency Inversion Overhead:** In small microservices (< 500 lines), injecting every dependency through constructor parameters adds boilerplate without benefit. If a service has exactly one implementation of each dependency and will never be swapped, direct instantiation is simpler and more honest.
+
+**Open-Closed Paralysis:** Designing every class for extension before you have a second use case is speculative generality. YAGNI (You Ain't Gonna Need It) often trumps OCP in early-stage systems. Add extension points when you have evidence of variation, not before.
+
+**Liskov Substitution in Practice:** The classic Rectangle/Square violation is taught in every textbook, but the real-world impact is subtler. When your service contract promises idempotent retries but a subclass implementation has side effects on retry, you've violated LSP in a way that causes production incidents, not just type errors.
+
+> The senior engineer's skill is knowing WHEN to apply SOLID and when the cure is worse than the disease.
+
+
 > ⭐ **STAR Moment: The Mockability Test**
 > 
 > The ultimate test of a SOLID design is **mockability**. In a technical interview, explain that a correctly decoupled class can be unit-tested in isolation by mocking all of its interface dependencies. If you cannot test a method without spinning up a real database, an active web server, or a third-party messaging channel, your design violates the Dependency Inversion Principle.
