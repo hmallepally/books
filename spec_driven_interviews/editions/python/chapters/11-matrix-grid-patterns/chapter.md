@@ -45,56 +45,46 @@ Why it matters: It solves rotting oranges and walls-and-gates problems in a sing
 ## Reusable Code Templates
 
 ### Template A: Spiral Boundary Traversal
-```java
-int top = 0, bottom = matrix.length - 1;
-int left = 0, right = matrix[0].length - 1;
-while (top <= bottom && left <= right) {
-  for (int j = left; j <= right; j++) { /* process matrix[top][j] */ }
-  top++;
-  for (int i = top; i <= bottom; i++) { /* process matrix[i][right] */ }
-  right--;
-  if (top <= bottom) {
-    for (int j = right; j >= left; j--) { /* process matrix[bottom][j] */ }
-    bottom--;
-  }
-  if (left <= right) {
-    for (int i = bottom; i >= top; i--) { /* process matrix[i][left] */ }
-    left++;
-  }
-}
+```python
+top, bottom = 0, len(matrix) - 1
+left, right = 0, len(matrix[0]) - 1
+while top <= bottom and left <= right:
+    for j in range(left, right + 1): pass # process matrix[top][j]
+    top += 1
+    for i in range(top, bottom + 1): pass # process matrix[i][right]
+    right -= 1
+    if top <= bottom:
+        for j in range(right, left - 1, -1): pass # process matrix[bottom][j]
+        bottom -= 1
+    if left <= right:
+        for i in range(bottom, top - 1, -1): pass # process matrix[i][left]
+        left += 1
 ```
-
 ![Spiral Boundary Traversal — Layer-by-Layer Contraction](visuals/spiral_traversal.png){width=85%}
 
 ### Template B: 4-Directional BFS/DFS Grid Walk
-```java
-int[] dr = {-1, 1, 0, 0};
-int[] dc = {0, 0, -1, 1};
+```python
+dr = [-1, 1, 0, 0]
+dc = [0, 0, -1, 1]
 
-void dfs(int[][] grid, int r, int c) {
-  if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] == -1) return;
-  grid[r][c] = -1; // mark visited
-  for (int i = 0; i < 4; i++) {
-    dfs(grid, r + dr[i], c + dc[i]);
-  }
-}
+def dfs(grid: list[list[int]], r: int, c: int) -> None:
+    if r < 0 or r >= len(grid) or c < 0 or c >= len(grid[0]) or grid[r][c] == -1: return
+    grid[r][c] = -1 # mark visited
+    for i in range(4):
+        dfs(grid, r + dr[i], c + dc[i])
 ```
-
 ### Template C: 2D Prefix Sum Construction + Query
-```java
-// Construction
-int[][] sum = new int[R + 1][C + 1];
-for (int r = 1; r <= R; r++) {
-  for (int c = 1; c <= C; c++) {
-    sum[r][c] = matrix[r-1][c-1] + sum[r-1][c] + sum[r][c-1] - sum[r-1][c-1];
-  }
-}
-// Query from (r1, c1) to (r2, c2)
-int query(int r1, int c1, int r2, int c2) {
-  return sum[r2+1][c2+1] - sum[r1][c2+1] - sum[r2+1][c1] + sum[r1][c1];
-}
-```
+```python
+# Construction
+sum_grid = [[0] * (C + 1) for _ in range(R + 1)]
+for r in range(1, R + 1):
+    for c in range(1, C + 1):
+        sum_grid[r][c] = matrix[r-1][c-1] + sum_grid[r-1][c] + sum_grid[r][c-1] - sum_grid[r-1][c-1]
 
+# Query from (r1, c1) to (r2, c2)
+def query(r1: int, c1: int, r2: int, c2: int) -> int:
+    return sum_grid[r2+1][c2+1] - sum_grid[r1][c2+1] - sum_grid[r2+1][c1] + sum_grid[r1][c1]
+```
 **Understanding the Construction — Worked Example.** Given a 3×3 matrix, we build a 4×4 prefix sum array `S` padded with a zero row and zero column. Each cell `S[r][c]` stores the sum of all original elements from `(0,0)` to `(r-1, c-1)`.
 
 Original Matrix A:
@@ -157,28 +147,18 @@ $$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
 
 **Explanation:** Rotating 90 degrees clockwise is mathematically equivalent to transposing the matrix (swapping $i,j$ with $j,i$) and then reversing the elements of each row. This avoids needing complex 4-way coordinate swaps.
 
-```java
-public void rotate(int[][] matrix) {
-  int n = matrix.length;
-  // Transpose
-  for (int i = 0; i < n; i++) {
-    for (int j = i + 1; j < n; j++) {
-      int temp = matrix[i][j];
-      matrix[i][j] = matrix[j][i];
-      matrix[j][i] = temp;
-    }
-  }
-  // Reverse each row
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < n / 2; j++) {
-      int temp = matrix[i][j];
-      matrix[i][j] = matrix[i][n - 1 - j];
-      matrix[i][n - 1 - j] = temp;
-    }
-  }
-}
-```
-Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```python
+def rotate(self, matrix: list[list[int]]) -> None:
+    n = len(matrix)
+    # Transpose
+    for i in range(n):
+        for j in range(i + 1, n):
+            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+    # Reverse each row
+    for i in range(n):
+        for j in range(n // 2):
+            matrix[i][j], matrix[i][n - 1 - j] = matrix[i][n - 1 - j], matrix[i][j]
+```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **2. Spiral Matrix Traversal**
@@ -190,28 +170,23 @@ Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Maintain `top`, `bottom`, `left`, `right` pointers. Traverse the top row, increment `top`. Traverse right col, decrement `right`. Traverse bottom row (if `top <= bottom`), decrement `bottom`. Traverse left col (if `left <= right`), increment `left`.
 
-```java
-public List<Integer> spiralOrder(int[][] matrix) {
-  List<Integer> res = new ArrayList<>();
-  int t = 0, b = matrix.length - 1, l = 0, r = matrix[0].length - 1;
-  while (t <= b && l <= r) {
-    for (int j = l; j <= r; j++) res.add(matrix[t][j]); // Top
-    t++;
-    for (int i = t; i <= b; i++) res.add(matrix[i][r]); // Right
-    r--;
-    if (t <= b) {
-      for (int j = r; j >= l; j--) res.add(matrix[b][j]); // Bottom
-      b--;
-    }
-    if (l <= r) {
-      for (int i = b; i >= t; i--) res.add(matrix[i][l]); // Left
-      l++;
-    }
-  }
-  return res;
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```python
+def spiral_order(self, matrix: list[list[int]]) -> list[int]:
+    res = []
+    t, b, l, r = 0, len(matrix) - 1, 0, len(matrix[0]) - 1
+    while t <= b and l <= r:
+        for j in range(l, r + 1): res.append(matrix[t][j]) # Top
+        t += 1
+        for i in range(t, b + 1): res.append(matrix[i][r]) # Right
+        r -= 1
+        if t <= b:
+            for j in range(r, l - 1, -1): res.append(matrix[b][j]) # Bottom
+            b -= 1
+        if l <= r:
+            for i in range(b, t - 1, -1): res.append(matrix[i][l]) # Left
+            l += 1
+    return res
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **3. Set Matrix Zeros**
@@ -223,36 +198,31 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** We use the first row and first column to store information about whether that row or column should be zeroed out. We need a separate variable for the first column to avoid overlapping state.
 
-```java
-public void setZeroes(int[][] matrix) {
-  int m = matrix.length, n = matrix[0].length;
-  boolean firstColZero = false;
-  // Mark zeros on first row/col
-  for (int i = 0; i < m; i++) {
-    if (matrix[i][0] == 0) firstColZero = true;
-    for (int j = 1; j < n; j++) {
-      if (matrix[i][j] == 0) {
-        matrix[i][0] = 0;
-        matrix[0][j] = 0;
-      }
-    }
-  }
-  // Zero out based on marks
-  for (int i = 1; i < m; i++) {
-    for (int j = 1; j < n; j++) {
-      if (matrix[i][0] == 0 || matrix[0][j] == 0) matrix[i][j] = 0;
-    }
-  }
-  // Handle first row/col specifically
-  if (matrix[0][0] == 0) {
-    for (int j = 0; j < n; j++) matrix[0][j] = 0;
-  }
-  if (firstColZero) {
-    for (int i = 0; i < m; i++) matrix[i][0] = 0;
-  }
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```python
+def set_zeroes(self, matrix: list[list[int]]) -> None:
+    m, n = len(matrix), len(matrix[0])
+    first_col_zero = False
+    
+    # Mark zeros on first row/col
+    for i in range(m):
+        if matrix[i][0] == 0: first_col_zero = True
+        for j in range(1, n):
+            if matrix[i][j] == 0:
+                matrix[i][0] = 0
+                matrix[0][j] = 0
+                
+    # Zero out based on marks
+    for i in range(1, m):
+        for j in range(1, n):
+            if matrix[i][0] == 0 or matrix[0][j] == 0:
+                matrix[i][j] = 0
+                
+    # Handle first row/col specifically
+    if matrix[0][0] == 0:
+        for j in range(n): matrix[0][j] = 0
+    if first_col_zero:
+        for i in range(m): matrix[i][0] = 0
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **4. Diagonal Matrix Traversal**
@@ -264,27 +234,23 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** In a diagonal traversal, the sum of indices `(i+j)` is constant for each diagonal. For even sums, we move Up-Right. For odd sums, we move Down-Left. Boundary conditions handle when we hit the edges.
 
-```java
-public int[] findDiagonalOrder(int[][] mat) {
-  int m = mat.length, n = mat[0].length;
-  int[] res = new int[m * n];
-  int r = 0, c = 0;
-  for (int i = 0; i < m * n; i++) {
-    res[i] = mat[r][c];
-    if ((r + c) % 2 == 0) { // Moving Up-Right
-      if (c == n - 1) r++;
-      else if (r == 0) c++;
-      else { r--; c++; }
-    } else { // Moving Down-Left
-      if (r == m - 1) c++;
-      else if (c == 0) r++;
-      else { r++; c--; }
-    }
-  }
-  return res;
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```python
+def find_diagonal_order(self, mat: list[list[int]]) -> list[int]:
+    m, n = len(mat), len(mat[0])
+    res = [0] * (m * n)
+    r, c = 0, 0
+    for i in range(m * n):
+        res[i] = mat[r][c]
+        if (r + c) % 2 == 0: # Moving Up-Right
+            if c == n - 1: r += 1
+            elif r == 0: c += 1
+            else: r -= 1; c += 1
+        else: # Moving Down-Left
+            if r == m - 1: c += 1
+            elif c == 0: r += 1
+            else: r += 1; c -= 1
+    return res
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **5. Matrix Reshape Validation**
@@ -296,19 +262,16 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** A 2D matrix can be flattened logically. The 1D index `k` maps to 2D coordinates `(k / cols, k % cols)`. We map the original matrix into the new shape using a single counter `k`.
 
-```java
-public int[][] matrixReshape(int[][] mat, int r, int c) {
-  int m = mat.length, n = mat[0].length;
-  if (m * n != r * c) return mat; // Invalid shape
-  
-  int[][] res = new int[r][c];
-  for (int i = 0; i < m * n; i++) {
-    res[i / c][i % c] = mat[i / n][i % n];
-  }
-  return res;
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
+```python
+def matrix_reshape(self, mat: list[list[int]], r: int, c: int) -> list[list[int]]:
+    m, n = len(mat), len(mat[0])
+    if m * n != r * c: return mat # Invalid shape
+    
+    res = [[0] * c for _ in range(r)]
+    for i in range(m * n):
+        res[i // c][i % c] = mat[i // n][i % n]
+    return res
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
 
 * * *
 **6. Rotate Matrix 90° Counter-Clockwise**
@@ -320,28 +283,18 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
 
 **Explanation:** Counter-clockwise rotation is similar to clockwise. We transpose first, then reverse the columns (top to bottom swap) instead of rows.
 
-```java
-public void rotateCounter(int[][] matrix) {
-  int n = matrix.length;
-  // Transpose
-  for (int i = 0; i < n; i++) {
-    for (int j = i + 1; j < n; j++) {
-      int temp = matrix[i][j];
-      matrix[i][j] = matrix[j][i];
-      matrix[j][i] = temp;
-    }
-  }
-  // Reverse each column
-  for (int j = 0; j < n; j++) {
-    for (int i = 0; i < n / 2; i++) {
-      int temp = matrix[i][j];
-      matrix[i][j] = matrix[n - 1 - i][j];
-      matrix[n - 1 - i][j] = temp;
-    }
-  }
-}
-```
-Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```python
+def rotate_counter(self, matrix: list[list[int]]) -> None:
+    n = len(matrix)
+    # Transpose
+    for i in range(n):
+        for j in range(i + 1, n):
+            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+    # Reverse each column
+    for j in range(n):
+        for i in range(n // 2):
+            matrix[i][j], matrix[n - 1 - i][j] = matrix[n - 1 - i][j], matrix[i][j]
+```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **7. Search in Row-Column Sorted Matrix**
@@ -353,18 +306,15 @@ Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Start at the top-right corner. If target is smaller than the current value, it can't be in this column (move left). If target is larger, it can't be in this row (move down).
 
-```java
-public boolean searchMatrix(int[][] matrix, int target) {
-  int r = 0, c = matrix[0].length - 1;
-  while (r < matrix.length && c >= 0) {
-    if (matrix[r][c] == target) return true;
-    else if (matrix[r][c] > target) c--;
-    else r++;
-  }
-  return false;
-}
-```
-Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
+```python
+def search_matrix(self, matrix: list[list[int]], target: int) -> bool:
+    r, c = 0, len(matrix[0]) - 1
+    while r < len(matrix) and c >= 0:
+        if matrix[r][c] == target: return True
+        elif matrix[r][c] > target: c -= 1
+        else: r += 1
+    return False
+```Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **8. Game of Life**
@@ -376,32 +326,25 @@ Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** To update in-place without a copy, encode transitions. Let 2 mean "was dead, now live", and -1 mean "was live, now dead". When counting neighbors, check if `abs(val) == 1`. After updating all, decode the states.
 
-```java
-public void gameOfLife(int[][] board) {
-  int m = board.length, n = board[0].length;
-  for (int r = 0; r < m; r++) {
-    for (int c = 0; c < n; c++) {
-      int live = 0;
-      for (int i = -1; i <= 1; i++) {
-        for (int j = -1; j <= 1; j++) {
-          if (i == 0 && j == 0) continue;
-          int nr = r + i, nc = c + j;
-          if (nr >= 0 && nr < m && nc >= 0 && nc < n && Math.abs(board[nr][nc]) == 1) live++;
-        }
-      }
-      if (board[r][c] == 1 && (live < 2 || live > 3)) board[r][c] = -1;
-      if (board[r][c] == 0 && live == 3) board[r][c] = 2;
-    }
-  }
-  for (int r = 0; r < m; r++) {
-    for (int c = 0; c < n; c++) {
-      if (board[r][c] > 0) board[r][c] = 1;
-      else board[r][c] = 0;
-    }
-  }
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```python
+def game_of_life(self, board: list[list[int]]) -> None:
+    m, n = len(board), len(board[0])
+    for r in range(m):
+        for c in range(n):
+            live = 0
+            for i in range(-1, 2):
+                for j in range(-1, 2):
+                    if i == 0 and j == 0: continue
+                    nr, nc = r + i, c + j
+                    if 0 <= nr < m and 0 <= nc < n and abs(board[nr][nc]) == 1: live += 1
+            if board[r][c] == 1 and (live < 2 or live > 3): board[r][c] = -1
+            if board[r][c] == 0 and live == 3: board[r][c] = 2
+            
+    for r in range(m):
+        for c in range(n):
+            if board[r][c] > 0: board[r][c] = 1
+            else: board[r][c] = 0
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **9. Toeplitz Matrix Verification**
@@ -413,19 +356,14 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Simply check every cell `matrix[i][j]` against its top-left neighbor `matrix[i-1][j-1]`. If they mismatch, return false.
 
-```java
-public boolean isToeplitzMatrix(int[][] matrix) {
-  for (int i = 1; i < matrix.length; i++) {
-    for (int j = 1; j < matrix[0].length; j++) {
-      if (matrix[i][j] != matrix[i-1][j-1]) {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```python
+def is_toeplitz_matrix(self, matrix: list[list[int]]) -> bool:
+    for i in range(1, len(matrix)):
+        for j in range(1, len(matrix[0])):
+            if matrix[i][j] != matrix[i-1][j-1]:
+                return False
+    return True
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **10. Spiral Matrix Construction**
@@ -437,29 +375,32 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Similar to spiral traversal, but instead of reading, we write an incrementing counter `val++` into the boundaries, contracting inwards until we fill $n^2$ elements.
 
-```java
-public int[][] generateMatrix(int n) {
-  int[][] mat = new int[n][n];
-  int t = 0, b = n - 1, l = 0, r = n - 1;
-  int val = 1;
-  while (t <= b && l <= r) {
-    for (int j = l; j <= r; j++) mat[t][j] = val++;
-    t++;
-    for (int i = t; i <= b; i++) mat[i][r] = val++;
-    r--;
-    if (t <= b) {
-      for (int j = r; j >= l; j--) mat[b][j] = val++;
-      b--;
-    }
-    if (l <= r) {
-      for (int i = b; i >= t; i--) mat[i][l] = val++;
-      l++;
-    }
-  }
-  return mat;
-}
-```
-Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
+```python
+def generate_matrix(self, n: int) -> list[list[int]]:
+    mat = [[0] * n for _ in range(n)]
+    t, b, l, r = 0, n - 1, 0, n - 1
+    val = 1
+    while t <= b and l <= r:
+        for j in range(l, r + 1):
+            mat[t][j] = val
+            val += 1
+        t += 1
+        for i in range(t, b + 1):
+            mat[i][r] = val
+            val += 1
+        r -= 1
+        if t <= b:
+            for j in range(r, l - 1, -1):
+                mat[b][j] = val
+                val += 1
+            b -= 1
+        if l <= r:
+            for i in range(b, t - 1, -1):
+                mat[i][l] = val
+                val += 1
+            l += 1
+    return mat
+```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
 
 * * *
 **11. Flood Fill**
@@ -471,23 +412,20 @@ Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
 
 **Explanation:** We check if the starting pixel is already the target color. If not, we recursively replace all adjacent cells of the original color with the new color using DFS.
 
-```java
-public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-  if (image[sr][sc] != color) {
-    dfs(image, sr, sc, image[sr][sc], color);
-  }
-  return image;
-}
-private void dfs(int[][] img, int r, int c, int oldC, int newC) {
-  if (r < 0 || r >= img.length || c < 0 || c >= img[0].length || img[r][c] != oldC) return;
-  img[r][c] = newC; // mark and fill
-  dfs(img, r-1, c, oldC, newC);
-  dfs(img, r+1, c, oldC, newC);
-  dfs(img, r, c-1, oldC, newC);
-  dfs(img, r, c+1, oldC, newC);
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```python
+def flood_fill(self, image: list[list[int]], sr: int, sc: int, color: int) -> list[list[int]]:
+    if image[sr][sc] != color:
+        self._dfs(image, sr, sc, image[sr][sc], color)
+    return image
+
+def _dfs(self, img: list[list[int]], r: int, c: int, old_c: int, new_c: int) -> None:
+    if r < 0 or r >= len(img) or c < 0 or c >= len(img[0]) or img[r][c] != old_c: return
+    img[r][c] = new_c # mark and fill
+    self._dfs(img, r-1, c, old_c, new_c)
+    self._dfs(img, r+1, c, old_c, new_c)
+    self._dfs(img, r, c-1, old_c, new_c)
+    self._dfs(img, r, c+1, old_c, new_c)
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **12. Transpose Rectangular Matrix**
@@ -499,20 +437,16 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Since the matrix isn't square, we cannot transpose in place. We allocate a new matrix of size $C \times R$, and assign `ans[j][i] = matrix[i][j]`.
 
-```java
-public int[][] transpose(int[][] matrix) {
-  int r = matrix.length;
-  int c = matrix[0].length;
-  int[][] ans = new int[c][r];
-  for (int i = 0; i < r; i++) {
-    for (int j = 0; j < c; j++) {
-      ans[j][i] = matrix[i][j];
-    }
-  }
-  return ans;
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```python
+def transpose(self, matrix: list[list[int]]) -> list[list[int]]:
+    r = len(matrix)
+    c = len(matrix[0])
+    ans = [[0] * r for _ in range(c)]
+    for i in range(r):
+        for j in range(c):
+            ans[j][i] = matrix[i][j]
+    return ans
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **13. Valid Sudoku**
@@ -524,28 +458,24 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** We iterate through the grid. For each cell, we encode its presence in its row, column, and block as unique integers to avoid slow string concatenations. If `HashSet.add()` returns false, a duplicate exists.
 
-```java
-public boolean isValidSudoku(char[][] board) {
-  Set<Integer> seen = new HashSet<>();
-  for (int i = 0; i < 9; ++i) {
-    for (int j = 0; j < 9; ++j) {
-      char number = board[i][j];
-      if (number != '.') {
-        int boxIdx = (i / 3) * 3 + j / 3;
-        int rowKey = number * 100 + i;
-        int colKey = number * 100 + j + 27;
-        int boxKey = number * 100 + boxIdx + 54;
-        if (!seen.add(rowKey) ||
-            !seen.add(colKey) ||
-            !seen.add(boxKey))
-          return false;
-      }
-    }
-  }
-  return true;
-}
-```
-Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
+```python
+def is_valid_sudoku(self, board: list[list[str]]) -> bool:
+    seen = set()
+    for i in range(9):
+        for j in range(9):
+            number = board[i][j]
+            if number != '.':
+                box_idx = (i // 3) * 3 + j // 3
+                row_key = f"{number} in row {i}"
+                col_key = f"{number} in col {j}"
+                box_key = f"{number} in box {box_idx}"
+                if row_key in seen or col_key in seen or box_key in seen:
+                    return False
+                seen.add(row_key)
+                seen.add(col_key)
+                seen.add(box_key)
+    return True
+```Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
 
 * * *
 **14. Island Perimeter**
@@ -557,22 +487,17 @@ Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
 
 **Explanation:** Each land cell adds 4 to the perimeter. For each land cell, we check its left and top neighbors. If they are also land, they share an edge, meaning we subtract 2 from the total perimeter (1 for each cell).
 
-```java
-public int islandPerimeter(int[][] grid) {
-  int perimeter = 0;
-  for (int i = 0; i < grid.length; i++) {
-    for (int j = 0; j < grid[0].length; j++) {
-      if (grid[i][j] == 1) {
-        perimeter += 4;
-        if (i > 0 && grid[i - 1][j] == 1) perimeter -= 2;
-        if (j > 0 && grid[i][j - 1] == 1) perimeter -= 2;
-      }
-    }
-  }
-  return perimeter;
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```python
+def island_perimeter(self, grid: list[list[int]]) -> int:
+    perimeter = 0
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == 1:
+                perimeter += 4
+                if i > 0 and grid[i - 1][j] == 1: perimeter -= 2
+                if j > 0 and grid[i][j - 1] == 1: perimeter -= 2
+    return perimeter
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **15. Maximum K×K Submatrix Sum**
@@ -584,26 +509,21 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Construct a 2D prefix sum array. Then iterate through all possible bottom-right corners `(i,j)` of size $K \times K$, extracting the sum in $\mathcal{O}(1)$ time.
 
-```java
-public int maxSum(int[][] mat, int k) {
-  int m = mat.length, n = mat[0].length;
-  int[][] pre = new int[m + 1][n + 1];
-  for (int i = 1; i <= m; i++) {
-    for (int j = 1; j <= n; j++) {
-      pre[i][j] = mat[i-1][j-1] + pre[i-1][j] + pre[i][j-1] - pre[i-1][j-1];
-    }
-  }
-  int max = Integer.MIN_VALUE;
-  for (int i = k; i <= m; i++) {
-    for (int j = k; j <= n; j++) {
-      int sum = pre[i][j] - pre[i-k][j] - pre[i][j-k] + pre[i-k][j-k];
-      max = Math.max(max, sum);
-    }
-  }
-  return max;
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```python
+def max_sum(self, mat: list[list[int]], k: int) -> int:
+    m, n = len(mat), len(mat[0])
+    pre = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            pre[i][j] = mat[i-1][j-1] + pre[i-1][j] + pre[i][j-1] - pre[i-1][j-1]
+            
+    max_val = float('-inf')
+    for i in range(k, m + 1):
+        for j in range(k, n + 1):
+            s = pre[i][j] - pre[i-k][j] - pre[i][j-k] + pre[i-k][j-k]
+            max_val = max(max_val, s)
+    return max_val
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **16. Number of Islands**
@@ -615,27 +535,22 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Iterate over every cell. When a '1' is found, increment the island count, and launch a DFS/BFS to mark all connected '1's as '0' to avoid recounting.
 
-```java
-public int numIslands(char[][] grid) {
-  int count = 0;
-  for (int i = 0; i < grid.length; i++) {
-    for (int j = 0; j < grid[0].length; j++) {
-      if (grid[i][j] == '1') {
-        count++;
-        dfs(grid, i, j);
-      }
-    }
-  }
-  return count;
-}
-private void dfs(char[][] grid, int r, int c) {
-  if (r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == '0') return;
-  grid[r][c] = '0';
-  dfs(grid, r+1, c); dfs(grid, r-1, c);
-  dfs(grid, r, c+1); dfs(grid, r, c-1);
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```python
+def num_islands(self, grid: list[list[str]]) -> int:
+    count = 0
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == '1':
+                count += 1
+                self._dfs(grid, i, j)
+    return count
+
+def _dfs(self, grid: list[list[str]], r: int, c: int) -> None:
+    if r < 0 or c < 0 or r >= len(grid) or c >= len(grid[0]) or grid[r][c] == '0': return
+    grid[r][c] = '0'
+    self._dfs(grid, r+1, c); self._dfs(grid, r-1, c)
+    self._dfs(grid, r, c+1); self._dfs(grid, r, c-1)
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **17. Flip and Invert Image**
@@ -647,21 +562,15 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** In a single pass per row, we can use two pointers `i` and `j`. We assign `row[i] = row[j] ^ 1` and `row[j] = temp ^ 1`. Note the middle element when length is odd.
 
-```java
-public int[][] flipAndInvertImage(int[][] image) {
-  for (int[] row : image) {
-    int left = 0, right = row.length - 1;
-    while (left <= right) {
-      int temp = row[left] ^ 1;
-      row[left] = row[right] ^ 1;
-      row[right] = temp;
-      left++; right--;
-    }
-  }
-  return image;
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```python
+def flip_and_invert_image(self, image: list[list[int]]) -> list[list[int]]:
+    for row in image:
+        left, right = 0, len(row) - 1
+        while left <= right:
+            row[left], row[right] = row[right] ^ 1, row[left] ^ 1
+            left += 1; right -= 1
+    return image
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **18. Shift 2D Grid**
@@ -673,25 +582,19 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Map the grid to a 1D array conceptually of size $M \times N$. The new position of an element at index `i` is `(i + k) % (M * N)`. We can construct a new result grid based on this mapping.
 
-```java
-public List<List<Integer>> shiftGrid(int[][] grid, int k) {
-  int m = grid.length, n = grid[0].length;
-  int total = m * n;
-  k %= total;
-  List<List<Integer>> res = new ArrayList<>();
-  for (int i = 0; i < m; i++) {
-    res.add(new ArrayList<>(Collections.nCopies(n, 0)));
-  }
-  for (int r = 0; r < m; r++) {
-    for (int c = 0; c < n; c++) {
-      int new1D = (r * n + c + k) % total;
-      res.get(new1D / n).set(new1D % n, grid[r][c]);
-    }
-  }
-  return res;
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```python
+def shift_grid(self, grid: list[list[int]], k: int) -> list[list[int]]:
+    m, n = len(grid), len(grid[0])
+    total = m * n
+    k %= total
+    res = [[0] * n for _ in range(m)]
+    
+    for r in range(m):
+        for c in range(n):
+            new_1d = (r * n + c + k) % total
+            res[new_1d // n][new_1d % n] = grid[r][c]
+    return res
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **19. Word Search in Grid**
@@ -703,27 +606,24 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Iterate over all cells. If the first character matches, launch DFS. Temporarily mark cells (e.g., `#`) during recursion to prevent reuse, and restore them after the recursive call returns.
 
-```java
-public boolean exist(char[][] board, String word) {
-  for (int i = 0; i < board.length; i++) {
-    for (int j = 0; j < board[0].length; j++) {
-      if (dfs(board, i, j, word, 0)) return true;
-    }
-  }
-  return false;
-}
-private boolean dfs(char[][] b, int r, int c, String word, int idx) {
-  if (idx == word.length()) return true;
-  if (r < 0 || c < 0 || r >= b.length || c >= b[0].length || b[r][c] != word.charAt(idx)) return false;
-  char temp = b[r][c];
-  b[r][c] = '#';
-  boolean found = dfs(b, r+1, c, word, idx+1) || dfs(b, r-1, c, word, idx+1) ||
-                  dfs(b, r, c+1, word, idx+1) || dfs(b, r, c-1, word, idx+1);
-  b[r][c] = temp;
-  return found;
-}
-```
-Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
+```python
+def exist(self, board: list[list[str]], word: str) -> bool:
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            if self._dfs(board, i, j, word, 0): return True
+    return False
+
+def _dfs(self, b: list[list[str]], r: int, c: int, word: str, idx: int) -> bool:
+    if idx == len(word): return True
+    if r < 0 or c < 0 or r >= len(b) or c >= len(b[0]) or b[r][c] != word[idx]: return False
+    
+    temp = b[r][c]
+    b[r][c] = '#'
+    found = (self._dfs(b, r+1, c, word, idx+1) or self._dfs(b, r-1, c, word, idx+1) or
+             self._dfs(b, r, c+1, word, idx+1) or self._dfs(b, r, c-1, word, idx+1))
+    b[r][c] = temp
+    return found
+```Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
 
 * * *
 **20. Determine If Matrix Can Be Obtained By Rotation**
@@ -735,29 +635,22 @@ Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
 
 **Explanation:** A matrix can be rotated at most 3 times (90, 180, 270 degrees). We compare `mat` to `target` up to 4 times, rotating `mat` by 90 degrees each time.
 
-```java
-public boolean findRotation(int[][] mat, int[][] target) {
-  for (int k = 0; k < 4; k++) {
-    if (Arrays.deepEquals(mat, target)) return true;
-    rotate(mat); // uses function from Problem 1
-  }
-  return false;
-}
-private void rotate(int[][] mat) {
-  int n = mat.length;
-  for (int i = 0; i < n; i++) {
-    for (int j = i + 1; j < n; j++) {
-      int t = mat[i][j]; mat[i][j] = mat[j][i]; mat[j][i] = t;
-    }
-  }
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < n/2; j++) {
-      int t = mat[i][j]; mat[i][j] = mat[i][n-1-j]; mat[i][n-1-j] = t;
-    }
-  }
-}
-```
-Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```python
+def find_rotation(self, mat: list[list[int]], target: list[list[int]]) -> bool:
+    for k in range(4):
+        if mat == target: return True
+        self.rotate(mat)
+    return False
+
+def rotate(self, mat: list[list[int]]) -> None:
+    n = len(mat)
+    for i in range(n):
+        for j in range(i + 1, n):
+            mat[i][j], mat[j][i] = mat[j][i], mat[i][j]
+    for i in range(n):
+        for j in range(n // 2):
+            mat[i][j], mat[i][n-1-j] = mat[i][n-1-j], mat[i][j]
+```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **21. Chess Board Cell Color**
@@ -769,14 +662,12 @@ Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Convert the column letter and row number to integers. The color of a cell `(x, y)` is uniquely determined by `(x + y) % 2`. Compare the parity.
 
-```java
-public boolean solution(String cell1, String cell2) {
-  int sum1 = (cell1.charAt(0) - 'A') + (cell1.charAt(1) - '1');
-  int sum2 = (cell2.charAt(0) - 'A') + (cell2.charAt(1) - '1');
-  return (sum1 % 2) == (sum2 % 2);
-}
-```
-Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
+```python
+def solution(self, cell1: str, cell2: str) -> bool:
+    sum1 = (ord(cell1[0]) - ord('A')) + (ord(cell1[1]) - ord('1'))
+    sum2 = (ord(cell2[0]) - ord('A')) + (ord(cell2[1]) - ord('1'))
+    return (sum1 % 2) == (sum2 % 2)
+```Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **22. Minesweeper Click Reveal**
@@ -788,36 +679,32 @@ Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Count adjacent mines (8 directions). If > 0, set to digit. If == 0, set to 'B' and DFS to 8 adjacent 'E' neighbors.
 
-```java
-public char[][] updateBoard(char[][] board, int[] click) {
-  int r = click[0], c = click[1];
-  if (board[r][c] == 'M') {
-    board[r][c] = 'X';
-    return board;
-  }
-  dfs(board, r, c);
-  return board;
-}
-private void dfs(char[][] b, int r, int c) {
-  if (r < 0 || c < 0 || r >= b.length || c >= b[0].length || b[r][c] != 'E') return;
-  int mines = 0;
-  for (int i = -1; i <= 1; i++) {
-    for (int j = -1; j <= 1; j++) {
-      int nr = r + i, nc = c + j;
-      if (nr >= 0 && nr < b.length && nc >= 0 && nc < b[0].length && b[nr][nc] == 'M') mines++;
-    }
-  }
-  if (mines > 0) {
-    b[r][c] = (char)(mines + '0');
-  } else {
-    b[r][c] = 'B';
-    for (int i = -1; i <= 1; i++) {
-      for (int j = -1; j <= 1; j++) dfs(b, r+i, c+j);
-    }
-  }
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```python
+def update_board(self, board: list[list[str]], click: list[int]) -> list[list[str]]:
+    r, c = click[0], click[1]
+    if board[r][c] == 'M':
+        board[r][c] = 'X'
+        return board
+    self._dfs(board, r, c)
+    return board
+
+def _dfs(self, b: list[list[str]], r: int, c: int) -> None:
+    if r < 0 or c < 0 or r >= len(b) or c >= len(b[0]) or b[r][c] != 'E': return
+    mines = 0
+    for i in range(-1, 2):
+        for j in range(-1, 2):
+            nr, nc = r + i, c + j
+            if 0 <= nr < len(b) and 0 <= nc < len(b[0]) and b[nr][nc] == 'M':
+                mines += 1
+                
+    if mines > 0:
+        b[r][c] = str(mines)
+    else:
+        b[r][c] = 'B'
+        for i in range(-1, 2):
+            for j in range(-1, 2):
+                self._dfs(b, r+i, c+j)
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **23. Battleship Placement Validation**
@@ -829,22 +716,17 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Instead of a full DFS, just count the "top-left" cell of every battleship. A cell is a top-left if it is 'X' and has no 'X' above or to the left of it.
 
-```java
-public int countBattleships(char[][] board) {
-  int count = 0;
-  for (int i = 0; i < board.length; i++) {
-    for (int j = 0; j < board[0].length; j++) {
-      if (board[i][j] == 'X') {
-        if (i > 0 && board[i-1][j] == 'X') continue;
-        if (j > 0 && board[i][j-1] == 'X') continue;
-        count++;
-      }
-    }
-  }
-  return count;
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```python
+def count_battleships(self, board: list[list[str]]) -> int:
+    count = 0
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            if board[i][j] == 'X':
+                if i > 0 and board[i-1][j] == 'X': continue
+                if j > 0 and board[i][j-1] == 'X': continue
+                count += 1
+    return count
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **24. Box Blur**
@@ -856,25 +738,17 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** The output matrix size is $(M-2) \times (N-2)$. We iterate over these valid centers and compute the sum of the $3 \times 3$ area.
 
-```java
-public int[][] boxBlur(int[][] image) {
-  int m = image.length, n = image[0].length;
-  int[][] res = new int[m-2][n-2];
-  for (int i = 1; i < m - 1; i++) {
-    for (int j = 1; j < n - 1; j++) {
-      int sum = 0;
-      for (int di = -1; di <= 1; di++) {
-        for (int dj = -1; dj <= 1; dj++) {
-          sum += image[i + di][j + dj];
-        }
-      }
-      res[i-1][j-1] = sum / 9;
-    }
-  }
-  return res;
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```python
+def box_blur(self, image: list[list[int]]) -> list[list[int]]:
+    m, n = len(image), len(image[0])
+    res = [[0] * (n - 2) for _ in range(m - 2)]
+    
+    for i in range(1, m - 1):
+        for j in range(1, n - 1):
+            s = sum(image[i + di][j + dj] for di in range(-1, 2) for dj in range(-1, 2))
+            res[i-1][j-1] = s // 9
+    return res
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **25. Zigzag String Conversion**
@@ -886,26 +760,22 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Maintain a `row` index and a `direction`. Add characters to `StringBuilder[]` corresponding to each row. When hitting top or bottom row, reverse direction.
 
-```java
-public String convert(String s, int numRows) {
-  if (numRows == 1) return s;
-  StringBuilder[] rows = new StringBuilder[Math.min(numRows, s.length())];
-  for (int i = 0; i < rows.length; i++) rows[i] = new StringBuilder();
-  
-  int curRow = 0;
-  boolean goingDown = false;
-  for (char c : s.toCharArray()) {
-    rows[curRow].append(c);
-    if (curRow == 0 || curRow == numRows - 1) goingDown = !goingDown;
-    curRow += goingDown ? 1 : -1;
-  }
-  
-  StringBuilder ret = new StringBuilder();
-  for (StringBuilder row : rows) ret.append(row);
-  return ret.toString();
-}
-```
-Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
+```python
+def convert(self, s: str, num_rows: int) -> str:
+    if num_rows == 1: return s
+    rows = ["" for _ in range(min(num_rows, len(s)))]
+    
+    cur_row = 0
+    going_down = False
+    
+    for c in s:
+        rows[cur_row] += c
+        if cur_row == 0 or cur_row == num_rows - 1:
+            going_down = not going_down
+        cur_row += 1 if going_down else -1
+        
+    return "".join(rows)
+```Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
 
 * * *
 **26. Simulate Robot Commands on Grid**
@@ -917,29 +787,23 @@ Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
 
 **Explanation:** Encode North, East, South, West using `dx` and `dy`. Turn right is `dir = (dir + 1) % 4`. Move step by step checking against an obstacle `HashSet`.
 
-```java
-public int robotSim(int[] commands, int[][] obstacles) {
-  int[] dx = {0, 1, 0, -1}, dy = {1, 0, -1, 0};
-  Set<String> obs = new HashSet<>();
-  for (int[] o : obstacles) obs.add(o[0] + "," + o[1]);
-  
-  int x = 0, y = 0, dir = 0, maxDist = 0;
-  for (int cmd : commands) {
-    if (cmd == -2) dir = (dir + 3) % 4;
-    else if (cmd == -1) dir = (dir + 1) % 4;
-    else {
-      for (int k = 0; k < cmd; k++) {
-        int nx = x + dx[dir], ny = y + dy[dir];
-        if (obs.contains(nx + "," + ny)) break;
-        x = nx; y = ny;
-        maxDist = Math.max(maxDist, x*x + y*y);
-      }
-    }
-  }
-  return maxDist;
-}
-```
-Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
+```python
+def robot_sim(self, commands: list[int], obstacles: list[list[int]]) -> int:
+    dx, dy = [0, 1, 0, -1], [1, 0, -1, 0]
+    obs = set((o[0], o[1]) for o in obstacles)
+    
+    x = y = dir_idx = max_dist = 0
+    for cmd in commands:
+        if cmd == -2: dir_idx = (dir_idx + 3) % 4
+        elif cmd == -1: dir_idx = (dir_idx + 1) % 4
+        else:
+            for k in range(cmd):
+                nx, ny = x + dx[dir_idx], y + dy[dir_idx]
+                if (nx, ny) in obs: break
+                x, y = nx, ny
+                max_dist = max(max_dist, x*x + y*y)
+    return max_dist
+```Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
 
 * * *
 **27. Matrix Water Flow (Pacific Atlantic)**
@@ -951,32 +815,32 @@ Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
 
 **Explanation:** Instead of going downhill from every cell, go UPHILL from the ocean borders to mark reachable cells. Intersection of Pacific-reachable and Atlantic-reachable is the answer.
 
-```java
-public List<List<Integer>> pacificAtlantic(int[][] heights) {
-  int m = heights.length, n = heights[0].length;
-  boolean[][] pac = new boolean[m][n], atl = new boolean[m][n];
-  for (int i = 0; i < m; i++) { dfs(heights, pac, i, 0); dfs(heights, atl, i, n-1); }
-  for (int j = 0; j < n; j++) { dfs(heights, pac, 0, j); dfs(heights, atl, m-1, j); }
-  
-  List<List<Integer>> res = new ArrayList<>();
-  for (int i = 0; i < m; i++) {
-    for (int j = 0; j < n; j++) {
-      if (pac[i][j] && atl[i][j]) res.add(Arrays.asList(i, j));
-    }
-  }
-  return res;
-}
-private void dfs(int[][] h, boolean[][] v, int r, int c) {
-  v[r][c] = true;
-  int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-  for (int[] d : dirs) {
-    int nr = r + d[0], nc = c + d[1];
-    if (nr>=0 && nr<h.length && nc>=0 && nc<h[0].length && !v[nr][nc] && h[nr][nc] >= h[r][c])
-      dfs(h, v, nr, nc);
-  }
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```python
+def pacific_atlantic(self, heights: list[list[int]]) -> list[list[int]]:
+    m, n = len(heights), len(heights[0])
+    pac, atl = [[False] * n for _ in range(m)], [[False] * n for _ in range(m)]
+    
+    for i in range(m):
+        self._dfs_pa(heights, pac, i, 0)
+        self._dfs_pa(heights, atl, i, n-1)
+    for j in range(n):
+        self._dfs_pa(heights, pac, 0, j)
+        self._dfs_pa(heights, atl, m-1, j)
+        
+    res = []
+    for i in range(m):
+        for j in range(n):
+            if pac[i][j] and atl[i][j]:
+                res.append([i, j])
+    return res
+
+def _dfs_pa(self, h, v, r, c):
+    v[r][c] = True
+    for dr, dc in [(1,0), (-1,0), (0,1), (0,-1)]:
+        nr, nc = r + dr, c + dc
+        if 0 <= nr < len(h) and 0 <= nc < len(h[0]) and not v[nr][nc] and h[nr][nc] >= h[r][c]:
+            self._dfs_pa(h, v, nr, nc)
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **28. Rotting Oranges**
@@ -988,39 +852,36 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Add all initially rotten oranges to a queue. Use BFS level-by-level to rot adjacent oranges. Track minutes. Finally, check if any fresh oranges remain.
 
-```java
-public int orangesRotting(int[][] grid) {
-  Queue<int[]> q = new ArrayDeque<>();
-  int fresh = 0, m = grid.length, n = grid[0].length;
-  for (int i = 0; i < m; i++) {
-    for (int j = 0; j < n; j++) {
-      if (grid[i][j] == 2) q.offer(new int[]{i, j});
-      else if (grid[i][j] == 1) fresh++;
-    }
-  }
-  if (fresh == 0) return 0;
-  int mins = 0;
-  int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-  while (!q.isEmpty()) {
-    int size = q.size();
-    boolean rotted = false;
-    for (int k = 0; k < size; k++) {
-      int[] curr = q.poll();
-      for (int[] d : dirs) {
-        int r = curr[0] + d[0], c = curr[1] + d[1];
-        if (r>=0 && r<m && c>=0 && c<n && grid[r][c] == 1) {
-          grid[r][c] = 2; fresh--;
-          q.offer(new int[]{r, c});
-          rotted = true;
-        }
-      }
-    }
-    if (rotted) mins++;
-  }
-  return fresh == 0 ? mins : -1;
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```python
+def oranges_rotting(self, grid: list[list[int]]) -> int:
+    from collections import deque
+    q = deque()
+    fresh = 0
+    m, n = len(grid), len(grid[0])
+    
+    for i in range(m):
+        for j in range(n):
+            if grid[i][j] == 2: q.append((i, j))
+            elif grid[i][j] == 1: fresh += 1
+            
+    if fresh == 0: return 0
+    mins = 0
+    
+    while q:
+        rotted = False
+        for _ in range(len(q)):
+            r, c = q.popleft()
+            for dr, dc in [(1,0), (-1,0), (0,1), (0,-1)]:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < m and 0 <= nc < n and grid[nr][nc] == 1:
+                    grid[nr][nc] = 2
+                    fresh -= 1
+                    q.append((nr, nc))
+                    rotted = True
+        if rotted: mins += 1
+        
+    return mins if fresh == 0 else -1
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **29. Surrounded Regions**
@@ -1032,26 +893,27 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Any 'O' connected to a border 'O' cannot be captured. DFS from all border 'O's and mark them as safe ('#'). Flip all remaining 'O' to 'X', then revert '#' to 'O'.
 
-```java
-public void solve(char[][] board) {
-  int m = board.length, n = board[0].length;
-  for (int i = 0; i < m; i++) { dfs(board, i, 0); dfs(board, i, n-1); }
-  for (int j = 0; j < n; j++) { dfs(board, 0, j); dfs(board, m-1, j); }
-  
-  for (int i = 0; i < m; i++) {
-    for (int j = 0; j < n; j++) {
-      if (board[i][j] == 'O') board[i][j] = 'X';
-      else if (board[i][j] == '#') board[i][j] = 'O';
-    }
-  }
-}
-private void dfs(char[][] b, int r, int c) {
-  if (r<0 || r>=b.length || c<0 || c>=b[0].length || b[r][c] != 'O') return;
-  b[r][c] = '#';
-  dfs(b, r+1, c); dfs(b, r-1, c); dfs(b, r, c+1); dfs(b, r, c-1);
-}
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```python
+def solve(self, board: list[list[str]]) -> None:
+    m, n = len(board), len(board[0])
+    for i in range(m):
+        self._dfs_s(board, i, 0)
+        self._dfs_s(board, i, n-1)
+    for j in range(n):
+        self._dfs_s(board, 0, j)
+        self._dfs_s(board, m-1, j)
+        
+    for i in range(m):
+        for j in range(n):
+            if board[i][j] == 'O': board[i][j] = 'X'
+            elif board[i][j] == '#': board[i][j] = 'O'
+
+def _dfs_s(self, b: list[list[str]], r: int, c: int) -> None:
+    if r < 0 or r >= len(b) or c < 0 or c >= len(b[0]) or b[r][c] != 'O': return
+    b[r][c] = '#'
+    self._dfs_s(b, r+1, c); self._dfs_s(b, r-1, c)
+    self._dfs_s(b, r, c+1); self._dfs_s(b, r, c-1)
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **30. Path with Minimum Effort**
@@ -1063,43 +925,36 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** We can binary search the answer range [0, 10^6]. For a chosen effort limit `K`, use BFS. If BFS reaches the end using only edges $\le K$, then `K` is possible, so search lower. Else, search higher.
 
-```java
-public int minimumEffortPath(int[][] heights) {
-  int left = 0, right = 1000000, ans = right;
-  while (left <= right) {
-    int mid = left + (right - left) / 2;
-    if (canReach(heights, mid)) {
-      ans = mid; right = mid - 1;
-    } else {
-      left = mid + 1;
-    }
-  }
-  return ans;
-}
-private boolean canReach(int[][] h, int limit) {
-  int m = h.length, n = h[0].length;
-  boolean[][] vis = new boolean[m][n];
-  Queue<int[]> q = new ArrayDeque<>();
-  q.offer(new int[]{0, 0}); vis[0][0] = true;
-  int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-  
-  while (!q.isEmpty()) {
-    int[] curr = q.poll();
-    if (curr[0] == m-1 && curr[1] == n-1) return true;
-    for (int[] d : dirs) {
-      int r = curr[0]+d[0], c = curr[1]+d[1];
-      if (r>=0 && r<m && c>=0 && c<n && !vis[r][c]) {
-        if (Math.abs(h[r][c] - h[curr[0]][curr[1]]) <= limit) {
-          vis[r][c] = true;
-          q.offer(new int[]{r, c});
-        }
-      }
-    }
-  }
-  return false;
-}
-```
-Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M \times N)$
+```python
+def minimum_effort_path(self, heights: list[list[int]]) -> int:
+    left, right, ans = 0, 1000000, 1000000
+    while left <= right:
+        mid = (left + right) // 2
+        if self._can_reach(heights, mid):
+            ans = mid
+            right = mid - 1
+        else:
+            left = mid + 1
+    return ans
+
+def _can_reach(self, h: list[list[int]], limit: int) -> bool:
+    from collections import deque
+    m, n = len(h), len(h[0])
+    vis = [[False] * n for _ in range(m)]
+    q = deque([(0, 0)])
+    vis[0][0] = True
+    
+    while q:
+        r, c = q.popleft()
+        if r == m - 1 and c == n - 1: return True
+        for dr, dc in [(1,0), (-1,0), (0,1), (0,-1)]:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < m and 0 <= nc < n and not vis[nr][nc]:
+                if abs(h[nr][nc] - h[r][c]) <= limit:
+                    vis[nr][nc] = True
+                    q.append((nr, nc))
+    return False
+```Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M \times N)$
 
 ## Practice Problem Bank
 

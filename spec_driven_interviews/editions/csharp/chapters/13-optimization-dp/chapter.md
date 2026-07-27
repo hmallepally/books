@@ -182,10 +182,10 @@ Why it matters: Problems like climbing stairs, decode ways, and tiling can be in
 ## Reusable Code Templates
 
 ### Template A: Binary Search
-```java
+```csharp
 // Standard Binary Search
-int binarySearch(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
+int BinarySearch(int[] nums, int target) {
+    int left = 0, right = nums.Length - 1;
     while (left <= right) {
         int mid = left + (right - left) / 2;
         if (nums[mid] == target) return mid;
@@ -196,12 +196,12 @@ int binarySearch(int[] nums, int target) {
 }
 
 // Binary Search on Answer Space (Leftmost valid)
-int binarySearchAnswerSpace(int min, int max) {
+int BinarySearchAnswerSpace(int min, int max) {
     int left = min, right = max;
     int best = -1;
     while (left <= right) {
         int mid = left + (right - left) / 2;
-        if (isValid(mid)) {
+        if (IsValid(mid)) {
             best = mid;
             right = mid - 1; // Try to find a smaller valid answer
         } else {
@@ -211,60 +211,57 @@ int binarySearchAnswerSpace(int min, int max) {
     return best;
 }
 ```
-
 ### Template B: Monotonic Stack
-```java
-public int[] nextGreaterElement(int[] nums) {
-    int n = nums.length;
+```csharp
+public int[] NextGreaterElement(int[] nums) {
+    int n = nums.Length;
     int[] result = new int[n];
-    Arrays.fill(result, -1);
-    Deque<Integer> stack = new ArrayDeque<>(); // stores indices
+    Array.Fill(result, -1);
+    Stack<int> stack = new Stack<int>(); // stores indices
     for (int i = 0; i < n; i++) {
         // Maintain strictly decreasing stack
-        while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
-            int prevIndex = stack.pop();
+        while (stack.Count > 0 && nums[i] > nums[stack.Peek()]) {
+            int prevIndex = stack.Pop();
             result[prevIndex] = nums[i]; // Found next greater!
         }
-        stack.push(i);
+        stack.Push(i);
     }
     return result;
 }
 ```
-
 ### Template C: 1D DP with State Compression
-```java
-public int dpStateCompression(int[] nums) {
-    if (nums.length == 0) return 0;
+```csharp
+public int DpStateCompression(int[] nums) {
+    if (nums.Length == 0) return 0;
     int prev2 = 0; // dp[i-2]
     int prev1 = nums[0]; // dp[i-1]
-    for (int i = 1; i < nums.length; i++) {
-        int curr = Math.max(prev1, prev2 + nums[i]);
+    for (int i = 1; i < nums.Length; i++) {
+        int curr = Math.Max(prev1, prev2 + nums[i]);
         prev2 = prev1;
         prev1 = curr;
     }
     return prev1;
 }
 ```
-
 ### Template D: BFS with Level Tracking
-```java
-public int bfsLevel(Node start, Node target) {
-    Queue<Node> queue = new ArrayDeque<>();
-    Set<Node> visited = new HashSet<>();
-    queue.offer(start);
-    visited.add(start);
+```csharp
+public int BfsLevel(Node start, Node target) {
+    Queue<Node> queue = new Queue<Node>();
+    HashSet<Node> visited = new HashSet<Node>();
+    queue.Enqueue(start);
+    visited.Add(start);
     
     int level = 0;
-    while (!queue.isEmpty()) {
-        int size = queue.size();
+    while (queue.Count > 0) {
+        int size = queue.Count;
         for (int i = 0; i < size; i++) {
-            Node curr = queue.poll();
-            if (curr.equals(target)) return level;
+            Node curr = queue.Dequeue();
+            if (curr.Equals(target)) return level;
             
-            for (Node neighbor : curr.neighbors) {
-                if (!visited.contains(neighbor)) {
-                    visited.add(neighbor);
-                    queue.offer(neighbor);
+            foreach (Node neighbor in curr.neighbors) {
+                if (!visited.Contains(neighbor)) {
+                    visited.Add(neighbor);
+                    queue.Enqueue(neighbor);
                 }
             }
         }
@@ -273,38 +270,36 @@ public int bfsLevel(Node start, Node target) {
     return -1;
 }
 ```
-
 ### Template E: Topological Sort (Kahn's Algorithm)
-```java
-public List<Integer> topologicalSort(int numNodes, int[][] edges) {
-    var adj = new ArrayList<List<Integer>>();
+```csharp
+public IList<int> TopologicalSort(int numNodes, int[][] edges) {
+    var adj = new List<List<int>>();
     int[] inDegree = new int[numNodes];
-    for (int i = 0; i < numNodes; i++) adj.add(new ArrayList<>());
+    for (int i = 0; i < numNodes; i++) adj.Add(new List<int>());
     
-    for (int[] edge : edges) {
-        adj.get(edge[1]).add(edge[0]); // edge[1] -> edge[0]
+    foreach (int[] edge in edges) {
+        adj[edge[1]].Add(edge[0]); // edge[1] -> edge[0]
         inDegree[edge[0]]++;
     }
     
-    var queue = new ArrayDeque<Integer>();
+    var queue = new Queue<int>();
     for (int i = 0; i < numNodes; i++) {
-        if (inDegree[i] == 0) queue.offer(i);
+        if (inDegree[i] == 0) queue.Enqueue(i);
     }
     
-    List<Integer> order = new ArrayList<>();
-    while (!queue.isEmpty()) {
-        int curr = queue.poll();
-        order.add(curr);
-        for (int neighbor : adj.get(curr)) {
+    List<int> order = new List<int>();
+    while (queue.Count > 0) {
+        int curr = queue.Dequeue();
+        order.Add(curr);
+        foreach (int neighbor in adj[curr]) {
             if (--inDegree[neighbor] == 0) {
-                queue.offer(neighbor);
+                queue.Enqueue(neighbor);
             }
         }
     }
-    return order.size() == numNodes ? order : new ArrayList<>(); // Empty if cycle exists
+    return order.Count == numNodes ? order : new List<int>(); // Empty if cycle exists
 }
 ```
-
 * * *
 
 ## Solved Exemplar Problems
@@ -319,10 +314,10 @@ public List<Integer> topologicalSort(int numNodes, int[][] edges) {
 
 **Explanation:** We use the monotonic partition invariant. At any midpoint, at least one half of the array is strictly sorted. We identify the sorted half and check if the target falls within its range.
 
-```java
-public int search(int[] nums, int target) {
-    if (nums == null || nums.length == 0) return -1;
-    int left = 0, right = nums.length - 1;
+```csharp
+public int Search(int[] nums, int target) {
+    if (nums == null || nums.Length == 0) return -1;
+    int left = 0, right = nums.Length - 1;
     
     while (left <= right) {
         int mid = left + (right - left) / 2;
@@ -350,7 +345,6 @@ public int search(int[] nums, int target) {
 // Time Complexity: O(log N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **2. Sliding Window Maximum**
@@ -362,28 +356,28 @@ public int search(int[] nums, int target) {
 
 **Explanation:** We maintain a deque of indices such that the values are in strictly decreasing order. The front of the deque always holds the maximum element's index for the current window. We remove elements from the front that fall out of the window.
 
-```java
-public int[] maxSlidingWindow(int[] nums, int k) {
+```csharp
+public int[] MaxSlidingWindow(int[] nums, int k) {
     if (nums == null || k <= 0) return new int[0];
-    int n = nums.length;
+    int n = nums.Length;
     int[] res = new int[n - k + 1];
     int resIndex = 0;
-    Deque<Integer> q = new ArrayDeque<>();
+    LinkedList<int> q = new LinkedList<int>();
     
     for (int i = 0; i < n; i++) {
         // Remove indices outside the current window
-        if (!q.isEmpty() && q.peekFirst() < i - k + 1) {
-            q.pollFirst();
+        if (q.Count > 0 && q.First.Value < i - k + 1) {
+            q.RemoveFirst();
         }
         // Remove smaller elements (maintain decreasing order)
-        while (!q.isEmpty() && nums[q.peekLast()] < nums[i]) {
-            q.pollLast();
+        while (q.Count > 0 && nums[q.Last.Value] < nums[i]) {
+            q.RemoveLast();
         }
-        q.offerLast(i);
+        q.AddLast(i);
         
         // Record max for the window
         if (i >= k - 1) {
-            res[resIndex++] = nums[q.peekFirst()];
+            res[resIndex++] = nums[q.First.Value];
         }
     }
     return res;
@@ -391,7 +385,6 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 // Time Complexity: O(N) since each element is pushed/popped at most once
 // Space Complexity: O(K) for the deque
 ```
-
 * * *
 
 **3. Longest Common Subsequence**
@@ -423,27 +416,26 @@ The bold diagonal cells show: C matches C (1), A matches A (2), T matches T (3).
 
 **Explanation:** `dp[i][j]` represents the LCS of the prefixes of length `i` and `j`. If characters match, we add 1 to the result of `dp[i-1][j-1]`. If not, we take the max of skipping a character in either string.
 
-```java
-public int longestCommonSubsequence(String text1, String text2) {
-    if (text1.length() < text2.length()) return longestCommonSubsequence(text2, text1);
-    int m = text1.length(), n = text2.length();
+```csharp
+public int LongestCommonSubsequence(string text1, string text2) {
+    if (text1.Length < text2.Length) return LongestCommonSubsequence(text2, text1);
+    int m = text1.Length, n = text2.Length;
     var prev = new int[n + 1];
     var curr = new int[n + 1];
     for (int i = 1; i <= m; i++) {
         for (int j = 1; j <= n; j++) {
-            curr[j] = text1.charAt(i - 1) == text2.charAt(j - 1)
+            curr[j] = text1[i - 1] == text2[j - 1]
                 ? prev[j - 1] + 1
-                : Math.max(prev[j], curr[j - 1]);
+                : Math.Max(prev[j], curr[j - 1]);
         }
         var temp = prev; prev = curr; curr = temp;
-        java.util.Arrays.fill(curr, 0);
+        Array.Fill(curr, 0);
     }
     return prev[n];
 }
 // Time Complexity: O(M * N)
 // Space Complexity: O(min(M, N)) - Space compressed DP as taught in the vocabulary section.
 ```
-
 * * *
 
 **4. Burst Balloons**
@@ -471,14 +463,15 @@ The three nested loops enumerate: interval length → starting position → whic
 
 **Explanation:** We think backwards: what is the LAST balloon to be burst in an interval `[left, right]`? This allows us to split the problem into independent subproblems. `dp[i][j]` is the max coins obtained from bursting balloons strictly between `i` and `j`.
 
-```java
-public int maxCoins(int[] nums) {
-    int n = nums.length;
+```csharp
+public int MaxCoins(int[] nums) {
+    int n = nums.Length;
     int[] arr = new int[n + 2];
     arr[0] = 1; arr[n + 1] = 1; // Padding with 1s
     for (int i = 0; i < n; i++) arr[i + 1] = nums[i];
     
-    int[][] dp = new int[n + 2][n + 2];
+    int[][] dp = new int[n + 2][];
+    for(int i=0; i<n+2; i++) dp[i] = new int[n+2];
     
     // len is the length of the interval strictly between i and j
     for (int len = 1; len <= n; len++) {
@@ -487,7 +480,7 @@ public int maxCoins(int[] nums) {
             // k is the index of the LAST balloon to burst in (i, j)
             for (int k = i + 1; k < j; k++) {
                 int coins = arr[i] * arr[k] * arr[j] + dp[i][k] + dp[k][j];
-                dp[i][j] = Math.max(dp[i][j], coins);
+                dp[i][j] = Math.Max(dp[i][j], coins);
             }
         }
     }
@@ -496,7 +489,6 @@ public int maxCoins(int[] nums) {
 // Time Complexity: O(N^3)
 // Space Complexity: O(N^2)
 ```
-
 * * *
 
 **5. Maximum Product Subarray**
@@ -508,28 +500,27 @@ public int maxCoins(int[] nums) {
 
 **Explanation:** Since multiplying two negative numbers yields a positive number, we must track BOTH the maximum product and the minimum product ending at the current position.
 
-```java
-public int maxProduct(int[] nums) {
-    if (nums == null || nums.length == 0) return 0;
+```csharp
+public int MaxProduct(int[] nums) {
+    if (nums == null || nums.Length == 0) return 0;
     int maxVal = nums[0], minVal = nums[0], result = nums[0];
     
-    for (int i = 1; i < nums.length; i++) {
+    for (int i = 1; i < nums.Length; i++) {
         // If current is negative, max and min will swap roles
         if (nums[i] < 0) {
             int temp = maxVal; 
             maxVal = minVal; 
             minVal = temp;
         }
-        maxVal = Math.max(nums[i], maxVal * nums[i]);
-        minVal = Math.min(nums[i], minVal * nums[i]);
-        result = Math.max(result, maxVal);
+        maxVal = Math.Max(nums[i], maxVal * nums[i]);
+        minVal = Math.Min(nums[i], minVal * nums[i]);
+        result = Math.Max(result, maxVal);
     }
     return result;
 }
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **6. Median of Two Sorted Arrays**
@@ -541,27 +532,27 @@ public int maxProduct(int[] nums) {
 
 **Explanation:** We binary search for the correct partition index in the smaller array such that the left halves of both arrays contain exactly half the total elements, and the largest element on the left is $\le$ the smallest element on the right.
 
-```java
-public double findMedianSortedArrays(int[] A, int[] B) {
-    if (A.length > B.length) return findMedianSortedArrays(B, A); // ensure A is smaller
-    int m = A.length, n = B.length;
+```csharp
+public double FindMedianSortedArrays(int[] A, int[] B) {
+    if (A.Length > B.Length) return FindMedianSortedArrays(B, A); // ensure A is smaller
+    int m = A.Length, n = B.Length;
     int left = 0, right = m;
     
     while (left <= right) {
         int i = (left + right) / 2; // partition A
         int j = (m + n + 1) / 2 - i; // partition B
         
-        int maxLeftA = (i == 0) ? Integer.MIN_VALUE : A[i - 1];
-        int minRightA = (i == m) ? Integer.MAX_VALUE : A[i];
-        int maxLeftB = (j == 0) ? Integer.MIN_VALUE : B[j - 1];
-        int minRightB = (j == n) ? Integer.MAX_VALUE : B[j];
+        int maxLeftA = (i == 0) ? int.MinValue : A[i - 1];
+        int minRightA = (i == m) ? int.MaxValue : A[i];
+        int maxLeftB = (j == 0) ? int.MinValue : B[j - 1];
+        int minRightB = (j == n) ? int.MaxValue : B[j];
         
         if (maxLeftA <= minRightB && maxLeftB <= minRightA) {
             // Correct partition found
             if ((m + n) % 2 == 0) {
-                return (Math.max(maxLeftA, maxLeftB) + Math.min(minRightA, minRightB)) / 2.0;
+                return (Math.Max(maxLeftA, maxLeftB) + Math.Min(minRightA, minRightB)) / 2.0;
             } else {
-                return Math.max(maxLeftA, maxLeftB);
+                return Math.Max(maxLeftA, maxLeftB);
             }
         } else if (maxLeftA > minRightB) {
             right = i - 1; // move partition left in A
@@ -574,7 +565,6 @@ public double findMedianSortedArrays(int[] A, int[] B) {
 // Time Complexity: O(log(min(M, N)))
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **7. Trapping Rain Water**
@@ -586,10 +576,10 @@ public double findMedianSortedArrays(int[] A, int[] B) {
 
 **Explanation:** The amount of water above a bar depends on `min(max_left, max_right)`. We use two pointers from both ends, safely moving the pointer that points to the strictly smaller max bound, adding water along the way.
 
-```java
-public int trap(int[] height) {
-    if (height == null || height.length == 0) return 0;
-    int left = 0, right = height.length - 1;
+```csharp
+public int Trap(int[] height) {
+    if (height == null || height.Length == 0) return 0;
+    int left = 0, right = height.Length - 1;
     int leftMax = 0, rightMax = 0, totalWater = 0;
     
     while (left < right) {
@@ -608,7 +598,6 @@ public int trap(int[] height) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **8. Daily Temperatures**
@@ -621,26 +610,25 @@ public int trap(int[] height) {
 
 **Explanation:** We maintain a stack of indices representing days where we haven't found a warmer day yet (decreasing order). When we find a warmer day, we pop from the stack and compute the wait time.
 
-```java
-public int[] dailyTemperatures(int[] temperatures) {
-    int n = temperatures.length;
+```csharp
+public int[] DailyTemperatures(int[] temperatures) {
+    int n = temperatures.Length;
     int[] res = new int[n];
-    Deque<Integer> stack = new ArrayDeque<>();
+    Stack<int> stack = new Stack<int>();
     
     for (int i = 0; i < n; i++) {
         // While current temp is greater than temp at stack top
-        while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
-            int prevIndex = stack.pop();
+        while (stack.Count > 0 && temperatures[i] > temperatures[stack.Peek()]) {
+            int prevIndex = stack.Pop();
             res[prevIndex] = i - prevIndex;
         }
-        stack.push(i);
+        stack.Push(i);
     }
     return res;
 }
 // Time Complexity: O(N)
 // Space Complexity: O(N)
 ```
-
 * * *
 
 **9. Edit Distance / Levenshtein**
@@ -674,10 +662,11 @@ public int[] dailyTemperatures(int[] temperatures) {
 
 **Explanation:** `dp[i][j]` is the edit distance between `word1` prefix length `i` and `word2` prefix length `j`. If characters match, cost is `dp[i-1][j-1]`. Otherwise, cost is `1 + min(insert, delete, replace)`.
 
-```java
-public int minDistance(String word1, String word2) {
-    int m = word1.length(), n = word2.length();
-    int[][] dp = new int[m + 1][n + 1];
+```csharp
+public int MinDistance(string word1, string word2) {
+    int m = word1.Length, n = word2.Length;
+    int[][] dp = new int[m + 1][];
+    for(int i=0; i<=m; i++) dp[i] = new int[n + 1];
     
     // Base cases
     for (int i = 0; i <= m; i++) dp[i][0] = i;
@@ -685,11 +674,11 @@ public int minDistance(String word1, String word2) {
     
     for (int i = 1; i <= m; i++) {
         for (int j = 1; j <= n; j++) {
-            if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+            if (word1[i - 1] == word2[j - 1]) {
                 dp[i][j] = dp[i - 1][j - 1]; // No op
             } else {
-                dp[i][j] = 1 + Math.min(dp[i - 1][j - 1], // Replace
-                               Math.min(dp[i - 1][j],     // Delete
+                dp[i][j] = 1 + Math.Min(dp[i - 1][j - 1], // Replace
+                               Math.Min(dp[i - 1][j],     // Delete
                                         dp[i][j - 1]));   // Insert
             }
         }
@@ -699,7 +688,6 @@ public int minDistance(String word1, String word2) {
 // Time Complexity: O(M * N)
 // Space Complexity: O(M * N)
 ```
-
 * * *
 
 **10. LRU Cache**
@@ -727,13 +715,13 @@ Notice: after `get(1)`, key 1 moved to head, saving it from eviction. Key 2, unt
 
 **Explanation:** The HashMap provides $\mathcal{O}(1)$ access to nodes. The Doubly Linked List maintains the eviction order. Moving a node to the head of the list designates it as most recently used.
 
-```java
+```csharp
 public class LRUCache {
     class Node { 
-        int key, val; 
-        Node prev, next; 
+        public int key, val; 
+        public Node prev, next; 
     }
-    private Map<Integer, Node> map = new HashMap<>();
+    private Dictionary<int, Node> map = new Dictionary<int, Node>();
     private int capacity;
     private Node head, tail;
 
@@ -745,35 +733,35 @@ public class LRUCache {
         tail.prev = head; // Connect dummy head and tail
     }
     
-    public int get(int key) {
-        if (!map.containsKey(key)) return -1;
-        Node node = map.get(key);
-        remove(node); // Move to head (MRU)
-        insert(node);
+    public int Get(int key) {
+        if (!map.ContainsKey(key)) return -1;
+        Node node = map[key];
+        Remove(node); // Move to head (MRU)
+        Insert(node);
         return node.val;
     }
     
-    public void put(int key, int value) {
-        if (map.containsKey(key)) {
-            remove(map.get(key));
+    public void Put(int key, int value) {
+        if (map.ContainsKey(key)) {
+            Remove(map[key]);
         }
-        if (map.size() == capacity) {
-            map.remove(tail.prev.key);
-            remove(tail.prev); // Evict LRU
+        if (map.Count == capacity) {
+            map.Remove(tail.prev.key);
+            Remove(tail.prev); // Evict LRU
         }
         Node node = new Node(); 
         node.key = key; 
         node.val = value;
-        insert(node);
-        map.put(key, node);
+        Insert(node);
+        map[key] = node;
     }
     
-    private void remove(Node node) {
+    private void Remove(Node node) {
         node.prev.next = node.next; 
         node.next.prev = node.prev;
     }
     
-    private void insert(Node node) { // Insert right after head
+    private void Insert(Node node) { // Insert right after head
         node.next = head.next; 
         node.next.prev = node;
         head.next = node; 
@@ -783,7 +771,6 @@ public class LRUCache {
 // Time Complexity: O(1) for both get and put
 // Space Complexity: O(Capacity)
 ```
-
 * * *
 
 **11. Maximal Rectangle in Binary Matrix**
@@ -829,41 +816,40 @@ public class LRUCache {
 
 **Explanation:** We treat each row as the base of a histogram and update heights. We then run the $\mathcal{O}(N)$ "Largest Rectangle in Histogram" algorithm using a monotonic stack on each row.
 
-```java
-public int maximalRectangle(char[][] matrix) {
-    if (matrix == null || matrix.length == 0) return 0;
-    int cols = matrix[0].length;
+```csharp
+public int MaximalRectangle(char[][] matrix) {
+    if (matrix == null || matrix.Length == 0) return 0;
+    int cols = matrix[0].Length;
     int[] heights = new int[cols];
     int maxArea = 0;
     
-    for (char[] row : matrix) {
+    foreach (char[] row in matrix) {
         // Update histogram heights
         for (int c = 0; c < cols; c++) {
             heights[c] = (row[c] == '1') ? heights[c] + 1 : 0;
         }
-        maxArea = Math.max(maxArea, maxHistogram(heights));
+        maxArea = Math.Max(maxArea, MaxHistogram(heights));
     }
     return maxArea;
 }
 
-private int maxHistogram(int[] heights) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    int max = 0, n = heights.length;
+private int MaxHistogram(int[] heights) {
+    Stack<int> stack = new Stack<int>();
+    int max = 0, n = heights.Length;
     for (int i = 0; i <= n; i++) {
         int h = (i == n) ? 0 : heights[i];
-        while (!stack.isEmpty() && h < heights[stack.peek()]) {
-            int height = heights[stack.pop()];
-            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
-            max = Math.max(max, height * width);
+        while (stack.Count > 0 && h < heights[stack.Peek()]) {
+            int height = heights[stack.Pop()];
+            int width = stack.Count == 0 ? i : i - stack.Peek() - 1;
+            max = Math.Max(max, height * width);
         }
-        stack.push(i);
+        stack.Push(i);
     }
     return max;
 }
 // Time Complexity: O(R * C)
 // Space Complexity: O(C)
 ```
-
 * * *
 
 **12. Word Ladder**
@@ -875,29 +861,29 @@ private int maxHistogram(int[] heights) {
 
 **Explanation:** We use BFS because we want the shortest path in an unweighted graph. For each word, we generate all valid next mutations and enqueue them, tracking the level.
 
-```java
-public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-    Set<String> set = new HashSet<>(wordList);
-    if (!set.contains(endWord)) return 0;
+```csharp
+public int LadderLength(string beginWord, string endWord, IList<string> wordList) {
+    HashSet<string> set = new HashSet<string>(wordList);
+    if (!set.Contains(endWord)) return 0;
     
-    Queue<String> queue = new ArrayDeque<>();
-    queue.offer(beginWord);
+    Queue<string> queue = new Queue<string>();
+    queue.Enqueue(beginWord);
     int level = 1;
     
-    while (!queue.isEmpty()) {
-        int size = queue.size();
+    while (queue.Count > 0) {
+        int size = queue.Count;
         for (int i = 0; i < size; i++) { // Level-by-level processing
-            String curr = queue.poll();
-            char[] chars = curr.toCharArray();
-            for (int j = 0; j < chars.length; j++) {
+            string curr = queue.Dequeue();
+            char[] chars = curr.ToCharArray();
+            for (int j = 0; j < chars.Length; j++) {
                 char orig = chars[j];
                 for (char c = 'a'; c <= 'z'; c++) { // Try all mutations
                     if (c == orig) continue;
                     chars[j] = c;
-                    String next = new String(chars);
-                    if (next.equals(endWord)) return level + 1;
-                    if (set.remove(next)) { // remove serves as 'visited' check
-                        queue.offer(next);
+                    string next = new string(chars);
+                    if (next.Equals(endWord)) return level + 1;
+                    if (set.Remove(next)) { // remove serves as 'visited' check
+                        queue.Enqueue(next);
                     }
                 }
                 chars[j] = orig; // Backtrack
@@ -910,7 +896,6 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
 // Time Complexity: O(M^2 * N) where M is word length, N is number of words
 // Space Complexity: O(M * N)
 ```
-
 * * *
 
 **13. Coin Change**
@@ -922,16 +907,16 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
 
 **Explanation:** `dp[i]` is the minimum coins needed for amount `i`. We iterate through amounts and coins, taking the min of using the coin or not: `dp[i] = min(dp[i], dp[i - coin] + 1)`.
 
-```java
-public int coinChange(int[] coins, int amount) {
+```csharp
+public int CoinChange(int[] coins, int amount) {
     int[] dp = new int[amount + 1];
-    Arrays.fill(dp, amount + 1); // Fill with max invalid value
+    Array.Fill(dp, amount + 1); // Fill with max invalid value
     dp[0] = 0;
     
     for (int i = 1; i <= amount; i++) {
-        for (int coin : coins) {
+        foreach (int coin in coins) {
             if (i >= coin) {
-                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                dp[i] = Math.Min(dp[i], dp[i - coin] + 1);
             }
         }
     }
@@ -940,7 +925,6 @@ public int coinChange(int[] coins, int amount) {
 // Time Complexity: O(Amount * N)
 // Space Complexity: O(Amount)
 ```
-
 * * *
 
 **14. House Robber**
@@ -952,14 +936,14 @@ public int coinChange(int[] coins, int amount) {
 
 **Explanation:** The transition is `dp[i] = max(dp[i-1], dp[i-2] + nums[i])`. We only need to store the previous two values, saving space.
 
-```java
-public int rob(int[] nums) {
-    if (nums == null || nums.length == 0) return 0;
+```csharp
+public int Rob(int[] nums) {
+    if (nums == null || nums.Length == 0) return 0;
     int prev1 = 0; // max so far excluding current
     int prev2 = 0; // max so far including current (-2)
     
-    for (int num : nums) {
-        int temp = Math.max(prev1, prev2 + num); // rob or don't rob
+    foreach (int num in nums) {
+        int temp = Math.Max(prev1, prev2 + num); // rob or don't rob
         prev2 = prev1;
         prev1 = temp;
     }
@@ -968,7 +952,6 @@ public int rob(int[] nums) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **15. Regular Expression Matching**
@@ -980,25 +963,26 @@ public int rob(int[] nums) {
 
 **Explanation:** Complex transition logic based on whether we see a `*`. We either treat `*` as zero occurrences (`dp[i][j-2]`) or multiple occurrences (`dp[i-1][j]` if the preceding char matches).
 
-```java
-public boolean isMatch(String s, String p) {
-    int m = s.length(), n = p.length();
-    boolean[][] dp = new boolean[m + 1][n + 1];
+```csharp
+public bool IsMatch(string s, string p) {
+    int m = s.Length, n = p.Length;
+    bool[][] dp = new bool[m + 1][];
+    for(int i=0; i<=m; i++) dp[i] = new bool[n + 1];
     dp[0][0] = true;
     
     // Match empty string with patterns like a*b*
     for (int j = 1; j <= n; j++) {
-        if (p.charAt(j - 1) == '*') dp[0][j] = dp[0][j - 2];
+        if (p[j - 1] == '*') dp[0][j] = dp[0][j - 2];
     }
     
     for (int i = 1; i <= m; i++) {
         for (int j = 1; j <= n; j++) {
-            if (p.charAt(j - 1) == '.' || p.charAt(j - 1) == s.charAt(i - 1)) {
+            if (p[j - 1] == '.' || p[j - 1] == s[i - 1]) {
                 dp[i][j] = dp[i - 1][j - 1]; // Single char match
-            } else if (p.charAt(j - 1) == '*') {
+            } else if (p[j - 1] == '*') {
                 dp[i][j] = dp[i][j - 2]; // Match zero times
                 // If preceding char matches, match one or more times
-                if (p.charAt(j - 2) == '.' || p.charAt(j - 2) == s.charAt(i - 1)) {
+                if (p[j - 2] == '.' || p[j - 2] == s[i - 1]) {
                     dp[i][j] = dp[i][j] || dp[i - 1][j];
                 }
             }
@@ -1009,7 +993,6 @@ public boolean isMatch(String s, String p) {
 // Time Complexity: O(M * N)
 // Space Complexity: O(M * N)
 ```
-
 * * *
 
 **16. Course Schedule II**
@@ -1021,29 +1004,29 @@ public boolean isMatch(String s, String p) {
 
 **Explanation:** We count the in-degree of each course. A course with in-degree 0 has no prerequisites and can be taken. We enqueue it, take it, and decrement the in-degree of its neighbors.
 
-```java
-public int[] findOrder(int numCourses, int[][] prerequisites) {
+```csharp
+public int[] FindOrder(int numCourses, int[][] prerequisites) {
     var inDegree = new int[numCourses];
-    var adj = new ArrayList<List<Integer>>();
-    for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
+    var adj = new List<List<int>>();
+    for (int i = 0; i < numCourses; i++) adj.Add(new List<int>());
     
-    for (int[] p : prerequisites) {
-        adj.get(p[1]).add(p[0]);
+    foreach (int[] p in prerequisites) {
+        adj[p[1]].Add(p[0]);
         inDegree[p[0]]++;
     }
     
-    Queue<Integer> q = new ArrayDeque<>();
+    Queue<int> q = new Queue<int>();
     for (int i = 0; i < numCourses; i++) {
-        if (inDegree[i] == 0) q.offer(i);
+        if (inDegree[i] == 0) q.Enqueue(i);
     }
     
     int[] res = new int[numCourses];
     int idx = 0;
-    while (!q.isEmpty()) {
-        int curr = q.poll();
+    while (q.Count > 0) {
+        int curr = q.Dequeue();
         res[idx++] = curr;
-        for (int next : adj.get(curr)) {
-            if (--inDegree[next] == 0) q.offer(next);
+        foreach (int next in adj[curr]) {
+            if (--inDegree[next] == 0) q.Enqueue(next);
         }
     }
     return idx == numCourses ? res : new int[0]; // If not all courses taken, cycle exists
@@ -1051,7 +1034,6 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
 // Time Complexity: O(V + E)
 // Space Complexity: O(V + E)
 ```
-
 * * *
 
 **17. Partition Equal Subset Sum**
@@ -1063,17 +1045,17 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
 
 **Explanation:** The problem translates to: "Is there a subset that sums exactly to `total_sum / 2`?" We use a 1D DP array where `dp[j]` is true if a sum `j` is achievable.
 
-```java
-public boolean canPartition(int[] nums) {
+```csharp
+public bool CanPartition(int[] nums) {
     int sum = 0;
-    for (int num : nums) sum += num;
+    foreach (int num in nums) sum += num;
     if (sum % 2 != 0) return false;
     
     int target = sum / 2;
-    boolean[] dp = new boolean[target + 1];
+    bool[] dp = new bool[target + 1];
     dp[0] = true;
     
-    for (int num : nums) {
+    foreach (int num in nums) {
         // Iterate backwards to avoid reusing the same element
         for (int j = target; j >= num; j--) {
             dp[j] = dp[j] || dp[j - num];
@@ -1084,7 +1066,6 @@ public boolean canPartition(int[] nums) {
 // Time Complexity: O(N * Target)
 // Space Complexity: O(Target)
 ```
-
 * * *
 
 **18. Decode Ways**
@@ -1096,17 +1077,17 @@ public boolean canPartition(int[] nums) {
 
 **Explanation:** Very similar to Fibonacci. The number of ways to decode up to `i` is the ways to decode up to `i-1` (if single digit valid) plus the ways to decode up to `i-2` (if two digits valid).
 
-```java
-public int numDecodings(String s) {
-    if (s == null || s.isEmpty() || s.charAt(0) == '0') return 0;
-    int n = s.length();
+```csharp
+public int NumDecodings(string s) {
+    if (string.IsNullOrEmpty(s) || s[0] == '0') return 0;
+    int n = s.Length;
     int[] dp = new int[n + 1];
     dp[0] = 1; 
     dp[1] = 1;
     
     for (int i = 2; i <= n; i++) {
-        int oneDigit = Integer.parseInt(s.substring(i - 1, i));
-        int twoDigits = Integer.parseInt(s.substring(i - 2, i));
+        int oneDigit = int.Parse(s.Substring(i - 1, 1));
+        int twoDigits = int.Parse(s.Substring(i - 2, 2));
         
         if (oneDigit >= 1 && oneDigit <= 9) {
             dp[i] += dp[i - 1];
@@ -1120,7 +1101,6 @@ public int numDecodings(String s) {
 // Time Complexity: O(N)
 // Space Complexity: O(N) which can be optimized to O(1)
 ```
-
 * * *
 
 **19. Stock Span**
@@ -1132,24 +1112,23 @@ public int numDecodings(String s) {
 
 **Explanation:** Maintain a stack of pairs `{price, span}`. If the incoming price is greater than the top of the stack, pop the stack and accumulate the span. This maintains a strictly decreasing stack.
 
-```java
+```csharp
 public class StockSpanner {
-    // Array holds {price, span}
-    private Deque<int[]> stack = new ArrayDeque<>(); 
+    // Stack holds {price, span}
+    private Stack<int[]> stack = new Stack<int[]>(); 
     
-    public int next(int price) {
+    public int Next(int price) {
         int span = 1;
-        while (!stack.isEmpty() && stack.peek()[0] <= price) {
-            span += stack.pop()[1]; // Accumulate previous spans
+        while (stack.Count > 0 && stack.Peek()[0] <= price) {
+            span += stack.Pop()[1]; // Accumulate previous spans
         }
-        stack.push(new int[]{price, span});
+        stack.Push(new int[]{price, span});
         return span;
     }
 }
 // Time Complexity: Amortized O(1) per next() call
 // Space Complexity: O(N)
 ```
-
 * * *
 
 **20. Longest Increasing Subsequence**
@@ -1161,11 +1140,11 @@ public class StockSpanner {
 
 **Explanation:** We maintain an array `tails` where `tails[i]` stores the smallest tail of all increasing subsequences of length `i+1`. We binary search the position to update in `tails`.
 
-```java
-public int lengthOfLIS(int[] nums) {
-    int[] tails = new int[nums.length];
+```csharp
+public int LengthOfLIS(int[] nums) {
+    int[] tails = new int[nums.Length];
     int size = 0;
-    for (int x : nums) {
+    foreach (int x in nums) {
         int left = 0, right = size;
         while (left != right) {
             int mid = left + (right - left) / 2;
@@ -1183,7 +1162,6 @@ public int lengthOfLIS(int[] nums) {
 // Time Complexity: O(N log N)
 // Space Complexity: O(N)
 ```
-
 * * *
 
 **21. Find Minimum in Rotated Sorted Array**
@@ -1194,9 +1172,9 @@ public int lengthOfLIS(int[] nums) {
 **Pattern:** Binary Search
 
 **Explanation:** If `nums[mid] > nums[right]`, the minimum is in the right half. Else, the minimum is in the left half (including mid).
-```java
-public int findMin(int[] nums) {
-    int left = 0, right = nums.length - 1;
+```csharp
+public int FindMin(int[] nums) {
+    int left = 0, right = nums.Length - 1;
     while (left < right) {
         int mid = left + (right - left) / 2;
         if (nums[mid] > nums[right]) left = mid + 1;
@@ -1207,7 +1185,6 @@ public int findMin(int[] nums) {
 // Time Complexity: O(log N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **22. Kth Smallest Element in Sorted Matrix**
@@ -1218,20 +1195,20 @@ public int findMin(int[] nums) {
 **Pattern:** Binary Search on Answer Space
 
 **Explanation:** Binary search the value space `[min, max]`. Count how many elements are $\le$ mid. If count $< k$, `left = mid + 1`. Else `right = mid`.
-```java
-public int kthSmallest(int[][] matrix, int k) {
-    int n = matrix.length;
+```csharp
+public int KthSmallest(int[][] matrix, int k) {
+    int n = matrix.Length;
     int left = matrix[0][0], right = matrix[n-1][n-1];
     while (left < right) {
         int mid = left + (right - left) / 2;
-        int count = countLessEqual(matrix, mid);
+        int count = CountLessEqual(matrix, mid);
         if (count < k) left = mid + 1;
         else right = mid;
     }
     return left;
 }
-private int countLessEqual(int[][] matrix, int target) {
-    int n = matrix.length, i = n - 1, j = 0, count = 0;
+private int CountLessEqual(int[][] matrix, int target) {
+    int n = matrix.Length, i = n - 1, j = 0, count = 0;
     while (i >= 0 && j < n) {
         if (matrix[i][j] <= target) { count += i + 1; j++; }
         else { i--; }
@@ -1241,7 +1218,6 @@ private int countLessEqual(int[][] matrix, int target) {
 // Time Complexity: O(N log(Max - Min))
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **23. Jump Game II**
@@ -1252,11 +1228,11 @@ private int countLessEqual(int[][] matrix, int target) {
 **Pattern:** Greedy BFS levels
 
 **Explanation:** We maintain the farthest reach for the current jump level. When `i == currentEnd`, we must make a jump and update `currentEnd = farthest`.
-```java
-public int jump(int[] nums) {
+```csharp
+public int Jump(int[] nums) {
     int jumps = 0, currentEnd = 0, farthest = 0;
-    for (int i = 0; i < nums.length - 1; i++) {
-        farthest = Math.max(farthest, i + nums[i]);
+    for (int i = 0; i < nums.Length - 1; i++) {
+        farthest = Math.Max(farthest, i + nums[i]);
         if (i == currentEnd) {
             jumps++;
             currentEnd = farthest;
@@ -1267,7 +1243,6 @@ public int jump(int[] nums) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **24. Unique Paths**
@@ -1278,10 +1253,13 @@ public int jump(int[] nums) {
 **Pattern:** 2D DP
 
 **Explanation:** `dp[i][j] = dp[i-1][j] + dp[i][j-1]`.
-```java
-public int uniquePaths(int m, int n) {
-    int[][] dp = new int[m][n];
-    for (int i = 0; i < m; i++) dp[i][0] = 1;
+```csharp
+public int UniquePaths(int m, int n) {
+    int[][] dp = new int[m][];
+    for (int i = 0; i < m; i++) {
+        dp[i] = new int[n];
+        dp[i][0] = 1;
+    }
     for (int j = 0; j < n; j++) dp[0][j] = 1;
     for (int i = 1; i < m; i++) {
         for (int j = 1; j < n; j++) {
@@ -1293,7 +1271,6 @@ public int uniquePaths(int m, int n) {
 // Time Complexity: O(M * N)
 // Space Complexity: O(M * N) (can be optimized to O(N))
 ```
-
 * * *
 
 **25. Maximum Subarray / Kadane's Algorithm**
@@ -1304,19 +1281,18 @@ public int uniquePaths(int m, int n) {
 **Pattern:** DP / Greedy
 
 **Explanation:** At each step, either add the current element to the previous sum, or start a new subarray if the previous sum is negative.
-```java
-public int maxSubArray(int[] nums) {
+```csharp
+public int MaxSubArray(int[] nums) {
     int maxSum = nums[0], currentSum = nums[0];
-    for (int i = 1; i < nums.length; i++) {
-        currentSum = Math.max(nums[i], currentSum + nums[i]);
-        maxSum = Math.max(maxSum, currentSum);
+    for (int i = 1; i < nums.Length; i++) {
+        currentSum = Math.Max(nums[i], currentSum + nums[i]);
+        maxSum = Math.Max(maxSum, currentSum);
     }
     return maxSum;
 }
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **26. Climbing Stairs**
@@ -1327,8 +1303,8 @@ public int maxSubArray(int[] nums) {
 **Pattern:** Fibonacci DP
 
 **Explanation:** `dp[i] = dp[i-1] + dp[i-2]`.
-```java
-public int climbStairs(int n) {
+```csharp
+public int ClimbStairs(int n) {
     if (n <= 2) return n;
     int prev2 = 1, prev1 = 2;
     for (int i = 3; i <= n; i++) {
@@ -1341,7 +1317,6 @@ public int climbStairs(int n) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **27. Largest Rectangle in Histogram**
@@ -1352,25 +1327,24 @@ public int climbStairs(int n) {
 **Pattern:** Monotonic Stack
 
 **Explanation:** Stack stores indices of strictly increasing heights. Pop when a smaller height is found, calculating area using the popped height as the bottleneck.
-```java
-public int largestRectangleArea(int[] heights) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    int maxArea = 0, n = heights.length;
+```csharp
+public int LargestRectangleArea(int[] heights) {
+    Stack<int> stack = new Stack<int>();
+    int maxArea = 0, n = heights.Length;
     for (int i = 0; i <= n; i++) {
         int h = (i == n) ? 0 : heights[i];
-        while (!stack.isEmpty() && h < heights[stack.peek()]) {
-            int height = heights[stack.pop()];
-            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
-            maxArea = Math.max(maxArea, height * width);
+        while (stack.Count > 0 && h < heights[stack.Peek()]) {
+            int height = heights[stack.Pop()];
+            int width = stack.Count == 0 ? i : i - stack.Peek() - 1;
+            maxArea = Math.Max(maxArea, height * width);
         }
-        stack.push(i);
+        stack.Push(i);
     }
     return maxArea;
 }
 // Time Complexity: O(N)
 // Space Complexity: O(N)
 ```
-
 * * *
 
 **28. Merge K Sorted Lists**
@@ -1381,25 +1355,24 @@ public int largestRectangleArea(int[] heights) {
 **Pattern:** Min-Heap
 
 **Explanation:** Put all list heads into a PriorityQueue. Extract the min, append to result, and insert the next node from the extracted list.
-```java
-public ListNode mergeKLists(ListNode[] lists) {
-    PriorityQueue<ListNode> pq = new PriorityQueue<>((a,b) -> a.val - b.val);
-    for (ListNode head : lists) {
-        if (head != null) pq.offer(head);
+```csharp
+public ListNode MergeKLists(ListNode[] lists) {
+    PriorityQueue<ListNode, int> pq = new PriorityQueue<ListNode, int>();
+    foreach (ListNode head in lists) {
+        if (head != null) pq.Enqueue(head, head.val);
     }
     ListNode dummy = new ListNode(0), curr = dummy;
-    while (!pq.isEmpty()) {
-        ListNode minNode = pq.poll();
+    while (pq.Count > 0) {
+        ListNode minNode = pq.Dequeue();
         curr.next = minNode;
         curr = curr.next;
-        if (minNode.next != null) pq.offer(minNode.next);
+        if (minNode.next != null) pq.Enqueue(minNode.next, minNode.next.val);
     }
     return dummy.next;
 }
 // Time Complexity: O(N log K)
 // Space Complexity: O(K)
 ```
-
 * * *
 
 **29. Longest Valid Parentheses**
@@ -1410,18 +1383,18 @@ public ListNode mergeKLists(ListNode[] lists) {
 **Pattern:** DP
 
 **Explanation:** `dp[i]` is the length of longest valid substring ending at `i`. If `s[i] == ')'` and `s[i-1] == '('`, `dp[i] = dp[i-2] + 2`. If `s[i-1] == ')'`, match earlier part.
-```java
-public int longestValidParentheses(String s) {
+```csharp
+public int LongestValidParentheses(string s) {
     int maxLen = 0;
-    int[] dp = new int[s.length()];
-    for (int i = 1; i < s.length(); i++) {
-        if (s.charAt(i) == ')') {
-            if (s.charAt(i - 1) == '(') {
+    int[] dp = new int[s.Length];
+    for (int i = 1; i < s.Length; i++) {
+        if (s[i] == ')') {
+            if (s[i - 1] == '(') {
                 dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
-            } else if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == '(') {
+            } else if (i - dp[i - 1] > 0 && s[i - dp[i - 1] - 1] == '(') {
                 dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
             }
-            maxLen = Math.max(maxLen, dp[i]);
+            maxLen = Math.Max(maxLen, dp[i]);
         }
     }
     return maxLen;
@@ -1429,7 +1402,6 @@ public int longestValidParentheses(String s) {
 // Time Complexity: O(N)
 // Space Complexity: O(N)
 ```
-
 * * *
 
 **30. Container With Most Water**
@@ -1440,14 +1412,14 @@ public int longestValidParentheses(String s) {
 **Pattern:** Two-pointer
 
 **Explanation:** Area is `width * min(h[L], h[R])`. Move the pointer pointing to the shorter line to potentially find a taller line.
-```java
-public int maxArea(int[] height) {
+```csharp
+public int MaxArea(int[] height) {
     int maxArea = 0;
-    int left = 0, right = height.length - 1;
+    int left = 0, right = height.Length - 1;
     while (left < right) {
         int w = right - left;
-        int h = Math.min(height[left], height[right]);
-        maxArea = Math.max(maxArea, w * h);
+        int h = Math.Min(height[left], height[right]);
+        maxArea = Math.Max(maxArea, w * h);
         if (height[left] < height[right]) left++;
         else right--;
     }
@@ -1456,7 +1428,6 @@ public int maxArea(int[] height) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 ## Practice Problem Bank

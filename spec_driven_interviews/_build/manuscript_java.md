@@ -1,6 +1,6 @@
 
 
-\part{The Spec-Driven Paradigm for Technical Interviews}
+\part{The Spec-Driven Paradigm}
 
 
 # Prologue: The Syntax Trap {.unnumbered}
@@ -55,72 +55,74 @@ An invariant is a condition that must always remain true during the execution of
 
 ## What This Book Covers
 
-This manual is organized into four comprehensive parts spanning twenty-three chapters (Chapters 0 through 22), each targeting a specific dimension of modern senior-level technical interviews and enterprise architecture:
+This manual is organized into four comprehensive parts spanning twenty-five chapters (Chapters 0 through 24), each targeting a specific dimension of modern senior-level technical interviews and enterprise architecture:
 
 ### Part I: The Spec-Driven Paradigm for Technical Interviews
 
 - **Chapter 1 — The Invariant-First Strategy:** How to define pre-conditions, post-conditions, and loop invariants before writing any code. Includes a step-by-step mathematical proof of Binary Search correctness.
-- **Chapter 2 — The Three System-Scale Case Studies:** Introduction to the three enterprise-grade reference architectures (AuraPay, ZenithTrade, ChiramTrust) used throughout the book.
+- **Chapter 2 — The Art of Problem Decomposition:** The 5-Step Decomposition Framework for breaking any novel problem into solvable components mapped to known patterns.
+- **Chapter 3 — The Three System-Scale Case Studies:** Introduction to the three enterprise-grade reference architectures (AuraPay, ZenithTrade, ChiramTrust) used throughout the book.
 
 ### Part II: Code Design and Craftsmanship
 
-- **Chapter 3 — Principles of Object-Oriented Design:** Self-validating domain entities, rich vs. anemic models, and refactoring walkthroughs.
-- **Chapter 4 — SOLID Principles: Enforcing Boundaries:** Interface and dependency boundaries to keep systems modular and decoupled, with a violation detector cheat sheet.
-- **Chapter 5 — Modern Functional Programming and Stream APIs:** Clean, declarative data pipelines that minimize side effects, with imperative-vs-stream comparisons and reactive stream explanations.
-- **Chapter 6 — Design Patterns in Enterprise Frameworks:** GoF patterns (Builder, Singleton, Observer, State, Strategy), data access patterns (Repository, Unit of Work, DTO, Active Record vs. Data Mapper), and how enterprise frameworks implement them natively.
+- **Chapter 4 — Principles of Object-Oriented Design:** Self-validating domain entities, rich vs. anemic models, and refactoring walkthroughs.
+- **Chapter 5 — SOLID Principles: Enforcing Boundaries:** Interface and dependency boundaries to keep systems modular and decoupled, with a violation detector cheat sheet.
+- **Chapter 6 — Modern Functional Programming and Stream APIs:** Clean, declarative data pipelines that minimize side effects, with imperative-vs-stream comparisons and reactive stream explanations.
+- **Chapter 7 — Design Patterns in Enterprise Frameworks:** GoF patterns (Builder, Singleton, Observer, State, Strategy), data access patterns (Repository, Unit of Work, DTO, Active Record vs. Data Mapper), and how enterprise frameworks implement them natively.
 
-### Part III: Code Performance & CodeSignal GCA Algorithmic Mastery
+### Part III: Code Performance & Algorithmic Mastery
 
-- **Chapter 7 — Designing for Performance and Concurrency:** Virtual threads, platform threads, optimistic vs. pessimistic locking, connection pool sizing, caching strategies, and cache invalidation race conditions.
-- **Chapter 8 — Core Algorithms & Assessment Tactical Blueprint:** The 70-minute GCA time allocation blueprint, pattern recognition decision tree, diagnostic triggers, and canonical code skeletons.
-- **Chapter 9 — Q1 Mastery: Implementation Speed, In-Place Transformations, and String Processing:** Read/Write pointer patterns, character frequency array hashing (`int[26]` / `int[128]`), in-place mutations, and fast string building.
-- **Chapter 10 — Q2 Mastery: 2D Matrix Traversal, Grid Simulations, and State Machines:** Matrix coordinate geometry, 90° clockwise rotation formulas, spiral traversals, 2D prefix sums, and flood fill simulation.
-- **Chapter 11 — Q3 Mastery: Data Structures, HashMaps, and Sliding Windows:** Complex simulation, HashMap state management, two-pointer sliding window, and frequency tracking.
-- **Chapter 12 — Q4 Mastery: Algorithmic Optimization, Monotonic Structures, and Dynamic Programming:** 1-Pass Monotonic Stack (sentinels and width invariants), parametric binary search, 1D/2D DP state compression, and shortest path graph algorithms.
-- **Chapter 13 — 20 Exam-Grade GCA Mock Problem Sets & Survival Guide:** 80 full mock problems across 20 timed sets, complete with hints and the Exam Day 10-Point Speed & Debugging Survival Guide.
+- **Chapter 8 — Designing for Performance and Concurrency:** Virtual threads, platform threads, optimistic vs. pessimistic locking, connection pool sizing, caching strategies, and cache invalidation race conditions.
+- **Chapter 9 — Core Algorithms & Assessment Tactical Blueprint:** The Assessment Time Allocation Blueprint, pattern recognition decision tree, diagnostic triggers, and canonical code skeletons. Includes an Assessment Format Variants table covering monotonic difficulty, equal-weight peers, single deep problems, take-home projects, and live pair programming.
+- **Chapter 10 — Pattern Mastery: Implementation Speed, In-Place Transformations, and String Processing:** Read/Write pointer patterns, character frequency array hashing (`int[26]` / `int[128]`), in-place mutations, and fast string building.
+- **Chapter 11 — Pattern Mastery: 2D Matrix Traversal, Grid Simulations, and State Machines:** Matrix coordinate geometry, 90° clockwise rotation formulas, spiral traversals, 2D prefix sums, and flood fill simulation.
+- **Chapter 12 — Pattern Mastery: Data Structures, HashMaps, and Sliding Windows:** Complex simulation, HashMap state management, two-pointer sliding window, and frequency tracking.
+- **Chapter 13 — Pattern Mastery: Algorithmic Optimization, Monotonic Structures, and Dynamic Programming:** 1-Pass Monotonic Stack (sentinels and width invariants), parametric binary search, 1D/2D DP state compression, and shortest path graph algorithms.
+- **Chapter 14 — Mastering Problem Decomposition: The Capstone:** Full deep-dive synthesis chapter with the Problem Analysis Canvas, 15+ decomposition walkthroughs across three tiers, expanded Pattern Recognition Decision Tree, and independent practice exercises.
+- **Chapter 15 — 20 Timed Algorithmic Mock Assessment Sets & Survival Guide:** 80 full mock problems across 20 timed sets, complete with hints and the Exam Day 10-Point Speed & Debugging Survival Guide.
 
 ### Part IV: System Design, Architecture & Enterprise Leadership
 
-- **Chapter 14 — System Architecture and Design Fundamentals:** DDD bounded contexts, CQRS, CAP theorem trade-offs, consistent hashing, API idempotency, and a full sharded order matching engine mock interview transcript.
-- **Chapter 15 — Enterprise Integration and Resiliency:** Transactional Outbox, Saga orchestration vs. choreography, event sourcing, Redis sliding window rate limiting, Circuit Breaker state machines, and OpenTelemetry distributed tracing.
-- **Chapter 16 — Database Design, Compliance, and Security:** B-Tree vs. LSM-Tree storage engines, PCI-DSS tokenization vaults, SOC2 cryptographic audit trails, GDPR Crypto-Shredding, and sharding strategies.
-- **Chapter 17 — Behavioral and Technical Leadership Interviews:** The Technical STAR Framework, video/Teams call checklists, and three full mock responses for senior leadership scenarios.
-- **Chapter 18 — Testing and CI/CD Strategies:** The testing pyramid (unit, integration via Testcontainers, contract via Pact), and automated CI/CD release policies.
-- **Chapter 19 — Distributed Event Streaming and Message Brokers:** Apache Kafka internals, partition-key sharding for in-order delivery, consumer group rebalancing, and Exactly-Once Semantics (EOS).
-- **Chapter 20 — AI/ML System Design and LLM Integration:** Vector databases (HNSW vs. IVF indexes), Retrieval-Augmented Generation (RAG) pipelines, semantic caching, and prompt injection security filters.
-- **Chapter 21 — Appendix and Quick-Reference Cheat Sheets:** Big-O complexity tables, edge-case checklists, system design latency numbers, and day-of-interview preparation guides.
-- **Chapter 22 — Works Cited and Academic References:** Primary scholarly and technical citations supporting all architectural principles and benchmarking claims.
+- **Chapter 16 — System Architecture and Design Fundamentals:** DDD bounded contexts, CQRS, CAP theorem trade-offs, consistent hashing, API idempotency, and a full sharded order matching engine mock interview transcript.
+- **Chapter 17 — Enterprise Integration and Resiliency:** Transactional Outbox, Saga orchestration vs. choreography, event sourcing, Redis sliding window rate limiting, Circuit Breaker state machines, and OpenTelemetry distributed tracing.
+- **Chapter 18 — Database Design, Compliance, and Security:** B-Tree vs. LSM-Tree storage engines, PCI-DSS tokenization vaults, SOC2 cryptographic audit trails, GDPR Crypto-Shredding, and sharding strategies.
+- **Chapter 19 — Behavioral and Technical Leadership Interviews:** The Technical STAR Framework, video/Teams call checklists, and three full mock responses for senior leadership scenarios.
+- **Chapter 20 — Testing and CI/CD Strategies:** The testing pyramid (unit, integration via Testcontainers, contract via Pact), and automated CI/CD release policies.
+- **Chapter 21 — Distributed Event Streaming and Message Brokers:** Apache Kafka internals, partition-key sharding for in-order delivery, consumer group rebalancing, and Exactly-Once Semantics (EOS).
+- **Chapter 22 — AI/ML System Design and LLM Integration:** Vector databases (HNSW vs. IVF indexes), Retrieval-Augmented Generation (RAG) pipelines, semantic caching, and prompt injection security filters.
+- **Chapter 23 — Appendix and Quick-Reference Cheat Sheets:** Big-O complexity tables, edge-case checklists, system design latency numbers, and day-of-interview preparation guides.
+- **Chapter 24 — Works Cited and Academic References:** Primary scholarly and technical citations supporting all architectural principles and benchmarking claims.
 
 
 ## How to Read This Book: Persona Profiles
 
 To maximize the value of this manual, select the path that aligns with your career stage and current interview goals:
 
-### Persona A: The Mid-to-Senior Engineer (Target: Coding Assessments and GCA)
+### Persona A: The Mid-to-Senior Engineer (Target: Coding Assessments)
 
-- **Goal:** Clear the 70-minute GCA speed run, optimize runtime performance, and handle live coding screens without panic.
+- **Goal:** Clear timed coding assessments, optimize runtime performance, and handle live coding screens without panic.
 - **Recommended Reading Path:**
-  1. Read **Chapter 1 (Invariant-First Strategy)** to learn how to prove loops mathematically.
-  2. Skip to **Part III (Chapters 7 through 13)**. Master the GCA Time Allocation Blueprint in Chapter 8, the Q1–Q4 deep dives in Chapters 9–12, and complete the 20 Mock Sets in Chapter 13.
-  3. Study **Part II (Chapters 3 & 5)** to learn functional stream optimizations and rich data structures.
-  4. Review **Chapter 21 (Appendix)** for the Big-O cheat sheet and edge-case checklist before your assessment.
+  1. Read **Chapter 1 (Invariant-First Strategy)** and **Chapter 2 (Problem Decomposition)** to learn the foundational analysis discipline.
+  2. Skip to **Part III (Chapters 8 through 15)**. Master the Assessment Tactical Blueprint in Chapter 9, the Pattern Mastery deep dives in Chapters 10–13, the Capstone synthesis in Chapter 14, and complete the 20 Mock Sets in Chapter 15.
+  3. Study **Part II (Chapters 4 & 6)** to learn functional stream optimizations and rich data structures.
+  4. Review **Chapter 23 (Appendix)** for the Big-O cheat sheet and edge-case checklist before your assessment.
 
 ### Persona B: The Lead / Staff Engineer (Target: System Design & Craftsmanship)
 
 - **Goal:** Design clean microservices, establish domain boundaries, and explain complex distributed system tradeoffs to principal engineers.
 - **Recommended Reading Path:**
-  1. Read **Part I (Chapters 1 & 2)** to align on the core case studies.
-  2. Master **Part II (Chapters 3–6)** on rich aggregate boundaries, strict SOLID inversion, and enterprise design patterns.
-  3. Deep-dive into **Part IV (Chapters 14–16 & 18–20)**. Study the sharded order matching engine mock script, distributed Saga implementations, Kafka event streaming, and security compliance (PCI-DSS, SOC2, GDPR).
+  1. Read **Part I (Chapters 1–3)** to align on the invariant-first strategy, problem decomposition, and case studies.
+  2. Master **Part II (Chapters 4–7)** on rich aggregate boundaries, strict SOLID inversion, and enterprise design patterns.
+  3. Deep-dive into **Part IV (Chapters 16–18 & 20–22)**. Study the sharded order matching engine mock script, distributed Saga implementations, Kafka event streaming, and security compliance (PCI-DSS, SOC2, GDPR).
 
 ### Persona C: The Engineering Manager / Director (Target: Architectural Strategy & Leadership)
 
 - **Goal:** Evaluate team engineering standards, design resilient systems, and ensure operational compliance under regulatory frameworks.
 - **Recommended Reading Path:**
-  1. Read **Chapter 2 (Case Studies)** for enterprise system context.
-  2. Study **Chapter 4 (SOLID boundaries)** to establish code quality metrics for your team.
-  3. Focus on **Part IV (Chapters 14–16)**. Master the CAP theorem tradeoffs, disaster recovery models, rate-limiting patterns, and GDPR Crypto-Shredding architectures.
-  4. Read **Chapter 17 (Behavioral & Technical Leadership)** to prepare for the behavioral round with Technical STAR frameworks and full mock responses.
+  1. Read **Chapter 3 (Case Studies)** for enterprise system context.
+  2. Study **Chapter 5 (SOLID boundaries)** to establish code quality metrics for your team.
+  3. Focus on **Part IV (Chapters 16–18)**. Master the CAP theorem tradeoffs, disaster recovery models, rate-limiting patterns, and GDPR Crypto-Shredding architectures.
+  4. Read **Chapter 19 (Behavioral & Technical Leadership)** to prepare for the behavioral round with Technical STAR frameworks and full mock responses.
 
 
 > ⭐ **STAR Moment: The Invariant Principle**
@@ -130,65 +132,85 @@ To maximize the value of this manual, select the path that aligns with your care
 
 ## How to Use This Book
 
-This manual is designed for a dual audience. For individual engineers preparing for grueling CodeSignal General Coding Assessments (GCA), it provides a concrete, pattern-based approach to conquer algorithmic challenges under severe time constraints. For engineering leads and managers returning to coding assessments after years of management, it serves as a tactical refresher to translate high-level architectural knowledge back into executable, robust code. Treat this not just as a book, but as a systematic training plan.
+This manual is designed for a dual audience. For individual engineers preparing for standardized online coding assessments (such as CodeSignal, HackerRank, Codility, or employer-proprietary platforms), it provides a concrete, pattern-based approach to conquer algorithmic challenges under severe time constraints. For engineering leads and managers returning to coding assessments after years of management, it serves as a tactical refresher to translate high-level architectural knowledge back into executable, robust code. Treat this not just as a book, but as a systematic training plan.
 
-## The 14-Day Crash Course (2 Weeks)
+## The 14-Day Algorithmic Sprint (Persona A)
 
-For experienced engineers who need results fast. Follow this intensive schedule to rebuild your coding muscle memory quickly.
+For mid-to-senior engineers targeting algorithmic assessments. Follow this intensive schedule to rebuild coding muscle memory.
 
 | Day | Focus Area | Chapters | Practice Target | Time |
 |---|---|---|---|---|
-| 1 | Foundations & Mindset | Prologue, Ch 1-2 (Invariants & Case Studies) | Read and internalize the Invariant-First strategy | 3-4 hrs |
-| 2 | OOP & SOLID Refresher | Ch 3-4 | Review patterns, do 5 practice problems mentally | 2-3 hrs |
-| 3 | Streams & Design Patterns | Ch 5-6 | Write 3 stream pipelines from memory | 2-3 hrs |
-| 4 | Concurrency & Data Structures | Ch 7-8 | Memorize Big-O table, implement 5 core algorithms | 3-4 hrs |
-| 5 | Q1 Mastery (Easy) | Ch 9 | Solve 15 Q1 problems under 8-min timer each | 4-5 hrs |
-| 6 | Q2 Mastery (Medium) | Ch 10 | Solve 10 Q2 matrix/grid problems under 15-min timer | 4-5 hrs |
-| 7 | REST DAY | Review weak areas from Days 5-6 | Light review only | 1-2 hrs |
-| 8 | Q3 Mastery (Medium-Hard) | Ch 11 | Solve 10 Q3 sliding window/hashmap problems | 4-5 hrs |
-| 9 | Q4 Mastery (Hard) | Ch 12 | Solve 8 Q4 DP/graph problems | 4-5 hrs |
-| 10 | Mock Exam Day 1 | Ch 13 Sets 1-5 | Full 70-min timed sessions (2 sets) | 4 hrs |
-| 11 | Mock Exam Day 2 | Ch 13 Sets 6-10 | Full 70-min timed sessions (2 sets) | 4 hrs |
-| 12 | System Design | Ch 14-16 | Practice one mock system design interview | 3-4 hrs |
-| 13 | Behavioral + AI/ML | Ch 17-20 | Write 5 STAR stories, review AI/ML concepts | 3-4 hrs |
-| 14 | Final Review & Mock | Ch 13 Sets 11-15, Ch 21 Appendix | Full mock exam + review weak patterns | 4-5 hrs |
+| 1 | Foundations | Prologue, Ch 1-2 | Read Invariant-First strategy & Decomposition | 3-4 hrs |
+| 2 | Core Algorithms | Ch 8-9 | Memorize Big-O table, implement 5 core algorithms | 3-4 hrs |
+| 3 | Easy-Tier Patterns | Ch 10 | Solve 15 implementation problems under 8-min timer | 4-5 hrs |
+| 4 | Medium-Tier Grid | Ch 11 | Solve 10 matrix/grid problems under 15-min timer | 4-5 hrs |
+| 5 | Medium-Tier Window | Ch 12 | Solve 10 sliding window/hashmap problems | 4-5 hrs |
+| 6 | REST DAY | Review weak areas | Light review only | 1-2 hrs |
+| 7 | Hard-Tier Patterns | Ch 13 | Solve 8 DP/graph problems | 4-5 hrs |
+| 8 | Decomposition Capstone | Ch 14 | Capstone walkthroughs | 3-4 hrs |
+| 9 | Mock Exam Day 1 | Ch 15 Sets 1-4 | Full timed sessions (4 sets) | 4 hrs |
+| 10 | Mock Exam Day 2 | Ch 15 Sets 5-8 | Full timed sessions (4 sets) | 4 hrs |
+| 11 | Mock Exam Day 3 | Ch 15 Sets 9-12 | Full timed sessions (4 sets) | 4 hrs |
+| 12 | Mock Exam Day 4 | Ch 15 Sets 13-16 | Full timed sessions (4 sets) | 4 hrs |
+| 13 | Mock Exam Day 5 | Ch 15 Sets 17-20 | Full timed sessions (4 sets) | 4 hrs |
+| 14 | Final Review & Prep | Ch 23 Appendix | Final review and preparation | 4-5 hrs |
+
+## The 14-Day System Design Sprint (Persona B)
+
+For lead and staff engineers focused on system design and architecture.
+
+| Day | Focus Area | Chapters | Practice Target | Time |
+|---|---|---|---|---|
+| 1 | Foundations & Case Studies | Prologue, Ch 1-3 | Internalize case studies and design boundaries | 3-4 hrs |
+| 2 | OOP & SOLID | Ch 4-5 | Domain boundaries and strict SOLID inversion | 3-4 hrs |
+| 3 | Functional Streams | Ch 6 | Imperative-vs-stream optimizations | 2-3 hrs |
+| 4 | Design Patterns | Ch 7 | Enterprise framework pattern recognition | 3-4 hrs |
+| 5 | Architecture Fundamentals | Ch 16 | System boundaries and API design | 4-5 hrs |
+| 6 | REST DAY | Review weak areas | Light review only | 1-2 hrs |
+| 7 | Integration & Resiliency | Ch 17 | Outbox, Saga, rate limiting, distributed tracing | 4-5 hrs |
+| 8 | Database Design | Ch 18 | Storage engines, sharding, compliance | 4-5 hrs |
+| 9 | Leadership & Testing | Ch 19-20 | STAR frameworks and CI/CD policies | 4 hrs |
+| 10 | Event Streaming | Ch 21 | Kafka internals, exactly-once semantics | 4 hrs |
+| 11 | AI/ML Design | Ch 22 | Vector DBs and RAG pipelines | 4 hrs |
+| 12 | Mock Interview Prep 1 | Ch 16-18 Review | Practice mock design sessions | 4 hrs |
+| 13 | Mock Interview Prep 2 | Ch 19-22 Review | Practice mock design sessions | 4 hrs |
+| 14 | Final Review | Ch 23 Appendix | Final exam preparation | 4 hrs |
 
 - **Start each day** by reviewing the terminology section of the relevant chapter.
-- **Time yourself on EVERY problem** — accuracy without speed is not enough for modern assessments.
 - **Keep a 'mistake log'** to track patterns you consistently get wrong.
 - **On rest day**, revisit your mistake log, not new material.
 
-## The 28-Day Deep Dive (4 Weeks)
+## The 28-Day Comprehensive Plan (All Personas)
 
-For candidates targeting Staff/Principal roles or those wanting thorough mastery, this comprehensive plan builds enduring architectural and algorithmic skills.
+For candidates targeting roles requiring thorough mastery of both coding and system design.
 
-**Week 1: Foundations & Design Thinking (Chapters 1-8)**
+**Week 1: Foundations & Design Thinking (Personas A, B, C)**
 
-- Day 1-2: Invariants, Case Studies, OOP (Ch 1-3)
-- Day 3-4: SOLID, Streams, Design Patterns (Ch 4-6)
-- Day 5-6: Concurrency, Core Algorithms Blueprint (Ch 7-8)
+- Day 1-2: Invariants, Decomposition, Case Studies, OOP (Ch 1-4)
+- Day 3-4: SOLID, Streams, Design Patterns (Ch 5-7)
+- Day 5-6: Concurrency, Core Algorithms Blueprint (Ch 8-9)
 - Day 7: Review + implement 10 algorithms from memory
 
-**Week 2: Algorithm Mastery (Chapters 9-12)**
+**Week 2: Algorithm Mastery (Persona A Focus)**
 
-- Day 8-9: Q1 patterns (Ch 9) — solve ALL exemplar problems
-- Day 10-11: Q2 patterns (Ch 10) — solve ALL exemplar problems
-- Day 12-13: Q3 patterns (Ch 11) — solve ALL exemplar problems
-- Day 14: Q4 patterns (Ch 12) — start with 15 problems
+- Day 8-9: Easy-Tier patterns (Ch 10) — solve ALL exemplar problems
+- Day 10-11: Medium-Tier patterns (Ch 11) — solve ALL exemplar problems
+- Day 12-13: Medium-Hard patterns (Ch 12) — solve ALL exemplar problems
+- Day 14: Hard-Tier patterns (Ch 13) — start with 15 problems
 
-**Week 3: Advanced Algorithms + System Design (Chapters 12-16)**
+**Week 3: Advanced Algorithms + System Design (Personas A, B, C)**
 
-- Day 15-16: Finish Q4 patterns (Ch 12), solve remaining 15 problems
-- Day 17-18: Mock exams (Ch 13 Sets 1-10, two per day)
-- Day 19-20: System Architecture (Ch 14), Resiliency (Ch 15), Database Design (Ch 16)
+- Day 15-16: Finish Hard-Tier patterns (Ch 13) + Capstone Decomposition (Ch 14) (Persona A)
+- Day 17-18: Mock assessments (Ch 15 Sets 1-10, two per day) (Persona A)
+- Day 19-20: System Architecture (Ch 16), Resiliency (Ch 17), Database Design (Ch 18) (Persona B, C)
 - Day 21: Review + identify weakest algorithm pattern
 
-**Week 4: Polish & Exam Readiness (Chapters 17-22 + Review)**
+**Week 4: Polish & Exam Readiness (Personas B, C Focus)**
 
-- Day 22-23: Behavioral Leadership (Ch 17) + Testing/CI-CD (Ch 18)
-- Day 24-25: Message Brokers (Ch 19), AI/ML (Ch 20) + final mock exams (Ch 13 Sets 11-20)
+- Day 22-23: Behavioral Leadership (Ch 19) + Testing/CI-CD (Ch 20)
+- Day 24-25: Message Brokers (Ch 21), AI/ML (Ch 22) + final mock assessments (Ch 15 Sets 11-20)
 - Day 26-27: Full review — re-solve all problems you got wrong
-- Day 28: Final full mock exam under strict conditions + rest
+- Day 28: Final full mock assessment under strict conditions + rest
 
 ## Pattern Recognition Quick Reference
 
@@ -220,52 +242,7 @@ This approach is fragile. In the pressure of a live interview or a timed online 
 This is the "hack-and-test" methodology, and it signals to the interviewer that you lack structural discipline. A senior engineer or manager must demonstrate a systematic, predictable approach to code correctness. The solution is the **Invariant-First Strategy**.
 
 
-## Escaping the Syntax Trap: A Quick-Reference Guide
 
-In high-stress technical interviews, a common failure point for senior engineers and engineering managers who do not write code every day is getting tripped up by basic language syntax or type conversions. Spending five minutes debugging why a string comparison isn't working or how to convert an integer count into characters (chars) can derail an interview, even if your architectural approach is correct.
-
-Below is a quick-reference guide for common type conversion and syntax pitfalls to help you stay focused on your design boundaries.
-
-### Number to Character Conversions
-*   **Char Digit to Int:** 
-    *   *Incorrect:* `(int) '5'` returns `53` (its ASCII value).
-    *   *Correct:* `'5' - '0'` returns `5`. Always subtract the character `'0'` offset.
-*   **Int Digit to Char:** 
-    *   *Incorrect:* `(char) 5` returns a non-printable control character.
-    *   *Correct:* `(char) (5 + '0')` returns the character `'5'`.
-*   **Int to String:**
-    *   *Correct:* `String.valueOf(number)` or `number + ""` (using empty string concatenation).
-
-### Length, Size, and Count
-The syntax for checking size varies across data types, and mixing them up is the most frequent syntax error under stress:
-
-*   **Array:** `arr.length` (Property — no parentheses)
-*   **String:** `str.length()` (Method — with parentheses)
-*   **Collections (List, Set, Map):** `list.size()` (Method — with parentheses)
-
-### String Manipulation Pitfalls
-*   **Immutability:** Strings in Java are immutable. You cannot modify a character in-place: `str.charAt(i) = 'c'` is a compilation error.
-    *   *Remedy:* Convert the string to a `StringBuilder` or a character array first:
-        ```java
-        StringBuilder sb = new StringBuilder(str);
-        sb.setCharAt(i, 'c');
-        String result = sb.toString();
-        ```
-*   **Comparison:** 
-    *   *Incorrect:* `str1 == str2` (compares object memory references).
-    *   *Correct:* `str1.equals(str2)` (compares character values).
-
-### Integer Division & Modulo
-*   **Integer Division:** 
-    *   *Incorrect:* `5 / 2` evaluates to `2` (truncates decimals).
-    *   *Correct:* Cast at least one operand: `(double) 5 / 2` or `5.0 / 2` to yield `2.5`.
-*   **Negative Modulo:** 
-    *   *Incorrect:* `-5 % 2` evaluates to `-1` in Java.
-    *   *Correct:* To guarantee a positive wrap-around index: `(val % N + N) % N`.
-
-### PriorityQueue (Heaps) Comparators
-*   *Incorrect:* `new PriorityQueue<>((a, b) -> a.val - b.val)` is susceptible to integer underflow/overflow if values can be negative.
-*   *Correct:* Use the safe comparison method: `new PriorityQueue<>((a, b) -> Integer.compare(a.val, b.val))`.
 
 
 ## Defining the Invariant Wall
@@ -399,10 +376,114 @@ public int binarySearch(int[] nums, int target) {
 
 By applying this invariant-first approach, we eliminate all cognitive overhead. We do not need to "dry-run" multiple edge cases or guess boundary updates. The math guarantees the correctness of our implementation.
 
+### Invariant Proof #2: The Sliding Window Maximum
+
+Prove the invariant for maintaining a monotonic deque that tracks the maximum element in a sliding window of size K:
+
+**Invariant:** At every step, the deque contains indices in strictly decreasing order of their corresponding values, and all indices are within the current window [i-K+1, i].
+
+**Initialization:** The deque is empty before processing begins. Vacuously true.
+**Maintenance:** When processing element A[i]:
+1. Remove all indices from the back where A[deque.peekLast()] ≤ A[i] (maintains decreasing order)
+2. Remove the front if deque.peekFirst() < i-K+1 (maintains window bounds)
+3. Add i to the back
+
+After these operations, deque.peekFirst() always holds the index of the maximum element in the current window.
+
+**Termination:** After processing all N elements, we have extracted N-K+1 window maximums, each in O(1) amortized time.
+
+This proves the Monotonic Deque pattern [PAT-20] achieves O(N) total time for sliding window maximum.
+
 
 > ⭐ **STAR Moment: The $O(1)$ Failure Principle**
 > 
 > A robust system fails fast and fails explicitly. The first lines of any method should always be pre-condition validation. If an input is invalid, fail immediately. Do not allow execution to proceed with corrupted or unexpected state, as this leads to hard-to-debug failures deep inside your call stack. In an interview, writing explicit input validations shows that you design for production safety, not just passing test suites.
+
+
+# The Art of Problem Decomposition
+
+> *"The ability to decompose a novel problem into solvable components is the single most valuable skill a software engineer can demonstrate under assessment conditions."*
+
+## Why Decomposition Matters
+
+In the high-stakes environment of technical assessments, the most common trap engineers fall into is the pursuit of memorization. Memorizing solutions to hundreds of common interview questions might give a false sense of security, but it invariably fails when confronted with novel, unique, or subtly modified problems. The real skill—the one that distinguishes top-tier candidates—is not recall, but the ability to break any complex, unfamiliar problem into a series of recognizable, solvable sub-problems that map directly to known patterns.
+
+This principle applies universally across all assessment formats. Whether you are facing a monotonically increasing difficulty curve, equal-weight peer questions, a single deep architectural problem, or a live whiteboard interview, decomposition remains your primary analytical tool. When you encounter a question you have never seen before, your memorized catalog of answers is useless. However, your ability to dismantle that question into its atomic components is exactly what the assessment is designed to measure.
+
+Mastering problem decomposition transitions your mindset from "Have I seen this before?" to "What are the underlying structures of this problem?" It transforms an insurmountable challenge into a structured exercise in pattern recognition and application.
+
+## The 5-Step Decomposition Framework
+
+To systematically dismantle any technical problem, you must adhere to a rigorous analytical process. The following 5-step framework is designed for senior-level decomposition, preventing premature coding and ensuring a comprehensive understanding of the problem domain.
+
+### Step 1: Constraint Analysis
+
+Extract time and space bounds directly from the constraints to narrow the algorithm class before you even read the problem narrative. For example, if $N \le 10^5$, an $O(N^2)$ brute-force solution will fail immediately due to time limits. You are mathematically required to find an $O(N \log N)$ or $O(N)$ solution. If $N \le 20$, an $O(2^N)$ backtracking approach is expected. The constraints are not trivia; they are the architectural specifications of your solution.
+
+### Step 2: Data Flow Mapping
+
+Trace the input-to-output transformations to identify the structural nature of the problem. Is this a mapping operation (1:1 transformation)? A reduction operation (N:1 aggregation)? Or a search operation (finding a needle in a haystack)? By mapping the data flow, you constrain the types of data structures that can be used.
+
+### Step 3: Invariant Identification
+
+Define what property must remain mathematically true across iterations. This is the core thesis of the Invariant-First strategy. Whether you are maintaining a sorted boundary in a two-pointer approach, or a monotonic property in a stack, identifying the invariant reduces the algorithm to a simple proof of correctness rather than a guessing game.
+
+### Step 4: Pattern Matching
+
+With constraints, data flow, and invariants defined, map these characteristics to the 24 canonical patterns (Chapter 9). You are no longer inventing an algorithm; you are selecting the appropriate structural blueprint that satisfies the defined bounds.
+
+### Step 5: Edge Case Enumeration
+
+Systematically generate boundary inputs based on the constraints. What happens at $N=0$ or $N=1$? What if the input array contains negative values or duplicates? Enumerating edge cases before implementation guarantees your invariant holds at the boundaries.
+
+## A Quick Decomposition Example
+
+Let us walk through a concrete example using the framework. Consider this problem: 
+
+**"Given an array of non-negative integers representing the heights of adjacent buildings of unit width, compute how much rainwater can be trapped between the buildings after a storm."**
+
+
+**Step 1: Constraint Analysis**
+Assume $N \le 10^5$. This instantly rules out any $O(N^2)$ solution. We must solve this in $O(N)$ or $O(N \log N)$ time.
+
+**Step 2: Data Flow Mapping**
+Input: Array of $N$ heights. Output: A single integer (total water). This is a reduction problem. For any building `i`, the water it traps is `min(max_left, max_right) - height[i]`.
+
+**The Failed Naive Approach ($O(N^2)$)**
+A junior engineer might immediately code a loop within a loop: for every element `i`, iterate left to find `max_left`, and iterate right to find `max_right`. 
+*Why it fails:* Scanning the remaining array for every single element yields $O(N^2)$ time complexity. With $N=10^5$, this requires $10^{10}$ operations, which will time out on any assessment platform.
+
+**Step 3: Invariant Identification**
+To achieve $O(N)$, we must eliminate the inner loops. The amount of water trapped depends *only on the shorter of the two maximum boundaries*. 
+*Invariant:* If we have two pointers (`left` and `right`), and `height[left] < height[right]`, the trapped water at `left` is strictly bounded by `max_left`, regardless of what happens between `left` and `right`. We can safely process `left` and move inward.
+
+**Step 4: Pattern Matching**
+Processing an array from the outsides inward based on boundary conditions maps perfectly to **[PAT-06] Converging Two-Pointers**.
+
+**Step 5: Edge Case Enumeration**
+- $N < 3$: Cannot trap water. Return 0.
+- All heights equal: Return 0.
+
+**Design Before Coding**
+*Approach (Two-Pointer Design):*
+- Initialize `left` at 0, `right` at $N-1$.
+- Maintain `left_max` and `right_max`.
+- While `left < right`:
+  - If `heights[left] < heights[right]`, water depends on `left_max`. Update `left_max`, add `left_max - heights[left]` to total, increment `left`.
+  - Else, water depends on `right_max`. Update `right_max`, add `right_max - heights[right]` to total, decrement `right`.
+- Time Complexity: $O(N)$, Space Complexity: $O(1)$.
+
+By following the framework, a potentially paralyzing problem is reduced to a standard application of the Two-Pointer pattern.
+
+## When Decomposition Saves You
+
+In modern assessment environments, particularly equal-weight assessments where all questions are peers, decomposition is your greatest strategic weapon. Because these formats do not provide difficulty-ordering cues, you cannot rely on the assumption that "Question 1 is easy, Question 4 is hard." You must approach every problem objectively.
+
+When confronted with novel, never-before-seen problems—problems explicitly designed to test engineering limits rather than memorization—decomposition is the *only* reliable strategy. It bridges the gap between the unknown problem domain and your known catalog of patterns, ensuring that you can always make structured, demonstrable progress.
+
+> ⭐ **STAR Moment: The Decomposition Discipline**
+>
+> Before you write a single line of code, invest 3-5 minutes in decomposition. Write your analysis as comments at the top of your solution file. This serves three purposes: it clarifies your thinking, it provides partial credit if you run out of time, and it creates a roadmap that prevents you from getting lost during implementation.
 
 
 # The Three System-Scale Case Studies
@@ -541,12 +622,12 @@ public class LedgerAccount {
 ```
 
 
-![AuraPay System Architecture](editions/java/chapters/02-case-studies/visuals/aurapay_architecture.png){width=80%}
+![AuraPay System Architecture](editions/java/chapters/03-case-studies/visuals/aurapay_architecture.png){width=80%}
 
 In the following chapters, we will use these domain classes to demonstrate OOP design, SOLID boundary enforcement, Java Streams collection processing, and database concurrency controls.
 
 
-## ZenithTrade: High-Frequency Matching Engine (Exercise)
+## ZenithTrade: High-Frequency Matching Engine (Reference Architecture)
 
 ZenithTrade is a high-frequency, low-latency order matching engine. It is designed to process incoming buy and sell limit orders and execute matches in real time.
 
@@ -556,7 +637,7 @@ ZenithTrade is a high-frequency, low-latency order matching engine. It is design
 - **Sub-Millisecond Latency:** The engine must execute order matching with minimal latency, avoiding memory allocations and garbage collection pauses.
 - **Data Structure Mastery:** Utilizes custom priority queues, heaps, and double-ended queues for low-overhead bookkeeping.
 
-### Exercise Starter Scaffolding
+### Reference Architecture Starter Scaffolding
 To begin implementing the ZenithTrade engine, use the following `Order` entity as your starting point. It establishes the basic structure of a limit order, enforcing invariants like positive price and quantity:
 
 ```java
@@ -586,10 +667,10 @@ public class Order {
 }
 ```
 
-This case study is left as an exercise for the reader to apply the algorithmic patterns, concurrency models, and performance optimizations detailed in Part III.
+These architectures serve as running case studies throughout the book. You will implement components of each system as you learn the patterns in Parts II, III, and IV. Do not attempt to design these systems now — let the patterns guide you.
 
 
-## ChiramTrust: Decentralized Identity Consent Wallet (Exercise)
+## ChiramTrust: Decentralized Identity Consent Wallet (Reference Architecture)
 
 ChiramTrust is a decentralized identity wallet that allows users to store credentials locally, negotiate sharing terms with verifiers, and establish consensus-based recovery.
 
@@ -615,7 +696,7 @@ By the properties of polynomial interpolation:
    
 2.  **Any $T - 1$ or fewer guardians** possess a system of equations with infinite solutions, revealing absolutely zero information about the secret key $S$.
 
-### Exercise Starter Scaffolding
+### Reference Architecture Starter Scaffolding
 
 To implement the ChiramTrust wallet, use the following `DidConsentRecord` aggregate root as your starting point. It handles W3C identifier validation and thread-safe consent scope modifications:
 
@@ -651,6 +732,8 @@ Here is a mock interview dialogue showing how to apply the Bounded Context Isola
 **Interviewer:** *"If the AuraPay Ledger database experiences a write lag or becomes temporarily unavailable, how does that affect ZenithTrade's matching engine? How do you prevent ledger issues from cascading and bringing down the trading platform?"*
 
 **Candidate:** "We enforce strict Bounded Context Isolation. The ZenithTrade matching engine runs entirely in-memory and communicates with the AuraPay Ledger asynchronously via a transaction event stream. When an order matches, the matching engine commits the trade to its local state and publishes a `TradeExecuted` event. The Ledger service consumes this event and updates account balances. 
+
+To ensure zero-loss durability, ZenithTrade employs a write-ahead journal (WAJ) inspired by the LMAX Disruptor architecture. Every order and match event is sequentially appended to a persistent ring buffer on NVMe storage BEFORE the in-memory state is updated. On node failure, the engine replays the journal to reconstruct its complete order book state. Additionally, periodic snapshots compress the journal, enabling sub-second recovery times. This design achieves both the microsecond latency of in-memory processing and the durability guarantees required by financial regulators."
 
 If the Ledger database slows down or halts, the matching engine continues to process trades in memory without interruption. The event broker queues the trade events until the ledger recovers. This decoupling guarantees fault isolation and maintains a high-availability trading path."
 
@@ -713,7 +796,7 @@ public class LedgerService {
 
 In a senior coding or architecture interview, presenting an anemic model is a missed opportunity. To demonstrate true software craftsmanship, you must show how to design **rich domain models** that encapsulate state and enforce invariants.
 
-![Anemic vs Rich Domain Model Comparison](editions/java/chapters/03-oop-principles/visuals/anemic_vs_rich.png){width=85%}
+![Anemic vs Rich Domain Model Comparison](editions/java/chapters/04-oop-principles/visuals/anemic_vs_rich.png){width=85%}
 
 
 ## Refactoring Walkthrough: From Anemic to Rich
@@ -845,7 +928,7 @@ This creates tight coupling. If you need to change how fees are calculated, or a
 
 Instead of sub-classing, we compose our routing engine by injecting a collection of independent strategy routes. The core engine is decoupled from the network-specific details.
 
-![Composition over Inheritance](editions/java/chapters/03-oop-principles/visuals/composition_vs_inheritance.png){width=85%}
+![Composition over Inheritance](editions/java/chapters/04-oop-principles/visuals/composition_vs_inheritance.png){width=85%}
 
 
 ## Polymorphism over Conditional Logic
@@ -972,7 +1055,7 @@ If you stop there, you fail to show architectural maturity. An interviewer wants
 
 In this chapter, we will implement the core processing pipeline of AuraPay using a design that strictly conforms to all five SOLID principles.
 
-![The Five SOLID Principles — Quick Reference](editions/java/chapters/04-solid-boundaries/visuals/solid_summary.png){width=70%}
+![The Five SOLID Principles — Quick Reference](editions/java/chapters/05-solid-boundaries/visuals/solid_summary.png){width=70%}
 
 ## The SOLID Transaction Pipeline
 
@@ -1114,7 +1197,7 @@ This is the most critical principle for decoupling business logic from infrastru
 
 In our implementation, the `TransactionProcessor` does not import a concrete SQL database connector or Hibernate manager. It depends entirely on the `LedgerRepository` interface. The business logic is at the top of the dependency tree, and database adapters are plugged in at the bottom. This allows you to run unit tests using a mock repository in memory, completely decoupled from a database connection.
 
-![SOLID Dependency Inversion Principle — Before and After](editions/java/chapters/04-solid-boundaries/visuals/solid_dip.png){width=85%}
+![SOLID Dependency Inversion Principle — Before and After](editions/java/chapters/05-solid-boundaries/visuals/solid_dip.png){width=85%}
 
 
 ## SOLID Violation Detector & Remedies
@@ -1156,6 +1239,21 @@ Frameworks like Spring Boot (Java), ASP.NET Core (C#), and FastAPI/Dependency In
 
 ### Aspect-Oriented Programming (AOP)
 To adhere to OCP, frameworks use AOP to apply cross-cutting concerns (such as transactions, security, and logging) to service boundaries dynamically using **Proxy decorators**. For instance, adding `@Transactional` in Spring Boot or `[Transaction]` in ASP.NET Core wraps the service class in a proxy container, injecting commit and rollback logic without modifying the service's source code.
+
+
+### When SOLID Hurts: The Trade-off Analysis
+
+SOLID principles are design heuristics, not commandments. Over-application creates its own category of architectural failures:
+
+**Interface Segregation Overdose:** Splitting every interface into single-method contracts creates an explosion of types. A microservice with 47 single-method interfaces has replaced coupling with cognitive overload. The team spends more time navigating the interface graph than building features.
+
+**Dependency Inversion Overhead:** In small microservices (< 500 lines), injecting every dependency through constructor parameters adds boilerplate without benefit. If a service has exactly one implementation of each dependency and will never be swapped, direct instantiation is simpler and more honest.
+
+**Open-Closed Paralysis:** Designing every class for extension before you have a second use case is speculative generality. YAGNI (You Ain't Gonna Need It) often trumps OCP in early-stage systems. Add extension points when you have evidence of variation, not before.
+
+**Liskov Substitution in Practice:** The classic Rectangle/Square violation is taught in every textbook, but the real-world impact is subtler. When your service contract promises idempotent retries but a subclass implementation has side effects on retry, you've violated LSP in a way that causes production incidents, not just type errors.
+
+> The senior engineer's skill is knowing WHEN to apply SOLID and when the cure is worse than the disease.
 
 
 > ⭐ **STAR Moment: The Mockability Test**
@@ -1256,357 +1354,13 @@ public class TransactionAnalytics {
 ```
 
 
-![Stream Pipeline Visualization](editions/java/chapters/05-functional-streams/visuals/stream_pipeline.png){width=90%}
+![Stream Pipeline Visualization](editions/java/chapters/06-functional-streams/visuals/stream_pipeline.png){width=90%}
 
 By declaring the operations as a stream pipeline, the code becomes a readable translation of the business spec:
 
 1.  **Filter** out transaction records below the threshold.
 2.  **Collect** the results by grouping by the merchant ID and adding their amounts.
 
-
-## Understanding Method References (`::` Syntax)
-
-In Java, the `::` operator is a **method reference** — a shorthand for a lambda expression that simply delegates to an existing method. Method references make stream pipelines more readable by replacing verbose lambdas with direct method pointers.
-
-There are four types of method references:
-
-**1. Static Method Reference — `ClassName::staticMethod`**
-
-Calls a static method. The stream element is passed as the argument.
-
-```java
-// Lambda form:
-.map(s -> Integer.parseInt(s))
-// Method reference form:
-.map(Integer::parseInt)
-```
-
-**2. Instance Method on a Specific Object — `instance::method`**
-
-Calls an instance method on a specific, already-existing object.
-
-```java
-TransactionValidator validator = new TransactionValidator();
-// Lambda form:
-.filter(tx -> validator.isValid(tx))
-// Method reference form:
-.filter(validator::isValid)
-```
-
-**3. Instance Method on the Stream Element — `ClassName::instanceMethod`**
-
-Calls an instance method on each element flowing through the stream. The element itself becomes the `this` reference.
-
-```java
-// Lambda form:
-.map(tx -> tx.amount())
-// Method reference form:
-.map(TransactionRecord::amount)
-
-// Lambda form:
-.map(s -> s.toUpperCase())
-// Method reference form:
-.map(String::toUpperCase)
-```
-
-**4. Constructor Reference — `ClassName::new`**
-
-Calls a constructor to create new objects from stream elements.
-
-```java
-// Lambda form:
-.map(name -> new Merchant(name))
-// Method reference form:
-.map(Merchant::new)
-```
-
-> **Interview Signal:** Using method references consistently signals that you write idiomatic, clean functional code. When reviewing a pipeline in a live coding session, interviewers expect `Transaction::amount` over `tx -> tx.amount()`.
-
-
-## Stream Operations Deep-Dive
-
-Every stream pipeline consists of three parts: a **source**, zero or more **intermediate operations** (lazy), and exactly one **terminal operation** (triggers execution).
-
-### Key Intermediate Operations (Lazy — Build the Pipeline)
-
-| Operation | Purpose | Example |
-|---|---|---|
-| `filter(Predicate)` | Keep elements matching a condition | `.filter(tx -> tx.amount() > 100)` |
-| `map(Function)` | Transform each element to a new value | `.map(Transaction::merchantId)` |
-| `flatMap(Function)` | Flatten nested collections into a single stream | `.flatMap(tx -> tx.items().stream())` |
-| `distinct()` | Remove duplicate elements (uses `.equals()`) | `.distinct()` |
-| `sorted()` | Sort elements (natural order or by Comparator) | `.sorted()` |
-| `peek(Consumer)` | Inspect elements without modifying (for debugging) | `.peek(tx -> log.info(tx))` |
-| `limit(n)` | Take only the first N elements | `.limit(10)` |
-| `skip(n)` | Skip the first N elements | `.skip(5)` |
-
-### Key Terminal Operations (Eager — Trigger Execution)
-
-| Operation | Purpose | Example |
-|---|---|---|
-| `collect(Collector)` | Accumulate into a collection or summary | `.collect(Collectors.toList())` |
-| `forEach(Consumer)` | Perform an action on each element | `.forEach(System.out::println)` |
-| `reduce(identity, BinaryOp)` | Combine all elements into a single result | `.reduce(BigDecimal.ZERO, BigDecimal::add)` |
-| `count()` | Count elements | `.count()` |
-| `findFirst()` | Return the first element (wrapped in Optional) | `.findFirst()` |
-| `anyMatch(Predicate)` | Check if any element satisfies a condition | `.anyMatch(tx -> tx.isFraud())` |
-| `allMatch(Predicate)` | Check if all elements satisfy a condition | `.allMatch(tx -> tx.amount() > 0)` |
-| `toArray()` | Collect into an array | `.toArray(String[]::new)` |
-
-### Collectors: The Power of `collect()`
-
-The `Collectors` utility class provides powerful aggregation operations:
-
-```java
-// Group transactions by merchant, summing amounts
-Map<UUID, BigDecimal> volumeByMerchant = transactions.stream()
-    .collect(Collectors.groupingBy(
-        TransactionRecord::merchantId,
-        Collectors.reducing(BigDecimal.ZERO, TransactionRecord::amount, BigDecimal::add)
-    ));
-
-// Partition transactions into two groups: above/below threshold
-Map<Boolean, List<TransactionRecord>> partitioned = transactions.stream()
-    .collect(Collectors.partitioningBy(tx -> tx.amount().compareTo(threshold) > 0));
-
-// Join merchant names into a comma-separated string
-String merchantList = merchants.stream()
-    .map(Merchant::name)
-    .collect(Collectors.joining(", "));
-
-// Compute statistics on amounts
-DoubleSummaryStatistics stats = transactions.stream()
-    .mapToDouble(tx -> tx.amount().doubleValue())
-    .summaryStatistics();
-// stats.getAverage(), stats.getMax(), stats.getMin(), stats.getCount()
-```
-
-
-## When to Use `.map()` vs Collectors Directly
-
-A common source of confusion is deciding whether to use `.map()` as an intermediate transformation step, or to go directly to a `Collectors.toMap()` or `Collectors.groupingBy()` call in the terminal `collect()`. The rule is straightforward:
-
-**Use `.map()` when you need ONE thing from each element into a simple collection.**
-
-The `.map()` operation transforms what is flowing through the stream. After `.map(TransactionRecord::transactionId)`, the stream is no longer `Stream<TransactionRecord>` — it becomes `Stream<UUID>`. Use this when you only need to extract a single field and collect it into a `List` or `Set`.
-
-```java
-// Goal: Get a list of transaction IDs for high-value transactions
-List<UUID> highValueIds = transactions.stream()
-    .filter(tx -> tx.amount().compareTo(limit) > 0)
-    .map(TransactionRecord::transactionId)     // Stream<TransactionRecord> -> Stream<UUID>
-    .collect(Collectors.toList());              // Simple List<UUID>
-```
-
-**Use `Collectors.toMap()` or `groupingBy()` when you need TWO or more things from each element into a Map.**
-
-When you need to extract both a key and a value from the same object, you cannot use `.map()` — mapping to one field loses access to the other. Instead, pass both extractor functions directly into the collector.
-
-```java
-// Goal: Map each merchant to their total transaction volume
-Map<UUID, BigDecimal> volumes = transactions.stream()
-    .filter(tx -> tx.amount().compareTo(threshold) >= 0)
-    .collect(Collectors.toMap(
-        TransactionRecord::destinationAccountId,  // key: need accountId
-        TransactionRecord::amount,                 // value: need amount
-        BigDecimal::add                            // merge: sum on collision
-    ));
-// No .map() here — we need BOTH fields from the same TransactionRecord
-```
-
-### Decision Guide
-
-Ask yourself: *Do I need to build a Map (key -> value) from each element?*
-
-- **Yes** -> Use `Collectors.toMap()` or `groupingBy()` directly. You need the full object to extract both key and value.
-- **No** -> *Do I need to transform each element to a different type?*
-  - **Yes** -> Use `.map()` then `.collect(Collectors.toList())` or `.toSet()`
-  - **No** -> Just `.filter()` then `.collect(Collectors.toList())`
-
-### Five Patterns Side-by-Side
-
-```java
-// Pattern 1: Extract one field -> List
-List<UUID> ids = records.stream()
-    .map(TransactionRecord::transactionId)
-    .collect(Collectors.toList());
-
-// Pattern 2: Extract one field -> Set (deduplicate)
-Set<String> currencies = records.stream()
-    .map(TransactionRecord::currency)
-    .collect(Collectors.toSet());
-
-// Pattern 3: Two fields -> Map (no duplicates expected)
-Map<UUID, BigDecimal> balances = records.stream()
-    .collect(Collectors.toMap(
-        TransactionRecord::transactionId,
-        TransactionRecord::amount));
-
-// Pattern 4: Two fields -> Map with aggregation (sum duplicates)
-Map<UUID, BigDecimal> totals = records.stream()
-    .collect(Collectors.toMap(
-        TransactionRecord::destinationAccountId,
-        TransactionRecord::amount,
-        BigDecimal::add));
-
-// Pattern 5: Group into lists -> Map<Key, List<Record>>
-Map<String, List<TransactionRecord>> byCurrency = records.stream()
-    .collect(Collectors.groupingBy(TransactionRecord::currency));
-```
-
-> **Interview Tip:** If an interviewer asks you to aggregate data by a key, reach for `Collectors.toMap()` with a merge function or `Collectors.groupingBy()`. If they ask you to extract or transform elements, use `.map()` followed by a simple `toList()` or `toSet()`. Explaining *why* you chose one over the other demonstrates pipeline design fluency.
-
-
-## Senior Interview Critical Knowledge: Performance Pitfalls
-
-In senior developer and manager interviews, showing that you can write a stream is not enough. You must demonstrate a deep understanding of the **performance costs and runtime implications** of functional APIs.
-
-### The Parallel Stream Thread Starvation Trap
-In Java, calling `.parallelStream()` instead of `.stream()` splits the workload across multiple threads automatically. Candidates often present this as an easy optimization.
-
-**The Danger:** By default, all parallel streams in a JVM share a single, static **ForkJoinPool.commonPool()**. The size of this pool is set to `Runtime.getRuntime().availableProcessors() - 1`.
-If you run an I/O-bound operation (e.g., calling an external billing gateway or querying a database) inside a parallel stream, you block a thread in the common pool. If multiple requests execute these I/O tasks concurrently, the common pool becomes completely starved. 
-Consequently, **every other parallel stream in the entire JVM application stalls**, including critical background system tasks.
-
-> **Design Rule:** Never run I/O-bound operations inside parallel streams. Only use parallel streams for CPU-bound computations on large collections where the overhead of thread scheduling is outweighed by the calculation size.
-
-### Intermediate Object Overhead & Garbage Collection
-Functional pipelines construct intermediate objects for every stage of the pipeline. In high-throughput settlement engines processing millions of transactions per second, this causes significant memory overhead.
-
-- Every `.map()` or `.filter()` operation instantiates wrapper objects.
-- Primitive boxing (e.g., converting a raw `double` to a `Double` object) triggers heap allocations, putting heavy pressure on the JVM Garbage Collector.
-
-> **Design Rule:** In performance-critical loops, utilize primitive streams (e.g., `IntStream`, `DoubleStream`) to prevent boxing overhead, or fall back to plain array iterations if zero-allocation execution is required.
-
-### Lazy Evaluation and Exception Handling
-Stream operations are **lazy**—they are not executed when they are declared, but only when a **terminal operation** (like `.collect()`, `.findFirst()`, or `.forEach()`) is invoked.
-This creates debugging challenges. If a filter operation throws an exception, the stack trace will point to the terminal operation invocation, not where the pipeline was declared. Furthermore, standard functional interfaces do not allow checked exceptions, forcing you to write messy wrappers or handle runtime failures globally.
-
-
-## Performance Comparison: Imperative vs. Streams
-
-Selecting the correct loop structure is a trade-off between readability and raw execution speed. The following table contrasts the runtime behaviors of different processing paradigms:
-
-| Metric | Imperative Loops | Sequential Streams | Parallel Streams |
-|---|---|---|---|
-| **Execution Time** | Fastest (zero overhead) | Slow to medium | Fast for massive sets; slower for small sets |
-| **Heap Allocations** | None (in-place) | High (wrapper nodes, builders) | Very high (coordination nodes) |
-| **GC Pressure** | Zero | Medium to high | High |
-| **Scale Limits** | Single CPU core | Single CPU core | Scales with cores (CPU-bound only) |
-| **Starvation Risk** | Zero | Zero | Extreme (I/O in common pool) |
-| **Readability** | Low (boilerplate) | High (declarative) | High (simple conversion) |
-
-
-## Standard Streams vs. Reactive Streams
-
-In high-concurrency systems, candidates must distinguish between standard Java Streams and **Reactive Streams** (e.g., Spring WebFlux, Project Reactor, RxJava, C# Reactive Extensions):
-
-- **Standard Streams (Pull-Based):** Synchronous and blocking. They operate on finite, in-memory collections. The consumer pulls data from the stream.
-- **Reactive Streams (Push-Based):** Asynchronous and non-blocking. They operate on infinite event streams (e.g., live stock feeds, WebSocket connections). The producer pushes data to the consumer.
-- **Backpressure:** Reactive streams support backpressure, allowing a slow consumer to signal to a fast producer to slow down, preventing the consumer from exhausting its heap memory buffer during spikes.
-
-### Reactive Streams Example: Real-Time Transaction Monitor
-
-Consider AuraPay's real-time fraud monitoring pipeline. New transactions arrive continuously from multiple payment gateways. We need to filter suspicious transactions, enrich them with account data, and emit alerts — all without blocking threads.
-
-```java
-// Reactive pipeline using Project Reactor (Spring WebFlux)
-Flux<FraudAlert> fraudAlerts = transactionEventStream   // Infinite push-based stream
-    .filter(tx -> tx.amount().compareTo(highValueThreshold) > 0)
-    .flatMap(tx -> accountService.findById(tx.accountId())  // Non-blocking DB call
-        .map(account -> new EnrichedTransaction(tx, account)))
-    .filter(enriched -> enriched.riskScore() > 0.85)
-    .map(enriched -> new FraudAlert(enriched, Instant.now()))
-    .onBackpressureBuffer(1000)   // Buffer up to 1000 if consumer is slow
-    .doOnNext(alert -> log.warn("FRAUD ALERT: {}", alert.transactionId()));
-
-// Subscribe to start processing (nothing happens until subscribe)
-fraudAlerts.subscribe(
-    alert -> alertService.dispatch(alert),   // onNext: process each alert
-    error -> log.error("Pipeline error", error),   // onError: handle failures
-    () -> log.info("Stream completed")       // onComplete: stream ended
-);
-```
-
-The critical differences from standard streams:
-
-| Aspect | Standard Stream | Reactive Stream |
-|---|---|---|
-| **Data Source** | Finite collection (`List`, `Set`) | Infinite event source (Kafka, WebSocket) |
-| **Execution** | Blocking (thread waits for each step) | Non-blocking (event loop, no thread waiting) |
-| **Threading** | Caller's thread or ForkJoinPool | Scheduler-managed (e.g., `Schedulers.boundedElastic()`) |
-| **Error Handling** | Try-catch or runtime exception | `.onErrorResume()`, `.retry()` operators |
-| **Backpressure** | Not supported | Built-in (`onBackpressureBuffer`, `onBackpressureDrop`) |
-| **Lifecycle** | Runs once, then garbage collected | Runs continuously until cancelled |
-
-
-## Stream Practice Questions
-
-The following problems are commonly asked in interviews to test functional programming fluency. Try solving each one using streams before reviewing the solution.
-
-**Q1. Find the three highest transaction amounts (no duplicates)**
-
-```java
-List<BigDecimal> topThree = transactions.stream()
-    .map(TransactionRecord::amount)
-    .distinct()
-    .sorted(Comparator.reverseOrder())
-    .limit(3)
-    .collect(Collectors.toList());
-```
-
-**Q2. Group transactions by currency, counting how many in each**
-
-```java
-Map<String, Long> countByCurrency = transactions.stream()
-    .collect(Collectors.groupingBy(
-        TransactionRecord::currency,
-        Collectors.counting()
-    ));
-```
-
-**Q3. Find the first transaction over $10,000 (or return empty)**
-
-```java
-Optional<TransactionRecord> highValue = transactions.stream()
-    .filter(tx -> tx.amount().compareTo(new BigDecimal("10000")) > 0)
-    .findFirst();
-```
-
-**Q4. Flatten a list of orders (each containing line items) into all items**
-
-```java
-List<LineItem> allItems = orders.stream()
-    .flatMap(order -> order.getLineItems().stream())
-    .collect(Collectors.toList());
-```
-
-**Q5. Compute a comma-separated string of all merchant names, sorted alphabetically**
-
-```java
-String result = merchants.stream()
-    .map(Merchant::name)
-    .sorted()
-    .collect(Collectors.joining(", "));
-```
-
-**Q6. Check if all transactions are in USD**
-
-```java
-boolean allUsd = transactions.stream()
-    .allMatch(tx -> "USD".equals(tx.currency()));
-```
-
-**Q7. Convert a list of strings to a map of string -> length (handling duplicates)**
-
-```java
-Map<String, Integer> nameLengths = names.stream()
-    .collect(Collectors.toMap(
-        name -> name,
-        String::length,
-        (existing, replacement) -> existing  // Keep first on collision
-    ));
-```
 
 
 ## Debugging Functional Pipelines
@@ -1815,7 +1569,7 @@ public class TransactionEventPublisher {
 ```
 
 
-![Observer Pattern Class Diagram](editions/java/chapters/06-design-patterns/visuals/observer_pattern.png){width=90%}
+![Observer Pattern Class Diagram](editions/java/chapters/07-design-patterns/visuals/observer_pattern.png){width=90%}
 
 ### The State Pattern (Behavioral Deep-Dive)
 In payment platforms, transactions transition through a strict sequence of states: `CREATED` $\to$ `PENDING` $\to$ `SETTLED` or `FAILED` $\to$ `REFUNDED`.
@@ -1862,17 +1616,10 @@ In senior interviews, you must connect patterns to the frameworks you use. Here 
 | **Adapter** | Spring MVC Handlers | `HandlerAdapter` maps incoming HTTP requests to controller methods, shielding the servlet container from concrete execution signatures. |
 | **Template Method** | Spring `JdbcTemplate` | `JdbcTemplate` defines the skeleton of database execution (opening connection, statement preparation, cleanup) while letting subclasses map rows to domain objects. |
 
-> **Why is it called \"Spring\"?** Rod Johnson created the Spring Framework in 2003 as a reaction to the overwhelming complexity of **J2EE** (Java 2 Enterprise Edition). He chose the name *Spring* to represent a **fresh start** \u2014 a new season after the long, cold \"winter\" of J2EE's XML-heavy, boilerplate-ridden configuration. Spring made enterprise Java feel light and productive again, and the name perfectly captures that rebirth.
-
-> **Why is it called \"Hibernate\"?** Gavin King created Hibernate framework in 2001 and chose the name because Java objects *\"hibernate\"* (go dormant) inside the database and wake up when the application needs them. Just as animals hibernate through winter and emerge in spring, your domain objects are serialized into database rows and later rehydrated into live Java objects. The bear logo reinforces the metaphor.
-
 
 > ⭐ **STAR Moment: The Framework Pattern Test**
 > 
 > During system design interviews, explain design patterns in terms of the framework concepts the interviewer already knows. Instead of drawing a generic observer diagram, say: *"We will implement this like a Spring ApplicationEventPublisher or a Kafka Event Broker, decoupling the transactional write thread from the audit and search indexing consumers."* This shows you understand patterns in modern, production-grade architectures.
-
-
-\part{Code Performance and Data Structures}
 
 
 # Designing for Performance and Concurrency
@@ -1907,7 +1654,7 @@ Virtual threads are lightweight threads managed by the JVM rather than the OS. T
 
 *   **Impact:** You can run millions of virtual threads concurrently while writing standard, synchronous, block-on-write code that is easy to read, debug, and trace.
 
-![Virtual Threads vs Platform Threads](editions/java/chapters/07-concurrency-performance/visuals/virtual_threads.png){width=85%}
+![Virtual Threads vs Platform Threads](editions/java/chapters/08-concurrency-performance/visuals/virtual_threads.png){width=85%}
 
 
 ## Database Locking: Optimistic vs. Pessimistic
@@ -1928,7 +1675,7 @@ SELECT * FROM accounts WHERE id = ? FOR UPDATE;
 ### Optimistic Concurrency Control (OCC)
 Optimistic locking assumes conflicts are rare. It allows concurrent threads to read and edit records without blocking. When saving the entity, the engine verifies that the record has not been modified by checking a `version` field.
 
-![Optimistic vs Pessimistic Concurrency Control](editions/java/chapters/07-concurrency-performance/visuals/occ_vs_pcc.png){width=70%}
+![Optimistic vs Pessimistic Concurrency Control](editions/java/chapters/08-concurrency-performance/visuals/occ_vs_pcc.png){width=70%}
 
 The following code illustrates this version-checking implementation:
 
@@ -2062,7 +1809,7 @@ In enterprise Java systems (such as financial ledgers and trade matching engines
 
 The JVM divides memory into distinct regions, broadly categorized into thread-private memory (Stack) and shared memory (Heap and Metaspace).
 
-![JVM Memory Architecture Layout](editions/java/chapters/07-concurrency-performance/visuals/jvm_memory_layout.png){width=85%}
+![JVM Memory Architecture Layout](editions/java/chapters/08-concurrency-performance/visuals/jvm_memory_layout.png){width=85%}
 
 #### 1. The Thread Stack (Stack Memory)
 - **Scope:** Thread-private. Every thread (platform thread or virtual thread) has its own dedicated execution stack.
@@ -2100,7 +1847,7 @@ A common interview question asks candidates to trace where specific variables re
 
 To optimize Garbage Collection efficiency, the HotSpot JVM divides the Heap into two main generations based on the **Weak Generational Hypothesis**: *most objects die young (shortly after allocation).*
 
-![JVM Heap Generation Promotion Lifecycle](editions/java/chapters/07-concurrency-performance/visuals/jvm_generations.png){width=85%}
+![JVM Heap Generation Promotion Lifecycle](editions/java/chapters/08-concurrency-performance/visuals/jvm_generations.png){width=85%}
 
 #### 1. The Young Generation
 The Young Generation is dedicated to newly allocated objects and is divided into three spaces:
@@ -2154,14 +1901,19 @@ $$(8 \times 2) + 1 = 17\ Connections$$
 
 Setting the pool size to 17 will yield *higher* overall throughput than setting it to 100, due to the minimization of CPU context switching and disk spindle thrashing.
 
-![HikariCP Connection Pool Sizing](editions/java/chapters/07-concurrency-performance/visuals/hikaricp_formula.png){width=85%}
+**Important Context:** This formula was derived empirically by the PostgreSQL community for spinning disk (HDD) workloads where 'Effective Spindle Count' represents physical disk heads. For modern NVMe SSDs and cloud-managed databases (e.g., Aurora, Cloud SQL), this formula is a starting point, not a universal law. Cloud databases often recommend pool sizes of 2-5× CPU cores. Always benchmark with your specific database engine and storage backend.
 
-> **Why is it called "Hikari"?** The name is not a person — **Hikari (光)** is the Japanese word for **"light."** Creator Brett Wooldridge was working in Japan when he built it, frustrated by the bloat and slowness of existing connection pools (C3P0, DBCP, BoneCP). He designed HikariCP to be *light* in weight (~130KB jar, zero dependencies), *light* in speed (fastest JDBC pool ever benchmarked), and *light* in complexity. His obsession with zero-overhead engineering — using `ConcurrentBag` instead of `LinkedBlockingQueue` to eliminate lock contention, and a custom `FastList` to skip array bounds checks — made it so fast that Spring Boot adopted it as the **default connection pool** starting in version 2.0 (2018). Today, if you add `spring-boot-starter-data-jpa` to your project, HikariCP is already running under the hood. Fun fact: Japan's famous bullet train (Shinkansen) has a service tier called *Hikari* — the name fits perfectly.
+![HikariCP Connection Pool Sizing](editions/java/chapters/08-concurrency-performance/visuals/hikaricp_formula.png){width=85%}
+
+
 
 
 > ⭐ **STAR Moment: The Cache Invalidation Design**
 > 
 > When discussing performance during an interview, never say *"We will add a cache."* Say: *"We will implement a Cache-Aside pattern using Redis. To prevent stale reads in our double-entry ledger, we will use a transactional write-through strategy, invalidating cache keys atomically inside the database commit boundary to ensure absolute consistency."* This shows you understand caching boundaries in financial transaction systems.
+
+
+\part{Algorithmic Mastery}
 
 
 # Core Algorithms & Assessment Tactical Guide
@@ -2187,25 +1939,43 @@ When you master the 24 patterns below, you no longer need to memorize hundreds o
 
 ---
 
-## General Coding Assessment (GCA) Tactics
+## General Coding Assessment (general coding assessment) Tactics
 
-Standardized online coding assessments (e.g., CodeSignal GCA, HackerRank, or Codility) evaluate speed, accuracy, and edge-case handling under severe time constraints. The most common format is the **70-Minute, 4-Question Speed Run**.
+Standardized online coding assessments (e.g., General Coding Assessments, HackerRank, or Codility) evaluate speed, accuracy, and edge-case handling under severe time constraints. The most common format is the **70-Minute, 4-Question Speed Run**.
 
 ### The 4-Question Blueprint
 
 | Question | Difficulty | Target Time | Primary Pattern Types | Tactical Rule |
 |---|---|---|---|---|
-| **Q1** | Easy | 5–8 Min | `[PAT-01]`, `[PAT-02]` | Write clean, brute-force code immediately. Do not over-optimize. |
-| **Q2** | Medium | 10–12 Min | `[PAT-03]`, `[PAT-06]`, `[PAT-10]` | Watch for array bounds and off-by-one errors. |
-| **Q3** | Medium-Hard | 15–20 Min | `[PAT-04]`, `[PAT-13]`, `[PAT-14]` | Identify the window state or queue batching early. |
-| **Q4** | Hard | 20–25 Min | `[PAT-05]`, `[PAT-09]`, `[PAT-11]`, `[PAT-19]` | If brute force is $O(N^2)$, look for a monotonic property or DP state. |
+| **Easy-tier** | Easy | 5–8 Min | `[PAT-01]`, `[PAT-02]` | Write clean, brute-force code immediately. Do not over-optimize. |
+| **Medium-tier** | Medium | 10–12 Min | `[PAT-03]`, `[PAT-06]`, `[PAT-10]` | Watch for array bounds and off-by-one errors. |
+| **Medium-Hard-tier** | Medium-Hard | 15–20 Min | `[PAT-04]`, `[PAT-13]`, `[PAT-14]` | Identify the window state or queue batching early. |
+| **Hard-tier** | Hard | 20–25 Min | `[PAT-05]`, `[PAT-09]`, `[PAT-11]`, `[PAT-19]` | If brute force is $O(N^2)$, look for a monotonic property or DP state. |
 
-### The 70-Minute GCA Master Plan
+### The 70-Minute general coding assessment Master Plan
 
 1. **The 3-Minute Limit:** If you get stuck on a compile or logic bug for more than 3 minutes, comment out your changes, revert to your last working baseline, and rethink your boundary conditions.
 2. **Never print in a loop:** Printing to standard output inside loops kills execution speed and causes hidden test timeouts.
 3. **Submit immediately:** Once your solution passes visible test cases, submit it and move on.
-4. **Strategic Order (1 -> 2 -> 4 -> 3):** On platforms like CodeSignal, Q4 is often worth significantly more points than Q3 and is usually more deterministic (e.g., Monotonic Stack or Binary Search) than Q3, which can involve tedious simulation.
+4. **Strategic Order (1 -> 2 -> 4 -> 3):** On platforms like automated testing platforms, Hard-tier is often worth significantly more points than Medium-Hard-tier and is usually more deterministic (e.g., Monotonic Stack or Binary Search) than Medium-Hard-tier, which can involve tedious simulation.
+
+---
+
+### Complexity Foundations: A Quick Reference
+
+Before diving into the 25 canonical patterns, ensure you have instant recall of these complexity classes:
+
+| Complexity | Name | Example | Max N for 1s |
+|-----------|------|---------|-------------|
+| O(1) | Constant | HashMap lookup | ∞ |
+| O(log N) | Logarithmic | Binary search | 10^18 |
+| O(N) | Linear | Single pass scan | 10^8 |
+| O(N log N) | Linearithmic | Merge sort | 10^6 |
+| O(N²) | Quadratic | Nested loops | 10^4 |
+| O(2^N) | Exponential | Subset generation | 20-25 |
+| O(N!) | Factorial | Permutations | 10-12 |
+
+**The Constraint-to-Complexity Rule:** Read the problem constraints FIRST. If N ≤ 10^4, O(N²) is acceptable. If N ≤ 10^5, you need O(N log N) or better. If N ≤ 10^6, you need O(N). This single rule eliminates 50% of wrong algorithm choices before you write a line of code.
 
 ---
 
@@ -2270,7 +2040,7 @@ public int removeDuplicates(int[] nums) {
 - **Canonical Code Skeleton:**
 ```java
 public int subarraySumEqualsK(int[] nums, int k) {
-    Map<Integer, Integer> prefCounts = new HashMap<>();
+    var prefCounts = new HashMap<Integer, Integer>();
     prefCounts.put(0, 1);
     int currentSum = 0, count = 0;
 
@@ -2327,8 +2097,8 @@ public int longestSubarray(int[] nums, int k) {
 - **Canonical Code Skeleton:**
 ```java
 public int[] maxSlidingWindow(int[] nums, int k) {
-    Deque<Integer> deque = new ArrayDeque<>();
-    int[] res = new int[nums.length - k + 1];
+    var deque = new ArrayDeque<Integer>();
+    var res = new int[nums.length - k + 1];
     int idx = 0;
 
     for (int i = 0; i < nums.length; i++) {
@@ -2400,7 +2170,7 @@ public boolean hasCycle(ListNode head) {
 - **Canonical Code Skeleton:**
 ```java
 public boolean isValidParentheses(String s) {
-    Deque<Character> stack = new ArrayDeque<>();
+    var stack = new ArrayDeque<Character>();
     for (char c : s.toCharArray()) {
         if (c == '(') stack.push(')');
         else if (c == '{') stack.push('}');
@@ -2423,7 +2193,7 @@ public boolean isValidParentheses(String s) {
 - **Canonical Code Skeleton:**
 ```java
 public int[] dailyTemperatures(int[] temps) {
-    int[] ans = new int[temps.length];
+    var ans = new int[temps.length];
     Deque<Integer> stack = new ArrayDeque<>(); // Stores INDICES
 
     for (int i = 0; i < temps.length; i++) {
@@ -2490,6 +2260,18 @@ public int shipWithinDays(int[] weights, int days) {
     }
     return lo;
 }
+
+private boolean canShip(int[] weights, int days, int capacity) {
+    int dayCount = 1, currentLoad = 0;
+    for (int w : weights) {
+        if (currentLoad + w > capacity) {
+            dayCount++;
+            currentLoad = 0;
+        }
+        currentLoad += w;
+    }
+    return dayCount <= days;
+}
 ```
 - **Diagnostic Triggers:** "Find minimum capacity", "Koko eating bananas", "Split array largest sum".
 - **Boundary Conditions:** Define correct range bounds `[lo, hi]` upfront.
@@ -2534,7 +2316,7 @@ public void backtrack(List<List<Integer>> res, List<Integer> path, int[] nums, b
 ```java
 public int shortestPath(char[][] grid, int startR, int startC) {
     int rows = grid.length, cols = grid[0].length;
-    Queue<int[]> queue = new LinkedList<>();
+    var queue = new ArrayDeque<int[]>();
     boolean[][] visited = new boolean[rows][cols];
 
     queue.offer(new int[]{startR, startC});
@@ -2576,7 +2358,7 @@ public int shortestPath(char[][] grid, int startR, int startC) {
 ```java
 public int orangesRotting(int[][] grid) {
     int rows = grid.length, cols = grid[0].length;
-    Queue<int[]> queue = new LinkedList<>();
+    var queue = new ArrayDeque<int[]>();
     int freshCount = 0;
 
     for (int r = 0; r < rows; r++) {
@@ -2654,15 +2436,15 @@ private void dfsSink(char[][] grid, int r, int c) {
 - **Canonical Code Skeleton:**
 ```java
 public int[] findOrder(int numCourses, int[][] prerequisites) {
-    int[] inDegree = new int[numCourses];
-    List<List<Integer>> adj = new ArrayList<>();
+    var inDegree = new int[numCourses];
+    var adj = new ArrayList<List<Integer>>();
     for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
     for (int[] p : prerequisites) {
         adj.get(p[1]).add(p[0]);
         inDegree[p[0]]++;
     }
 
-    Queue<Integer> queue = new LinkedList<>();
+    var queue = new ArrayDeque<Integer>();
     for (int i = 0; i < numCourses; i++) if (inDegree[i] == 0) queue.offer(i);
 
     int[] order = new int[numCourses];
@@ -2729,9 +2511,9 @@ public int networkDelayTime(int[][] times, int n, int k) {
         adj.computeIfAbsent(t[0], x -> new ArrayList<>()).add(new int[]{t[1], t[2]});
     }
 
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]); // [node, dist]
+    var pq = new PriorityQueue<int[]>((a, b) -> a[1] - b[1]); // [node, dist]
     pq.offer(new int[]{k, 0});
-    Map<Integer, Integer> dist = new HashMap<>();
+    var dist = new HashMap<Integer, Integer>();
 
     while (!pq.isEmpty()) {
         int[] curr = pq.poll();
@@ -2874,7 +2656,7 @@ public int minMeetingRooms(int[][] intervals) {
     if (intervals == null || intervals.length == 0) return 0;
     Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
 
-    PriorityQueue<Integer> minHeap = new PriorityQueue<>(); // Stores end times
+    var minHeap = new PriorityQueue<Integer>(); // Stores end times
     minHeap.offer(intervals[0][1]);
 
     for (int i = 1; i < intervals.length; i++) {
@@ -2940,10 +2722,40 @@ public class Trie {
 - **Boundary Conditions:** Use `c - 'a'` for lowercase alphabets. Set `isWord = true` at termination node.
 - **Real-World Application:** Autocomplete search suggestions, IP routing prefix tables, spell checkers.
 
+---
 
-# Q1 Mastery — Implementation Speed, In-Place Transformations, and String Processing
+### [PAT-25] Priority Queue / Min-Max Heap
 
-The first question (Q1) on the CodeSignal General Coding Assessment (GCA) is designed to evaluate fundamental implementation speed, boundary correctness, and memory hygiene. You have roughly **8 minutes** to solve Q1. While categorized as "Easy," Q1 is where candidates most frequently drop valuable points — not because the problem is hard, but because they rush and introduce off-by-one errors, forget null checks, or use inefficient string concatenation. A perfect Q1 score is the foundation of a 750+ GCA result.
+**Diagnostic Trigger:** "Find the K-th largest/smallest", "Merge K sorted lists", "Schedule tasks by priority", or any problem requiring efficient access to the minimum or maximum element while dynamically inserting.
+
+**Invariant:** The heap property is maintained: for a min-heap, every parent node is ≤ its children. This guarantees O(1) access to the minimum and O(log N) insertion/extraction.
+
+**Canonical Skeleton:**
+```java
+public int[] topKFrequent(int[] nums, int k) {
+    var freqMap = new HashMap<Integer, Integer>();
+    for (int n : nums) freqMap.merge(n, 1, Integer::sum);
+    
+    var minHeap = new PriorityQueue<Map.Entry<Integer, Integer>>(
+        Comparator.comparingInt(Map.Entry::getValue));
+    
+    for (var entry : freqMap.entrySet()) {
+        minHeap.offer(entry);
+        if (minHeap.size() > k) minHeap.poll();
+    }
+    
+    return minHeap.stream().mapToInt(Map.Entry::getKey).toArray();
+}
+```
+
+**Complexity:** O(N log K) time, O(N + K) space.
+
+> **Note on Mathematical and Bit Manipulation Patterns:** Several common interview problems rely on mathematical properties (XOR for finding missing/duplicate numbers, modular arithmetic, Gauss's sum formula) or bitwise operations (bitmask DP, bit counting). These techniques are cross-cutting tools that complement the structural patterns above rather than forming standalone patterns. When you encounter a problem involving XOR properties, power-of-two checks, or bitmask state encoding, recognize these as mathematical invariants that can be combined with the canonical patterns.
+
+
+# Easy-tier Mastery — Implementation Speed, In-Place Transformations, and String Processing
+
+The first question (Easy-tier) on the automated testing platforms General Coding Assessment (general coding assessment) is designed to evaluate fundamental implementation speed, boundary correctness, and memory hygiene. You have roughly **8 minutes** to solve Easy-tier. While categorized as "Easy," Easy-tier is where candidates most frequently drop valuable points — not because the problem is hard, but because they rush and introduce off-by-one errors, forget null checks, or use inefficient string concatenation. A perfect Easy-tier score is the foundation of a 750+ general coding assessment result.
 
 This chapter teaches you the core vocabulary, the reusable pointer archetypes, 20 fully solved exemplar problems with detailed explanations, and 30 concrete practice problems with strategic hints.
 
@@ -2951,12 +2763,12 @@ This chapter teaches you the core vocabulary, the reusable pointer archetypes, 2
 
 ## Essential Terminology & Vocabulary
 
-Before solving any Q1 problem, you must internalize these foundational concepts. Each one maps directly to a class of problems you will encounter on the exam.
+Before solving any Easy-tier problem, you must internalize these foundational concepts. Each one maps directly to a class of problems you will encounter on the exam.
 
 ### In-Place Mutation
 An algorithm is **in-place** if it transforms the input using $\mathcal{O}(1)$ auxiliary space (excluding the input itself). In Java, arrays are mutable references — you can overwrite `arr[i]` directly. Strings, however, are **immutable objects** — every modification creates a new heap allocation.
 
-**Why it matters on Q1:** Many Q1 problems explicitly require in-place modification. If you allocate a new array when the spec says "in-place," you lose points even if the output is correct.
+**Why it matters on Easy-tier:** Many Easy-tier problems explicitly require in-place modification. If you allocate a new array when the spec says "in-place," you lose points even if the output is correct.
 
 ### Read/Write Pointer Pattern
 A two-pointer technique where:
@@ -2966,7 +2778,7 @@ A two-pointer technique where:
 
 After the loop, `arr[0..write-1]` contains the filtered result. This pattern solves: *Remove Element*, *Move Zeros*, *Remove Duplicates from Sorted Array*, and *String Compression*.
 
-![Read/Write Pointer — In-Place Array Compaction](editions/java/chapters/09-q1-implementation/visuals/read_write_pointer.png){width=85%}
+![Read/Write Pointer — In-Place Array Compaction](editions/java/chapters/10-implementation-patterns/visuals/read_write_pointer.png){width=85%}
 
 ### Character Frequency Array (`int[256]` or `int[26]`)
 A fixed-size integer array indexed by character ASCII value. `counts['a']++` increments the counter at index 97. This provides:
@@ -2989,10 +2801,10 @@ Use `int[26]` when input is guaranteed lowercase English letters only (`c - 'a'`
 ### Symmetrical Two-Pointer Convergence
 Two pointers start at opposite ends (`left = 0`, `right = len - 1`) and move toward each other. The loop condition is `while (left < right)`. This pattern solves: *Palindrome Check*, *Reverse String*, *Two Sum in Sorted Array*, and *Container With Most Water*.
 
-![Two-Pointer Convergence — Palindrome Verification](editions/java/chapters/09-q1-implementation/visuals/two_pointer_convergence.png){width=85%}
+![Two-Pointer Convergence — Palindrome Verification](editions/java/chapters/10-implementation-patterns/visuals/two_pointer_convergence.png){width=85%}
 
 ### Run-Length Encoding (RLE)
-Compress consecutive identical elements into `(element, count)` pairs. `"aaabbc"` becomes `"a3b2c1"`. The read pointer tracks the current run; the write pointer emits compressed output. This is a classic Q1 problem that combines the Read/Write pattern with counting.
+Compress consecutive identical elements into `(element, count)` pairs. `"aaabbc"` becomes `"a3b2c1"`. The read pointer tracks the current run; the write pointer emits compressed output. This is a classic Easy-tier problem that combines the Read/Write pattern with counting.
 
 ### String Immutability & StringBuilder
 In Java, `String` is immutable. The expression `s += char` inside a loop creates a **new String object on every iteration**, copying all previous characters. For a string of length $N$, this produces $\mathcal{O}(N^2)$ total character copies. Always use `StringBuilder` for loop-based string construction — it maintains a resizable `char[]` buffer internally and runs in amortized $\mathcal{O}(N)$.
@@ -3033,7 +2845,7 @@ Why it matters: It avoids complex single-pass logic and significantly reduces bu
 
 ### Greedy Forward Scan
 This strategy involves processing an array from left to right sequentially. At each step, you make the locally optimal choice without looking back.
-Why it matters: It is heavily used in array change problems (like bumping each element above the previous) and similar Q1 tasks.
+Why it matters: It is heavily used in array change problems (like bumping each element above the previous) and similar Easy-tier tasks.
 
 ### Modular Arithmetic Basics
 This encompasses foundational modulo operations for cyclic or remainder logic. Examples include using `n % 2` for parity, `n % k` for divisibility, and `(a + b - 1) / b` for ceiling division.
@@ -3493,14 +3305,14 @@ public String[] transformWords(String[] words) {
 
 **Example:** `"abacbc"` → `true` (each of `a`, `b`, `c` appears 2 times). `"aaabb"` → `false`.
 
-**Pattern:** Frequency array + validation scan. Count all characters, then verify every non-zero count matches.
+**Pattern:** Frequency array + validation scan. Count all characters (using a size 128 array to handle the full ASCII range), then verify every non-zero count matches.
 
 ```java
 public boolean areOccurrencesEqual(String s) {
     if (s == null || s.isEmpty()) return true;
 
-    int[] counts = new int[26];
-    for (char c : s.toCharArray()) counts[c - 'a']++;
+    int[] counts = new int[128];
+    for (char c : s.toCharArray()) counts[(int) c]++;
 
     int expected = 0;
     for (int count : counts) {
@@ -3653,7 +3465,7 @@ public int[] plusOne(int[] digits) {
 * * *
 
 
-The following problems are drawn directly from the CodeSignal Arcade and GCA Q1 question bank. They emphasize boundary arithmetic, simple simulations, and filter-sort-reinsert patterns that appear frequently on actual assessments.
+The following problems are drawn directly from the automated testing platforms Arcade and general coding assessment Easy-tier question bank. They emphasize boundary arithmetic, simple simulations, and filter-sort-reinsert patterns that appear frequently on actual assessments.
 
 * * *
 
@@ -3947,7 +3759,7 @@ public int matrixElementsSum(int[][] matrix) {
 **Example:** `[1, 3, 2, 1]` → `false`. `[1, 3, 2]` → `true` (remove `3` → `[1, 2]`).
 
 **Pattern:** Count violations (positions where `arr[i] >= arr[i+1]`). If zero violations, it is already increasing. If exactly one violation at position `i`, check two removal candidates: removing `arr[i]` or removing `arr[i+1]`. If either removal produces a valid increasing sequence around the gap, return `true`. If more than one violation, return `false`.
-**This is one of the trickiest Q1 problems.** The naive approach of "just remove one element and re-check" is $\mathcal{O}(N^2)$. The optimal approach is $\mathcal{O}(N)$.
+**This is one of the trickiest Easy-tier problems.** The naive approach of "just remove one element and re-check" is $\mathcal{O}(N^2)$. The optimal approach is $\mathcal{O}(N)$.
 
 ```java
 public boolean almostIncreasingSequence(int[] sequence) {
@@ -4014,7 +3826,7 @@ public String reverseInParentheses(String s) {
 
 ## Practice Problem Bank
 
-The following 30 problems cover every Q1 pattern you may encounter on the CodeSignal GCA. Each includes a full specification, concrete examples, input constraints, and a strategic hint pointing you toward the correct pattern.
+The following 30 problems cover every Easy-tier pattern you may encounter on the General Coding Assessments. Each includes a full specification, concrete examples, input constraints, and a strategic hint pointing you toward the correct pattern.
 
 * * *
 
@@ -4347,9 +4159,9 @@ The following 30 problems cover every Q1 pattern you may encounter on the CodeSi
 **Strategic Hint:** Iterative approach: extract digits with `num % 10`, accumulate sum, reduce with `num = sum`. Repeat until `num < 10`. Mathematical shortcut: Digital Root formula `1 + (num - 1) % 9` for $\mathcal{O}(1)$.
 
 
-# Q2 Mastery — 2D Matrix Traversal, Grid Simulations, and State Machine Processing
+# Medium-tier Mastery — 2D Matrix Traversal, Grid Simulations, and State Machine Processing
 
-This chapter covers Q2 of the CodeSignal GCA (Medium difficulty, ~15 minutes target time). Q2 tests multidimensional array processing, grid boundary control, BFS/DFS flood fill, and step-by-step state machine simulation.
+This chapter covers Medium-tier of the General Coding Assessments (Medium difficulty, ~15 minutes target time). Medium-tier tests multidimensional array processing, grid boundary control, BFS/DFS flood fill, and step-by-step state machine simulation.
 
 ## Essential Terminology & Vocabulary
 
@@ -4389,7 +4201,7 @@ Why it matters: It eliminates repetitive boundary checks and significantly reduc
 Instead of running BFS individually from each source, this technique seeds the initial queue with ALL starting positions simultaneously. The search then expands outwards concurrently from multiple origins.
 Why it matters: It solves rotting oranges and walls-and-gates problems in a single, highly efficient BFS pass.
 
-![Multi-Source BFS — Rotting Oranges Wavefront](editions/java/chapters/10-q2-matrix-simulation/visuals/bfs_grid_levels.png){width=85%}
+![Multi-Source BFS — Rotting Oranges Wavefront](editions/java/chapters/11-matrix-grid-patterns/visuals/bfs_grid_levels.png){width=85%}
 
 ## Reusable Code Templates
 
@@ -4413,7 +4225,7 @@ while (top <= bottom && left <= right) {
 }
 ```
 
-![Spiral Boundary Traversal — Layer-by-Layer Contraction](editions/java/chapters/10-q2-matrix-simulation/visuals/spiral_traversal.png){width=85%}
+![Spiral Boundary Traversal — Layer-by-Layer Contraction](editions/java/chapters/11-matrix-grid-patterns/visuals/spiral_traversal.png){width=85%}
 
 ### Template B: 4-Directional BFS/DFS Grid Walk
 ```java
@@ -4473,7 +4285,7 @@ The two 5s come from different sources: `A[1][1] = 5` is the center cell of the 
 
 **Sanity check**: `S[3][3] = 45` equals `1+2+3+4+5+6+7+8+9 = 45`. ✓
 
-![2D Prefix Sum — Construction via Inclusion-Exclusion (Trace)](editions/java/chapters/10-q2-matrix-simulation/visuals/prefix_sum_construction.png){width=85%}
+![2D Prefix Sum — Construction via Inclusion-Exclusion (Trace)](editions/java/chapters/11-matrix-grid-patterns/visuals/prefix_sum_construction.png){width=85%}
 
 **Understanding the Query — Inclusion-Exclusion.** To find the sum of a sub-rectangle from `(r1, c1)` to `(r2, c2)`, we carve it out of the full prefix sum using four overlapping rectangles:
 
@@ -4492,7 +4304,7 @@ $$\text{query}(r_1, c_1, r_2, c_2) = S[r_2\text{+}1][c_2\text{+}1] - S[r_1][c_2\
 
 $$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
 
-![2D Prefix Sum — Query via Inclusion-Exclusion](editions/java/chapters/10-q2-matrix-simulation/visuals/prefix_sum_2d_query.png){width=85%}
+![2D Prefix Sum — Query via Inclusion-Exclusion](editions/java/chapters/11-matrix-grid-patterns/visuals/prefix_sum_2d_query.png){width=85%}
 
 ## Solved Exemplar Problems
 
@@ -4871,18 +4683,22 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Pattern:** HashSet Encoding Trick.
 
-**Explanation:** We iterate through the grid. For each cell, we create a string encoding its presence in its row, column, and block (e.g., `"5 in row 0"`). If `HashSet.add()` returns false, a duplicate exists.
+**Explanation:** We iterate through the grid. For each cell, we encode its presence in its row, column, and block as unique integers to avoid slow string concatenations. If `HashSet.add()` returns false, a duplicate exists.
 
 ```java
 public boolean isValidSudoku(char[][] board) {
-  Set<String> seen = new HashSet<>();
+  Set<Integer> seen = new HashSet<>();
   for (int i = 0; i < 9; ++i) {
     for (int j = 0; j < 9; ++j) {
       char number = board[i][j];
       if (number != '.') {
-        if (!seen.add(number + " in row " + i) ||
-            !seen.add(number + " in col " + j) ||
-            !seen.add(number + " in block " + i/3 + "-" + j/3))
+        int boxIdx = (i / 3) * 3 + j / 3;
+        int rowKey = number * 100 + i;
+        int colKey = number * 100 + j + 27;
+        int boxKey = number * 100 + boxIdx + 54;
+        if (!seen.add(rowKey) ||
+            !seen.add(colKey) ||
+            !seen.add(boxKey))
           return false;
       }
     }
@@ -5335,7 +5151,7 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 ```java
 public int orangesRotting(int[][] grid) {
-  Queue<int[]> q = new LinkedList<>();
+  Queue<int[]> q = new ArrayDeque<>();
   int fresh = 0, m = grid.length, n = grid[0].length;
   for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) {
@@ -5424,7 +5240,7 @@ public int minimumEffortPath(int[][] heights) {
 private boolean canReach(int[][] h, int limit) {
   int m = h.length, n = h[0].length;
   boolean[][] vis = new boolean[m][n];
-  Queue<int[]> q = new LinkedList<>();
+  Queue<int[]> q = new ArrayDeque<>();
   q.offer(new int[]{0, 0}); vis[0][0] = true;
   int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
   
@@ -5659,14 +5475,14 @@ Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M
     **Strategic Hint:** State Machine Simulation using a `HashSet` of string coordinates `"x,y,z"`. Only simulate neighbors of currently active cells.
 
 
-# Q3 Mastery — Dynamic Sliding Windows, HashMap Frequency Signatures, and Prefix Sum Analytics
+# Medium-Hard-tier Mastery — Dynamic Sliding Windows, HashMap Frequency Signatures, and Prefix Sum Analytics
 
 ## Essential Terminology & Vocabulary
 
 **Dynamic Sliding Window**
 A technique where a window expands to the right to include elements and contracts from the left when a specific invariant or constraint is violated. It matters because it optimizes $\mathcal{O}(N^2)$ brute-force subarray checks into $\mathcal{O}(N)$ operations by avoiding redundant recalculations. Use when searching for the longest/shortest contiguous subarray satisfying a condition.
 
-![Dynamic Sliding Window — Longest Substring Without Repeating Characters](editions/java/chapters/11-q3-hashmaps-sliding-windows/visuals/sliding_window.png){width=85%}
+![Dynamic Sliding Window — Longest Substring Without Repeating Characters](editions/java/chapters/12-hashmaps-sliding-windows/visuals/sliding_window.png){width=85%}
 
 **Fixed-Size Sliding Window vs Dynamic Sliding Window**
 
@@ -5679,7 +5495,7 @@ A technique where a window expands to the right to include elements and contract
 **HashMap Frequency Signature**
 Creating a unique key for a group of items (like anagrams) based on their character frequencies rather than sorting. Usually represented as a mapped string of an `int[26]` array. This avoids the $\mathcal{O}(N \log N)$ sorting cost, providing an $\mathcal{O}(N)$ way to group items.
 
-![HashMap Frequency Signature — Anagram Detection](editions/java/chapters/11-q3-hashmaps-sliding-windows/visuals/hashmap_frequency.png){width=85%}
+![HashMap Frequency Signature — Anagram Detection](editions/java/chapters/12-hashmaps-sliding-windows/visuals/hashmap_frequency.png){width=85%}
 
 **Prefix Sum Array & Cumulative Matching**
 An array where `pref[i]` stores the sum of elements from index $0$ to $i$. The trick `pref[j] - pref[i] = K` allows finding a subarray sum $K$ in $\mathcal{O}(1)$ time by rearranging to `pref[i] = pref[j] - K` and looking up previously seen prefix sums.
@@ -5926,7 +5742,8 @@ public int lengthOfLongestSubstringKDistinct(String s, int k) {
 
 * * *
 
-**6. Minimum Window Substring**
+**6. Minimum Window Substring (Hard)**
+*Note: This problem is universally classified as Hard on major platforms. While it uses the sliding window pattern from this chapter, its implementation complexity—managing two frequency maps, a `formed` counter, and a contraction loop—places it at the highest difficulty tier.*
 **Specification:** Given strings s and t, find the minimum substring of s containing all characters in t.
 
 **Example:** `s = "ADOBECODEBANC", t = "ABC"` -> Output: `"BANC"`
@@ -6156,7 +5973,7 @@ public boolean checkSubarraySum(int[] nums, int k) {
     int sum = 0;
     for (int i = 0; i < nums.length; i++) {
         sum += nums[i];
-        int mod = k == 0 ? sum : sum % k;
+        int mod = k == 0 ? sum : ((sum % k) + k) % k;
         if (map.containsKey(mod)) {
             if (i - map.get(mod) > 1) return true; // Length >= 2
         } else {
@@ -6901,9 +6718,9 @@ private void dfs(int[][] grid, int r, int c, String dir, StringBuilder sb) {
 **Strategic Hint:** Max AND is just the max element. Find longest contiguous sequence of the max element.
 
 
-# Q4 Mastery — Algorithmic Optimization: Binary Search Variants, Monotonic Structures, Dynamic Programming, and Graph Algorithms
+# Hard-tier Mastery — Algorithmic Optimization: Binary Search Variants, Monotonic Structures, Dynamic Programming, and Graph Algorithms
 
-This chapter covers Q4 of the CodeSignal GCA (Hard difficulty, ~25 minutes target time). Q4 is the most challenging question testing optimal $\mathcal{O}(\log N)$ or $\mathcal{O}(N)$ solutions, DP state transitions, and graph algorithms.
+This chapter covers Hard-tier of the General Coding Assessments (Hard difficulty, ~25 minutes target time). Hard-tier is the most challenging question testing optimal $\mathcal{O}(\log N)$ or $\mathcal{O}(N)$ solutions, DP state transitions, and graph algorithms.
 
 ## Essential Terminology & Vocabulary
 
@@ -6923,7 +6740,7 @@ Notice what happened:
 - The single monotonically increasing sequence is split into **two sorted sub-arrays**: $[4, 5, 6, 7]$ (the left segment) and $[0, 1, 2]$ (the right segment).
 - The array is no longer sorted overall, so standard Binary Search (which assumes `nums[left] <= nums[right]`) fails if implemented naively.
 
-![Binary Search on Rotated Sorted Array — Two Sorted Halves](editions/java/chapters/12-q4-optimization-dp/visuals/rotated_sorted_array.png){width=85%}
+![Binary Search on Rotated Sorted Array — Two Sorted Halves](editions/java/chapters/13-optimization-dp/visuals/rotated_sorted_array.png){width=85%}
 
 * * *
 
@@ -6931,6 +6748,13 @@ Notice what happened:
 The key insight that allows us to achieve $\mathcal{O}(\log N)$ time complexity is the **Monotonic Partition Invariant**:
 
 > **The Fundamental Invariant:** Whenever you split a Rotated Sorted Array into two halves using a midpoint `mid = left + (right - left) / 2`, **AT LEAST ONE OF THE TWO HALVES IS GUARANTEED TO BE STRICTLY MONOTONICALLY SORTED.**
+
+> **Proof by Exhaustion.** Consider array `A[lo..hi]` with midpoint `mid = (lo + hi) / 2`. The rotation point (the index where `A[i] > A[i+1]`) can only exist in one contiguous segment.
+> - **Case 1:** Rotation point is in `A[mid+1..hi]`. Then `A[lo..mid]` contains no rotation point, so `A[lo] ≤ A[lo+1] ≤ ... ≤ A[mid]` — the left half is sorted.
+> - **Case 2:** Rotation point is in `A[lo..mid]`. Then `A[mid+1..hi]` contains no rotation point, so `A[mid+1] ≤ ... ≤ A[hi]` — the right half is sorted.
+> - **Case 3:** No rotation point exists in `A[lo..hi]` (entire subarray is sorted). Both halves are sorted.
+>
+> In all cases, at least one half is sorted. ∎
 
 - If `nums[left] <= nums[mid]`: The **LEFT half** `[left ... mid]` is monotonically sorted.
 - If `nums[left] > nums[mid]`: The **RIGHT half** `[mid ... right]` is monotonically sorted.
@@ -7071,7 +6895,7 @@ Why it matters: It allows O(1) get and put operations by seamlessly combining ha
 This refers to identifying when a problem's state perfectly maps to the linear recurrence `dp[i] = dp[i-1] + dp[i-2]`. The entire array state can be compressed into two variables.
 Why it matters: Problems like climbing stairs, decode ways, and tiling can be instantly recognized and compressed to O(1) space.
 
-![DP State Transition — Climbing Stairs with Space Optimization](editions/java/chapters/12-q4-optimization-dp/visuals/dp_climbing_stairs.png){width=85%}
+![DP State Transition — Climbing Stairs with Space Optimization](editions/java/chapters/13-optimization-dp/visuals/dp_climbing_stairs.png){width=85%}
 
 * * *
 
@@ -7145,7 +6969,7 @@ public int dpStateCompression(int[] nums) {
 ### Template D: BFS with Level Tracking
 ```java
 public int bfsLevel(Node start, Node target) {
-    Queue<Node> queue = new LinkedList<>();
+    Queue<Node> queue = new ArrayDeque<>();
     Set<Node> visited = new HashSet<>();
     queue.offer(start);
     visited.add(start);
@@ -7173,7 +6997,7 @@ public int bfsLevel(Node start, Node target) {
 ### Template E: Topological Sort (Kahn's Algorithm)
 ```java
 public List<Integer> topologicalSort(int numNodes, int[][] edges) {
-    List<List<Integer>> adj = new ArrayList<>();
+    var adj = new ArrayList<List<Integer>>();
     int[] inDegree = new int[numNodes];
     for (int i = 0; i < numNodes; i++) adj.add(new ArrayList<>());
     
@@ -7182,7 +7006,7 @@ public List<Integer> topologicalSort(int numNodes, int[][] edges) {
         inDegree[edge[0]]++;
     }
     
-    Queue<Integer> queue = new LinkedList<>();
+    var queue = new ArrayDeque<Integer>();
     for (int i = 0; i < numNodes; i++) {
         if (inDegree[i] == 0) queue.offer(i);
     }
@@ -7206,6 +7030,7 @@ public List<Integer> topologicalSort(int numNodes, int[][] edges) {
 ## Solved Exemplar Problems
 
 **1. Search in Rotated Sorted Array**
+**Difficulty Classification:** This problem is classified as Medium on all major assessment platforms. It appears in this chapter because it demonstrates the advanced application of the Binary Search pattern **[PAT-10] Monotonic Partition Binary Search** with a modified invariant. For assessment preparation, treat this as a medium-tier warm-up before tackling the harder DP and graph problems in this chapter.
 **Specification:** Given an integer array sorted in ascending order (with distinct values) and rotated at an unknown pivot, find the index of `target`.
 
 **Example:** `nums = [4,5,6,7,0,1,2]`, `target = 0` $\rightarrow$ output `4`.
@@ -7300,7 +7125,7 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 >
 > A **substring** must be contiguous (`"BCD"` from `"ABCDE"`). A **subsequence** can skip characters but must preserve order (`"ACE"` from `"ABCDE"` — pick A, skip B, pick C, skip D, pick E). The order matters: `"ECA"` is **not** a valid subsequence of `"ABCDE"` because the characters appear in the wrong order.
 
-![Subsequence vs Substring](editions/java/chapters/12-q4-optimization-dp/visuals/subsequence_vs_substring.png){width=85%}
+![Subsequence vs Substring](editions/java/chapters/13-optimization-dp/visuals/subsequence_vs_substring.png){width=85%}
 
 **Trace-Through:** For `text1 = "CAT"`, `text2 = "CART"`, the DP table builds the answer cell by cell. Each cell asks: "What is the longest common subsequence using only the first *i* characters of text1 and first *j* characters of text2?"
 
@@ -7320,27 +7145,30 @@ The bold diagonal cells show: C matches C (1), A matches A (2), T matches T (3).
 
 ```java
 public int longestCommonSubsequence(String text1, String text2) {
+    if (text1.length() < text2.length()) return longestCommonSubsequence(text2, text1);
     int m = text1.length(), n = text2.length();
-    int[][] dp = new int[m + 1][n + 1];
-    
+    var prev = new int[n + 1];
+    var curr = new int[n + 1];
     for (int i = 1; i <= m; i++) {
         for (int j = 1; j <= n; j++) {
-            if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
-                dp[i][j] = dp[i - 1][j - 1] + 1; // Match found
-            } else {
-                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]); // Skip char
-            }
+            curr[j] = text1.charAt(i - 1) == text2.charAt(j - 1)
+                ? prev[j - 1] + 1
+                : Math.max(prev[j], curr[j - 1]);
         }
+        var temp = prev; prev = curr; curr = temp;
+        java.util.Arrays.fill(curr, 0);
     }
-    return dp[m][n];
+    return prev[n];
 }
 // Time Complexity: O(M * N)
-// Space Complexity: O(M * N)
+// Space Complexity: O(min(M, N)) - Space compressed DP as taught in the vocabulary section.
 ```
 
 * * *
 
 **4. Burst Balloons**
+> ⚠️ **Assessment Realism Note:** Interval DP problems like Burst Balloons are extremely unlikely in timed assessments (the O(N³) derivation requires 30+ minutes of focused work). This exemplar is included for comprehensive pattern coverage. For timed assessment practice, prioritize the multi-source BFS, 1D DP, and monotonic stack problems in this chapter.
+
 **Specification:** Maximize coins by bursting balloons. Bursting `nums[i]` yields `nums[i-1] * nums[i] * nums[i+1]` coins.
 
 **Example:** `nums = [3,1,5,8]` $\rightarrow$ output `167`.
@@ -7351,7 +7179,7 @@ public int longestCommonSubsequence(String text1, String text2) {
 >
 > The natural instinct is to simulate bursting balloons left-to-right, but that creates dependency chaos — bursting balloon `i` changes the neighbors of balloon `i+1`. Instead, ask: **"Which balloon do I burst LAST?"** If balloon `k` is the *last* to burst in interval `(i, j)`, then at that moment only `arr[i]` and `arr[j]` remain as its neighbors. This makes the left and right subproblems *independent*.
 
-![Burst Balloons — Think Backwards](editions/java/chapters/12-q4-optimization-dp/visuals/burst_balloons_trace.png){width=85%}
+![Burst Balloons — Think Backwards](editions/java/chapters/13-optimization-dp/visuals/burst_balloons_trace.png){width=85%}
 
 **Trace-Through:** For `nums = [3, 1, 5, 8]`, we pad with 1s: `arr = [1, 3, 1, 5, 8, 1]`.
 
@@ -7504,6 +7332,7 @@ public int trap(int[] height) {
 * * *
 
 **8. Daily Temperatures**
+*Note: While placed in this chapter for its use of the Monotonic Stack pattern **[PAT-09] Monotonic Stack ("The Waiting Room")**, this problem is a Medium-difficulty gateway to the pattern. Use it as a warm-up before tackling the harder exemplars below.*
 **Specification:** Find the number of days you have to wait after each day to get a warmer temperature.
 
 **Example:** `[73,74,75,71,69,72,76,73]` $\rightarrow$ output `[1,1,4,2,1,1,0,0]`.
@@ -7545,7 +7374,7 @@ public int[] dailyTemperatures(int[] temperatures) {
 >
 > At each cell, you choose the cheapest of three operations: **Replace** (↖ diagonal + 1), **Delete** from word1 (↑ up + 1), **Insert** into word1 (← left + 1). If characters already match, the diagonal costs 0 (no operation needed).
 
-![Edit Distance Trace](editions/java/chapters/12-q4-optimization-dp/visuals/edit_distance_trace.png){width=85%}
+![Edit Distance Trace](editions/java/chapters/13-optimization-dp/visuals/edit_distance_trace.png){width=85%}
 
 **Trace-Through:** Convert `"CAT"` → `"CUT"` (answer: 1 — just replace A with U).
 
@@ -7602,7 +7431,7 @@ public int minDistance(String word1, String word2) {
 >
 > A common question is: "Shouldn't we store a timestamp for when each item was last used?" The answer is no — the **position in the linked list** is the timestamp. The node closest to HEAD was used most recently. The node closest to TAIL was used longest ago. Every `get()` or `put()` moves that node to the HEAD. No clock needed — the list order *is* the chronological record.
 
-![LRU Cache — Position is the Timestamp](editions/java/chapters/12-q4-optimization-dp/visuals/lru_cache_diagram.png){width=85%}
+![LRU Cache — Position is the Timestamp](editions/java/chapters/13-optimization-dp/visuals/lru_cache_diagram.png){width=85%}
 
 **Trace-Through:** Cache capacity = 2.
 
@@ -7701,7 +7530,7 @@ public class LRUCache {
 > - $\text{Width} = i - \text{stack.peek()} - 1$. $\text{Area} = h \times \text{width}$.
 > - A dummy bar of height `0` at `i = n` forces all remaining bars off the stack at the end.
 
-![Maximal Rectangle & Histogram Stack](editions/java/chapters/12-q4-optimization-dp/visuals/maximal_rectangle_histogram.png){width=85%}
+![Maximal Rectangle & Histogram Stack](editions/java/chapters/13-optimization-dp/visuals/maximal_rectangle_histogram.png){width=85%}
 
 **Trace-Through (Monotonic Stack for Heights `[3, 1, 3, 2, 2]`):**
 
@@ -7771,7 +7600,7 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
     Set<String> set = new HashSet<>(wordList);
     if (!set.contains(endWord)) return 0;
     
-    Queue<String> queue = new LinkedList<>();
+    Queue<String> queue = new ArrayDeque<>();
     queue.offer(beginWord);
     int level = 1;
     
@@ -7914,8 +7743,8 @@ public boolean isMatch(String s, String p) {
 
 ```java
 public int[] findOrder(int numCourses, int[][] prerequisites) {
-    int[] inDegree = new int[numCourses];
-    List<List<Integer>> adj = new ArrayList<>();
+    var inDegree = new int[numCourses];
+    var adj = new ArrayList<List<Integer>>();
     for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
     
     for (int[] p : prerequisites) {
@@ -7923,7 +7752,7 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
         inDegree[p[0]]++;
     }
     
-    Queue<Integer> q = new LinkedList<>();
+    Queue<Integer> q = new ArrayDeque<>();
     for (int i = 0; i < numCourses; i++) {
         if (inDegree[i] == 0) q.offer(i);
     }
@@ -8623,15 +8452,865 @@ public int maxArea(int[] height) {
 **Strategic Hint:** Monotonic Stack (increasing). Pop strictly larger digits while `k > 0`.
 
 
-# 20 Exam-Grade GCA Mock Problem Sets
+# Mastering Problem Decomposition: The Capstone
+
+> *"Every problem you will ever face in a technical assessment is a composition of patterns you already know. The art is in the seeing."*
+
+---
+
+## From Patterns to Synthesis
+
+Throughout the preceding chapters, you have meticulously studied and mastered the 24 Canonical Patterns. You understand Sliding Windows, Monotonic Stacks, Prefix Sums, and Topological Sorts in isolation. However, demonstrating proficiency in individual patterns is merely the baseline expectation. To excel in elite technical assessments, you must transition from pattern recognition to pattern synthesis.
+
+Real assessment problems—especially those found in equal-weight peer assessments and single-deep-problem architectural interviews—rarely map cleanly to a single, textbook pattern. Instead, they are complex compositions requiring the seamless integration of two, three, or even more distinct patterns. The complexity lies not in the patterns themselves, but in their orchestration.
+
+This capstone chapter is your synthesis training ground. It is designed to elevate your analytical capabilities, teaching you how to systematically dissect intricate problems, identify the interlocking sub-components, and construct robust, optimal solutions through the deliberate composition of the canonical patterns.
+
+## The Cognitive Derivation Process
+
+When you encounter a truly novel problem—one that doesn't immediately map to a known pattern—follow this derivation process:
+
+1. **Generate the smallest non-trivial example** (n=3 or n=4) and solve it BY HAND on paper. Track what your brain does.
+2. **Identify the decision you make at each step.** Are you choosing the maximum? The nearest? The first valid? This reveals the algorithm class (greedy, search, optimization).
+3. **Ask: "What information do I need from the past, and what do I need about the future?"** If you need past information → prefix arrays or DP. If you need future information → suffix arrays, reverse iteration, or monotonic stacks.
+4. **Ask: "Can I solve a smaller version of this problem and combine the results?"** If yes → divide and conquer or recursive DP.
+5. **Ask: "Does the order of processing matter?"** If no → consider sorting first. If yes → the original order is a constraint you must preserve.
+
+This is NOT pattern matching. This is the fundamental analytical skill that GENERATES pattern recognition.
+
+## The Problem Analysis Canvas
+
+To navigate complex problem spaces effectively, we must formalize the 5-step decomposition framework introduced in Chapter 2 into a rigorous, repeatable structure. The **Problem Analysis Canvas** is a mental and textual template you should apply to every problem you encounter. In an assessment setting, writing this canvas out in comments serves as both your architectural blueprint and a clear signal of your structured thinking to evaluators.
+
+### The Canvas
+
+| Analysis Phase | Your Response |
+|---|---|
+| **Restatement** | [What is actually being asked, stripped of narrative?] |
+| **Inputs** | [Types, ranges, constraints, formats] |
+| **Outputs** | [Expected return type and format] |
+| **Constraints** | [N range → target time/space complexity] |
+| **Edge Cases** | [Empty inputs, single elements, identical elements, overflows] |
+| **Sub-Problems** | [Break the core problem into 2-4 independent components] |
+| **Pattern Mapping** | [Which PAT-XX resolves each sub-problem?] |
+| **Complexity Target** | [Final Time $O(\dots)$ and Space $O(\dots)$ bounds] |
+| **Approach** | [Pseudocode or high-level bulleted steps] |
+
+By rigidly adhering to this canvas, you eliminate the panic of the blank screen and replace it with a systematic diagnostic process.
+
+## Decomposition Walkthroughs
+
+The following sections provide comprehensive step-by-step decomposition analyses across varying levels of complexity. We will analyze the problems, deconstruct them using the canvas methodology, and map them to our canonical patterns.
+
+### Tier 1: Single-Pattern Problems (Warm-Up)
+
+Tier 1 problems form the foundation of technical assessments. They are characterized by a direct, one-to-one mapping with a specific pattern. The challenge here is swift recognition and flawless execution.
+
+#### Example 1: The Target Sum Search
+**Problem:** Given a sorted array of integers, determine if any two distinct numbers sum to a specific target value.
+
+**Analysis:**
+*   **Restatement:** Find a pair in a sorted array that equals a target sum.
+*   **Constraints:** Array is sorted. We need a solution better than $O(N^2)$.
+*   **Sub-Problems:** We need to efficiently search for a complement value for each element.
+*   **Pattern Mapping:** The array is sorted, and we are looking for a pair. This immediately triggers **[PAT-06] Converging Two-Pointers**.
+*   **Approach:** Place pointers at the start and end. If the sum is too large, decrement the right pointer. If too small, increment the left. Time $O(N)$, Space $O(1)$.
+
+#### Example 2: First Unique Character
+**Problem:** Find the first non-repeating character in a string and return its index.
+
+**Analysis:**
+*   **Restatement:** Identify the earliest character in a sequence that appears exactly once.
+*   **Sub-Problems:** 1. Count occurrences of all characters. 2. Find the first character with a count of one.
+*   **Pattern Mapping:** Counting occurrences over a finite set (characters) maps to **[PAT-01] Direct Indexing & Frequency Buckets** (or Hash Map).
+*   **Approach:** One pass to populate frequency array. Second pass over the string to check frequencies and return the first index where frequency is 1. Time $O(N)$, Space $O(1)$ (bounded by alphabet size).
+
+#### Example 3: In-Place Array Rotation
+**Problem:** Rotate an array to the right by $k$ positions, modifying the array in-place.
+
+**Analysis:**
+*   **Restatement:** Shift all elements right by $k$, wrapping around, without using extra $O(N)$ space.
+*   **Sub-Problems:** Shifting elements in-place without a buffer requires structured swaps.
+*   **Pattern Mapping:** Modifying array order in-place often utilizes **[PAT-02] In-Place Mutation & Two-Pointer Compaction**.
+*   **Approach:** Reverse the entire array. Reverse the first $k$ elements. Reverse the remaining $N-k$ elements. Time $O(N)$, Space $O(1)$.
+
+#### Example 4: The Missing Sequence
+**Problem:** Find the missing number in an array containing $n$ distinct numbers taken from the range $0$ to $n$.
+
+**Analysis:**
+*   **Restatement:** Identify the single absent integer in a contiguous sequence.
+*   **Pattern Mapping:** Comparing a sequence to an expected aggregate relies on mathematical invariants (e.g., Gauss's sum formula or XOR accumulation).
+*   **Approach:** Calculate the expected sum using $n(n+1)/2$. Subtract the actual sum of the array. The difference is the missing number. Time $O(N)$, Space $O(1)$.
+
+### Tier 2: Dual-Pattern Compositions (Assessment Core)
+
+Tier 2 problems are the standard for rigorous technical screens. They cannot be solved by applying a single pattern in isolation; they require identifying two overlapping structures and combining them harmoniously.
+
+#### Example 1: Distinct Substrings
+**Problem:** Find the length of the longest substring containing at most $K$ distinct characters.
+
+**Analysis:**
+*   **Restatement:** Find the maximum contiguous subarray length bounded by a character diversity constraint.
+*   **Sub-Problems:** 1. Iterate over all possible contiguous subarrays efficiently. 2. Track the number of distinct characters currently in view.
+*   **Pattern Mapping:** "Longest substring" and "contiguous" strongly imply **[PAT-04] Dynamic Sliding Window (Variable Size)**. "Tracking distinct characters" implies **[PAT-01] Direct Indexing & Frequency Buckets**.
+*   **Approach:** Use a sliding window with a left and right pointer. Expand right, updating a frequency map. If the map size exceeds $K$, increment left, decrementing frequencies until the map size is valid again. Keep track of the maximum window size.
+
+#### Example 2: The Kth Largest
+**Problem:** Find the Kth largest element in an unsorted array efficiently without sorting the entire array.
+
+**Analysis:**
+*   **Restatement:** Locate a specific rank-order element in unsorted data.
+*   **Constraints:** Sorting takes $O(N \log N)$. Can we achieve $O(N)$ average time?
+*   **Sub-Problems:** 1. Partition the array around a pivot. 2. Decide which partition to explore based on the pivot's final index.
+*   **Pattern Mapping:** Partitioning logic maps to QuickSelect, which is a variation of **[PAT-11] Binary Search on Solution Range**, combined with **[PAT-02] In-Place Mutation & Two-Pointer Compaction**. Alternatively, managing the top K elements maps to **[PAT-25] Priority Queue / Min-Max Heap**.
+*   **Approach (Heap):** Maintain a Min-Heap of size K. Iterate the array; push elements. If heap exceeds K, pop. The root of the heap is the Kth largest. Time $O(N \log K)$.
+
+#### Example 3: Merging Multiple Streams
+**Problem:** Merge $K$ sorted linked lists into a single sorted linked list.
+
+**Analysis:**
+*   **Restatement:** Combine multiple ordered sequences into one ordered sequence.
+*   **Sub-Problems:** 1. Continuously identify the smallest current element across $K$ heads. 2. Append to a new list and advance the corresponding pointer.
+*   **Pattern Mapping:** Finding the minimum among $K$ dynamic candidates is exactly what a **[PAT-25] Priority Queue / Min-Max Heap** is for. Processing them sequentially visually resembles **[PAT-13] Level-by-Level BFS Wavefront**.
+*   **Approach:** Push the head of each list into a Min-Heap. While heap is not empty, pop the smallest node, append to result, and if the popped node has a `next`, push `next` into the heap.
+
+#### Example 4: Substring Anagrams
+**Problem:** Given a text and a pattern string, find all starting indices in the text where the substring is an anagram of the pattern.
+
+**Analysis:**
+*   **Restatement:** Find all contiguous subarrays of length $P$ in text that have the exact same character frequencies as the pattern.
+*   **Sub-Problems:** 1. Maintain a rolling view of length $P$. 2. Compare the frequency signature of the view against the pattern's signature.
+*   **Pattern Mapping:** "Rolling view of fixed length" dictates a **[PAT-05] Fixed-Size Monotonic Deque Window** (or simply a fixed-size window approach). "Frequency signature" maps to **[PAT-01] Direct Indexing & Frequency Buckets**.
+*   **Approach:** Compute the target frequency array for the pattern. Use a sliding window of length $P$ over the text, maintaining a rolling frequency array. Compare the arrays at each step. Time $O(N)$.
+
+#### Example 5: Course Prerequisites
+**Problem:** Given $N$ courses and a list of prerequisite pairs, determine if it is possible to finish all courses.
+
+**Analysis:**
+*   **Restatement:** Detect if a directed graph of dependencies contains any cycles.
+*   **Sub-Problems:** 1. Model the dependencies as a graph. 2. Traverse the graph to ensure all nodes can be visited without encountering back-edges.
+*   **Pattern Mapping:** Dependency resolution strictly maps to **[PAT-16] Topological Sort (Kahn's & DFS)**. The traversal mechanism is inherently Level-by-Level BFS.
+*   **Approach:** Build an adjacency list and an in-degree array. Push nodes with in-degree 0 to a queue. Process BFS, decrementing in-degrees of neighbors. If a neighbor hits 0, queue it. If the count of processed nodes equals $N$, no cycles exist.
+
+### Tier 3: Multi-Pattern Synthesis (Capstone Challenges)
+
+Tier 3 problems represent the apex of algorithmic assessments. These problems require deep architectural insight, combining three or more patterns, or employing a pattern in a highly unconventional manner.
+
+#### Example 1: The Word Ladder
+**Problem:** Given a start word, an end word, and a dictionary, find the length of the shortest transformation sequence from start to end, where only one letter can be changed at a time.
+
+**Analysis:**
+*   **Restatement:** Find the shortest path between two nodes in an unweighted graph where edges represent single-character mutations.
+*   **Pattern Mapping:** "Shortest path in unweighted graph" guarantees **[PAT-13] Level-by-Level BFS Wavefront**. Generating valid edges requires character substitution logic. To optimize, we can use **[PAT-14] Multi-Source BFS Parallel Spreading** or Bidirectional BFS.
+*   **Approach:** Treat words as nodes. For the current word, substitute each character with 'a'-'z' to find valid neighbors in the dictionary. Enqueue valid, unseen neighbors. BFS guarantees the first time we reach the end word is the shortest path.
+
+#### Example 2: Trapping Rainwater
+**Problem:** Given an array representing building heights, calculate the total volume of trapped rainwater.
+
+**Analysis:** (As seen in Chapter 2, but expanded)
+*   **Restatement:** Water at index $i$ is $\min(\text{max\_left}, \text{max\_right}) - \text{height}[i]$.
+*   **Pattern Mapping:** We need boundary maximums. This can be solved via **[PAT-03] Prefix Sums & Range Query Invariants** (Time $O(N)$, Space $O(N)$). To optimize space, we synthesize it with **[PAT-06] Converging Two-Pointers** (Time $O(N)$, Space $O(1)$).
+*   **Approach (Two-Pointer):** Maintain `left`, `right`, `left_max`, `right_max`. Move the pointer corresponding to the smaller maximum, safely calculating trapped water as we guarantee the other side is bounded by a larger height.
+
+#### Example 3: Largest Rectangle in Histogram
+**Problem:** Find the area of the largest rectangle that can be formed within a histogram.
+
+**Analysis:**
+*   **Restatement:** For every bar, find the maximum contiguous width where all bars are at least as tall as the current bar. Area = height * width.
+*   **Pattern Mapping:** We need to find the "next smaller element" to the left and right to define the width boundaries. This is the textbook definition of a **[PAT-09] Monotonic Stack ("The Waiting Room")**.
+*   **Approach:** Maintain an increasing monotonic stack of indices. When encountering a shorter bar, pop from the stack. The popped bar is the height. The current index is the right boundary; the new top of the stack is the left boundary. Synthesize with sentinel logic (append a 0 height at the end) to flush the stack efficiently.
+
+#### Example 4: Minimum Window Substring
+**Problem:** Find the minimum contiguous substring in $S$ that contains all characters of $T$ in any order.
+
+**Analysis:**
+*   **Restatement:** Find the shortest subarray that satisfies a strict subset frequency requirement.
+*   **Pattern Mapping:** "Shortest contiguous substring" → **[PAT-04] Dynamic Sliding Window (Variable Size)**. "Contains all characters" → **[PAT-01] Direct Indexing & Frequency Buckets**. Furthermore, we need a **Convergence Condition** to know when the window is valid without iterating the map every time.
+*   **Approach:** Maintain a `target_map` for $T$ and a `window_map`. Use a `matched_chars` integer to track how many unique characters in $T$ have their frequency met in the window. Expand right. When `matched_chars == target_map.size()`, the window is valid. Record length, then shrink left until it becomes invalid.
+
+#### Example 5: Median of Two Sorted Arrays
+**Problem:** Find the median of two sorted arrays of different lengths in $O(\log(M+N))$ time.
+
+**Analysis:**
+*   **Restatement:** Partition two sorted arrays such that the left halves contain the smaller half of the combined elements, and the right halves contain the larger half.
+*   **Pattern Mapping:** The $O(\log)$ constraint on sorted arrays demands **[PAT-10] Monotonic Partition Binary Search**. We are binary searching the partition index of the smaller array.
+*   **Approach:** Binary search on the smaller array to find partition $X$. The partition $Y$ in the larger array is determined by the total required elements in the left half. Check if `max(left_X, left_Y) <= min(right_X, right_Y)`. If true, median is found. If `left_X > right_Y`, move partition $X$ left.
+
+#### Example 6: Bursting Balloons
+**Problem:** Given $N$ balloons with values, bursting balloon $i$ yields `nums[i-1] * nums[i] * nums[i+1]` coins. Find the maximum coins obtainable by bursting all balloons.
+
+**Analysis:**
+*   **Restatement:** Find the optimal sequence of dependent operations that maximizes a cumulative score.
+*   **Pattern Mapping:** The outcome of bursting a balloon depends on which balloons are left. This is overlapping subproblems typically solved using **[PAT-21] 2D Grid Path Optimization** concepts adapted for intervals (Interval DP). The synthesis secret here is **Reverse Thinking**: instead of choosing which balloon to burst first, choose which balloon to burst *last* in the interval.
+*   **Approach:** DP state: $dp[i][j]$ is max coins obtained from bursting balloons between index $i$ and $j$ exclusive. Iterate over interval lengths, then start points. For each interval, guess which balloon $k$ is the *last* to burst. Transition: $dp[i][j] = \max(dp[i][j], dp[i][k] + dp[k][j] + \text{nums}[i] \times \text{nums}[k] \times \text{nums}[j])$.
+
+## The Pattern Recognition Decision Tree (Expanded)
+
+To facilitate rapid decomposition during an assessment, utilize this expanded diagnostic decision tree. When analyzing a problem, ask yourself these guiding questions in sequence:
+
+1.  **What is the primary data structure?**
+    *   *Array/String:* Sequential patterns (Pointers, Windows, Prefix Arrays, Monotonic Stacks).
+    *   *Matrix/Grid:* 2D traversal (BFS/DFS), Dynamic Programming.
+    *   *Graph:* Connectivity, Shortest Path, Topological Sort.
+    *   *Tree:* Recursion, Level-Order traversal.
+    *   *LinkedList:* Fast/Slow Pointers, In-place reversal.
+
+2.  **What is the query type?**
+    *   *Search/Find:* Binary Search, Hash Maps.
+    *   *Count/Frequency:* Hash Maps, Arrays as Maps.
+    *   *Optimize (Max/Min):* Greedy, Dynamic Programming, Binary Search on Answer.
+    *   *Transform:* In-place swaps, Reversals.
+    *   *Validate (True/False):* Two-Pointers, Stack (matching).
+
+3.  **What are the constraints?**
+    *   $N \le 20 \dots 100$: Backtracking, $O(N^3)$, Brute Force often acceptable.
+    *   $N \le 10^4$: $O(N^2)$ might pass, but $O(N \log N)$ is expected.
+    *   $N \le 10^5 \dots 10^6$: $O(N \log N)$ or strictly $O(N)$ required. Hash Maps, Sliding Windows, Two Pointers.
+    *   $N \ge 10^9$: $O(\log N)$ or $O(1)$ required. Binary Search, Math formulas.
+
+4.  **Is ordering important?**
+    *   *Sorted:* Binary Search family, Two-Pointer Converging.
+    *   *Unsorted (but order matters):* Sliding Window, Monotonic Stack.
+    *   *Unsorted (order doesn't matter):* Hash Maps, Sorting as a preprocessing step.
+
+5.  **Does it involve a window or contiguous subarray?**
+    *   Fixed size → Fixed Sliding Window.
+    *   Variable size with constraint → Dynamic Sliding Window.
+
+6.  **Does it ask for 'next greater/smaller' elements?**
+    *   Immediately points to Monotonic Stack.
+
+7.  **Does it have overlapping subproblems or ask for combinations?**
+    *   Optimization/Counting over subsets → Dynamic Programming family.
+
+8.  **Does it involve connectivity or paths?**
+    *   Shortest path unweighted → BFS.
+    *   Dependencies/Prerequisites → Topological Sort.
+    *   Component grouping → Union-Find or DFS.
+
+## Common Decomposition Mistakes
+
+Even with a structured framework, engineers often fall victim to specific decomposition anti-patterns under pressure. Be vigilant against these errors:
+
+*   **Jumping to Code Without Analysis:** The most fatal error. Writing code before the canvas is complete leads to structural dead-ends and unrecoverable bugs.
+*   **Over-Decomposing:** Breaking a simple problem into too many abstract layers. If a sub-problem requires only three lines of logic, it does not need a helper function or a complex object model. Keep it localized.
+*   **Pattern Forcing:** Attempting to forcefully map a problem to a familiar pattern (e.g., trying to use Dynamic Programming when a simple Greedy approach works). Let the constraints dictate the pattern, not your preference.
+*   **Ignoring Constraints:** Designing an elegant $O(N^2)$ solution when $N = 10^5$. Always validate your target complexity against the input constraints *before* committing to a pattern.
+*   **Premature Optimization:** Trying to write the perfect $O(N)$ $O(1)$ space solution immediately. It is almost always better to articulate a correct $O(N^2)$ approach first, guarantee correctness conceptually, and then optimize it by swapping sub-pattern implementations.
+
+## Practice Exercises
+
+Apply the Problem Analysis Canvas to the following 15 problem statements. Do not write code. Your goal is strictly to identify the constraints, decompose the problem, and map the appropriate patterns.
+
+1.  Given a matrix of 1s (land) and 0s (water), count the number of islands. *(Hint: Graph Traversal)*
+2.  Find the maximum sum of any contiguous subarray of size $k$. *(Hint: PAT-05)*
+3.  Determine if a string has all unique characters without using extra data structures. *(Hint: Sorting or Bit Manipulation)*
+4.  Given an array of intervals, merge all overlapping intervals. *(Hint: Sorting + Linear Scan)*
+5.  Find the lowest common ancestor of two nodes in a Binary Search Tree. *(Hint: BST property + Traversal)*
+6.  Serialize and deserialize a binary tree. *(Hint: Pre-order or Level-order traversal)*
+7.  Given a list of strings, group the anagrams together. *(Hint: String Signature + Hash Map)*
+8.  Implement a data structure that supports insert, delete, and getRandom in $O(1)$ time. *(Hint: Array + Hash Map synthesis)*
+9.  Find the length of the longest strictly increasing subsequence in an array. *(Hint: DP or Binary Search Synthesis)*
+10. Given a directed graph, find the shortest path from a source to all other nodes where edges have positive weights. *(Hint: Dijkstra's Algorithm)*
+11. Check if a binary tree is perfectly balanced. *(Hint: Post-order traversal)*
+12. Given a string, find the longest palindromic substring. *(Hint: Expand around center or DP)*
+13. Search for a target value in a 2D matrix where rows and columns are sorted. *(Hint: Specialized Two-Pointer from a corner)*
+14. Calculate the edit distance between two strings. *(Hint: 2D Dynamic Programming)*
+15. Find all valid combinations of $k$ numbers that sum up to $n$. *(Hint: Backtracking)*
+
+> ⭐ **STAR Moment: The Synthesis Mindset**
+>
+> The engineers who consistently score in the top percentile on technical assessments are not the ones who have memorized the most solutions. They are the ones who can see the hidden structure in novel problems. Every new problem is a remix of patterns you already know. Train your eyes to see the composition, and no assessment will ever surprise you.
+
+
+# 20 Timed Algorithmic Mock Assessment Sets
 
 ## How to Use This Chapter
 
-This chapter provides 20 full, four-question exam mock sets (80 problems total) modeled directly after the General Coding Assessment (GCA) blueprint. Each set is designed to simulate the rigorous 70-minute assessment environment you will face during a real coding interview. The problems strictly adhere to the expected difficulty curve: Q1 tests basic implementation and traversal (Easy, 5-8 minutes), Q2 focuses on 2D matrices and simulation (Medium, 12-15 minutes), Q3 requires algorithmic pattern recognition like HashMaps or sliding windows (Medium-Hard, 18-20 minutes), and Q4 challenges you with dynamic programming, graphs, or advanced data structures (Hard, 20-25 minutes).
+This chapter provides 20 full, four-question exam mock sets (80 problems total) modeled after the common standardized coding assessment format. Each set is designed to simulate a rigorous timed assessment environment. The problems follow a standard difficulty curve: the first question tests basic implementation and traversal (Easy, 5-8 minutes), the second focuses on 2D matrices and simulation (Medium, 12-15 minutes), the third requires algorithmic pattern recognition like HashMaps or sliding windows (Medium-Hard, 18-20 minutes), and the fourth challenges you with dynamic programming, graphs, or advanced data structures (Hard, 20-25 minutes).
 
-To get the most out of these mock exams, strictly time yourself. Set a timer for 70 minutes and attempt all four questions in order. Do not look up syntax or external resources. If you get stuck on Q3 or Q4, practice timeboxing: move on and secure partial credit where possible. After the 70 minutes expire, review your performance. Use the provided hints to guide your post-exam study sessions, identifying which specific patterns (e.g., sliding window, BFS, monotonic stack) require further review.
+To get the most out of these mock assessments, strictly time yourself. Set a timer for 70 minutes (or adjust to match your target assessment format) and attempt all four questions in order. Do not look up syntax or external resources. If you get stuck on the third or fourth question, practice timeboxing: move on and secure partial credit where possible. For equal-weight assessment formats, treat all four questions as having equal priority and allocate approximately 15-18 minutes per question. After time expires, review your performance. Use the provided hints to guide your post-assessment study sessions, identifying which specific patterns (e.g., sliding window, BFS, monotonic stack) require further review.
 
 Remember, there is no code in this chapter—this is your practice arena. Read the specifications, analyze the test cases, check the constraints, and write your own optimal solutions.
+
+* * *
+
+## Set 1: Warm-Up Fundamentals
+
+* **Q1 (Easy): Vowel Starting Words**
+  * *Specification:* Given a string of text containing words separated by single spaces, calculate the total number of words that begin with a vowel. Vowels are defined as 'a', 'e', 'i', 'o', and 'u', and the check should be case-insensitive. Ignore any punctuation, assuming the string consists only of alphabetical characters and spaces. Return the final integer count of qualifying words.
+  * *Sample Test Case:* Input: `"Apple banana Orange umbrella"` -> Output: `3`.
+  * *Constraints:* String length $1 \le L \le 10^5$.
+  * *Hint:* Use standard string splitting to isolate words, then check the first character of each token against a predefined set of vowels.
+
+* **Q2 (Medium): Rotate Rectangular Image**
+  * *Specification:* You are given an $M \times N$ 2D matrix representing an image, where each cell holds a pixel value. Your task is to rotate the image 90 degrees clockwise. Unlike square matrix rotation, this matrix is rectangular, meaning the dimensions of the resulting matrix will swap to $N \times M$. You must allocate a new matrix to hold the rotated values and populate it correctly.
+  * *Sample Test Case:* Input: `[[1, 2, 3], [4, 5, 6]]` -> Output: `[[4, 1], [5, 2], [6, 3]]`.
+  * *Constraints:* $1 \le M, N \le 1000$.
+  * *Hint:* The element at `matrix[r][c]` in the original matrix moves to `new_matrix[c][M - 1 - r]` in the rotated matrix.
+
+* **Q3 (Medium-Hard): K-Frequency Substring**
+  * *Specification:* Given a string and an integer K, find the length of the longest contiguous substring where no character appears more than K times. You must process the string and keep track of character frequencies dynamically. If the frequency of any character exceeds K, you must shrink the valid sequence until the condition is met again. Return the maximum length observed.
+  * *Sample Test Case:* Input: `s = "abaccc", K = 2` -> Output: `4` (The substring "abac").
+  * *Constraints:* String length $1 \le L \le 10^5$, $1 \le K \le L$.
+  * *Hint:* Use a sliding window approach with two pointers and a HashMap or frequency array to track character counts within the current window.
+
+* **Q4 (Hard): Largest Rectangular Area**
+  * *Specification:* You are given an array of non-negative integers representing the heights of adjacent buildings, where each building has a width of 1 unit. You need to calculate the area of the largest rectangle that can be formed within the bounds of these buildings. The rectangle must be completely contained within the histograms. Return the maximum possible area.
+  * *Sample Test Case:* Input: `[2, 1, 5, 6, 2, 3]` -> Output: `10` (Formed by heights 5 and 6).
+  * *Constraints:* Array length $1 \le N \le 10^5$, building heights $0 \le H \le 10^4$.
+  * *Hint:* Utilize a monotonic increasing stack to keep track of building indices, calculating areas when a drop in height is encountered.
+
+* * *
+
+## Set 2: Timed Mock Assessment 2
+
+* **Q1 (Easy): Array Prefix Sum**
+  * *Specification:* Given an array, calculate its running sum in place.
+  * *Sample Test Case:* Input: `[1,2,3] -> [1,3,6]`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-03] Prefix Sums
+
+* **Q2 (Medium): Prefix Sum Range**
+  * *Specification:* Process range sum queries on an array quickly.
+  * *Sample Test Case:* Input: `[1,2,3], query(0,2) -> 6`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* [PAT-03] Prefix array
+
+* **Q3 (Medium-Hard): BFS Shortest Path**
+  * *Specification:* Find the shortest path to exit a grid maze.
+  * *Sample Test Case:* Input: `grid -> 4 steps`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-13] BFS Wavefront
+
+* **Q4 (Hard): Dijkstra Shortest**
+  * *Specification:* Find network delay time for a signal to reach all nodes.
+  * *Sample Test Case:* Input: `nodes=4, edges -> 2`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-18] Dijkstra Priority Queue
+
+
+* * *
+
+## Set 3: Timed Mock Assessment 3
+
+* **Q1 (Easy): Palindrome Check**
+  * *Specification:* Verify if a string is a palindrome, ignoring non-alphanumeric characters.
+  * *Sample Test Case:* Input: `"A man, a plan" -> True`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-06] Converging Pointers
+
+* **Q2 (Medium): Binary Search Rotated**
+  * *Specification:* Find an element in a sorted array that has been rotated.
+  * *Sample Test Case:* Input: `[4,5,1,2,3], target=1 -> 2`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* [PAT-10] Partition Search
+
+* **Q3 (Medium-Hard): DFS Component Count**
+  * *Specification:* Count the number of connected components (islands) in a 2D grid.
+  * *Sample Test Case:* Input: `grid -> 3 islands`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-15] DFS Flood Fill
+
+* **Q4 (Hard): Topological Sort Complex**
+  * *Specification:* Find the longest path in a Directed Acyclic Graph representing tasks.
+  * *Sample Test Case:* Input: `tasks -> 10 days`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-16] Topo Sort / DP
+
+
+* * *
+
+## Set 4: Timed Mock Assessment 4
+
+* **Q1 (Easy): In-place Transformation**
+  * *Specification:* Move all zeros in an array to the end while maintaining relative order of other elements.
+  * *Sample Test Case:* Input: `[0,1,0,3] -> [1,3,0,0]`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-02] Write/Read pointers
+
+* **Q2 (Medium): State Machine String**
+  * *Specification:* Parse a string to extract a valid integer, handling signs and overflow.
+  * *Sample Test Case:* Input: `"-42" -> -42`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Deterministic finite automaton
+
+* **Q3 (Medium-Hard): Tree Traversal**
+  * *Specification:* Serialize and deserialize a binary tree.
+  * *Sample Test Case:* Input: `[1,2,3] -> str -> [1,2,3]`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* Preorder traversal
+
+* **Q4 (Hard): Union Find Network**
+  * *Specification:* Find the redundant connection in a graph that should be a tree.
+  * *Sample Test Case:* Input: `[[1,2],[1,3],[2,3]] -> [2,3]`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-17] Disjoint Set Union
+
+
+* * *
+
+## Set 5: Timed Mock Assessment 5
+
+* **Q1 (Easy): Simple Math**
+  * *Specification:* Return the sum of digits of a given integer until it becomes a single digit.
+  * *Sample Test Case:* Input: `38 -> 2`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Modulo arithmetic
+
+* **Q2 (Medium): Matrix Zeroes**
+  * *Specification:* If a cell is 0, set its entire row and column to 0 in-place.
+  * *Sample Test Case:* Input: `[[1,0],[1,1]] -> [[0,0],[1,0]]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Row/Col marker tracking
+
+* **Q3 (Medium-Hard): Course Schedule II**
+  * *Specification:* Return the ordering of courses you should take to finish all courses.
+  * *Sample Test Case:* Input: `num=2, req=[[1,0]] -> [0,1]`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-16] Topological Sort
+
+* **Q4 (Hard): Word Ladder**
+  * *Specification:* Find the length of the shortest transformation sequence from beginWord to endWord.
+  * *Sample Test Case:* Input: `hit -> cog: 5`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-13] BFS Wavefront
+
+
+* * *
+
+## Set 6: Timed Mock Assessment 6
+
+* **Q1 (Easy): Anagram Validation**
+  * *Specification:* Determine if two strings are valid anagrams of one another.
+  * *Sample Test Case:* Input: `"listen", "silent" -> True`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-01] Frequency buckets
+
+* **Q2 (Medium): Subarray Sum K**
+  * *Specification:* Find the total number of continuous subarrays whose sum equals k.
+  * *Sample Test Case:* Input: `[1,1,1], k=2 -> 2`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* [PAT-03] Prefix HashMap
+
+* **Q3 (Medium-Hard): Word Search**
+  * *Specification:* Check if a word exists in a grid of characters.
+  * *Sample Test Case:* Input: `board, "ABCCED" -> True`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-12] DFS Backtracking
+
+* **Q4 (Hard): Longest Valid Parentheses**
+  * *Specification:* Find the length of the longest valid (well-formed) parentheses substring.
+  * *Sample Test Case:* Input: `")()())" -> 4`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-08] Stack or Two Pointers
+
+
+* * *
+
+## Set 7: Timed Mock Assessment 7
+
+* **Q1 (Easy): Array Intersection**
+  * *Specification:* Find the common elements between two sorted arrays.
+  * *Sample Test Case:* Input: `[1,2,3], [2,3,4] -> [2,3]`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Two pointers matching
+
+* **Q2 (Medium): Sort Colors**
+  * *Specification:* Sort an array of 0s, 1s, and 2s in-place (Dutch National Flag).
+  * *Sample Test Case:* Input: `[2,0,2,1,1,0] -> [0,0,1,1,2,2]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Three pointers
+
+* **Q3 (Medium-Hard): Clone Graph**
+  * *Specification:* Return a deep copy (clone) of a graph.
+  * *Sample Test Case:* Input: `node 1 -> cloned node 1`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* HashMap + BFS/DFS
+
+* **Q4 (Hard): Monotonic Stack Max Area**
+  * *Specification:* Find the largest rectangle in a binary matrix of 0s and 1s.
+  * *Sample Test Case:* Input: `matrix -> 6`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-09] Monotonic Stack
+
+
+* * *
+
+## Set 8: Timed Mock Assessment 8
+
+* **Q1 (Easy): Missing Number**
+  * *Specification:* Find the missing number in an array of size N containing numbers from 0 to N.
+  * *Sample Test Case:* Input: `[0,1,3] -> 2`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Sum formula or XOR
+
+* **Q2 (Medium): Peak Element**
+  * *Specification:* Find a peak element (strictly greater than neighbors) in O(log N) time.
+  * *Sample Test Case:* Input: `[1,2,3,1] -> 2`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Binary Search on gradient
+
+* **Q3 (Medium-Hard): Evaluate Division**
+  * *Specification:* Evaluate queries based on equation relationships a/b = 2.
+  * *Sample Test Case:* Input: `a/b=2, b/c=3 -> a/c=6`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* Graph DFS with path weights
+
+* **Q4 (Hard): Minimum Spanning Tree**
+  * *Specification:* Given a weighted undirected graph, find the MST weight using Kruskal's algorithm with Union-Find.
+  * *Sample Test Case:* Input: `edges -> weight`
+  * *Constraints:* V \le 10^4, E \le 5 \times 10^4.
+  * *Hint:* [PAT-17] Disjoint Set Union + greedy edge sorting.
+
+
+* * *
+
+## Set 9: Timed Mock Assessment 9
+
+* **Q1 (Easy): Merge Sorted Arrays**
+  * *Specification:* Merge two sorted arrays into a new sorted array.
+  * *Sample Test Case:* Input: `[1,3], [2,4] -> [1,2,3,4]`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Two pointer merge
+
+* **Q2 (Medium): Group Anagrams**
+  * *Specification:* Group an array of strings into anagram sets.
+  * *Sample Test Case:* Input: `["eat","tea","tan"] -> [["eat","tea"],["tan"]]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Frequency string as HashMap key
+
+* **Q3 (Medium-Hard): Time Based Key-Value Store**
+  * *Specification:* Create a map that supports setting and getting values by timestamps.
+  * *Sample Test Case:* Input: `set(k,v,1), get(k,1) -> v`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* HashMap + Binary Search
+
+* **Q4 (Hard): Trapping Rain Water**
+  * *Specification:* Compute how much water it can trap after raining.
+  * *Sample Test Case:* Input: `[0,1,0,2,1,0,1,3] -> 6`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* Two Pointers or [PAT-09] Stack
+
+
+* * *
+
+## Set 10: Timed Mock Assessment 10
+
+* **Q1 (Easy): Longest Prefix**
+  * *Specification:* Find the longest common prefix string amongst an array of strings.
+  * *Sample Test Case:* Input: `["flower", "flow"] -> "flow"`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Vertical string scanning
+
+* **Q2 (Medium): Max Area Container**
+  * *Specification:* Find two lines that together with the x-axis form a container holding the most water.
+  * *Sample Test Case:* Input: `[1,8,6,2,5,4,8,3,7] -> 49`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* [PAT-06] Converging Two-Pointers
+
+* **Q3 (Medium-Hard): LRU Cache**
+  * *Specification:* Design a cache with Least Recently Used eviction strategy.
+  * *Sample Test Case:* Input: `put(1,1), get(1) -> 1`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* HashMap + Doubly Linked List
+
+* **Q4 (Hard): Burst Balloons**
+  * *Specification:* Maximize coins by bursting balloons strategically.
+  * *Sample Test Case:* Input: `[3,1,5,8] -> 167`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* Divide & Conquer DP
+
+
+* * *
+
+## Set 11: Timed Mock Assessment 11
+
+* **Q1 (Easy): Valid Parentheses Basic**
+  * *Specification:* Check if a string with just () is balanced.
+  * *Sample Test Case:* Input: `"(())" -> True`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Counter tracking
+
+* **Q2 (Medium): Generate Parentheses**
+  * *Specification:* Generate all combinations of n pairs of well-formed parentheses.
+  * *Sample Test Case:* Input: `n=2 -> ["(())","()()"]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* [PAT-12] Backtracking
+
+* **Q3 (Medium-Hard): Merge Intervals**
+  * *Specification:* Merge all overlapping intervals.
+  * *Sample Test Case:* Input: `[[1,3],[2,6]] -> [[1,6]]`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-23] Sweep-Line Sort
+
+* **Q4 (Hard): Find Median from Data Stream**
+  * *Specification:* Design a class to calculate the median of numbers from a data stream.
+  * *Sample Test Case:* Input: `add(1), add(2), median -> 1.5`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* Two Heaps (Min/Max)
+
+
+* * *
+
+## Set 12: Timed Mock Assessment 12
+
+* **Q1 (Easy): Count Elements**
+  * *Specification:* Count elements in array that have x+1 present in the array.
+  * *Sample Test Case:* Input: `[1,2,3] -> 2`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* HashSet lookup
+
+* **Q2 (Medium): Valid Sudoku**
+  * *Specification:* Determine if a 9x9 Sudoku board is valid.
+  * *Sample Test Case:* Input: Standard sudoku validation
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* HashMap/Array bitmasking
+
+* **Q3 (Medium-Hard): Construct Binary Tree**
+  * *Specification:* Build a tree from preorder and inorder traversal arrays.
+  * *Sample Test Case:* Input: `pre=[3,9], in=[9,3] -> Tree`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* Divide and conquer
+
+* **Q4 (Hard): Minimum Window Substring**
+  * *Specification:* Find the minimum window in S which will contain all characters in T.
+  * *Sample Test Case:* Input: `S="ADOBECODEBANC", T="ABC" -> "BANC"`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-04] Dynamic Sliding Window
+
+
+* * *
+
+## Set 13: Timed Mock Assessment 13
+
+* **Q1 (Easy): Majority Element**
+  * *Specification:* Find the element that appears more than n/2 times.
+  * *Sample Test Case:* Input: `[2,2,1,1,1,2,2] -> 2`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Boyer-Moore Voting
+
+* **Q2 (Medium): Longest Consecutive Sequence**
+  * *Specification:* Find the length of the longest consecutive elements sequence in O(N).
+  * *Sample Test Case:* Input: `[100,4,200,1,3,2] -> 4`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* HashSet building blocks
+
+* **Q3 (Medium-Hard): Design Add and Search Words**
+  * *Specification:* Design a data structure that supports adding words and searching with '.' wildcards.
+  * *Sample Test Case:* Input: `add("bad"), search("b.d") -> True`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-24] Trie with DFS
+
+* **Q4 (Hard): 2D DP Pathing**
+  * *Specification:* Find minimum path sum in grid moving down/right.
+  * *Sample Test Case:* Input: `[[1,3,1],[1,5,1]] -> 7`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-21] 2D DP Grid
+
+
+* * *
+
+## Set 14: Timed Mock Assessment 14
+
+* **Q1 (Easy): First Unique Character**
+  * *Specification:* Find the first non-repeating character in a string.
+  * *Sample Test Case:* Input: `"leetcode" -> 0`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-01] Frequency counting
+
+* **Q2 (Medium): Top K Frequent Elements**
+  * *Specification:* Return the k most frequent elements in an array.
+  * *Sample Test Case:* Input: `[1,1,1,2,2,3], k=2 -> [1,2]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* HashMap and Min-Heap
+
+* **Q3 (Medium-Hard): Permutations**
+  * *Specification:* Return all possible permutations of an array of distinct integers.
+  * *Sample Test Case:* Input: `[1,2] -> [[1,2],[2,1]]`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-12] Backtracking
+
+* **Q4 (Hard): Course Schedule III**
+  * *Specification:* Given N courses with (duration, deadline), maximize courses completed.
+  * *Sample Test Case:* Input: `courses -> max`
+  * *Constraints:* N \le 10^4.
+  * *Hint:* [PAT-25] Priority Queue / Greedy with heap.
+
+
+* * *
+
+## Set 15: Timed Mock Assessment 15
+
+* **Q1 (Easy): Detect Capital**
+  * *Specification:* Verify if the capitalization of a word is correct (all caps, all lower, or title).
+  * *Sample Test Case:* Input: `"USA" -> True`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* String traversal
+
+* **Q2 (Medium): Product of Array Except Self**
+  * *Specification:* Return array such that answer[i] is product of all elements except nums[i].
+  * *Sample Test Case:* Input: `[1,2,3,4] -> [24,12,8,6]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Left/Right prefix products
+
+* **Q3 (Medium-Hard): Pacific Atlantic Water Flow**
+  * *Specification:* Find grid coordinates where water can flow to both Pacific and Atlantic oceans.
+  * *Sample Test Case:* Input: `grid -> [[0,4],[1,3]]`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-15] DFS from borders
+
+* **Q4 (Hard): Word Search II**
+  * *Specification:* Given an M×N board of characters and a list of words, find all words that can be formed by sequentially adjacent cells (horizontally or vertically). Each cell may only be used once per word.
+  * *Sample Test Case:* Input: `board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], words = ["oath","pea","eat","rain"] -> ["eat","oath"]`
+  * *Constraints:* M, N \le 12, words.length \le 3 \times 10^4, words[i].length \le 10.
+  * *Hint:* Combine Trie prefix tree with DFS backtracking for efficient multi-word search.
+
+
+* * *
+
+## Set 16: Timed Mock Assessment 16
+
+* **Q1 (Easy): Reverse Words**
+  * *Specification:* Reverse the order of words in a string.
+  * *Sample Test Case:* Input: `"the sky is blue" -> "blue is sky the"`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Split and reverse
+
+* **Q2 (Medium): Search 2D Matrix**
+  * *Specification:* Search for a value in a sorted 2D matrix in O(log(MN)).
+  * *Sample Test Case:* Input: `matrix, target=3 -> True`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Virtual 1D Binary Search
+
+* **Q3 (Medium-Hard): Accounts Merge**
+  * *Specification:* Merge user accounts that share common email addresses.
+  * *Sample Test Case:* Input: `[[John, a@a.com, b@b.com]] -> merged`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-17] Union-Find
+
+* **Q4 (Hard): Longest Increasing Path**
+  * *Specification:* Find the longest increasing path in a matrix.
+  * *Sample Test Case:* Input: `[[9,9,4],[6,6,8]] -> 4`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* DFS + Memoization
+
+
+* * *
+
+## Set 17: Timed Mock Assessment 17
+
+* **Q1 (Easy): Contains Duplicate**
+  * *Specification:* Return true if any value appears at least twice in the array.
+  * *Sample Test Case:* Input: `[1,2,3,1] -> True`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* HashSet
+
+* **Q2 (Medium): Minimum Size Subarray Sum**
+  * *Specification:* Find minimal length of subarray with sum >= target.
+  * *Sample Test Case:* Input: `target=7, [2,3,1,2,4,3] -> 2`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* [PAT-04] Dynamic Sliding Window
+
+* **Q3 (Medium-Hard): Daily Temperatures**
+  * *Specification:* Find how many days to wait for a warmer temperature.
+  * *Sample Test Case:* Input: `[73,74,75,71] -> [1,1,0,0]`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-09] Monotonic Stack
+
+* **Q4 (Hard): Sliding Window Maximum**
+  * *Specification:* Return the max sliding window of size k.
+  * *Sample Test Case:* Input: `[1,3,-1,-3,5,3], k=3 -> [3,3,5,5]`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-05] Monotonic Deque
+
+
+* * *
+
+## Set 18: Timed Mock Assessment 18
+
+* **Q1 (Easy): Remove Element**
+  * *Specification:* Remove all instances of a specific value in-place.
+  * *Sample Test Case:* Input: `[3,2,2,3], val=3 -> len=2`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-02] Mutation
+
+* **Q2 (Medium): Kth Largest Element**
+  * *Specification:* Find the kth largest element in an unsorted array.
+  * *Sample Test Case:* Input: `[3,2,1,5,6,4], k=2 -> 5`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Min-Heap or QuickSelect
+
+* **Q3 (Medium-Hard): Reorder List**
+  * *Specification:* Reorder a linked list to L0 -> Ln -> L1 -> Ln-1.
+  * *Sample Test Case:* Input: `1->2->3->4 -> 1->4->2->3`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* Middle finding + Reverse + Merge
+
+* **Q4 (Hard): Serialize N-ary Tree**
+  * *Specification:* Design an algorithm to serialize and deserialize an N-ary tree.
+  * *Sample Test Case:* Input: `tree -> string -> tree`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* DFS Preorder
+
+
+* * *
+
+## Set 19: Timed Mock Assessment 19
+
+* **Q1 (Easy): String Reversal**
+  * *Specification:* Reverse a given string preserving whitespace and capitalization constraints.
+  * *Sample Test Case:* Input: `"Hello" -> "olleH"`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-02] Two pointers
+
+* **Q2 (Medium): Matrix Spiral**
+  * *Specification:* Traverse a 2D matrix in spiral order and return the elements.
+  * *Sample Test Case:* Input: `[[1,2],[3,4]] -> [1,2,4,3]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Boundary tracking simulation
+
+* **Q3 (Medium-Hard): Sliding Window Max**
+  * *Specification:* Find the maximum string length without repeating characters.
+  * *Sample Test Case:* Input: `"abcabc" -> 3`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-04] Dynamic Sliding Window
+
+* **Q4 (Hard): 1D DP Robber**
+  * *Specification:* Find max value you can rob without triggering adjacent alarms in a circular street.
+  * *Sample Test Case:* Input: `[2,3,2] -> 3`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-19] DP State Machine
+
+
+* * *
+
+## Set 20: Timed Mock Assessment 20
+
+* **Q1 (Easy): Frequency Counting**
+  * *Specification:* Find the most frequent character in a given string. Break ties alphabetically.
+  * *Sample Test Case:* Input: `"abac" -> 'a'`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-01] Frequency Array
+
+* **Q2 (Medium): Two Pointer Target**
+  * *Specification:* Find two numbers in a sorted array that add up to target.
+  * *Sample Test Case:* Input: `[2,7,11,15], target=9 -> [0,1]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* [PAT-06] Converging Pointers
+
+* **Q3 (Medium-Hard): HashMap Multi-key**
+  * *Specification:* Find the longest subarray with equal numbers of 0s and 1s.
+  * *Sample Test Case:* Input: `[0,1,0] -> 2`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-03] Prefix Sums Hash
+
+* **Q4 (Hard): Alien Dictionary**
+  * *Specification:* Given sorted alien words, derive character ordering.
+  * *Sample Test Case:* Input: `words -> ordering`
+  * *Constraints:* words \le 300, word length \le 100.
+  * *Hint:* Topological Sort on character graph.
+
 
 * * *
 
@@ -8664,36 +9343,6 @@ Before jumping into the 20 Mock Sets, review this executive checklist of top spe
    When calculating product, array sums, or coordinate products, initialize sum/product accumulators as `long` to prevent 32-bit integer overflow before returning `(int) sum`.
 10. **Array Bounds Guarding:**  
     Always check `array != null && array.length > 0` before accessing index `0`, and ensure loops end at `i < array.length` (or `i <= array.length` when using a sentinel).
-
-* * *
-
-## Set 1: Warm-Up Fundamentals
-
-* **Q1 (Easy): Vowel Starting Words**
-  * *Specification:* Given a string of text containing words separated by single spaces, calculate the total number of words that begin with a vowel. Vowels are defined as 'a', 'e', 'i', 'o', and 'u', and the check should be case-insensitive. Ignore any punctuation, assuming the string consists only of alphabetical characters and spaces. Return the final integer count of qualifying words.
-  * *Sample Test Case:* Input: `"Apple banana Orange umbrella"` -> Output: `3`.
-  * *Constraints:* String length $1 \le L \le 10^5$.
-  * *Hint:* Use standard string splitting to isolate words, then check the first character of each token against a predefined set of vowels.
-
-* **Q2 (Medium): Rotate Rectangular Image**
-  * *Specification:* You are given an $M \times N$ 2D matrix representing an image, where each cell holds a pixel value. Your task is to rotate the image 90 degrees clockwise. Unlike square matrix rotation, this matrix is rectangular, meaning the dimensions of the resulting matrix will swap to $N \times M$. You must allocate a new matrix to hold the rotated values and populate it correctly.
-  * *Sample Test Case:* Input: `[[1, 2, 3], [4, 5, 6]]` -> Output: `[[4, 1], [5, 2], [6, 3]]`.
-  * *Constraints:* $1 \le M, N \le 1000$.
-  * *Hint:* The element at `matrix[r][c]` in the original matrix moves to `new_matrix[c][M - 1 - r]` in the rotated matrix.
-
-* **Q3 (Medium-Hard): K-Frequency Substring**
-  * *Specification:* Given a string and an integer K, find the length of the longest contiguous substring where no character appears more than K times. You must process the string and keep track of character frequencies dynamically. If the frequency of any character exceeds K, you must shrink the valid sequence until the condition is met again. Return the maximum length observed.
-  * *Sample Test Case:* Input: `s = "abaccc", K = 2` -> Output: `4` (The substring "abac").
-  * *Constraints:* String length $1 \le L \le 10^5$, $1 \le K \le L$.
-  * *Hint:* Use a sliding window approach with two pointers and a HashMap or frequency array to track character counts within the current window.
-
-* **Q4 (Hard): Largest Rectangular Area**
-  * *Specification:* You are given an array of non-negative integers representing the heights of adjacent buildings, where each building has a width of 1 unit. You need to calculate the area of the largest rectangle that can be formed within the bounds of these buildings. The rectangle must be completely contained within the histograms. Return the maximum possible area.
-  * *Sample Test Case:* Input: `[2, 1, 5, 6, 2, 3]` -> Output: `10` (Formed by heights 5 and 6).
-  * *Constraints:* Array length $1 \le N \le 10^5$, building heights $0 \le H \le 10^4$.
-  * *Hint:* Utilize a monotonic increasing stack to keep track of building indices, calculating areas when a drop in height is encountered.
-
-* * *
 
 
 \part{System Design \& Architecture at Scale}
@@ -8734,7 +9383,7 @@ A bounded context defines the boundary within which a particular domain model ap
 -   **Entities:** Objects with a distinct identity that persists over time (e.g., a `LedgerAccount` with a unique UUID).
 -   **Value Objects:** Immutable objects with no identity defined solely by their attributes (e.g., a `Money` value object containing `amount` and `currency`). Value objects have no setters; they are replaced entirely, making them thread-safe.
 
-![DDD Bounded Context Map](editions/java/chapters/14-system-architecture/visuals/ddd_contexts.png){width=85%}
+![DDD Bounded Context Map](editions/java/chapters/16-system-architecture/visuals/ddd_contexts.png){width=85%}
 
 
 ## Monolithic vs. Microservices vs. Event-Driven
@@ -8760,7 +9409,7 @@ Choosing an architectural style is a trade-off between latency, complexity, and 
 -   **Pros:** High decoupling, loose runtime dependencies, and high resilience.
 -   **Cons:** Eventual consistency. If the matching engine publishes a "TradeExecuted" event, the ledger balances might not update for several milliseconds.
 
-![Monolithic vs Microservices vs Event-Driven Architecture](editions/java/chapters/14-system-architecture/visuals/arch_styles.png){width=80%}
+![Monolithic vs Microservices vs Event-Driven Architecture](editions/java/chapters/16-system-architecture/visuals/arch_styles.png){width=80%}
 
 
 ## Scaling Out: Partitioning & Consistent Hashing
@@ -8812,7 +9461,7 @@ When designing APIs for microservices, you must handle network failures graceful
 
 The following sequence diagram maps out how an order is submitted, validated, matched inside the memory buffer, and settled inside the ledger:
 
-![ZenithTrade Order Lifecycle Sequence](editions/java/chapters/14-system-architecture/visuals/order_lifecycle.png){width=95%}
+![ZenithTrade Order Lifecycle Sequence](editions/java/chapters/16-system-architecture/visuals/order_lifecycle.png){width=95%}
 
 ### Explaining the Sequence:
 
@@ -8841,35 +9490,28 @@ The token bucket algorithm maintains a bucket that holds a maximum number of tok
 import java.util.concurrent.atomic.AtomicLong;
 
 public class TokenBucket {
-    private final long capacity;
-    private final long refillTokensPerSecond;
-    private AtomicLong tokens;
-    private AtomicLong lastRefillTimestamp;
+    private record State(long tokens, long timestampNanos) {}
+    
+    private final AtomicReference<State> state;
+    private final long maxTokens;
+    private final long refillRatePerSecond;
 
-    public TokenBucket(long capacity, long refillTokensPerSecond) {
-        this.capacity = capacity;
-        this.refillTokensPerSecond = refillTokensPerSecond;
-        this.tokens = new AtomicLong(capacity);
-        this.lastRefillTimestamp = new AtomicLong(System.currentTimeMillis());
+    public TokenBucket(long maxTokens, long refillRatePerSecond) {
+        this.maxTokens = maxTokens;
+        this.refillRatePerSecond = refillRatePerSecond;
+        this.state = new AtomicReference<>(new State(maxTokens, System.nanoTime()));
     }
 
-    public synchronized boolean allowRequest() {
-        refill();
-        if (tokens.get() > 0) {
-            tokens.decrementAndGet();
-            return true;
-        }
-        return false;
-    }
-
-    private void refill() {
-        long now = System.currentTimeMillis();
-        long elapsedTime = now - lastRefillTimestamp.get();
-        long tokensToAdd = (elapsedTime / 1000) * refillTokensPerSecond;
-        
-        if (tokensToAdd > 0) {
-            tokens.set(Math.min(capacity, tokens.get() + tokensToAdd));
-            lastRefillTimestamp.set(now);
+    public boolean allowRequest() {
+        while (true) {
+            State current = state.get();
+            long now = System.nanoTime();
+            long elapsed = now - current.timestampNanos();
+            long refilled = Math.min(maxTokens,
+                current.tokens() + elapsed * refillRatePerSecond / 1_000_000_000L);
+            if (refilled <= 0) return false;
+            State next = new State(refilled - 1, now);
+            if (state.compareAndSet(current, next)) return true;
         }
     }
 }
@@ -8972,6 +9614,40 @@ A cache stampede occurs when a highly requested cache entry expires (TTL elapses
 - **Solution 3: Probabilistic Early Expiry:** Each incoming request has a small, random probability of refreshing the cache just before it naturally expires, spreading the DB load gracefully.
 
 
+## Consumer-Scale System Design Archetypes
+
+While this book's case studies emphasize financial systems with strict consistency requirements, many interviews target consumer-scale platforms. Here are the key architectural patterns for the most common system design questions:
+
+**Design a Social Media Feed (Twitter/X Timeline)**
+- Fan-out-on-write vs fan-out-on-read trade-off
+- Celebrity problem: hybrid approach for users with >10K followers
+- Timeline cache per user (Redis sorted sets by timestamp)
+- Media storage: object store (S3) with CDN distribution
+- Key metric: Feed generation < 200ms for 99th percentile
+
+**Design a Ride-Sharing Service (Uber/Lyft)**
+- Geospatial indexing: QuadTree or Geohash for driver location
+- Driver-rider matching: nearest-neighbor search with ETA ranking
+- Real-time location updates: WebSocket with 3-second heartbeats
+- Surge pricing: demand/supply ratio per geohash cell
+- Key metric: Match latency < 5 seconds in urban areas
+
+**Design a Video Streaming Platform (Netflix/YouTube)**
+- Adaptive bitrate streaming (HLS/DASH) with multiple encodings
+- CDN edge caching: hot content pushed to 200+ PoPs globally
+- Recommendation engine: collaborative filtering + content-based hybrid
+- Upload pipeline: async transcoding queue (multiple resolutions)
+- Key metric: Start-to-play < 2 seconds, rebuffer ratio < 0.5%
+
+**Design a URL Shortener (bit.ly)**
+- Base62 encoding of auto-increment ID (or MD5 hash truncation)
+- Read-heavy (100:1 read/write ratio) → heavy caching layer
+- 301 (permanent) vs 302 (temporary) redirect trade-offs for analytics
+- Key metric: Redirect latency < 10ms at 100K QPS
+
+For each archetype, the candidate should follow the same spec-driven approach used throughout this book: define the invariants (what must ALWAYS be true), identify the data flow, and select patterns from the canonical set.
+
+
 ## System Design Mock Interview: Sharded Order Matching Engine
 
 To demonstrate how a senior candidate should navigate a system design round, here is a transcript-style mock interview.
@@ -9047,6 +9723,19 @@ message PlaceOrderRequest {
 
 *"Additionally, each matching partition runs as a Raft consensus group containing one Leader and two Followers. The Leader streams the WAL to the Followers. If the Leader crashes, the Followers elect a new Leader, which replays the log from its last committed index to rebuild the in-memory state. This guarantees no order loss and sub-second failover recovery."*
 
+
+
+## Modern Infrastructure Patterns (2024+)
+
+Modern system design interviews increasingly expect familiarity with container orchestration and cloud-native patterns:
+
+**Kubernetes Pod Autoscaling:** Horizontal Pod Autoscaler (HPA) scales replicas based on CPU/memory or custom metrics. For AuraPay's payment gateway, HPA with target CPU utilization of 70% ensures elastic scaling during Black Friday traffic spikes.
+
+**Sidecar Proxy Pattern (Envoy/Istio):** Instead of application-level circuit breakers (like Resilience4j), modern architectures delegate traffic management to sidecar proxies. Each microservice pod gets an Envoy sidecar that handles circuit breaking, retry budgets, and mutual TLS — without any application code changes.
+
+**Observability with eBPF:** Extended Berkeley Packet Filter enables kernel-level observability without code instrumentation. Tools like Cilium and Pixie capture request latencies, error rates, and network flows at the kernel level, providing distributed tracing with zero application overhead.
+
+**Serverless Trade-offs:** Lambda/Cloud Functions eliminate infrastructure management but introduce cold start latency (100ms-2s), vendor lock-in, and debugging complexity. Use for event-driven workloads (image processing, webhook handling), not for latency-critical paths.
 
 > ⭐ **STAR Moment: Bounded Context Isolation**
 > 
@@ -9174,7 +9863,7 @@ interface OutboxRepository {
 ```
 
 
-![Transactional Outbox Pattern](editions/java/chapters/15-resiliency/visuals/outbox_pattern.png){width=85%}
+![Transactional Outbox Pattern](editions/java/chapters/17-resiliency/visuals/outbox_pattern.png){width=85%}
 
 If the message broker fails during publication, the event remains unmarked in the database and will be retried in the next execution cycle. This ensures that the message is eventually delivered at least once.
 
@@ -9216,7 +9905,7 @@ In an orchestration-based saga, a central service (the orchestrator) coordinates
 -   **Pros:** Clear visibility into the state of the transaction; easier to debug and manage complex flows.
 -   **Cons:** Introduces a central point of failure; requires a state-machine engine.
 
-![Saga Orchestration vs Choreography](editions/java/chapters/15-resiliency/visuals/saga_comparison.png){width=90%}
+![Saga Orchestration vs Choreography](editions/java/chapters/17-resiliency/visuals/saga_comparison.png){width=90%}
 
 
 ## Distributed Rate Limiting
@@ -9231,7 +9920,7 @@ We use Redis to store request timestamps. A sliding window rate limiter maintain
 3.  **Count Volume:** Count active timestamps using `ZCARD`.
 4.  **Enforce Limit:** If the count exceeds the threshold, reject the request. Otherwise, allow it and set a key TTL (`EXPIRE`) to reclaim memory when the client goes inactive.
 
-![Redis Sliding Window Rate Limiting](editions/java/chapters/15-resiliency/visuals/rate_limiter.png){width=70%}
+![Redis Sliding Window Rate Limiting](editions/java/chapters/17-resiliency/visuals/rate_limiter.png){width=70%}
 
 
 ## Microservice Resiliency Patterns
@@ -9250,7 +9939,7 @@ A **Circuit Breaker** wraps remote calls. It monitors failure rates.
 -   **Open State:** When the failure rate crosses a threshold (e.g., 50% failures over 10 seconds), the circuit trips (opens). Subsequent requests fail fast immediately, preventing resource exhaustion on the caller.
 -   **Half-Open State:** After a timeout, the breaker allows a few probe requests to pass. If they succeed, it closes; if they fail, it opens again.
 
-![Circuit Breaker State Machine](editions/java/chapters/15-resiliency/visuals/circuit_breaker.png){width=85%}
+![Circuit Breaker State Machine](editions/java/chapters/17-resiliency/visuals/circuit_breaker.png){width=85%}
 
 > **Why is it called a "Circuit Breaker"?** The pattern is borrowed directly from **electrical engineering**. In your home's breaker panel, a circuit breaker trips (opens) when it detects excessive current, preventing an electrical fire. Michael Nygard popularized the software version in his 2007 book *Release It!*, mapping the electrical metaphor to distributed systems: when a downstream service is failing, "trip the breaker" to fail fast and protect the calling system from cascading overload. The three states (Closed, Open, Half-Open) mirror how a physical breaker resets after the fault clears.
 
@@ -9315,7 +10004,7 @@ RDBMS engines (PostgreSQL, MySQL, Oracle) utilize **ACID** transactions (Atomici
 -   **NoSQL (Cassandra, DynamoDB):** Trade consistency for scalability (BASE model - Basically Available, Soft state, Eventual consistency). They use LSM-Tree (Log-Structured Merge-tree) storage engines, which write sequentially to memory buffers (MemTable) before flushing to disk (SSTable), providing very high write speeds but slow random reads.
 -   **NewSQL (Spanner, CockroachDB):** Provide the scale of NoSQL with the ACID guarantees of an RDBMS using distributed consensus protocols (Raft/Paxos) and atomic clocks.
 
-![B-Tree vs LSM-Tree Storage Engines](editions/java/chapters/16-database-compliance/visuals/btree_vs_lsm.png){width=85%}
+![B-Tree vs LSM-Tree Storage Engines](editions/java/chapters/18-database-compliance/visuals/btree_vs_lsm.png){width=85%}
 
 > **Why is it called \"PostgreSQL\"?** The name traces back to the 1970s. UC Berkeley professor Michael Stonebraker created a relational database called **Ingres**. In 1986, he started a successor project called **Post-Ingres** (i.e., \"after Ingres\"), later shortened to **Postgres**. When SQL support was added in 1996, the name became **PostgreSQL** \u2014 literally \"Post-Ingres with SQL.\" The elephant logo? Chosen simply because elephants *never forget* \u2014 a fitting mascot for a database.
 
@@ -9371,7 +10060,7 @@ To minimize audit scope, you must implement **Tokenization**:
 2.  **Encryption:** Inside the Vault, PAN data is encrypted using AES-256-GCM before storage.
 3.  **Application Separation:** The main billing and ledger applications only store and reference the token. Since they never store, process, or transmit raw card data, they are kept outside the scope of PCI-DSS regulations.
 
-![PCI-DSS Tokenization Vault Architecture](editions/java/chapters/16-database-compliance/visuals/tokenization_vault.png){width=85%}
+![PCI-DSS Tokenization Vault Architecture](editions/java/chapters/18-database-compliance/visuals/tokenization_vault.png){width=85%}
 
 The following utility demonstrates the encryption standard (AES-256 in Galois/Counter Mode) required for encrypting PANs or PII:
 
@@ -9496,7 +10185,7 @@ For compliance frameworks like SOC2, you must maintain a tamper-proof audit trai
 2.  **Cryptographic Chaining:** Each audit log row should contain a cryptographic hash of the current row and the previous row's hash (similar to a blockchain ledger). If an attacker modifies a historical row, the chain break is instantly detectable during audit validation.
 3.  **Immutable Databases:** Utilize native ledger databases (like Amazon QLDB) or WORM (Write Once, Read Many) storage to mathematically guarantee data immutability.
 
-![Cryptographic Audit Trail Chain](editions/java/chapters/16-database-compliance/visuals/audit_trail.png){width=85%}
+![Cryptographic Audit Trail Chain](editions/java/chapters/18-database-compliance/visuals/audit_trail.png){width=85%}
 
 
 ## Hardening the Data Tier & Audits
@@ -9544,7 +10233,7 @@ In this chapter, we adapt the classic **STAR (Situation, Task, Action, Result)**
 
 To present your career achievements effectively, structure your behavioral narratives around technical metrics and architectural trade-offs:
 
-![The Technical STAR Framework](editions/java/chapters/17-behavioral-leadership/visuals/technical_star.png){width=90%}
+![The Technical STAR Framework](editions/java/chapters/19-behavioral-leadership/visuals/technical_star.png){width=90%}
 
 > **How to apply the framework:**
 >
@@ -9564,11 +10253,11 @@ A junior candidate focuses on the personal conflict or tries to prove they were 
 ### The Response Transcript
 > *"In my previous role at ZenithTrade, my team was tasked with scaling our matching engine to handle a 5x spike in transaction volume. A principal architect proposed rewriting our processing loops using a reactive programming model (Spring WebFlux). I had serious concerns about the operational overhead of reactive code, specifically debuggability, stack trace readability, and the steep learning curve for our support engineers.*
 >
-> *Rather than engaging in an ideological debate, I proposed a 3-day time-boxed prototyping run. I built two benchmark pipelines: one using the proposed reactive model, and another using Java 21's new Virtual Threads (Project Loom).*
+> *The first approach I proposed actually failed to gain traction because I didn't provide enough empirical data. Realizing this, I pivoted and suggested a 3-day time-boxed prototyping run. My senior engineer Sarah and I built two benchmark pipelines: one using the proposed reactive model, and another using Java 21's new Virtual Threads (Project Loom).*
 >
-> *The prototype metrics revealed that while both models handled the required 20,000 concurrent requests without thread exhaustion, the virtual threads implementation reduced CPU utilization by 15% (due to lower context-switch overhead) and preserved our existing synchronous debugging tools.*
+> *The prototype metrics revealed that while both models handled the required 20,000 concurrent requests without thread exhaustion, the virtual threads implementation reduced CPU utilization by 15% and preserved our existing synchronous debugging tools.*
 >
-> *I presented these findings in an architecture review document, outlining the maintenance costs of both approaches. The principal architect agreed with the data, and we proceeded with the Virtual Threads design. The system successfully launched, sustaining 5x load with zero stability incidents."*
+> *I presented these findings in an architecture review document. Leadership was skeptical until they saw the raw trace logs side-by-side. The principal architect agreed with the data, and we proceeded collaboratively with the Virtual Threads design. In hindsight, I would have prototyped sooner rather than debating theory. The system successfully launched, sustaining 5x load with zero stability incidents."*
 
 
 ## Mock Scenario B: Production Crisis Management (Engineering Manager Perspective)
@@ -9579,11 +10268,11 @@ A junior candidate focuses on the personal conflict or tries to prove they were 
 Focus on command composure, blameless post-mortem culture, and root-cause remediation rather than pointing fingers or downplaying the event.
 
 ### The Response Transcript
-> *"During a high-volume retail promotion on AuraPay, our ledger database connection pool saturated, causing transaction failures for approximately 15% of our users. As the Engineering Manager, I immediately initiated our incident response protocol, establishing a dedicated bridge call and assigning roles: one engineer to analyze database metrics, one to review application logs, and a product manager to handle external client communications.*
+> *"During a high-volume retail promotion on AuraPay, our ledger database connection pool saturated, causing transaction failures for approximately 15% of our users. As the Engineering Manager, I immediately initiated our incident response protocol. We hit a wall when the initial metrics didn't point to any specific query, so the team collectively decided to split up: one engineer analyzing database metrics, one reviewing application logs, and a product manager handling external client communications.*
 >
-> *We identified that our connection pool size was set to 200, which was starving the database CPU with constant thread context switching. I instructed the team to apply the HikariCP pool sizing formula, reducing the connection limit to 30. This immediately stabilized database CPU utilization from 98% down to 42%, restoring transaction flow.*
+> *We eventually identified that our connection pool size was set to 200, which was starving the database CPU with constant thread context switching. I instructed the team to apply the HikariCP pool sizing formula, reducing the connection limit to 30. This immediately stabilized database CPU utilization from 98% down to 42%, restoring transaction flow.*
 >
-> *To prevent future occurrences, I led a blameless post-mortem. We discovered that a recent release had introduced a database query inside a parallel stream pipeline, starving the common ForkJoinPool. We refactored the stream to execute asynchronously outside the transaction boundary and set up automated alert thresholds on connection pool saturation. Since then, our system uptime has remained at 99.99% under peak promotional events."*
+> *To prevent future occurrences, I led a blameless post-mortem. We discovered that a recent release had introduced a database query inside a parallel stream pipeline, starving the common ForkJoinPool. What I learned from that failure was the importance of strict code boundaries. We refactored the stream to execute asynchronously outside the transaction boundary. Since then, our system uptime has remained at 99.99% under peak promotional events."*
 
 
 ## Mock Scenario C: Balancing Technical Debt vs. Features (Director Perspective)
@@ -9594,13 +10283,33 @@ Focus on command composure, blameless post-mortem culture, and root-cause remedi
 Frame technical debt as a financial risk to the business. Show that you can speak the language of product managers and executives, translating code quality into operational velocity.
 
 ### The Response Transcript
-> *"When I joined ChiramTrust, the identity consent module was built as an anemic domain model with scattered business logic. Product management wanted to launch three new OAuth integrations within two months, but our engineering velocity was bottlenecked because every minor change to our domain models broke unrelated validation paths, requiring days of manual patching.*
+> *"When I joined ChiramTrust, the identity consent module was built as an anemic domain model with scattered business logic. Product management wanted to launch three new OAuth integrations within two months, but our engineering velocity was bottlenecked because every minor change broke unrelated validation paths.*
 >
-> *I knew that pushing features without refactoring would increase our defect rate in production. I met with the VP of Product and translated our technical debt into business risk: our current regression bug rate was 18%, and continuing at this pace would delay the integration launch by at least four weeks due to QA cycles.*
+> *I knew that pushing features without refactoring would increase our defect rate in production. I met with the VP of Product and translated our technical debt into business risk. The product manager pushed back because of the strict timeline, arguing we couldn't afford a pause.*
 >
-> *I proposed a compromise: we would dedicate 30% of our capacity in the next two sprints to refactor the consent model into an encapsulated aggregate root, establishing clean validation boundaries. The remaining 70% would be spent on the integration layouts.*
+> *I proposed a compromise: we would dedicate 30% of our capacity in the next two sprints to refactor the consent model into an encapsulated aggregate root. The remaining 70% would be spent on the integration layouts. The team collectively decided this was the most pragmatic path forward.*
 >
-> *The team successfully executed the refactor, removing setters and enclosing the invariants inside the domain objects. This refactoring reduced our regression bug rate to less than 2% and actually accelerated the development of the final two integrations, allowing us to launch the features a week ahead of the original deadline."*
+> *The team successfully executed the refactor, removing setters and enclosing the invariants inside the domain objects. In hindsight, I would have involved QA earlier in the refactor planning, but the outcome was still solid. This reduced our regression bug rate to less than 2% and actually accelerated the development of the final two integrations, allowing us to launch the features a week ahead of the original deadline."*
+
+
+### Scenario 4: Managing Underperformance
+**Interviewer:** Tell me about a time you had to manage an underperforming team member.
+
+**Candidate:** Six months into my role as engineering lead, one of our senior developers—let's call him Alex—had missed three consecutive sprint commitments. Rather than jumping to a PIP, I scheduled a private 1:1 to understand the root cause. It turned out Alex was struggling with our migration from monolith to microservices and felt embarrassed to ask for help after 8 years at the company.
+
+I paired him with our most patient architect for bi-weekly knowledge transfer sessions and adjusted his sprint load to 70% for six weeks. I was transparent with the team that Alex was ramping on the new architecture without singling him out. Within two months, Alex was not only back to full velocity but had become our go-to person for the data migration layer because he understood both the old and new systems intimately.
+
+The lesson I took away: underperformance is usually a symptom, not a character flaw. Diagnosing the root cause before applying a remedy saved us from losing an incredibly valuable engineer.
+
+
+### Scenario 5: Leading a Project Pivot
+**Interviewer:** Describe a time when you had to pivot a project mid-execution.
+
+**Candidate:** Our team had spent five weeks building a custom real-time analytics dashboard when our VP of Product shared early results from a customer advisory board: customers wanted pre-built compliance reports, not custom dashboards. My first reaction was frustration—we'd invested significant effort. But after sleeping on it, I realized the data pipeline we'd built was reusable.
+
+I called a team retrospective and was honest: "The analytics engine we built is solid, but the UI layer needs to pivot to templated reports." One engineer pushed back hard, feeling her frontend work was wasted. I acknowledged that directly and proposed we salvage her component library for the new report designer.
+
+We re-scoped to a 3-week sprint, reusing 60% of the backend. The compliance reports shipped on time and became our highest-adopted feature that quarter. What I learned: pivot announcements need to honor the work already done, not just dictate the new direction.
 
 
 ## Checklist for Video (Teams) & In-Person Technical Interviews
@@ -9628,7 +10337,7 @@ In technical interviews for lead, staff, or engineering manager roles, coding ch
 
 Many candidates respond with simple unit tests. However, a senior candidate must present a structured **Testing Pyramid** strategy, showing how they balance unit tests with Testcontainers-based integration tests, API contract tests, and continuous delivery (CI/CD) verification.
 
-![The Technical Testing Pyramid](editions/java/chapters/18-testing-cicd/visuals/testing_pyramid.png){width=80%}
+![The Technical Testing Pyramid](editions/java/chapters/20-testing-cicd/visuals/testing_pyramid.png){width=80%}
 
 
 ## The Testing Pyramid
@@ -9919,7 +10628,7 @@ If you stop there, you miss the opportunity to demonstrate depth. A senior syste
 
 In this chapter, we deep-dive into Apache Kafka's storage internals and partition routing mechanics, showing how AuraPay shards event streams to maintain ledger correctness.
 
-![Apache Kafka Topic Partitions and Consumer Groups](editions/java/chapters/19-message-brokers/visuals/kafka_internals.png){width=90%}
+![Apache Kafka Topic Partitions and Consumer Groups](editions/java/chapters/21-message-brokers/visuals/kafka_internals.png){width=90%}
 
 
 ## Apache Kafka Internals & Sharding
@@ -10091,7 +10800,7 @@ Junior candidates treat AI as magic, describing prompt calls without considering
 
 In this chapter, we outline a structured approach to AI/ML system design, focusing on the ML system design framework, vector databases, RAG architecture pipelines, agentic tool-use patterns, and prompt gateway security.
 
-![Retrieval-Augmented Generation (RAG) Architecture Pipeline](editions/java/chapters/20-aiml-llm/visuals/rag_architecture.png){width=90%}
+![Retrieval-Augmented Generation (RAG) Architecture Pipeline](editions/java/chapters/22-aiml-llm/visuals/rag_architecture.png){width=90%}
 
 
 ## The AI/ML System Design Framework
@@ -10249,6 +10958,14 @@ public class LlmGatewaySecurityFilter {
 Any incoming prompt containing injection signatures is blocked immediately before execution, protecting the LLM boundary from security drift.
 
 
+## Case Study Integration: ML in Practice
+
+**AuraPay: Real-Time Fraud Detection Pipeline**
+AuraPay processes 50,000 transactions per second. Its fraud detection pipeline combines rule-based filters (velocity checks, geo-anomaly flags) with a gradient-boosted ensemble model trained on 18 months of labeled transaction data. Feature engineering extracts 47 signals per transaction: merchant category deviation, time-of-day risk scores, device fingerprint similarity, and spending velocity z-scores. The model runs inference in < 5ms per transaction via ONNX Runtime, with a fallback to rule-only evaluation if the ML service is unavailable (graceful degradation, per Chapter 17's resiliency patterns).
+
+**ZenithTrade: LLM-Powered Compliance Checker**
+ZenithTrade's regulatory compliance team reviews 200+ SEC filings weekly. Their LLM pipeline uses Retrieval-Augmented Generation (RAG) to cross-reference new filings against the firm's internal compliance rulebook (12,000 rules). The system generates structured compliance reports highlighting potential violations, with confidence scores and source citations. Human compliance officers review flagged items — the LLM augments but never replaces human judgment on regulatory decisions.
+
 ## Cost Optimization for LLM-Powered Systems
 
 LLM inference costs scale directly with token volume. At enterprise scale, unoptimized architectures can generate six-figure monthly bills:
@@ -10348,18 +11065,22 @@ In system design interviews, refer to these rules of thumb to justify your infra
 
 To make back-of-the-envelope calculations, memorize these rough access latency scales:
 
-| Operation | Time (ns) | Time (Human Scale) |
+| Operation | Time | Time (Human Scale) |
 |---|---|---|
-| **L1 Cache reference** | 0.5 ns | 0.5 sec |
+| **L1 Cache reference** | 1 ns | 1 sec |
 | **Branch mispredict** | 5 ns | 5 sec |
-| **L2 Cache reference** | 7 ns | 7 sec |
-| **Main Memory reference (RAM)** | 100 ns | 1.6 min |
+| **L2 Cache reference** | 4 ns | 4 sec |
+| **Main Memory reference (DDR5)** | 50 ns | 50 sec |
 | **Compress 1K bytes with Zippy** | 3,000 ns | 50 min |
 | **Send 2K bytes over 1 Gbps network** | 20,000 ns | 5.5 hours |
-| **Read 1MB sequentially from SSD** | 1,000,000 ns | 11.5 days |
-| **Round trip within same datacenter** | 500,000 ns | 5.7 days |
+| **NVMe SSD random read** | 10-20 μs | ~3-6 hours |
+| **NVMe SSD sequential 1MB read** | 100-200 μs | ~1-2 days |
+| **Round trip within same datacenter** | 250-500 μs | ~3-6 days |
+| **HDD seek** | 2-5 ms | ~1-2 months |
 | **Read 1MB sequentially from Disk** | 20,000,000 ns | 7.5 months |
 | **Send packet CA to Netherlands to CA** | 150,000,000 ns | 4.7 years |
+
+These numbers reflect 2024 NVMe Gen4/5 SSDs and DDR5 RAM. Original latency numbers by Jeff Dean (2012) have been updated. Cloud VM performance may vary based on instance type and IO throttling.
 
 
 ## Day of the Interview Checklist
@@ -10440,3 +11161,13 @@ Subramanian, S. (2015). *Python Concurrency with asyncio*. Manning Publications.
 Tanenbaum, A. S., & Van Steen, M. (2007). *Distributed Systems: Principles and Paradigms*. Prentice Hall.
 
 W3C. (2022). *Decentralized Identifiers (DIDs) v1.0*. World Wide Web Consortium. https://www.w3.org/TR/did-core/
+
+Vaswani, A., Shazeer, N., Parmar, N., et al. (2017). Attention Is All You Need. *Advances in Neural Information Processing Systems*, 30. https://arxiv.org/abs/1706.03762
+
+Lewis, P., Perez, E., Piktus, A., et al. (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. *Advances in Neural Information Processing Systems*, 33. https://arxiv.org/abs/2005.11401
+
+Elhemaly, M., Gallagher, N., Tang, B., et al. (2022). Amazon DynamoDB: A Scalable, Predictably Performant, and Fully Managed NoSQL Database Service. *Proceedings of USENIX ATC '22*.
+
+Forsgren, N., Humble, J., & Kim, G. (2018). *Accelerate: The Science of Lean Software and DevOps*. IT Revolution.
+
+Burns, B., Beda, J., Hightower, K., & Evenson, L. (2022). *Kubernetes: Up and Running* (3rd ed.). O'Reilly.

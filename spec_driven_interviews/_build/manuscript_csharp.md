@@ -1,6 +1,6 @@
 
 
-\part{The Spec-Driven Paradigm for Technical Interviews}
+\part{The Spec-Driven Paradigm}
 
 
 # Prologue: The Syntax Trap {.unnumbered}
@@ -15,6 +15,24 @@ You sit in front of a blank IDE, the timer ticking down. You have seventy minute
 Without thinking, you begin typing. You declare variables, nesting loops to handle immediate edge cases. Ten minutes in, you run the initial test suite. Out of twenty test cases, only twelve pass. You patch a conditional check here, mutate a state variable there, and run the tests again. Now, fourteen pass, but two previously passing tests fail. You are caught in the "syntax trap"—the iterative, guessing-based cycle of code modification that degrades design quality in pursuit of green checkboxes.
 
 This is where many experienced software developers, tech leads, and engineering managers fail. They treat coding assessments as a test of speed, syntax recall, and raw typing. They forget that the primary role of a senior engineer is not to type quickly, but to design systems that are secure, reliable, and maintainable.
+
+
+## The Veteran's Paradox: Returning to the IDE After Decades in Leadership
+
+For professionals who have spent a decade or two in technical leadership, enterprise architecture, or engineering management, returning to live coding assessments represents a unique mental hurdle. You have architected high-throughput financial ledgers, led cross-functional engineering organizations, and managed multi-million-dollar technology budgets. Yet, when faced with a 70-minute timer and a blank editor window, a frustrating cognitive block occurs: your mind goes completely blank. 
+
+You read an algorithmic problem, and conceptually, you understand what it asks. You know it requires a sliding window or a depth-first traversal. But when you place your hands on the keyboard to implement it, the syntax evaporates, the boundary conditions tangle, and the code fails to compile. 
+
+This happens because **algorithmic coding is like mathematics**. You cannot learn calculus or linear algebra by passively reading a textbook or watching someone else solve problems on a whiteboard. Reading a solution creates a deceptive illusion of competence—you nod along, thinking, *"Yes, that makes sense."* But when you pick up the pencil (or open the IDE) to solve a problem from scratch, you realize you have not internalised the mechanics.
+
+Furthermore, attempting to memorize hundreds of specific algorithm solutions is a dangerous trap. Under the stress of a high-stakes assessment, memorized snippets are the first thing to dissolve in your memory. The human brain cannot reliably retrieve hundreds of hyper-specific code blocks under time pressure.
+
+The only effective, sustainable path back to coding mastery is simple:
+1. **Understand the core mathematical formulas and invariant patterns** (e.g., the 3-step Sliding Window, the Monotonic Stack sentinel waiting room, the BFS level-by-level queue snapshot).
+2. **Analyze the problem structure** to map the requirements to the correct formula rather than guessing.
+3. **Practice by doing.** Write out the code independently for two or three exemplar problems of each pattern until the formula becomes pure muscle memory.
+
+When you master the underlying formulas, you no longer need to remember three hundred distinct solutions. You simply recognize the pattern, apply the appropriate code skeleton, and derive the solution cleanly on demand—regardless of how many years you have been away from hands-on programming.
 
 
 ## The Cost of Raw Coding
@@ -37,66 +55,74 @@ An invariant is a condition that must always remain true during the execution of
 
 ## What This Book Covers
 
-This manual is organized into four parts spanning sixteen chapters, each targeting a specific dimension of the modern senior-level technical interview:
+This manual is organized into four comprehensive parts spanning twenty-five chapters (Chapters 0 through 24), each targeting a specific dimension of modern senior-level technical interviews and enterprise architecture:
 
 ### Part I: The Spec-Driven Paradigm for Technical Interviews
 
 - **Chapter 1 — The Invariant-First Strategy:** How to define pre-conditions, post-conditions, and loop invariants before writing any code. Includes a step-by-step mathematical proof of Binary Search correctness.
-- **Chapter 2 — The Three System-Scale Case Studies:** Introduction to the three enterprise-grade systems (AuraPay, ZenithTrade, ChiramTrust) used as reference architectures throughout the book.
+- **Chapter 2 — The Art of Problem Decomposition:** The 5-Step Decomposition Framework for breaking any novel problem into solvable components mapped to known patterns.
+- **Chapter 3 — The Three System-Scale Case Studies:** Introduction to the three enterprise-grade reference architectures (AuraPay, ZenithTrade, ChiramTrust) used throughout the book.
 
 ### Part II: Code Design and Craftsmanship
 
-- **Chapter 3 — Principles of Object-Oriented Design:** Self-validating domain entities, rich vs. anemic models, and refactoring walkthroughs.
-- **Chapter 4 — SOLID Principles: Enforcing Boundaries:** Interface and dependency boundaries to keep systems modular and decoupled, with a violation detector cheat sheet.
-- **Chapter 5 — Modern Functional Programming and Stream APIs:** Clean, declarative data pipelines that minimize side effects, with imperative-vs-stream comparisons and reactive stream explanations.
-- **Chapter 6 — Design Patterns in Enterprise Frameworks:** GoF patterns (Builder, Singleton, Observer, State, Strategy), data access patterns (Repository, Unit of Work, DTO, Active Record vs. Data Mapper), and how frameworks like Spring and Hibernate implement them natively.
+- **Chapter 4 — Principles of Object-Oriented Design:** Self-validating domain entities, rich vs. anemic models, and refactoring walkthroughs.
+- **Chapter 5 — SOLID Principles: Enforcing Boundaries:** Interface and dependency boundaries to keep systems modular and decoupled, with a violation detector cheat sheet.
+- **Chapter 6 — Modern Functional Programming and Stream APIs:** Clean, declarative data pipelines that minimize side effects, with imperative-vs-stream comparisons and reactive stream explanations.
+- **Chapter 7 — Design Patterns in Enterprise Frameworks:** GoF patterns (Builder, Singleton, Observer, State, Strategy), data access patterns (Repository, Unit of Work, DTO, Active Record vs. Data Mapper), and how enterprise frameworks implement them natively.
 
-### Part III: Code Performance and Data Structures
+### Part III: Code Performance & Algorithmic Mastery
 
-- **Chapter 7 — Designing for Performance and Concurrency:** Virtual threads, optimistic vs. pessimistic locking, connection pool sizing, caching strategies, and cache invalidation race conditions.
-- **Chapter 8 — Core Algorithms & Assessment Tactical Guide:** The 70-minute GCA time allocation blueprint, pattern recognition flowchart, eight fully worked problems in three languages, and two full timed mock tests.
+- **Chapter 8 — Designing for Performance and Concurrency:** Virtual threads, platform threads, optimistic vs. pessimistic locking, connection pool sizing, caching strategies, and cache invalidation race conditions.
+- **Chapter 9 — Core Algorithms & Assessment Tactical Blueprint:** The Assessment Time Allocation Blueprint, pattern recognition decision tree, diagnostic triggers, and canonical code skeletons. Includes an Assessment Format Variants table covering monotonic difficulty, equal-weight peers, single deep problems, take-home projects, and live pair programming.
+- **Chapter 10 — Pattern Mastery: Implementation Speed, In-Place Transformations, and String Processing:** Read/Write pointer patterns, character frequency array hashing (`int[26]` / `int[128]`), in-place mutations, and fast string building.
+- **Chapter 11 — Pattern Mastery: 2D Matrix Traversal, Grid Simulations, and State Machines:** Matrix coordinate geometry, 90° clockwise rotation formulas, spiral traversals, 2D prefix sums, and flood fill simulation.
+- **Chapter 12 — Pattern Mastery: Data Structures, HashMaps, and Sliding Windows:** Complex simulation, HashMap state management, two-pointer sliding window, and frequency tracking.
+- **Chapter 13 — Pattern Mastery: Algorithmic Optimization, Monotonic Structures, and Dynamic Programming:** 1-Pass Monotonic Stack (sentinels and width invariants), parametric binary search, 1D/2D DP state compression, and shortest path graph algorithms.
+- **Chapter 14 — Mastering Problem Decomposition: The Capstone:** Full deep-dive synthesis chapter with the Problem Analysis Canvas, 15+ decomposition walkthroughs across three tiers, expanded Pattern Recognition Decision Tree, and independent practice exercises.
+- **Chapter 15 — 20 Timed Algorithmic Mock Assessment Sets & Survival Guide:** 80 full mock problems across 20 timed sets, complete with hints and the Exam Day 10-Point Speed & Debugging Survival Guide.
 
-### Part IV: System Design & Architecture at Scale
+### Part IV: System Design, Architecture & Enterprise Leadership
 
-- **Chapter 9 — System Architecture and Design Fundamentals:** DDD bounded contexts, CQRS, CAP theorem trade-offs, consistent hashing, API idempotency, and a full sharded order matching engine mock interview transcript.
-- **Chapter 10 — Enterprise Integration and Resiliency:** Transactional Outbox, Saga orchestration vs. choreography, event sourcing, Redis sliding window rate limiting, Circuit Breaker state machines, and OpenTelemetry distributed tracing.
-- **Chapter 11 — Database Design, Compliance, and Security:** B-Tree vs. LSM-Tree storage engines, PCI-DSS tokenization vaults, SOC2 cryptographic audit trails, GDPR Crypto-Shredding, and sharding strategies.
-- **Chapter 12 — Behavioral and Technical Leadership Interviews:** The Technical STAR Framework, video/Teams call checklists, and three full mock responses for senior leadership scenarios.
-- **Chapter 13 — Testing and CI/CD Strategies:** The testing pyramid (unit, integration via Testcontainers, contract via Pact), and automated CI/CD release policies.
-- **Chapter 14 — Distributed Event Streaming and Message Brokers:** Apache Kafka internals, partition-key sharding for in-order delivery, consumer group rebalancing, and Exactly-Once Semantics (EOS).
-- **Chapter 15 — AI/ML System Design and LLM Integration:** Vector databases (HNSW vs. IVF indexes), Retrieval-Augmented Generation (RAG) pipelines, semantic caching, and prompt injection security filters.
-- **Chapter 16 — Appendix and Quick-Reference Cheat Sheets:** Big-O complexity tables, edge-case checklists, system design latency numbers, and day-of-interview preparation guides.
+- **Chapter 16 — System Architecture and Design Fundamentals:** DDD bounded contexts, CQRS, CAP theorem trade-offs, consistent hashing, API idempotency, and a full sharded order matching engine mock interview transcript.
+- **Chapter 17 — Enterprise Integration and Resiliency:** Transactional Outbox, Saga orchestration vs. choreography, event sourcing, Redis sliding window rate limiting, Circuit Breaker state machines, and OpenTelemetry distributed tracing.
+- **Chapter 18 — Database Design, Compliance, and Security:** B-Tree vs. LSM-Tree storage engines, PCI-DSS tokenization vaults, SOC2 cryptographic audit trails, GDPR Crypto-Shredding, and sharding strategies.
+- **Chapter 19 — Behavioral and Technical Leadership Interviews:** The Technical STAR Framework, video/Teams call checklists, and three full mock responses for senior leadership scenarios.
+- **Chapter 20 — Testing and CI/CD Strategies:** The testing pyramid (unit, integration via Testcontainers, contract via Pact), and automated CI/CD release policies.
+- **Chapter 21 — Distributed Event Streaming and Message Brokers:** Apache Kafka internals, partition-key sharding for in-order delivery, consumer group rebalancing, and Exactly-Once Semantics (EOS).
+- **Chapter 22 — AI/ML System Design and LLM Integration:** Vector databases (HNSW vs. IVF indexes), Retrieval-Augmented Generation (RAG) pipelines, semantic caching, and prompt injection security filters.
+- **Chapter 23 — Appendix and Quick-Reference Cheat Sheets:** Big-O complexity tables, edge-case checklists, system design latency numbers, and day-of-interview preparation guides.
+- **Chapter 24 — Works Cited and Academic References:** Primary scholarly and technical citations supporting all architectural principles and benchmarking claims.
 
 
 ## How to Read This Book: Persona Profiles
 
 To maximize the value of this manual, select the path that aligns with your career stage and current interview goals:
 
-### Persona A: The Mid-to-Senior Engineer (Target: Coding Assessments and GCA)
+### Persona A: The Mid-to-Senior Engineer (Target: Coding Assessments)
 
-- **Goal:** Clear the 70-minute GCA speed run, optimize runtime performance, and handle live coding screens without panic.
+- **Goal:** Clear timed coding assessments, optimize runtime performance, and handle live coding screens without panic.
 - **Recommended Reading Path:**
-  1. Read **Chapter 1 (Invariant-First Strategy)** to learn how to prove loops mathematically.
-  2. Skip to **Part III (Chapters 7 & 8)**. Focus heavily on the GCA Time Allocation Blueprint, the 8 Worked Problems, and run the Mock Tests.
-  3. Study **Part II (Chapters 3 & 5)** to learn functional stream optimizations and rich data structures.
-  4. Review **Chapter 16 (Appendix)** for the Big-O cheat sheet and edge-case checklist before your assessment.
+  1. Read **Chapter 1 (Invariant-First Strategy)** and **Chapter 2 (Problem Decomposition)** to learn the foundational analysis discipline.
+  2. Skip to **Part III (Chapters 8 through 15)**. Master the Assessment Tactical Blueprint in Chapter 9, the Pattern Mastery deep dives in Chapters 10–13, the Capstone synthesis in Chapter 14, and complete the 20 Mock Sets in Chapter 15.
+  3. Study **Part II (Chapters 4 & 6)** to learn functional stream optimizations and rich data structures.
+  4. Review **Chapter 23 (Appendix)** for the Big-O cheat sheet and edge-case checklist before your assessment.
 
 ### Persona B: The Lead / Staff Engineer (Target: System Design & Craftsmanship)
 
 - **Goal:** Design clean microservices, establish domain boundaries, and explain complex distributed system tradeoffs to principal engineers.
 - **Recommended Reading Path:**
-  1. Read **Part I (Chapters 1 & 2)** to align on the core case studies.
-  2. Master **Part II (Chapters 3–6)** on rich aggregate boundaries, strict SOLID inversion, and enterprise design patterns.
-  3. Deep-dive into **Part IV (Chapters 9–11 & 13–15)**. Study the sharded order matching engine mock script, distributed Saga implementations, Kafka event streaming, and security compliance (PCI-DSS, SOC2, GDPR).
+  1. Read **Part I (Chapters 1–3)** to align on the invariant-first strategy, problem decomposition, and case studies.
+  2. Master **Part II (Chapters 4–7)** on rich aggregate boundaries, strict SOLID inversion, and enterprise design patterns.
+  3. Deep-dive into **Part IV (Chapters 16–18 & 20–22)**. Study the sharded order matching engine mock script, distributed Saga implementations, Kafka event streaming, and security compliance (PCI-DSS, SOC2, GDPR).
 
 ### Persona C: The Engineering Manager / Director (Target: Architectural Strategy & Leadership)
 
 - **Goal:** Evaluate team engineering standards, design resilient systems, and ensure operational compliance under regulatory frameworks.
 - **Recommended Reading Path:**
-  1. Read **Chapter 2 (Case Studies)** for enterprise system context.
-  2. Study **Chapter 4 (SOLID boundaries)** to establish code quality metrics for your team.
-  3. Focus on **Part IV (Chapters 9–11)**. Master the CAP theorem tradeoffs, disaster recovery models, rate-limiting patterns, and GDPR Crypto-Shredding architectures.
-  4. Read **Chapter 12 (Behavioral & Technical Leadership)** to prepare for the behavioral round with Technical STAR frameworks and full mock responses.
+  1. Read **Chapter 3 (Case Studies)** for enterprise system context.
+  2. Study **Chapter 5 (SOLID boundaries)** to establish code quality metrics for your team.
+  3. Focus on **Part IV (Chapters 16–18)**. Master the CAP theorem tradeoffs, disaster recovery models, rate-limiting patterns, and GDPR Crypto-Shredding architectures.
+  4. Read **Chapter 19 (Behavioral & Technical Leadership)** to prepare for the behavioral round with Technical STAR frameworks and full mock responses.
 
 
 > ⭐ **STAR Moment: The Invariant Principle**
@@ -106,65 +132,85 @@ To maximize the value of this manual, select the path that aligns with your care
 
 ## How to Use This Book
 
-This manual is designed for a dual audience. For individual engineers preparing for grueling CodeSignal General Coding Assessments (GCA), it provides a concrete, pattern-based approach to conquer algorithmic challenges under severe time constraints. For engineering leads and managers returning to coding assessments after years of management, it serves as a tactical refresher to translate high-level architectural knowledge back into executable, robust code. Treat this not just as a book, but as a systematic training plan.
+This manual is designed for a dual audience. For individual engineers preparing for standardized online coding assessments (such as CodeSignal, HackerRank, Codility, or employer-proprietary platforms), it provides a concrete, pattern-based approach to conquer algorithmic challenges under severe time constraints. For engineering leads and managers returning to coding assessments after years of management, it serves as a tactical refresher to translate high-level architectural knowledge back into executable, robust code. Treat this not just as a book, but as a systematic training plan.
 
-## The 14-Day Crash Course (2 Weeks)
+## The 14-Day Algorithmic Sprint (Persona A)
 
-For experienced engineers who need results fast. Follow this intensive schedule to rebuild your coding muscle memory quickly.
+For mid-to-senior engineers targeting algorithmic assessments. Follow this intensive schedule to rebuild coding muscle memory.
 
 | Day | Focus Area | Chapters | Practice Target | Time |
 |---|---|---|---|---|
-| 1 | Foundations & Mindset | Prologue, Ch 1-2 (Invariants & Case Studies) | Read and internalize the Invariant-First strategy | 3-4 hrs |
-| 2 | OOP & SOLID Refresher | Ch 3-4 | Review patterns, do 5 practice problems mentally | 2-3 hrs |
-| 3 | Streams & Design Patterns | Ch 5-6 | Write 3 stream pipelines from memory | 2-3 hrs |
-| 4 | Concurrency & Data Structures | Ch 7-8 | Memorize Big-O table, implement 5 core algorithms | 3-4 hrs |
-| 5 | Q1 Mastery (Easy) | Ch 9 | Solve 15 Q1 problems under 8-min timer each | 4-5 hrs |
-| 6 | Q2 Mastery (Medium) | Ch 10 | Solve 10 Q2 matrix/grid problems under 15-min timer | 4-5 hrs |
-| 7 | REST DAY | Review weak areas from Days 5-6 | Light review only | 1-2 hrs |
-| 8 | Q3 Mastery (Medium-Hard) | Ch 11 | Solve 10 Q3 sliding window/hashmap problems | 4-5 hrs |
-| 9 | Q4 Mastery (Hard) | Ch 12 | Solve 8 Q4 DP/graph problems | 4-5 hrs |
-| 10 | Mock Exam Day 1 | Ch 13 Sets 1-5 | Full 70-min timed sessions (2 sets) | 4 hrs |
-| 11 | Mock Exam Day 2 | Ch 13 Sets 6-10 | Full 70-min timed sessions (2 sets) | 4 hrs |
-| 12 | System Design | Ch 14-16 | Practice one mock system design interview | 3-4 hrs |
-| 13 | Behavioral + AI/ML | Ch 17-20 | Write 5 STAR stories, review AI/ML concepts | 3-4 hrs |
-| 14 | Final Review & Mock | Ch 13 Sets 11-15, Appendix | Full mock exam + review weak patterns | 4-5 hrs |
+| 1 | Foundations | Prologue, Ch 1-2 | Read Invariant-First strategy & Decomposition | 3-4 hrs |
+| 2 | Core Algorithms | Ch 8-9 | Memorize Big-O table, implement 5 core algorithms | 3-4 hrs |
+| 3 | Easy-Tier Patterns | Ch 10 | Solve 15 implementation problems under 8-min timer | 4-5 hrs |
+| 4 | Medium-Tier Grid | Ch 11 | Solve 10 matrix/grid problems under 15-min timer | 4-5 hrs |
+| 5 | Medium-Tier Window | Ch 12 | Solve 10 sliding window/hashmap problems | 4-5 hrs |
+| 6 | REST DAY | Review weak areas | Light review only | 1-2 hrs |
+| 7 | Hard-Tier Patterns | Ch 13 | Solve 8 DP/graph problems | 4-5 hrs |
+| 8 | Decomposition Capstone | Ch 14 | Capstone walkthroughs | 3-4 hrs |
+| 9 | Mock Exam Day 1 | Ch 15 Sets 1-4 | Full timed sessions (4 sets) | 4 hrs |
+| 10 | Mock Exam Day 2 | Ch 15 Sets 5-8 | Full timed sessions (4 sets) | 4 hrs |
+| 11 | Mock Exam Day 3 | Ch 15 Sets 9-12 | Full timed sessions (4 sets) | 4 hrs |
+| 12 | Mock Exam Day 4 | Ch 15 Sets 13-16 | Full timed sessions (4 sets) | 4 hrs |
+| 13 | Mock Exam Day 5 | Ch 15 Sets 17-20 | Full timed sessions (4 sets) | 4 hrs |
+| 14 | Final Review & Prep | Ch 23 Appendix | Final review and preparation | 4-5 hrs |
+
+## The 14-Day System Design Sprint (Persona B)
+
+For lead and staff engineers focused on system design and architecture.
+
+| Day | Focus Area | Chapters | Practice Target | Time |
+|---|---|---|---|---|
+| 1 | Foundations & Case Studies | Prologue, Ch 1-3 | Internalize case studies and design boundaries | 3-4 hrs |
+| 2 | OOP & SOLID | Ch 4-5 | Domain boundaries and strict SOLID inversion | 3-4 hrs |
+| 3 | Functional Streams | Ch 6 | Imperative-vs-stream optimizations | 2-3 hrs |
+| 4 | Design Patterns | Ch 7 | Enterprise framework pattern recognition | 3-4 hrs |
+| 5 | Architecture Fundamentals | Ch 16 | System boundaries and API design | 4-5 hrs |
+| 6 | REST DAY | Review weak areas | Light review only | 1-2 hrs |
+| 7 | Integration & Resiliency | Ch 17 | Outbox, Saga, rate limiting, distributed tracing | 4-5 hrs |
+| 8 | Database Design | Ch 18 | Storage engines, sharding, compliance | 4-5 hrs |
+| 9 | Leadership & Testing | Ch 19-20 | STAR frameworks and CI/CD policies | 4 hrs |
+| 10 | Event Streaming | Ch 21 | Kafka internals, exactly-once semantics | 4 hrs |
+| 11 | AI/ML Design | Ch 22 | Vector DBs and RAG pipelines | 4 hrs |
+| 12 | Mock Interview Prep 1 | Ch 16-18 Review | Practice mock design sessions | 4 hrs |
+| 13 | Mock Interview Prep 2 | Ch 19-22 Review | Practice mock design sessions | 4 hrs |
+| 14 | Final Review | Ch 23 Appendix | Final exam preparation | 4 hrs |
 
 - **Start each day** by reviewing the terminology section of the relevant chapter.
-- **Time yourself on EVERY problem** — accuracy without speed is not enough for modern assessments.
 - **Keep a 'mistake log'** to track patterns you consistently get wrong.
 - **On rest day**, revisit your mistake log, not new material.
 
-## The 28-Day Deep Dive (4 Weeks)
+## The 28-Day Comprehensive Plan (All Personas)
 
-For candidates targeting Staff/Principal roles or those wanting thorough mastery, this comprehensive plan builds enduring architectural and algorithmic skills.
+For candidates targeting roles requiring thorough mastery of both coding and system design.
 
-**Week 1: Foundations & Design Thinking (Chapters 1-8)**
+**Week 1: Foundations & Design Thinking (Personas A, B, C)**
 
-- Day 1-2: Invariants, Case Studies, OOP
-- Day 3-4: SOLID, Streams, Design Patterns
-- Day 5-6: Concurrency, Core Algorithms
+- Day 1-2: Invariants, Decomposition, Case Studies, OOP (Ch 1-4)
+- Day 3-4: SOLID, Streams, Design Patterns (Ch 5-7)
+- Day 5-6: Concurrency, Core Algorithms Blueprint (Ch 8-9)
 - Day 7: Review + implement 10 algorithms from memory
 
-**Week 2: Algorithm Mastery (Chapters 9-12)**
+**Week 2: Algorithm Mastery (Persona A Focus)**
 
-- Day 8-9: Q1 patterns — solve ALL 32 exemplar problems
-- Day 10-11: Q2 patterns — solve ALL 30 exemplar problems
-- Day 12-13: Q3 patterns — solve ALL 30 exemplar problems
-- Day 14: Q4 patterns — start with 15 problems
+- Day 8-9: Easy-Tier patterns (Ch 10) — solve ALL exemplar problems
+- Day 10-11: Medium-Tier patterns (Ch 11) — solve ALL exemplar problems
+- Day 12-13: Medium-Hard patterns (Ch 12) — solve ALL exemplar problems
+- Day 14: Hard-Tier patterns (Ch 13) — start with 15 problems
 
-**Week 3: Advanced Algorithms + System Design (Chapters 12-16)**
+**Week 3: Advanced Algorithms + System Design (Personas A, B, C)**
 
-- Day 15-16: Finish Q4 patterns, solve remaining 15 problems
-- Day 17-18: Mock exams (Sets 1-10, two per day)
-- Day 19-20: System Architecture, Resiliency, Database Design
+- Day 15-16: Finish Hard-Tier patterns (Ch 13) + Capstone Decomposition (Ch 14) (Persona A)
+- Day 17-18: Mock assessments (Ch 15 Sets 1-10, two per day) (Persona A)
+- Day 19-20: System Architecture (Ch 16), Resiliency (Ch 17), Database Design (Ch 18) (Persona B, C)
 - Day 21: Review + identify weakest algorithm pattern
 
-**Week 4: Polish & Exam Readiness (Chapters 17-22 + Review)**
+**Week 4: Polish & Exam Readiness (Personas B, C Focus)**
 
-- Day 22-23: Behavioral Leadership + Testing/CI-CD
-- Day 24-25: Message Brokers, AI/ML + final mock exams (Sets 11-20)
+- Day 22-23: Behavioral Leadership (Ch 19) + Testing/CI-CD (Ch 20)
+- Day 24-25: Message Brokers (Ch 21), AI/ML (Ch 22) + final mock assessments (Ch 15 Sets 11-20)
 - Day 26-27: Full review — re-solve all problems you got wrong
-- Day 28: Final full mock exam under strict conditions + rest
+- Day 28: Final full mock assessment under strict conditions + rest
 
 ## Pattern Recognition Quick Reference
 
@@ -196,52 +242,7 @@ This approach is fragile. In the pressure of a live interview or a timed online 
 This is the "hack-and-test" methodology, and it signals to the interviewer that you lack structural discipline. A senior engineer or manager must demonstrate a systematic, predictable approach to code correctness. The solution is the **Invariant-First Strategy**.
 
 
-## Escaping the Syntax Trap: A Quick-Reference Guide
 
-In high-stress technical interviews, a common failure point for senior engineers and engineering managers who do not write code every day is getting tripped up by basic language syntax or type conversions. Spending five minutes debugging why a string comparison isn't working or how to convert an integer count into characters (chars) can derail an interview, even if your architectural approach is correct.
-
-Below is a quick-reference guide for common type conversion and syntax pitfalls to help you stay focused on your design boundaries.
-
-### Number to Character Conversions
-*   **Char Digit to Int:** 
-    *   *Incorrect:* `(int) '5'` returns `53` (its ASCII value).
-    *   *Correct:* `'5' - '0'` returns `5`. Always subtract the character `'0'` offset.
-*   **Int Digit to Char:** 
-    *   *Incorrect:* `(char) 5` returns a non-printable control character.
-    *   *Correct:* `(char) (5 + '0')` returns the character `'5'`.
-*   **Int to String:**
-    *   *Correct:* `String.valueOf(number)` or `number + ""` (using empty string concatenation).
-
-### Length, Size, and Count
-The syntax for checking size varies across data types, and mixing them up is the most frequent syntax error under stress:
-
-*   **Array:** `arr.length` (Property — no parentheses)
-*   **String:** `str.length()` (Method — with parentheses)
-*   **Collections (List, Set, Map):** `list.size()` (Method — with parentheses)
-
-### String Manipulation Pitfalls
-*   **Immutability:** Strings in Java are immutable. You cannot modify a character in-place: `str.charAt(i) = 'c'` is a compilation error.
-    *   *Remedy:* Convert the string to a `StringBuilder` or a character array first:
-        ```java
-        StringBuilder sb = new StringBuilder(str);
-        sb.setCharAt(i, 'c');
-        String result = sb.toString();
-        ```
-*   **Comparison:** 
-    *   *Incorrect:* `str1 == str2` (compares object memory references).
-    *   *Correct:* `str1.equals(str2)` (compares character values).
-
-### Integer Division & Modulo
-*   **Integer Division:** 
-    *   *Incorrect:* `5 / 2` evaluates to `2` (truncates decimals).
-    *   *Correct:* Cast at least one operand: `(double) 5 / 2` or `5.0 / 2` to yield `2.5`.
-*   **Negative Modulo:** 
-    *   *Incorrect:* `-5 % 2` evaluates to `-1` in Java.
-    *   *Correct:* To guarantee a positive wrap-around index: `(val % N + N) % N`.
-
-### PriorityQueue (Heaps) Comparators
-*   *Incorrect:* `new PriorityQueue<>((a, b) -> a.val - b.val)` is susceptible to integer underflow/overflow if values can be negative.
-*   *Correct:* Use the safe comparison method: `new PriorityQueue<>((a, b) -> Integer.compare(a.val, b.val))`.
 
 
 ## Defining the Invariant Wall
@@ -375,10 +376,114 @@ public int binarySearch(int[] nums, int target) {
 
 By applying this invariant-first approach, we eliminate all cognitive overhead. We do not need to "dry-run" multiple edge cases or guess boundary updates. The math guarantees the correctness of our implementation.
 
+### Invariant Proof #2: The Sliding Window Maximum
+
+Prove the invariant for maintaining a monotonic deque that tracks the maximum element in a sliding window of size K:
+
+**Invariant:** At every step, the deque contains indices in strictly decreasing order of their corresponding values, and all indices are within the current window [i-K+1, i].
+
+**Initialization:** The deque is empty before processing begins. Vacuously true.
+**Maintenance:** When processing element A[i]:
+1. Remove all indices from the back where A[deque.peekLast()] ≤ A[i] (maintains decreasing order)
+2. Remove the front if deque.peekFirst() < i-K+1 (maintains window bounds)
+3. Add i to the back
+
+After these operations, deque.peekFirst() always holds the index of the maximum element in the current window.
+
+**Termination:** After processing all N elements, we have extracted N-K+1 window maximums, each in O(1) amortized time.
+
+This proves the Monotonic Deque pattern [PAT-20] achieves O(N) total time for sliding window maximum.
+
 
 > ⭐ **STAR Moment: The $O(1)$ Failure Principle**
 > 
 > A robust system fails fast and fails explicitly. The first lines of any method should always be pre-condition validation. If an input is invalid, fail immediately. Do not allow execution to proceed with corrupted or unexpected state, as this leads to hard-to-debug failures deep inside your call stack. In an interview, writing explicit input validations shows that you design for production safety, not just passing test suites.
+
+
+# The Art of Problem Decomposition
+
+> *"The ability to decompose a novel problem into solvable components is the single most valuable skill a software engineer can demonstrate under assessment conditions."*
+
+## Why Decomposition Matters
+
+In the high-stakes environment of technical assessments, the most common trap engineers fall into is the pursuit of memorization. Memorizing solutions to hundreds of common interview questions might give a false sense of security, but it invariably fails when confronted with novel, unique, or subtly modified problems. The real skill—the one that distinguishes top-tier candidates—is not recall, but the ability to break any complex, unfamiliar problem into a series of recognizable, solvable sub-problems that map directly to known patterns.
+
+This principle applies universally across all assessment formats. Whether you are facing a monotonically increasing difficulty curve, equal-weight peer questions, a single deep architectural problem, or a live whiteboard interview, decomposition remains your primary analytical tool. When you encounter a question you have never seen before, your memorized catalog of answers is useless. However, your ability to dismantle that question into its atomic components is exactly what the assessment is designed to measure.
+
+Mastering problem decomposition transitions your mindset from "Have I seen this before?" to "What are the underlying structures of this problem?" It transforms an insurmountable challenge into a structured exercise in pattern recognition and application.
+
+## The 5-Step Decomposition Framework
+
+To systematically dismantle any technical problem, you must adhere to a rigorous analytical process. The following 5-step framework is designed for senior-level decomposition, preventing premature coding and ensuring a comprehensive understanding of the problem domain.
+
+### Step 1: Constraint Analysis
+
+Extract time and space bounds directly from the constraints to narrow the algorithm class before you even read the problem narrative. For example, if $N \le 10^5$, an $O(N^2)$ brute-force solution will fail immediately due to time limits. You are mathematically required to find an $O(N \log N)$ or $O(N)$ solution. If $N \le 20$, an $O(2^N)$ backtracking approach is expected. The constraints are not trivia; they are the architectural specifications of your solution.
+
+### Step 2: Data Flow Mapping
+
+Trace the input-to-output transformations to identify the structural nature of the problem. Is this a mapping operation (1:1 transformation)? A reduction operation (N:1 aggregation)? Or a search operation (finding a needle in a haystack)? By mapping the data flow, you constrain the types of data structures that can be used.
+
+### Step 3: Invariant Identification
+
+Define what property must remain mathematically true across iterations. This is the core thesis of the Invariant-First strategy. Whether you are maintaining a sorted boundary in a two-pointer approach, or a monotonic property in a stack, identifying the invariant reduces the algorithm to a simple proof of correctness rather than a guessing game.
+
+### Step 4: Pattern Matching
+
+With constraints, data flow, and invariants defined, map these characteristics to the 24 canonical patterns (Chapter 9). You are no longer inventing an algorithm; you are selecting the appropriate structural blueprint that satisfies the defined bounds.
+
+### Step 5: Edge Case Enumeration
+
+Systematically generate boundary inputs based on the constraints. What happens at $N=0$ or $N=1$? What if the input array contains negative values or duplicates? Enumerating edge cases before implementation guarantees your invariant holds at the boundaries.
+
+## A Quick Decomposition Example
+
+Let us walk through a concrete example using the framework. Consider this problem: 
+
+**"Given an array of non-negative integers representing the heights of adjacent buildings of unit width, compute how much rainwater can be trapped between the buildings after a storm."**
+
+
+**Step 1: Constraint Analysis**
+Assume $N \le 10^5$. This instantly rules out any $O(N^2)$ solution. We must solve this in $O(N)$ or $O(N \log N)$ time.
+
+**Step 2: Data Flow Mapping**
+Input: Array of $N$ heights. Output: A single integer (total water). This is a reduction problem. For any building `i`, the water it traps is `min(max_left, max_right) - height[i]`.
+
+**The Failed Naive Approach ($O(N^2)$)**
+A junior engineer might immediately code a loop within a loop: for every element `i`, iterate left to find `max_left`, and iterate right to find `max_right`. 
+*Why it fails:* Scanning the remaining array for every single element yields $O(N^2)$ time complexity. With $N=10^5$, this requires $10^{10}$ operations, which will time out on any assessment platform.
+
+**Step 3: Invariant Identification**
+To achieve $O(N)$, we must eliminate the inner loops. The amount of water trapped depends *only on the shorter of the two maximum boundaries*. 
+*Invariant:* If we have two pointers (`left` and `right`), and `height[left] < height[right]`, the trapped water at `left` is strictly bounded by `max_left`, regardless of what happens between `left` and `right`. We can safely process `left` and move inward.
+
+**Step 4: Pattern Matching**
+Processing an array from the outsides inward based on boundary conditions maps perfectly to **[PAT-06] Converging Two-Pointers**.
+
+**Step 5: Edge Case Enumeration**
+- $N < 3$: Cannot trap water. Return 0.
+- All heights equal: Return 0.
+
+**Design Before Coding**
+*Approach (Two-Pointer Design):*
+- Initialize `left` at 0, `right` at $N-1$.
+- Maintain `left_max` and `right_max`.
+- While `left < right`:
+  - If `heights[left] < heights[right]`, water depends on `left_max`. Update `left_max`, add `left_max - heights[left]` to total, increment `left`.
+  - Else, water depends on `right_max`. Update `right_max`, add `right_max - heights[right]` to total, decrement `right`.
+- Time Complexity: $O(N)$, Space Complexity: $O(1)$.
+
+By following the framework, a potentially paralyzing problem is reduced to a standard application of the Two-Pointer pattern.
+
+## When Decomposition Saves You
+
+In modern assessment environments, particularly equal-weight assessments where all questions are peers, decomposition is your greatest strategic weapon. Because these formats do not provide difficulty-ordering cues, you cannot rely on the assumption that "Question 1 is easy, Question 4 is hard." You must approach every problem objectively.
+
+When confronted with novel, never-before-seen problems—problems explicitly designed to test engineering limits rather than memorization—decomposition is the *only* reliable strategy. It bridges the gap between the unknown problem domain and your known catalog of patterns, ensuring that you can always make structured, demonstrable progress.
+
+> ⭐ **STAR Moment: The Decomposition Discipline**
+>
+> Before you write a single line of code, invest 3-5 minutes in decomposition. Write your analysis as comments at the top of your solution file. This serves three purposes: it clarifies your thinking, it provides partial credit if you run out of time, and it creates a roadmap that prevents you from getting lost during implementation.
 
 
 # The Three System-Scale Case Studies
@@ -525,12 +630,12 @@ namespace AuraPay.Domain
 ```
 
 
-![AuraPay System Architecture](editions/csharp/chapters/02-case-studies/visuals/aurapay_architecture.png){width=80%}
+![AuraPay System Architecture](editions/csharp/chapters/03-case-studies/visuals/aurapay_architecture.png){width=80%}
 
 In the following chapters, we will use these domain classes to demonstrate OOP design, SOLID boundary enforcement, Java Streams collection processing, and database concurrency controls.
 
 
-## ZenithTrade: High-Frequency Matching Engine (Exercise)
+## ZenithTrade: High-Frequency Matching Engine (Reference Architecture)
 
 ZenithTrade is a high-frequency, low-latency order matching engine. It is designed to process incoming buy and sell limit orders and execute matches in real time.
 
@@ -540,7 +645,7 @@ ZenithTrade is a high-frequency, low-latency order matching engine. It is design
 - **Sub-Millisecond Latency:** The engine must execute order matching with minimal latency, avoiding memory allocations and garbage collection pauses.
 - **Data Structure Mastery:** Utilizes custom priority queues, heaps, and double-ended queues for low-overhead bookkeeping.
 
-### Exercise Starter Scaffolding
+### Reference Architecture Starter Scaffolding
 To begin implementing the ZenithTrade engine, use the following `Order` entity as your starting point. It establishes the basic structure of a limit order, enforcing invariants like positive price and quantity:
 
 ```csharp
@@ -566,10 +671,10 @@ public class Order
 }
 ```
 
-This case study is left as an exercise for the reader to apply the algorithmic patterns, concurrency models, and performance optimizations detailed in Part III.
+These architectures serve as running case studies throughout the book. You will implement components of each system as you learn the patterns in Parts II, III, and IV. Do not attempt to design these systems now — let the patterns guide you.
 
 
-## ChiramTrust: Decentralized Identity Consent Wallet (Exercise)
+## ChiramTrust: Decentralized Identity Consent Wallet (Reference Architecture)
 
 ChiramTrust is a decentralized identity wallet that allows users to store credentials locally, negotiate sharing terms with verifiers, and establish consensus-based recovery.
 
@@ -595,7 +700,7 @@ By the properties of polynomial interpolation:
    
 2.  **Any $T - 1$ or fewer guardians** possess a system of equations with infinite solutions, revealing absolutely zero information about the secret key $S$.
 
-### Exercise Starter Scaffolding
+### Reference Architecture Starter Scaffolding
 
 To implement the ChiramTrust wallet, use the following `DidConsentRecord` aggregate root as your starting point. It handles W3C identifier validation and thread-safe consent scope modifications:
 
@@ -634,6 +739,8 @@ Here is a mock interview dialogue showing how to apply the Bounded Context Isola
 **Interviewer:** *"If the AuraPay Ledger database experiences a write lag or becomes temporarily unavailable, how does that affect ZenithTrade's matching engine? How do you prevent ledger issues from cascading and bringing down the trading platform?"*
 
 **Candidate:** "We enforce strict Bounded Context Isolation. The ZenithTrade matching engine runs entirely in-memory and communicates with the AuraPay Ledger asynchronously via a transaction event stream. When an order matches, the matching engine commits the trade to its local state and publishes a `TradeExecuted` event. The Ledger service consumes this event and updates account balances. 
+
+To ensure zero-loss durability, ZenithTrade employs a write-ahead journal (WAJ) inspired by the LMAX Disruptor architecture. Every order and match event is sequentially appended to a persistent ring buffer on NVMe storage BEFORE the in-memory state is updated. On node failure, the engine replays the journal to reconstruct its complete order book state. Additionally, periodic snapshots compress the journal, enabling sub-second recovery times. This design achieves both the microsecond latency of in-memory processing and the durability guarantees required by financial regulators."
 
 If the Ledger database slows down or halts, the matching engine continues to process trades in memory without interruption. The event broker queues the trade events until the ledger recovers. This decoupling guarantees fault isolation and maintains a high-availability trading path."
 
@@ -694,7 +801,7 @@ public class LedgerService
 
 In a senior coding or architecture interview, presenting an anemic model is a missed opportunity. To demonstrate true software craftsmanship, you must show how to design **rich domain models** that encapsulate state and enforce invariants.
 
-![Anemic vs Rich Domain Model Comparison](editions/csharp/chapters/03-oop-principles/visuals/anemic_vs_rich.png){width=85%}
+![Anemic vs Rich Domain Model Comparison](editions/csharp/chapters/04-oop-principles/visuals/anemic_vs_rich.png){width=85%}
 
 
 ## Refactoring Walkthrough: From Anemic to Rich
@@ -843,7 +950,7 @@ This creates tight coupling. If you need to change how fees are calculated, or a
 
 Instead of sub-classing, we compose our routing engine by injecting a collection of independent strategy routes. The core engine is decoupled from the network-specific details.
 
-![Composition over Inheritance](editions/csharp/chapters/03-oop-principles/visuals/composition_vs_inheritance.png){width=85%}
+![Composition over Inheritance](editions/csharp/chapters/04-oop-principles/visuals/composition_vs_inheritance.png){width=85%}
 
 
 ## Polymorphism over Conditional Logic
@@ -973,7 +1080,7 @@ If you stop there, you fail to show architectural maturity. An interviewer wants
 
 In this chapter, we will implement the core processing pipeline of AuraPay using a design that strictly conforms to all five SOLID principles.
 
-![The Five SOLID Principles — Quick Reference](editions/csharp/chapters/04-solid-boundaries/visuals/solid_summary.png){width=70%}
+![The Five SOLID Principles — Quick Reference](editions/csharp/chapters/05-solid-boundaries/visuals/solid_summary.png){width=70%}
 
 ## The SOLID Transaction Pipeline
 
@@ -1114,7 +1221,7 @@ This is the most critical principle for decoupling business logic from infrastru
 
 In our implementation, the `TransactionProcessor` does not import a concrete SQL database connector or Hibernate manager. It depends entirely on the `LedgerRepository` interface. The business logic is at the top of the dependency tree, and database adapters are plugged in at the bottom. This allows you to run unit tests using a mock repository in memory, completely decoupled from a database connection.
 
-![SOLID Dependency Inversion Principle — Before and After](editions/csharp/chapters/04-solid-boundaries/visuals/solid_dip.png){width=85%}
+![SOLID Dependency Inversion Principle — Before and After](editions/csharp/chapters/05-solid-boundaries/visuals/solid_dip.png){width=85%}
 
 
 ## SOLID Violation Detector & Remedies
@@ -1156,6 +1263,21 @@ Frameworks like Spring Boot (Java), ASP.NET Core (C#), and FastAPI/Dependency In
 
 ### Aspect-Oriented Programming (AOP)
 To adhere to OCP, frameworks use AOP to apply cross-cutting concerns (such as transactions, security, and logging) to service boundaries dynamically using **Proxy decorators**. For instance, adding `@Transactional` in Spring Boot or `[Transaction]` in ASP.NET Core wraps the service class in a proxy container, injecting commit and rollback logic without modifying the service's source code.
+
+
+### When SOLID Hurts: The Trade-off Analysis
+
+SOLID principles are design heuristics, not commandments. Over-application creates its own category of architectural failures:
+
+**Interface Segregation Overdose:** Splitting every interface into single-method contracts creates an explosion of types. A microservice with 47 single-method interfaces has replaced coupling with cognitive overload. The team spends more time navigating the interface graph than building features.
+
+**Dependency Inversion Overhead:** In small microservices (< 500 lines), injecting every dependency through constructor parameters adds boilerplate without benefit. If a service has exactly one implementation of each dependency and will never be swapped, direct instantiation is simpler and more honest.
+
+**Open-Closed Paralysis:** Designing every class for extension before you have a second use case is speculative generality. YAGNI (You Ain't Gonna Need It) often trumps OCP in early-stage systems. Add extension points when you have evidence of variation, not before.
+
+**Liskov Substitution in Practice:** The classic Rectangle/Square violation is taught in every textbook, but the real-world impact is subtler. When your service contract promises idempotent retries but a subclass implementation has side effects on retry, you've violated LSP in a way that causes production incidents, not just type errors.
+
+> The senior engineer's skill is knowing WHEN to apply SOLID and when the cure is worse than the disease.
 
 
 > ⭐ **STAR Moment: The Mockability Test**
@@ -1248,357 +1370,13 @@ namespace AuraPay.Analytics
 ```
 
 
-![Stream Pipeline Visualization](editions/csharp/chapters/05-functional-streams/visuals/stream_pipeline.png){width=90%}
+![Stream Pipeline Visualization](editions/csharp/chapters/06-functional-streams/visuals/stream_pipeline.png){width=90%}
 
 By declaring the operations as a stream pipeline, the code becomes a readable translation of the business spec:
 
 1.  **Filter** out transaction records below the threshold.
 2.  **Collect** the results by grouping by the merchant ID and adding their amounts.
 
-
-## Understanding Method References (`::` Syntax)
-
-In Java, the `::` operator is a **method reference** — a shorthand for a lambda expression that simply delegates to an existing method. Method references make stream pipelines more readable by replacing verbose lambdas with direct method pointers.
-
-There are four types of method references:
-
-**1. Static Method Reference — `ClassName::staticMethod`**
-
-Calls a static method. The stream element is passed as the argument.
-
-```java
-// Lambda form:
-.map(s -> Integer.parseInt(s))
-// Method reference form:
-.map(Integer::parseInt)
-```
-
-**2. Instance Method on a Specific Object — `instance::method`**
-
-Calls an instance method on a specific, already-existing object.
-
-```java
-TransactionValidator validator = new TransactionValidator();
-// Lambda form:
-.filter(tx -> validator.isValid(tx))
-// Method reference form:
-.filter(validator::isValid)
-```
-
-**3. Instance Method on the Stream Element — `ClassName::instanceMethod`**
-
-Calls an instance method on each element flowing through the stream. The element itself becomes the `this` reference.
-
-```java
-// Lambda form:
-.map(tx -> tx.amount())
-// Method reference form:
-.map(TransactionRecord::amount)
-
-// Lambda form:
-.map(s -> s.toUpperCase())
-// Method reference form:
-.map(String::toUpperCase)
-```
-
-**4. Constructor Reference — `ClassName::new`**
-
-Calls a constructor to create new objects from stream elements.
-
-```java
-// Lambda form:
-.map(name -> new Merchant(name))
-// Method reference form:
-.map(Merchant::new)
-```
-
-> **Interview Signal:** Using method references consistently signals that you write idiomatic, clean functional code. When reviewing a pipeline in a live coding session, interviewers expect `Transaction::amount` over `tx -> tx.amount()`.
-
-
-## Stream Operations Deep-Dive
-
-Every stream pipeline consists of three parts: a **source**, zero or more **intermediate operations** (lazy), and exactly one **terminal operation** (triggers execution).
-
-### Key Intermediate Operations (Lazy — Build the Pipeline)
-
-| Operation | Purpose | Example |
-|---|---|---|
-| `filter(Predicate)` | Keep elements matching a condition | `.filter(tx -> tx.amount() > 100)` |
-| `map(Function)` | Transform each element to a new value | `.map(Transaction::merchantId)` |
-| `flatMap(Function)` | Flatten nested collections into a single stream | `.flatMap(tx -> tx.items().stream())` |
-| `distinct()` | Remove duplicate elements (uses `.equals()`) | `.distinct()` |
-| `sorted()` | Sort elements (natural order or by Comparator) | `.sorted()` |
-| `peek(Consumer)` | Inspect elements without modifying (for debugging) | `.peek(tx -> log.info(tx))` |
-| `limit(n)` | Take only the first N elements | `.limit(10)` |
-| `skip(n)` | Skip the first N elements | `.skip(5)` |
-
-### Key Terminal Operations (Eager — Trigger Execution)
-
-| Operation | Purpose | Example |
-|---|---|---|
-| `collect(Collector)` | Accumulate into a collection or summary | `.collect(Collectors.toList())` |
-| `forEach(Consumer)` | Perform an action on each element | `.forEach(System.out::println)` |
-| `reduce(identity, BinaryOp)` | Combine all elements into a single result | `.reduce(BigDecimal.ZERO, BigDecimal::add)` |
-| `count()` | Count elements | `.count()` |
-| `findFirst()` | Return the first element (wrapped in Optional) | `.findFirst()` |
-| `anyMatch(Predicate)` | Check if any element satisfies a condition | `.anyMatch(tx -> tx.isFraud())` |
-| `allMatch(Predicate)` | Check if all elements satisfy a condition | `.allMatch(tx -> tx.amount() > 0)` |
-| `toArray()` | Collect into an array | `.toArray(String[]::new)` |
-
-### Collectors: The Power of `collect()`
-
-The `Collectors` utility class provides powerful aggregation operations:
-
-```java
-// Group transactions by merchant, summing amounts
-Map<UUID, BigDecimal> volumeByMerchant = transactions.stream()
-    .collect(Collectors.groupingBy(
-        TransactionRecord::merchantId,
-        Collectors.reducing(BigDecimal.ZERO, TransactionRecord::amount, BigDecimal::add)
-    ));
-
-// Partition transactions into two groups: above/below threshold
-Map<Boolean, List<TransactionRecord>> partitioned = transactions.stream()
-    .collect(Collectors.partitioningBy(tx -> tx.amount().compareTo(threshold) > 0));
-
-// Join merchant names into a comma-separated string
-String merchantList = merchants.stream()
-    .map(Merchant::name)
-    .collect(Collectors.joining(", "));
-
-// Compute statistics on amounts
-DoubleSummaryStatistics stats = transactions.stream()
-    .mapToDouble(tx -> tx.amount().doubleValue())
-    .summaryStatistics();
-// stats.getAverage(), stats.getMax(), stats.getMin(), stats.getCount()
-```
-
-
-## When to Use `.map()` vs Collectors Directly
-
-A common source of confusion is deciding whether to use `.map()` as an intermediate transformation step, or to go directly to a `Collectors.toMap()` or `Collectors.groupingBy()` call in the terminal `collect()`. The rule is straightforward:
-
-**Use `.map()` when you need ONE thing from each element into a simple collection.**
-
-The `.map()` operation transforms what is flowing through the stream. After `.map(TransactionRecord::transactionId)`, the stream is no longer `Stream<TransactionRecord>` — it becomes `Stream<UUID>`. Use this when you only need to extract a single field and collect it into a `List` or `Set`.
-
-```java
-// Goal: Get a list of transaction IDs for high-value transactions
-List<UUID> highValueIds = transactions.stream()
-    .filter(tx -> tx.amount().compareTo(limit) > 0)
-    .map(TransactionRecord::transactionId)     // Stream<TransactionRecord> -> Stream<UUID>
-    .collect(Collectors.toList());              // Simple List<UUID>
-```
-
-**Use `Collectors.toMap()` or `groupingBy()` when you need TWO or more things from each element into a Map.**
-
-When you need to extract both a key and a value from the same object, you cannot use `.map()` — mapping to one field loses access to the other. Instead, pass both extractor functions directly into the collector.
-
-```java
-// Goal: Map each merchant to their total transaction volume
-Map<UUID, BigDecimal> volumes = transactions.stream()
-    .filter(tx -> tx.amount().compareTo(threshold) >= 0)
-    .collect(Collectors.toMap(
-        TransactionRecord::destinationAccountId,  // key: need accountId
-        TransactionRecord::amount,                 // value: need amount
-        BigDecimal::add                            // merge: sum on collision
-    ));
-// No .map() here — we need BOTH fields from the same TransactionRecord
-```
-
-### Decision Guide
-
-Ask yourself: *Do I need to build a Map (key -> value) from each element?*
-
-- **Yes** -> Use `Collectors.toMap()` or `groupingBy()` directly. You need the full object to extract both key and value.
-- **No** -> *Do I need to transform each element to a different type?*
-  - **Yes** -> Use `.map()` then `.collect(Collectors.toList())` or `.toSet()`
-  - **No** -> Just `.filter()` then `.collect(Collectors.toList())`
-
-### Five Patterns Side-by-Side
-
-```java
-// Pattern 1: Extract one field -> List
-List<UUID> ids = records.stream()
-    .map(TransactionRecord::transactionId)
-    .collect(Collectors.toList());
-
-// Pattern 2: Extract one field -> Set (deduplicate)
-Set<String> currencies = records.stream()
-    .map(TransactionRecord::currency)
-    .collect(Collectors.toSet());
-
-// Pattern 3: Two fields -> Map (no duplicates expected)
-Map<UUID, BigDecimal> balances = records.stream()
-    .collect(Collectors.toMap(
-        TransactionRecord::transactionId,
-        TransactionRecord::amount));
-
-// Pattern 4: Two fields -> Map with aggregation (sum duplicates)
-Map<UUID, BigDecimal> totals = records.stream()
-    .collect(Collectors.toMap(
-        TransactionRecord::destinationAccountId,
-        TransactionRecord::amount,
-        BigDecimal::add));
-
-// Pattern 5: Group into lists -> Map<Key, List<Record>>
-Map<String, List<TransactionRecord>> byCurrency = records.stream()
-    .collect(Collectors.groupingBy(TransactionRecord::currency));
-```
-
-> **Interview Tip:** If an interviewer asks you to aggregate data by a key, reach for `Collectors.toMap()` with a merge function or `Collectors.groupingBy()`. If they ask you to extract or transform elements, use `.map()` followed by a simple `toList()` or `toSet()`. Explaining *why* you chose one over the other demonstrates pipeline design fluency.
-
-
-## Senior Interview Critical Knowledge: Performance Pitfalls
-
-In senior developer and manager interviews, showing that you can write a stream is not enough. You must demonstrate a deep understanding of the **performance costs and runtime implications** of functional APIs.
-
-### The Parallel Stream Thread Starvation Trap
-In Java, calling `.parallelStream()` instead of `.stream()` splits the workload across multiple threads automatically. Candidates often present this as an easy optimization.
-
-**The Danger:** By default, all parallel streams in a JVM share a single, static **ForkJoinPool.commonPool()**. The size of this pool is set to `Runtime.getRuntime().availableProcessors() - 1`.
-If you run an I/O-bound operation (e.g., calling an external billing gateway or querying a database) inside a parallel stream, you block a thread in the common pool. If multiple requests execute these I/O tasks concurrently, the common pool becomes completely starved. 
-Consequently, **every other parallel stream in the entire JVM application stalls**, including critical background system tasks.
-
-> **Design Rule:** Never run I/O-bound operations inside parallel streams. Only use parallel streams for CPU-bound computations on large collections where the overhead of thread scheduling is outweighed by the calculation size.
-
-### Intermediate Object Overhead & Garbage Collection
-Functional pipelines construct intermediate objects for every stage of the pipeline. In high-throughput settlement engines processing millions of transactions per second, this causes significant memory overhead.
-
-- Every `.map()` or `.filter()` operation instantiates wrapper objects.
-- Primitive boxing (e.g., converting a raw `double` to a `Double` object) triggers heap allocations, putting heavy pressure on the JVM Garbage Collector.
-
-> **Design Rule:** In performance-critical loops, utilize primitive streams (e.g., `IntStream`, `DoubleStream`) to prevent boxing overhead, or fall back to plain array iterations if zero-allocation execution is required.
-
-### Lazy Evaluation and Exception Handling
-Stream operations are **lazy**—they are not executed when they are declared, but only when a **terminal operation** (like `.collect()`, `.findFirst()`, or `.forEach()`) is invoked.
-This creates debugging challenges. If a filter operation throws an exception, the stack trace will point to the terminal operation invocation, not where the pipeline was declared. Furthermore, standard functional interfaces do not allow checked exceptions, forcing you to write messy wrappers or handle runtime failures globally.
-
-
-## Performance Comparison: Imperative vs. Streams
-
-Selecting the correct loop structure is a trade-off between readability and raw execution speed. The following table contrasts the runtime behaviors of different processing paradigms:
-
-| Metric | Imperative Loops | Sequential Streams | Parallel Streams |
-|---|---|---|---|
-| **Execution Time** | Fastest (zero overhead) | Slow to medium | Fast for massive sets; slower for small sets |
-| **Heap Allocations** | None (in-place) | High (wrapper nodes, builders) | Very high (coordination nodes) |
-| **GC Pressure** | Zero | Medium to high | High |
-| **Scale Limits** | Single CPU core | Single CPU core | Scales with cores (CPU-bound only) |
-| **Starvation Risk** | Zero | Zero | Extreme (I/O in common pool) |
-| **Readability** | Low (boilerplate) | High (declarative) | High (simple conversion) |
-
-
-## Standard Streams vs. Reactive Streams
-
-In high-concurrency systems, candidates must distinguish between standard Java Streams and **Reactive Streams** (e.g., Spring WebFlux, Project Reactor, RxJava, C# Reactive Extensions):
-
-- **Standard Streams (Pull-Based):** Synchronous and blocking. They operate on finite, in-memory collections. The consumer pulls data from the stream.
-- **Reactive Streams (Push-Based):** Asynchronous and non-blocking. They operate on infinite event streams (e.g., live stock feeds, WebSocket connections). The producer pushes data to the consumer.
-- **Backpressure:** Reactive streams support backpressure, allowing a slow consumer to signal to a fast producer to slow down, preventing the consumer from exhausting its heap memory buffer during spikes.
-
-### Reactive Streams Example: Real-Time Transaction Monitor
-
-Consider AuraPay's real-time fraud monitoring pipeline. New transactions arrive continuously from multiple payment gateways. We need to filter suspicious transactions, enrich them with account data, and emit alerts — all without blocking threads.
-
-```java
-// Reactive pipeline using Project Reactor (Spring WebFlux)
-Flux<FraudAlert> fraudAlerts = transactionEventStream   // Infinite push-based stream
-    .filter(tx -> tx.amount().compareTo(highValueThreshold) > 0)
-    .flatMap(tx -> accountService.findById(tx.accountId())  // Non-blocking DB call
-        .map(account -> new EnrichedTransaction(tx, account)))
-    .filter(enriched -> enriched.riskScore() > 0.85)
-    .map(enriched -> new FraudAlert(enriched, Instant.now()))
-    .onBackpressureBuffer(1000)   // Buffer up to 1000 if consumer is slow
-    .doOnNext(alert -> log.warn("FRAUD ALERT: {}", alert.transactionId()));
-
-// Subscribe to start processing (nothing happens until subscribe)
-fraudAlerts.subscribe(
-    alert -> alertService.dispatch(alert),   // onNext: process each alert
-    error -> log.error("Pipeline error", error),   // onError: handle failures
-    () -> log.info("Stream completed")       // onComplete: stream ended
-);
-```
-
-The critical differences from standard streams:
-
-| Aspect | Standard Stream | Reactive Stream |
-|---|---|---|
-| **Data Source** | Finite collection (`List`, `Set`) | Infinite event source (Kafka, WebSocket) |
-| **Execution** | Blocking (thread waits for each step) | Non-blocking (event loop, no thread waiting) |
-| **Threading** | Caller's thread or ForkJoinPool | Scheduler-managed (e.g., `Schedulers.boundedElastic()`) |
-| **Error Handling** | Try-catch or runtime exception | `.onErrorResume()`, `.retry()` operators |
-| **Backpressure** | Not supported | Built-in (`onBackpressureBuffer`, `onBackpressureDrop`) |
-| **Lifecycle** | Runs once, then garbage collected | Runs continuously until cancelled |
-
-
-## Stream Practice Questions
-
-The following problems are commonly asked in interviews to test functional programming fluency. Try solving each one using streams before reviewing the solution.
-
-**Q1. Find the three highest transaction amounts (no duplicates)**
-
-```java
-List<BigDecimal> topThree = transactions.stream()
-    .map(TransactionRecord::amount)
-    .distinct()
-    .sorted(Comparator.reverseOrder())
-    .limit(3)
-    .collect(Collectors.toList());
-```
-
-**Q2. Group transactions by currency, counting how many in each**
-
-```java
-Map<String, Long> countByCurrency = transactions.stream()
-    .collect(Collectors.groupingBy(
-        TransactionRecord::currency,
-        Collectors.counting()
-    ));
-```
-
-**Q3. Find the first transaction over $10,000 (or return empty)**
-
-```java
-Optional<TransactionRecord> highValue = transactions.stream()
-    .filter(tx -> tx.amount().compareTo(new BigDecimal("10000")) > 0)
-    .findFirst();
-```
-
-**Q4. Flatten a list of orders (each containing line items) into all items**
-
-```java
-List<LineItem> allItems = orders.stream()
-    .flatMap(order -> order.getLineItems().stream())
-    .collect(Collectors.toList());
-```
-
-**Q5. Compute a comma-separated string of all merchant names, sorted alphabetically**
-
-```java
-String result = merchants.stream()
-    .map(Merchant::name)
-    .sorted()
-    .collect(Collectors.joining(", "));
-```
-
-**Q6. Check if all transactions are in USD**
-
-```java
-boolean allUsd = transactions.stream()
-    .allMatch(tx -> "USD".equals(tx.currency()));
-```
-
-**Q7. Convert a list of strings to a map of string -> length (handling duplicates)**
-
-```java
-Map<String, Integer> nameLengths = names.stream()
-    .collect(Collectors.toMap(
-        name -> name,
-        String::length,
-        (existing, replacement) -> existing  // Keep first on collision
-    ));
-```
 
 
 ## Debugging Functional Pipelines
@@ -1823,7 +1601,7 @@ namespace AuraPay.Events
 ```
 
 
-![Observer Pattern Class Diagram](editions/csharp/chapters/06-design-patterns/visuals/observer_pattern.png){width=90%}
+![Observer Pattern Class Diagram](editions/csharp/chapters/07-design-patterns/visuals/observer_pattern.png){width=90%}
 
 ### The State Pattern (Behavioral Deep-Dive)
 In payment platforms, transactions transition through a strict sequence of states: `CREATED` $\to$ `PENDING` $\to$ `SETTLED` or `FAILED` $\to$ `REFUNDED`.
@@ -1870,17 +1648,10 @@ In senior interviews, you must connect patterns to the frameworks you use. Here 
 | **Adapter** | Spring MVC Handlers | `HandlerAdapter` maps incoming HTTP requests to controller methods, shielding the servlet container from concrete execution signatures. |
 | **Template Method** | Spring `JdbcTemplate` | `JdbcTemplate` defines the skeleton of database execution (opening connection, statement preparation, cleanup) while letting subclasses map rows to domain objects. |
 
-> **Why is it called \"Spring\"?** Rod Johnson created the Spring Framework in 2003 as a reaction to the overwhelming complexity of **J2EE** (Java 2 Enterprise Edition). He chose the name *Spring* to represent a **fresh start** \u2014 a new season after the long, cold \"winter\" of J2EE's XML-heavy, boilerplate-ridden configuration. Spring made enterprise Java feel light and productive again, and the name perfectly captures that rebirth.
-
-> **Why is it called \"Hibernate\"?** Gavin King created Entity Framework Core framework in 2001 and chose the name because Java objects *\"hibernate\"* (go dormant) inside the database and wake up when the application needs them. Just as animals hibernate through winter and emerge in spring, your domain objects are serialized into database rows and later rehydrated into live Java objects. The bear logo reinforces the metaphor.
-
 
 > ⭐ **STAR Moment: The Framework Pattern Test**
 > 
 > During system design interviews, explain design patterns in terms of the framework concepts the interviewer already knows. Instead of drawing a generic observer diagram, say: *"We will implement this like a Spring ApplicationEventPublisher or a Kafka Event Broker, decoupling the transactional write thread from the audit and search indexing consumers."* This shows you understand patterns in modern, production-grade architectures.
-
-
-\part{Code Performance and Data Structures}
 
 
 # Designing for Performance and Concurrency
@@ -1915,7 +1686,7 @@ Virtual threads are lightweight threads managed by the JVM rather than the OS. T
 
 *   **Impact:** You can run millions of virtual threads concurrently while writing standard, synchronous, block-on-write code that is easy to read, debug, and trace.
 
-![Virtual Threads vs Platform Threads](editions/csharp/chapters/07-concurrency-performance/visuals/virtual_threads.png){width=85%}
+![Virtual Threads vs Platform Threads](editions/csharp/chapters/08-concurrency-performance/visuals/virtual_threads.png){width=85%}
 
 
 ## Database Locking: Optimistic vs. Pessimistic
@@ -1936,7 +1707,7 @@ SELECT * FROM accounts WHERE id = ? FOR UPDATE;
 ### Optimistic Concurrency Control (OCC)
 Optimistic locking assumes conflicts are rare. It allows concurrent threads to read and edit records without blocking. When saving the entity, the engine verifies that the record has not been modified by checking a `version` field.
 
-![Optimistic vs Pessimistic Concurrency Control](editions/csharp/chapters/07-concurrency-performance/visuals/occ_vs_pcc.png){width=70%}
+![Optimistic vs Pessimistic Concurrency Control](editions/csharp/chapters/08-concurrency-performance/visuals/occ_vs_pcc.png){width=70%}
 
 The following code illustrates this version-checking implementation:
 
@@ -2062,6 +1833,84 @@ When updating the database, the application must invalidate the cache key.
 - **Transactional Safety:** Ensure the cache key deletion occurs inside the database transaction's post-commit hook. If the database transaction rolls back, the cache key must not be deleted.
 
 
+## Memory Architecture: Stack, Managed Heap, LOH, POH, and CLR GC Generations
+
+In enterprise .NET 8 systems (such as high-frequency trading platforms and distributed ledger gateways), mastering Common Language Runtime (CLR) memory management is vital for controlling GC latency and throughput.
+
+### The CLR Memory Regions
+
+The .NET CLR divides application memory into thread-private stacks and several specialized managed heap segments.
+
+#### 1. The Thread Stack
+- **Scope:** Thread-private. Every OS thread has a dedicated stack (typically 1MB in 64-bit Windows/Linux).
+- **Contents:** Local value types (`struct`, `enum`, primitive types `int`, `bool`, `double`), method parameters, pointer references to managed objects, and `ref struct` instances (e.g., `Span<T>`).
+- **Behavior:** LIFO stack frame push/pop semantics. Stack allocations require zero Garbage Collection overhead.
+
+#### 2. The Small Object Heap (SOH)
+- **Scope:** Shared across all threads.
+- **Contents:** Reference type instances (`class`, `delegate`, `interface`, `string`, `object`) whose size is **smaller than 85,000 bytes**.
+- **Garbage Collection:** Managed by the CLR Generational Garbage Collector via compacting generational sweeps.
+
+#### 3. The Large Object Heap (LOH)
+- **Scope:** Shared across all threads.
+- **Contents:** Objects and byte/array buffers whose size is **85,000 bytes or larger**.
+- **Garbage Collection:** Swept during Generation 2 collections. Because copying large memory blocks is expensive, the LOH is **not compacted by default**, which can lead to memory fragmentation unless explicitly compacted via `GCSettings.LargeObjectHeapCompactionMode`.
+
+#### 4. The Pinned Object Heap (POH)
+- **Scope:** Introduced in .NET 5+ to eliminate LOH/SOH fragmentation caused by pinned memory pointers.
+- **Contents:** Arrays and objects pinned for interop with native C/C++ libraries or socket I/O operations via `GCHandleType.Pinned` or `GC.AllocateArray<T>(..., pinned: true)`.
+
+---
+
+### Value Types vs. Reference Types: Storage Rules
+
+In C#, the fundamental distinction between `struct` (Value Type) and `class` (Reference Type) dictates memory layout:
+
+| Type Category | Memory Location | GC Overhead | Example Types |
+|---|---|---|---|
+| **Local Value Type** (`struct Point { int X, Y; }`) | **Thread Stack Frame** | **Zero GC** (freed when frame pops) | `int`, `long`, `bool`, custom `struct`, `readonly struct` |
+| **Inline Value Type Field** (`struct` inside a `class`) | **Managed Heap** (inside outer class instance) | Included in outer object lifecycle | `struct` declared as a member field of a `class` |
+| **Reference Type** (`class LedgerAccount`) | **Managed Heap** (SOH or LOH) | **Managed by CLR GC** | `class`, `interface`, `delegate`, `string`, arrays |
+| **Stack-Only Type** (`ref struct`) | **Thread Stack ONLY** | **Zero GC** (Cannot be boxed or moved to Heap) | `Span<T>`, `ReadOnlySpan<T>`, `Utf8JsonReader` |
+
+---
+
+### The .NET CLR Generational GC & Promotion Lifecycle
+
+The .NET Garbage Collector utilizes a 3-generation model to maximize throughput based on object survival patterns.
+
+#### 1. Generation 0 (Gen 0)
+- **Role:** The entry point for all newly allocated small objects.
+- **GC Frequency:** Collected very frequently (sub-millisecond). Most temporary objects (e.g., short-lived DTOs, string concatenations) die here.
+
+#### 2. Generation 1 (Gen 1)
+- **Role:** Serves as a buffer/survivor zone between short-lived objects (Gen 0) and long-lived objects (Gen 2).
+- **GC Frequency:** Collected moderately often. Objects surviving Gen 0 are promoted to Gen 1.
+
+#### 3. Generation 2 (Gen 2 + LOH + POH)
+- **Role:** Stores long-lived objects (e.g., ASP.NET Core singletons, database connection pools, static caches).
+- **GC Frequency:** Collected infrequently (Full GC). Full Gen 2 collections inspect the entire managed memory footprint and can cause noticeable latency pauses under high memory pressure.
+
+---
+
+### The .NET Object Promotion Lifecycle
+
+1. **Allocation:** `var tx = new Transaction()` allocates the instance in **Gen 0** on the Small Object Heap.
+2. **Gen 0 Sweep:** A Gen 0 collection triggers. Unreferenced objects are reclaimed instantly. Live surviving objects are **promoted to Generation 1**.
+3. **Gen 1 Sweep:** On subsequent GC cycles, surviving Gen 1 objects are **promoted to Generation 2**.
+4. **Tenured State:** Once in Gen 2, objects remain there until a Full Gen 2 collection identifies them as unreachable.
+5. **LOH Promotion Bypass:** Objects $\ge$ 85,000 bytes are allocated directly in **Gen 2 / LOH**, skipping Gen 0 and Gen 1 completely.
+
+---
+
+### High-Performance .NET Optimization Techniques
+
+- **`Span<T>` and `Memory<T>`:** `Span<T>` is a `ref struct` that provides contiguous memory views over stack memory, managed heap arrays, or native unmanaged memory without allocating new objects or invoking GC.
+- **`ArrayPool<T>`:** Reusable array rental pools (`ArrayPool<T>.Shared.Rent(size)`) prevent frequent LOH allocations, avoiding LOH fragmentation and eliminating Gen 2 GC pressure in high-throughput pipelines.
+- **Struct vs. Class Trade-offs:** Use `readonly struct` for small, immutable data structures ($\le$ 16 bytes) to achieve zero-allocation stack semantics.
+
+
+
 ## CPU Cache Locality (L1/L2/L3) in HFT Matching Loops
 
 In ultra-low-latency matching engines (like ZenithTrade), garbage collection pauses and CPU cache misses are the primary bottlenecks. To write code that runs in the microsecond range, you must design for **cache locality**:
@@ -2086,9 +1935,11 @@ $$(8 \times 2) + 1 = 17\ Connections$$
 
 Setting the pool size to 17 will yield *higher* overall throughput than setting it to 100, due to the minimization of CPU context switching and disk spindle thrashing.
 
-![HikariCP Connection Pool Sizing](editions/csharp/chapters/07-concurrency-performance/visuals/hikaricp_formula.png){width=85%}
+**Important Context:** This formula was derived empirically by the PostgreSQL community for spinning disk (HDD) workloads where 'Effective Spindle Count' represents physical disk heads. For modern NVMe SSDs and cloud-managed databases (e.g., Aurora, Cloud SQL), this formula is a starting point, not a universal law. Cloud databases often recommend pool sizes of 2-5× CPU cores. Always benchmark with your specific database engine and storage backend.
 
-> **Why is it called "Hikari"?** The name is not a person — **Hikari (光)** is the Japanese word for **"light."** Creator Brett Wooldridge was working in Japan when he built it, frustrated by the bloat and slowness of existing connection pools (C3P0, DBCP, BoneCP). He designed HikariCP to be *light* in weight (~130KB jar, zero dependencies), *light* in speed (fastest JDBC pool ever benchmarked), and *light* in complexity. His obsession with zero-overhead engineering — using `ConcurrentBag` instead of `LinkedBlockingQueue` to eliminate lock contention, and a custom `FastList` to skip array bounds checks — made it so fast that Spring Boot adopted it as the **default connection pool** starting in version 2.0 (2018). Today, if you add `spring-boot-starter-data-jpa` to your project, HikariCP is already running under the hood. Fun fact: Japan's famous bullet train (Shinkansen) has a service tier called *Hikari* — the name fits perfectly.
+![HikariCP Connection Pool Sizing](editions/csharp/chapters/08-concurrency-performance/visuals/hikaricp_formula.png){width=85%}
+
+
 
 
 > ⭐ **STAR Moment: The Cache Invalidation Design**
@@ -2096,1671 +1947,849 @@ Setting the pool size to 17 will yield *higher* overall throughput than setting 
 > When discussing performance during an interview, never say *"We will add a cache."* Say: *"We will implement a Cache-Aside pattern using Redis. To prevent stale reads in our double-entry ledger, we will use a transactional write-through strategy, invalidating cache keys atomically inside the database commit boundary to ensure absolute consistency."* This shows you understand caching boundaries in financial transaction systems.
 
 
+\part{Algorithmic Mastery}
+
+
 # Core Algorithms & Assessment Tactical Guide
 
 > *"Algorithms are not trivia; they are the baseline vocabulary of computational efficiency under resource constraints."*
 
+---
 
-## General Coding Assessment (GCA) Tactics
+## The Veteran's Perspective: Patterns vs. Memorization
 
-Many organizations (such as Capital One, fintech firms, and major technology companies) screen candidates using standardized online coding assessments (e.g., CodeSignal GCA, HackerRank, or Codility). The most common and highest-stress format is the **70-Minute, 4-Question Speed Run**.
+For senior engineers, architects, and engineering managers returning to technical assessments after years in leadership, coding assessments present a unique hurdle. You have architected distributed ledgers, managed multi-million-dollar technology budgets, and led high-performing engineering teams. Yet, when faced with a 70-minute timer and a blank editor window, a frustrating mental block occurs: your mind goes blank.
 
-Candidates often fail not because they lack coding skills, but because they manage their time poorly. Under stress, they get stuck debugging a minor edge case on Question 3, leaving zero time for Question 4, which carries the highest scoring weight. To score a perfect 800+ on these assessments, you must treat the test as a tactical exercise.
+This happens because **algorithmic problem-solving is like mathematics**. You cannot master calculus by passively reading a textbook or watching someone solve equations on a whiteboard. Reading a solution creates a deceptive illusion of competence—you nod along, thinking, *"Yes, that makes sense."* But when you pick up the pencil (or open the IDE) to solve a problem from scratch, you realize you have not internalized the mechanics.
+
+Furthermore, attempting to memorize hundreds of individual algorithm problems is a dangerous trap. Under time pressure, memorized code snippets dissolve. 
+
+The only sustainable path back to coding mastery is **pattern-based problem solving**:
+1. **Learn the 24 Canonical Programming Patterns**—the core mathematical invariants and code skeletons that govern all algorithmic problems.
+2. **Analyze the problem structure** to map requirements directly to a pattern ID (`[PAT-01]` through `[PAT-24]`).
+3. **Practice by doing.** Implement 2–3 problems for each pattern independently until the code skeleton becomes pure muscle memory.
+
+When you master the 24 patterns below, you no longer need to memorize hundreds of solutions. You simply recognize the pattern, apply the appropriate code skeleton, and derive the solution cleanly on demand.
+
+---
+
+## General Coding Assessment (general coding assessment) Tactics
+
+Standardized online coding assessments (e.g., General Coding Assessments, HackerRank, or Codility) evaluate speed, accuracy, and edge-case handling under severe time constraints. The most common format is the **70-Minute, 4-Question Speed Run**.
 
 ### The 4-Question Blueprint
 
-| Question | Difficulty | Archetype | Time Target | Tactical Rule |
+| Question | Difficulty | Target Time | Primary Pattern Types | Tactical Rule |
 |---|---|---|---|---|
-| **Q1** | Easy | Basic array manipulation or string formatting | 5–8 Min | Write clean, brute-force code immediately. Do not over-optimize. |
-| **Q2** | Medium | 2D matrix transformation, array rotation, or simulation | 10–12 Min | Watch for array bounds and off-by-one errors. Keep helper functions simple. |
-| **Q3** | Medium-Hard | Hashmap state-tracking, custom key groupings, or string alignments | 15–20 Min | Identify the map key early. Keep data structures simple. |
-| **Q4** | Hard | Monotonic stack/queue, advanced sliding window, or binary search optimization | 20–25 Min | If brute force is $O(N^2)$, look for a monotonic property to reduce to $O(N)$. |
+| **Easy-tier** | Easy | 5–8 Min | `[PAT-01]`, `[PAT-02]` | Write clean, brute-force code immediately. Do not over-optimize. |
+| **Medium-tier** | Medium | 10–12 Min | `[PAT-03]`, `[PAT-06]`, `[PAT-10]` | Watch for array bounds and off-by-one errors. |
+| **Medium-Hard-tier** | Medium-Hard | 15–20 Min | `[PAT-04]`, `[PAT-13]`, `[PAT-14]` | Identify the window state or queue batching early. |
+| **Hard-tier** | Hard | 20–25 Min | `[PAT-05]`, `[PAT-09]`, `[PAT-11]`, `[PAT-19]` | If brute force is $O(N^2)$, look for a monotonic property or DP state. |
 
-![GCA 70-Minute Time Allocation Blueprint](editions/csharp/chapters/08-algorithms-assessment/visuals/gca_timeline.png){width=85%}
+### The 70-Minute general coding assessment Master Plan
 
-### The 70-Minute GCA Master Plan
-To secure a top-tier score under pressure, you must follow a strict, disciplined time-boxing strategy:
+1. **The 3-Minute Limit:** If you get stuck on a compile or logic bug for more than 3 minutes, comment out your changes, revert to your last working baseline, and rethink your boundary conditions.
+2. **Never print in a loop:** Printing to standard output inside loops kills execution speed and causes hidden test timeouts.
+3. **Submit immediately:** Once your solution passes visible test cases, submit it and move on.
+4. **Strategic Order (1 -> 2 -> 4 -> 3):** On platforms like automated testing platforms, Hard-tier is often worth significantly more points than Medium-Hard-tier and is usually more deterministic (e.g., Monotonic Stack or Binary Search) than Medium-Hard-tier, which can involve tedious simulation.
 
-**1. The 3-Minute Limit.** If you get stuck on a compile or logic bug for more than 3 minutes, comment out your changes, revert to your last working baseline, and rethink your boundary conditions. Do not write code blindly hoping it will pass.
+---
 
-**2. Never print in a loop.** Printing to standard output (`System.out.println`, `print()`, `Console.WriteLine`) inside loops kills execution speed and can cause the platform to timeout on large hidden test cases.
+### Complexity Foundations: A Quick Reference
 
-**3. Submit immediately.** Once your solution passes the visible test cases, submit it and move to the next question. Do not waste time cleaning up variable names or optimizing unless a performance timeout occurs.
+Before diving into the 25 canonical patterns, ensure you have instant recall of these complexity classes:
 
-**4. Solve in order (1 -> 2 -> 4 -> 3).** On platforms like CodeSignal, Q4 is often worth significantly more points than Q3, and it is usually more deterministic (e.g., a standard Monotonic Stack or Binary Search) compared to Q3, which can be a tedious simulation or string parsing problem. If you finish Q1 and Q2 quickly, scan Q4. If it matches an algorithmic archetype you recognize, solve it before tackling Q3.
+| Complexity | Name | Example | Max N for 1s |
+|-----------|------|---------|-------------|
+| O(1) | Constant | HashMap lookup | ∞ |
+| O(log N) | Logarithmic | Binary search | 10^18 |
+| O(N) | Linear | Single pass scan | 10^8 |
+| O(N log N) | Linearithmic | Merge sort | 10^6 |
+| O(N²) | Quadratic | Nested loops | 10^4 |
+| O(2^N) | Exponential | Subset generation | 20-25 |
+| O(N!) | Factorial | Permutations | 10-12 |
 
-### Cracking Live Technical Rounds (Teams / Zoom / In-Person)
-Unlike asynchronous online assessments, live coding rounds evaluate your communication, structured thinking, and collaborative problem-solving:
+**The Constraint-to-Complexity Rule:** Read the problem constraints FIRST. If N ≤ 10^4, O(N²) is acceptable. If N ≤ 10^5, you need O(N log N) or better. If N ≤ 10^6, you need O(N). This single rule eliminates 50% of wrong algorithm choices before you write a line of code.
 
-**Talk Out Loud Constantly.** Do not code in silence. Explain your thought process, what variables you are declaring, and why. The interviewer wants to see *how* you think.
+---
 
-**State the Invariants First.** Before writing code, state the pre-conditions, post-conditions, and loop invariants to the interviewer. This shows that you are a disciplined software engineer rather than a syntax hacker.
+# The 24 Canonical Programming Patterns
 
-**Dry-Run with Small Test Cases.** Walk through your logic with a simple test case by tracing variable values manually on the screen before running the code.
+The following catalog defines the 24 fundamental patterns of computational problem-solving. Each pattern represents a proven, invariant structure for solving a specific class of problems.
 
-**Handle Feedback Gracefully.** If the interviewer points out a bug or asks, *"What happens if this input is null?"*, do not get defensive. Acknowledge it, state the pre-condition check you will add, and implement the fix.
+---
 
+## Module 1: Array & String Mechanics
 
-## Data Structures Primer for Coding Assessments
+### [PAT-01] Direct Indexing & Frequency Buckets
 
-Before diving into algorithm patterns, you must be fluent in the data structures they depend on. Many candidates know the algorithm conceptually but lose time during interviews because they cannot remember the correct method names or choose the wrong collection type. This section is your quick-reference guide.
-
-### ArrayList — Dynamic Array
-
-The workhorse of coding interviews. An automatically resizing array with $O(1)$ random access.
-
-```csharp
-var list = new List<int>();
-list.Add(42);              // Append to end — O(1) amortized
-list.Insert(0, 99);        // Insert at index 0 — O(N) shift
-list[0];                   // Random access — O(1)
-list[1] = 50;              // Replace at index — O(1)
-list.RemoveAt(0);          // Remove at index — O(N) shift
-list.Count;                // Current element count
-list.Contains(42);         // Linear search — O(N)
-list.Count == 0;           // Check if empty
-list.Sort();               // Sort in-place — O(N log N)
-```
-
-
-**When to use:** Default choice when you need an ordered, indexable collection. Prefer over `LinkedList` for almost all interview problems.
-
-### HashMap and HashSet — O(1) Lookup
-
-The most critical data structure in interviews. `HashMap` maps keys to values. `HashSet` stores unique elements. Both provide $O(1)$ average-case lookup, insert, and delete.
-
-```csharp
-// Dictionary: Key -> Value mapping
-var map = new Dictionary<string, int>();
-map["apple"] = 3;                          // Insert/update — O(1)
-map["apple"];                               // Lookup — O(1), throws if missing
-map.GetValueOrDefault("banana", 0);         // Lookup with fallback — O(1)
-map.ContainsKey("apple");                   // Key existence check — O(1)
-map.Remove("apple");                        // Remove by key — O(1)
-map.Keys;                                   // All keys (for iteration)
-map.Values;                                 // All values
-
-// Frequency counting pattern (extremely common)
-foreach (char c in text) {
-    map[c] = map.GetValueOrDefault(c, 0) + 1;
-}
-
-// HashSet: Unique element storage
-var seen = new HashSet<int>();
-seen.Add(42);              // Add element — O(1)
-seen.Contains(42);         // Membership check — O(1)
-seen.Remove(42);           // Remove element — O(1)
-```
-
-
-**When to use:** Frequency counting, duplicate detection, two-sum lookups, graph adjacency lists, caching previously computed results (memoization).
-
-### Deque (ArrayDeque) — Double-Ended Queue
-
-A `Deque` (pronounced "deck") supports insertion and removal at **both ends** in $O(1)$ time. It is the backbone of sliding window problems and is also the recommended implementation for stacks and queues in modern Java.
-
-```csharp
-// C# uses LinkedList<T> as a double-ended queue
-var deque = new LinkedList<int>();
-
-// --- As a double-ended queue ---
-deque.AddFirst(1);         // Add to front — O(1)
-deque.AddLast(2);          // Add to back — O(1)
-deque.First.Value;         // View front without removing — O(1)
-deque.Last.Value;          // View back without removing — O(1)
-deque.RemoveFirst();       // Remove from front — O(1)
-deque.RemoveLast();        // Remove from back — O(1)
-
-// --- As a Stack (LIFO) ---
-var stack = new Stack<int>();
-stack.Push(42);            // Push onto stack
-stack.Peek();              // View top element
-stack.Pop();               // Pop from stack
-
-// --- As a Queue (FIFO) ---
-var queue = new Queue<int>();
-queue.Enqueue(42);         // Enqueue (adds to back)
-queue.Peek();              // View head
-queue.Dequeue();           // Dequeue (removes from front)
-
-deque.Count == 0;          // Check if empty
-deque.Count;               // Current element count
-```
-
-
-**Why ArrayDeque over Stack and LinkedList?** Java's `java.util.Stack` class is synchronized (slow) and extends `Vector` (legacy). `LinkedList` has pointer-chasing overhead. `ArrayDeque` is backed by a resizable circular array — it is the fastest general-purpose stack and queue implementation.
-
-**When to use:** Sliding window maximum/minimum (store indices), BFS (as a queue), DFS iteratively (as a stack), monotonic deque problems.
-
-### Queue — First-In, First-Out (FIFO)
-
-Used primarily for BFS traversal. While `ArrayDeque` is the best implementation, you will often see `LinkedList` used in interview solutions.
-
-```csharp
-var queue = new Queue<int>();
-queue.Enqueue(1);          // Enqueue — O(1)
-queue.Enqueue(2);
-queue.Peek();              // View head (returns 1) — O(1)
-queue.Dequeue();           // Dequeue (removes 1) — O(1)
-queue.Count == 0;          // Check if empty
-queue.Count;               // Current element count
-```
-
-
-**When to use:** BFS graph/tree traversal, topological sort (Kahn's algorithm), level-order processing.
-
-### Stack Behavior — Last-In, First-Out (LIFO)
-
-There is no preferred standalone `Stack` class in modern Java. Use `ArrayDeque` with `push`/`pop`/`peek`.
-
-```csharp
-var stack = new Stack<int>();
-stack.Push(10);            // Push — O(1)
-stack.Push(20);
-stack.Push(30);
-stack.Peek();              // View top (returns 30) — O(1)
-stack.Pop();               // Pop (removes 30) — O(1)
-```
-
-
-**When to use:** Bracket matching (valid parentheses), monotonic stack (next greater element), DFS iterative traversal, expression evaluation, undo operations.
-
-### PriorityQueue — Min-Heap / Max-Heap
-
-A `PriorityQueue` is a binary heap that always keeps the smallest element at the top (min-heap by default). Insertion and removal are $O(\log N)$. Peeking at the top is $O(1)$.
-
-```csharp
-// Min-Heap (default) — smallest priority first
-var minHeap = new PriorityQueue<int, int>();
-minHeap.Enqueue(30, 30);
-minHeap.Enqueue(10, 10);
-minHeap.Enqueue(20, 20);
-minHeap.Peek();            // Returns 10 (smallest) — O(1)
-minHeap.Dequeue();         // Removes 10 — O(log N)
-
-// Max-Heap — use negative priority as workaround
-var maxHeap = new PriorityQueue<int, int>();
-maxHeap.Enqueue(30, -30);
-maxHeap.Enqueue(10, -10);
-maxHeap.Peek();            // Returns 30 (largest) — O(1)
-
-// Custom comparator — use Comparer.Create
-var pq = new PriorityQueue<int[], int>();
-// Enqueue with custom priority: pq.Enqueue(item, item[1]);
-```
-
-
-**When to use:** Top-K problems (K-th largest element), streaming median (dual-heap), Dijkstra's shortest path, merge K sorted lists, task scheduling by priority.
-
-### LinkedList — Node-Based Sequential Access
-
-A doubly-linked list where each node points to its predecessor and successor. Rarely the best choice for array-style problems, but essential for pointer-manipulation questions.
-
-```csharp
-var list = new LinkedList<int>();
-list.AddFirst(1);          // Add to head — O(1)
-list.AddLast(2);           // Add to tail — O(1)
-list.First!.Value;         // View head — O(1)
-list.Last!.Value;          // View tail — O(1)
-list.RemoveFirst();        // Remove head — O(1)
-list.RemoveLast();         // Remove tail — O(1)
-// No index access — must traverse with foreach or iterators
-```
-
-
-**When to use:** Fast/slow pointer problems (cycle detection, find middle), LRU cache implementation (with HashMap), problems that explicitly say "linked list" in the prompt.
-
-### TreeMap and TreeSet — Sorted Collections
-
-A `TreeMap` is a red-black tree that keeps keys in **sorted order**. All operations are $O(\log N)$. It provides powerful navigation methods that `HashMap` cannot.
-
-```csharp
-var map = new SortedDictionary<int, string>();
-map[10] = "ten";
-map[30] = "thirty";
-map[20] = "twenty";
-
-map.Keys.First();          // Smallest key (10)
-map.Keys.Last();           // Largest key (30)
-// C# SortedDictionary lacks floor/ceiling — use SortedSet for that
-
-// SortedSet — sorted unique elements with range queries
-var set = new SortedSet<int>();
-set.Add(30); set.Add(10); set.Add(20);
-set.Min;                   // 10
-set.Max;                   // 30
-set.GetViewBetween(10, 30); // Elements in range [10, 30]
-// For floor/ceiling, use LINQ: set.Where(x => x <= 25).Last()
-```
-
-
-**When to use:** Sliding window median, interval problems requiring sorted order, problems needing "nearest value" queries (`floor`/`ceiling`), calendar scheduling conflicts.
-
-### Quick Reference: Choosing the Right Data Structure
-
-| Problem Signal | Data Structure | Key Advantage |
-|---|---|---|
-| "Find if X exists" / "Count occurrences" | HashMap / HashSet | $O(1)$ lookup |
-| "Sliding window max/min" | ArrayDeque | $O(1)$ add/remove both ends |
-| "BFS" / "Level-order" / "Shortest path" | Queue (ArrayDeque) | FIFO ordering |
-| "Matching brackets" / "Next greater element" | Stack (ArrayDeque) | LIFO ordering |
-| "K-th largest" / "Top K" / "Merge K lists" | PriorityQueue | $O(\log N)$ min/max access |
-| "Sorted order" / "Floor/ceiling queries" | TreeMap / TreeSet | $O(\log N)$ sorted operations |
-| "Cycle detection" / "Find middle node" | LinkedList | Pointer manipulation |
-| "Random access by index" | ArrayList | $O(1)$ index access |
-
-
-## Broad LeetCode Structural Patterns
-
-To crack senior-level assessments, you must recognize the structural pattern of the problem instantly. We organize the ten essential archetypes into two groups: patterns for linear data (arrays, strings, sequences) and patterns for relational data (graphs, trees, complex structures).
-
-### Group A: Arrays, Strings & Sequences
-
-![Pattern Flowchart A — Arrays, Strings & Sequences](editions/csharp/chapters/08-algorithms-assessment/visuals/pattern_flowchart_linear.png){width=90%}
-
-### Monotonic Deque & Sliding Window
-
-When you are asked to track properties (like the maximum, minimum, or sum) of sub-arrays that slide across a larger array, you are dealing with a **Sliding Window** problem. 
-
-If the window size is $K$ and the array size is $N$, a brute-force search at each step takes $O(N \times K)$ time. We can optimize this to **$O(N)$ linear time** by maintaining a **Monotonic Deque** (double-ended queue) containing array indices. 
-
-The deque maintains a strict invariant: elements corresponding to indices in the deque are stored in strictly decreasing order.
-
-Here is the implementation:
-
-```csharp
-using System;
-using System.Collections.Generic;
-
-namespace AuraPay.Algorithms
-{
-    /// <summary>
-    /// Implements the Sliding Window Maximum algorithm using a Monotonic Deque.
-    /// </summary>
-    public class SlidingWindowSolver
-    {
-        public int[] MaxSlidingWindow(int[] nums, int k)
-        {
-            if (nums == null || nums.Length == 0 || k <= 0)
-            {
-                return new int[0];
-            }
-
-            int n = nums.Length;
-            int[] result = new int[n - k + 1];
-            int ri = 0;
-
-            // In C#, we can use LinkedList<int> as a double-ended queue (deque)
-            LinkedList<int> q = new LinkedList<int>();
-
-            for (int i = 0; i < n; i++)
-            {
-                // 1. Remove indices that are out of the current window boundary
-                if (q.Count > 0 && q.First.Value < i - k + 1)
-                {
-                    q.RemoveFirst();
-                }
-
-                // 2. Maintain monotonic invariant: Remove indices of elements smaller
-                // than the current element from the tail of the deque
-                while (q.Count > 0 && nums[q.Last.Value] < nums[i])
-                {
-                    q.RemoveLast();
-                }
-
-                // 3. Add current element's index to the tail
-                q.AddLast(i);
-
-                // 4. If window size has reached K, store the maximum in the result
-                if (i >= k - 1)
-                {
-                    result[ri++] = nums[q.First.Value];
-                }
-            }
-
-            return result;
-        }
-    }
-}
-```
-
-
-![Sliding Window Algorithm — Conceptual Overview](editions/csharp/chapters/08-algorithms-assessment/visuals/sliding_window.png){width=70%}
-
-**The Core Insight:** If a new element `B` enters the window and `B > A` (where `A` is already in the deque), then `A` can *never* be the maximum for the current window or any future window — because `B` is both **larger** and **newer** (it will stay in the window longer). So `A` is useless, and we discard it by popping from the back of the deque. This keeps the deque values in **strictly decreasing order**, with the current maximum always at the front.
-
-![Sliding Window Maximum — Step-by-Step Execution Trace](editions/csharp/chapters/08-algorithms-assessment/visuals/sliding_window_trace.png){width=65%}
-
-**Full Execution Trace** — Array: `[1, 3, -1, -3, 5, 3, 7]`, k=3:
-
-| Step | i | Value | Why We Do What We Do | Deque (idx->val) | Window | Max |
-|------|---|-------|---------------------|-----------------|--------|-----|
-| 0 | 0 | 1 | Deque empty -> push index 0. Window not full yet. | [0->1] | — | — |
-| 1 | 1 | 3 | 3 > 1 (back). Pop 0 — *1 can never be max while 3 exists*. Push 1. | [1->3] | — | — |
-| 2 | 2 | -1 | -1 < 3 (back). Keep 3 — *-1 might be max after 3 leaves window*. Push 2. Window full! | [1->3, 2->-1] | [1,3,-1] | **3** |
-| 3 | 3 | -3 | Front idx 1 still in window [1,3]. -3 < -1 (back). Push 3. | [1->3, 2->-1, 3->-3] | [3,-1,-3] | **3** |
-| 4 | 4 | 5 | Front idx 1 **out of window** [2,4] -> pop front! Then 5 > -3 pop, 5 > -1 pop — *both useless now*. Push 4. | [4->5] | [-1,-3,5] | **5** |
-| 5 | 5 | 3 | Front idx 4 in window [3,5]. 3 < 5 (back). Push 5. | [4->5, 5->3] | [-3,5,3] | **5** |
-| 6 | 6 | 7 | 7 > 3 pop, 7 > 5 pop — *both useless*. Push 6. | [6->7] | [5,3,7] | **7** |
-
-**Result: [3, 3, 5, 5, 7]**
-
-The three rules the code follows at each step `i`:
-
-1. **Evict expired:** If the front index is outside the window (`< i - k + 1`), pop it from the front.
-2. **Maintain decreasing order:** While the back element $\leq$ current element, pop from the back (those elements will never be useful).
-3. **Record answer:** After the window is full (`i` $\geq$ `k - 1`), the front of the deque is always the index of the current maximum.
-
-> **Why is this O(N) despite the while loop?** The `while` loop looks dangerous — a loop inside a loop usually means $O(N^2)$. But count the total operations *across the entire algorithm*: each of the N elements is **pushed exactly once** and **popped at most once**. That means the while loop executes at most N pops *total* across all iterations of the for loop — not N pops *per* iteration. In our 7-element example, the total pops were: Step 1 (1 pop) + Step 4 (3 pops) + Step 6 (2 pops) = **6 pops total** for 7 elements. The amortized cost per element is $O(1)$, giving $O(N)$ total.
-
-
-### The Two-Pointer & Fast/Slow Pointer Pattern
-
-This pattern is used to process linear data structures (arrays, linked lists) using two pointer variables that move at different speeds or in different directions.
-
-**Opposite Direction.** Left and right pointers moving toward the center (e.g., finding pairs in a sorted array, reversing arrays). Reduces search spaces from $O(N^2)$ to $O(N)$.
-
-**Fast/Slow Pointers.** A "slow" pointer moving 1 step at a time, while a "fast" pointer moves 2 steps (e.g., Floyd's Cycle Detection, finding the middle of a linked list).
-
-#### Problem: Two Sum (Sorted Array)
-
-Given a **sorted** array of integers `numbers` (1-indexed) and a target integer `target`, find two numbers that add up to `target`. Return their indices as `[index1, index2]` where `index1 < index2`. You must use only $O(1)$ extra space.
-
-Here is the implementation:
-
-```csharp
-namespace AuraPay.Algorithms;
-
-/// <summary>
-/// Implements the Two-Pointer pattern to find two numbers that sum to a target
-/// in a 1-indexed sorted array.
-/// Time Complexity: O(N) where N is the size of the array.
-/// Space Complexity: O(1) auxiliary space.
-/// </summary>
-public class TwoPointerSolver
-{
-    /// <summary>
-    /// Finds indices of the two numbers that add up to the target.
-    /// Uses two pointers moving from opposite ends inward.
-    /// </summary>
-    public int[] FindMatchingNumbers(int[] numbers, int target)
-    {
-        int start = 1;
-        int last = numbers.Length;
-        int[] output = new int[2];
-
-        while (start < last)
-        {
-            int sum = numbers[start - 1] + numbers[last - 1];
-            if (sum == target)
-            {
-                output[0] = start;
-                output[1] = last;
-                return output;
-            }
-            if (sum < target)
-            {
-                start++;
-            }
-            else
-            {
-                last--;
-            }
-        }
-        return output; // Returns [0, 0] if no match is found
-    }
-}
-```
-
-
-![Two-Pointer Pattern — Two Sum Sorted Execution Trace](editions/csharp/chapters/08-algorithms-assessment/visuals/two_sum_sorted_trace.png){width=65%}
-
-**Full Execution Trace** — Array: `[2, 7, 11, 15]`, target = 9:
-
-| Step | start | last | current_sum | Decision Logic | Pointers | Output |
-|------|-------|------|-------------|----------------|----------|--------|
-| 1 | 1 (val 2) | 4 (val 15) | 17 | $17 > 9$ (too large) $\rightarrow$ decrement `last` | `start=1`, `last=4` | — |
-| 2 | 1 (val 2) | 3 (val 11) | 13 | $13 > 9$ (too large) $\rightarrow$ decrement `last` | `start=1`, `last=3` | — |
-| 3 | 1 (val 2) | 2 (val 7) | 9 | $9 == 9$ $\rightarrow$ Target matched! | `start=1`, `last=2` | **[1, 2]** |
-
-**Elimination Logic:** Because the array is sorted, each pointer movement eliminates an entire set of invalid pairs. For instance, in Step 1, since the sum of $2 + 15 = 17$ is too large, the sum of $15$ with *any* other element in the array is guaranteed to be larger than target. Thus, we can safely eliminate the index of $15$ entirely by decrementing `last`.
-
-
-
-#### Problem: Container With Most Water
-
-Given $n$ non-negative integers representing an elevation map where the width of each bar is 1, find two lines that together with the x-axis form a container, such that the container contains the most water.
-
-![Two Pointer Pattern — Container With Most Water Execution Trace](editions/csharp/chapters/08-algorithms-assessment/visuals/two_pointer_trace.png){width=65%}
-
-> **How to read this trace:** Two pointers start at opposite ends. At each step, we calculate the area between them. We then move the pointer pointing to the shorter bar inward — because moving the taller bar can never improve the area (the width shrinks and the height is still limited by the shorter bar). This greedy elimination guarantees we never miss the optimal pair.
-
-
-
-#### Problem: Linked List Cycle Detection (Fast/Slow Pointers)
-
-Given the head of a singly linked list, determine if the linked list has a cycle in it. A cycle exists if some node can be reached again by continuously following the `next` pointer.
-
-Here is the implementation:
-
-```csharp
-namespace AuraPay.Algorithms;
-
-/// <summary>
-/// Implements the Fast/Slow Pointer (Tortoise and Hare) pattern to detect cycles
-/// in a singly linked list.
-/// Time Complexity: O(N) where N is the number of nodes.
-/// Space Complexity: O(1) auxiliary space.
-/// </summary>
-public class CycleDetector
-{
-    public class ListNode
-    {
-        public int val;
-        public ListNode next;
-        public ListNode(int x)
-        {
-            val = x;
-            next = null;
-        }
-    }
-
-    /// <summary>
-    /// Detects if a linked list contains a cycle.
-    /// Moves slow pointer by 1 step, fast pointer by 2 steps.
-    /// </summary>
-    public bool HasCycle(ListNode head)
-    {
-        ListNode slow = head;
-        ListNode fast = head;
-
-        while (fast != null && fast.next != null)
-        {
-            slow = slow.next;          // Tortoise: 1 step
-            fast = fast.next.next;     // Hare: 2 steps
-
-            if (slow == fast)
-            {
-                return true; // Fast pointer caught up to slow pointer -> cycle!
-            }
-        }
-
-        return false; // Fast pointer reached the end -> no cycle
-    }
-}
-```
-
-
-![Fast/Slow Pointer Pattern — Cycle Detection Execution Trace](editions/csharp/chapters/08-algorithms-assessment/visuals/cycle_detection_trace.png){width=65%}
-
-**Full Execution Trace** — List: `3 -> 2 -> 0 -> -4` (cycle from `-4` back to `2`):
-
-| Step | slow (Tortoise) | fast (Hare) | slow == fast | State / Decision Logic |
-|------|-----------------|-------------|--------------|------------------------|
-| 1 | 3 | 3 | True | Initial state. Skip check on Step 1 to avoid instant termination. |
-| 2 | 2 | 0 | False | slow moves 1 step $\rightarrow$ 2. fast moves 2 steps $\rightarrow$ 0. |
-| 3 | 0 | 2 | False | slow moves 1 step $\rightarrow$ 0. fast moves 2 steps $\rightarrow$ 2 (loops back). |
-| 4 | -4 | -4 | True | slow moves 1 step $\rightarrow$ -4. fast moves 2 steps $\rightarrow$ -4. Meeting detected! |
-
-**Cycle Detection Logic:** If there is no cycle, `fast` will eventually reach `null` and terminate the algorithm in $O(N)$ time. If a cycle exists, `fast` enters the cycle first. Since `fast` reduces the distance between itself and `slow` by 1 node at each step, they are guaranteed to meet inside the cycle. This ensures $O(1)$ space complexity as we only track reference memory pointers without storing nodes.
-
-> **Mathematical Proof of Start of Cycle:** Let $A$ be the distance from head to start of cycle, $B$ be the distance from start of cycle to meeting point, and $C$ be the cycle length. The distance slow traveled is $A + B$. The distance fast traveled is $2(A + B)$. Since fast traveled some integer number of loops $k$ more than slow, $2(A + B) = A + B + kC \rightarrow A + B = kC \rightarrow A = kC - B$. This mathematically proves that if we reset one pointer to head and keep the other at the meeting point, moving both at speed 1 will cause them to meet exactly at the start of the cycle ($A$ steps later).
-
-
-
-#### Dual Application: Finding a Duplicate in an Array (Floyd's on Arrays)
-
-A classic advanced coding interview problem asks you to find a duplicate number in an array under strict constraints:
-
-1. Do **not modify** the input array (forbidding Cyclic Sort or in-place sorting).
-2. Use only **$O(1)$ auxiliary space** (forbidding HashSets or frequency arrays).
-3. The array contains $N + 1$ integers, where each integer is strictly in the range $[1, N]$.
-
-> 💡 **Design Insight: Floyd's vs. Cyclic Sort**
-> 
-> While Cyclic Sort is the most intuitive $O(N)$ way to find duplicates, it requires swapping elements in-place. If an interviewer adds a constraint banning array modification, you must shift your perspective and treat the array values as memory pointers to indices (i.e., an implicit linked list where index $i$ points to index $\text{nums}[i]$). 
->
-> This technique uses **Floyd's Cycle-Finding Algorithm** (named after Turing Award winner Robert W. Floyd who published it in 1967). It is also known as the **Tortoise and Hare** algorithm because it uses two pointers moving at different speeds to detect the cycle's entrance (which represents the duplicate number) without modifying a single element.
-
-Here is the implementation:
-
-```csharp
-namespace AuraPay.Algorithms;
-
-/// <summary>
-/// Finds the duplicate number in an array using Floyd's Cycle Detection.
-/// Time Complexity: O(N) where N is the size of the array.
-/// Space Complexity: O(1) auxiliary space.
-/// Constraint: The array must contain N + 1 elements, each between 1 and N.
-/// </summary>
-public class DuplicateArrayFinder
-{
-    public int FindDuplicate(int[] nums)
-    {
-        // Phase 1: Detect cycle (meeting point)
-        int slow = nums[0];
-        int fast = nums[0];
-
-        do
-        {
-            slow = nums[slow];          // Move 1 step
-            fast = nums[nums[fast]];    // Move 2 steps
-        } while (slow != fast);
-
-        // Phase 2: Find cycle entrance (duplicate value)
-        slow = nums[0]; // Reset slow to start
-        while (slow != fast)
-        {
-            slow = nums[slow]; // Move 1 step
-            fast = nums[fast]; // Move 1 step
-        }
-
-        return slow; // The duplicate value
-    }
-}
-```
-
-
-
-
-#### Problem: In-place Reversal of a Linked List
-
-Reversing the pointers of a singly linked list in-place without allocating new nodes is a fundamental coding pattern. It forms the basis of many harder list manipulation questions (like reversing sub-lists or checking if a list is a palindrome).
-
-Here is the implementation:
-
-```csharp
-namespace AuraPay.Algorithms;
-
-/// <summary>
-/// Reverses a singly linked list in-place.
-/// Time Complexity: O(N) where N is the number of nodes.
-/// Space Complexity: O(1) auxiliary space.
-/// </summary>
-public class LinkedListReversal
-{
-    public class ListNode
-    {
-        public int val;
-        public ListNode next;
-        public ListNode(int x)
-        {
-            val = x;
-            next = null;
-        }
-    }
-
-    /// <summary>
-    /// Reverses the linked list and returns the new head node.
-    /// </summary>
-    public ListNode ReverseList(ListNode head)
-    {
-        ListNode prev = null;
-        ListNode curr = head;
-
-        while (curr != null)
-        {
-            ListNode nextTemp = curr.next; // 1. Save the next node
-            curr.next = prev;              // 2. Reverse current pointer
-            prev = curr;                   // 3. Move prev forward
-            curr = nextTemp;               // 4. Move curr forward
-        }
-
-        return prev; // New head node
-    }
-}
-```
-
-
-**Reversal Invariant:** At each step, we maintain three pointers: `prev` (already reversed part), `curr` (node currently being reversed), and `nextTemp` (temporarily stores the rest of the list so we don't lose it when we break the link). We simply point `curr.next` to `prev`, then slide both `prev` and `curr` one node forward.
-
-
-
-#### Problem: Cyclic Sort (In-place Array Sorting)
-
-When you are given an array of numbers in a contiguous range from $1$ to $N$ (or $0$ to $N$), you can sort the array in $O(N)$ time and $O(1)$ space using **Cyclic Sort**. It is the go-to pattern for finding missing or duplicate numbers.
-
-Here is the implementation:
-
-```csharp
-namespace AuraPay.Algorithms;
-
-/// <summary>
-/// Sorts an array containing numbers from 1 to N in-place.
-/// Time Complexity: O(N) where N is the size of the array.
-/// Space Complexity: O(1) auxiliary space.
-/// </summary>
-public class CyclicSort
-{
-    public void Sort(int[] nums)
-    {
-        int i = 0;
-        while (i < nums.Length)
-        {
-            int correctIndex = nums[i] - 1; // Value X belongs at index X-1
-            if (nums[i] != nums[correctIndex])
-            {
-                Swap(nums, i, correctIndex); // Swap to correct position
-            }
-            else
-            {
-                i++; // Increment only when correct
-            }
-        }
-    }
-
-    private void Swap(int[] nums, int i, int j)
-    {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
-    }
-}
-```
-
-
-**Sorting Invariant:** Since elements are in the range $[1, N]$, the number $X$ belongs exactly at index $X - 1$. We iterate through the array. If the current element is not at its correct index, we swap it with the element at its correct index. We only increment our loop pointer `i` when the element at index `i` is already correct. Since each swap places at least one element in its final correct position, the algorithm finishes in at most $2N$ steps — giving $O(N)$ linear time.
-
-
-### Interval Scheduling & Greedy Algorithms
-
-Greedy algorithms make the locally optimal choice at each step with the hope of finding a global optimum. A classic implementation is **Interval Scheduling** (e.g., matching non-overlapping transaction batches or scheduling CPU tasks).
-
-To maximize the number of non-overlapping intervals, you must apply the **earliest deadline first** heuristic: sort the intervals by their end times, and greedily select the next interval that starts after the end of the previously selected one.
-
-Here is the implementation:
-
-```csharp
-using System;
-using System.Collections.Generic;
-
-namespace AuraPay.Algorithms
-{
-    public class TransactionInterval
-    {
-        public int Start { get; }
-        public int End { get; }
-
-        public TransactionInterval(int start, int end)
-        {
-            Start = start;
-            End = end;
-        }
-    }
-
-    /// <summary>
-    /// Solves the Interval Scheduling problem using a Greedy approach.
-    /// </summary>
-    public class IntervalScheduler
-    {
-        public int MaxNonOverlappingTransactions(TransactionInterval[] intervals)
-        {
-            if (intervals == null || intervals.Length == 0)
-            {
-                return 0;
-            }
-
-            // GREEDY INVARIANT: Sort intervals by their end time.
-            Array.Sort(intervals, (a, b) => a.End.CompareTo(b.End));
-
-            int count = 1;
-            int lastSelectedEnd = intervals[0].End;
-
-            for (int i = 1; i < intervals.Length; i++)
-            {
-                // If the start time is greater than or equal to the end time of the 
-                // last selected interval, select this transaction
-                if (intervals[i].Start >= lastSelectedEnd)
-                {
-                    count++;
-                    lastSelectedEnd = intervals[i].End;
-                }
-            }
-
-            return count;
-        }
-    }
-}
-```
-
-
-![Greedy Interval Scheduling — Step-by-Step Execution Trace](editions/csharp/chapters/08-algorithms-assessment/visuals/greedy_interval_trace.png){width=65%}
-
-> **How to read this trace:** After sorting intervals by end time, we greedily pick the next interval whose start time does not overlap with the last selected interval's end time. Green intervals are selected; red intervals are skipped because they overlap.
-
-
-### Group B: Graphs, Trees & Complex Structures
-
-![Pattern Flowchart B — Graphs, Trees & Complex Structures](editions/csharp/chapters/08-algorithms-assessment/visuals/pattern_flowchart_graph.png){width=90%}
-
-### Backtracking, DFS, and BFS
-
-These patterns are used to traverse trees, graphs, or search spaces.
-
-**Breadth-First Search (BFS).** Uses a queue to explore nodes level-by-level. Always use BFS when you need to find the **shortest path** or minimum steps in an unweighted graph.
-
-**Depth-First Search (DFS).** Uses recursion (call stack) to explore branches as deeply as possible before backtracking.
-
-**Backtracking.** A refined DFS that prunes invalid search branches early. For example, when generating all valid payment routing paths, if a path violates a limit constraint (pre-condition failure), backtrack immediately rather than continuing down that branch.
-
-![BFS vs DFS — Graph Traversal Comparison](editions/csharp/chapters/08-algorithms-assessment/visuals/bfs_dfs_trace.png){width=65%}
-
-> **How to read this trace:** BFS (left) uses a queue — it visits all nodes at distance 1 before distance 2, guaranteeing the shortest path. DFS (right) uses recursion — it dives as deep as possible along one branch before backtracking. Choose BFS for shortest-path problems, DFS for exhaustive search or cycle detection.
-
-
-
-**Island Pattern (Matrix Traversal).** A very common assessment pattern involves traversing a 2D grid (matrix) where cells are connected horizontally or vertically (e.g., counting "islands" of connected 1s in a sea of 0s). We treat the grid as an implicit graph where each cell $(r, c)$ has up to four neighbors: $(r\pm 1, c)$ and $(r, c\pm 1)$. When visiting a cell, we mark it as visited (or sink it by changing 1 to 0) and recursively trigger DFS or BFS to traverse all connected cells.
-### Dynamic Programming (DP)
-
-Dynamic Programming is used to solve optimization problems by breaking them down into overlapping subproblems, solving each subproblem once, and storing the results (memoization).
-
-#### The Case Study: Climbing Stairs
-
-To master DP, let's look at the classic problem: **Climbing Stairs**.
-> *You are climbing a staircase. It takes $N$ steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?*
-
-#### Naive DFS (Decision Trees)
-Every DP problem begins with a decision. If you are standing at step $N$, you could have arrived there in one of two ways:
-
-1. By climbing **1 step** from step $N - 1$.
-2. By climbing **2 steps** from step $N - 2$.
-
-Therefore, the total ways to reach step $N$ is:
-$$\text{climb}(N) = \text{climb}(N - 1) + \text{climb}(N - 2)$$
-
-This is a simple recursive relationship. Here is the implementation using naive DFS:
-
+- **Invariant:** When the input domain is finite (e.g., ASCII characters, digits $0..9$), a fixed-size array (`int[256]`) provides $O(1)$ direct-indexing lookup without hash overhead.
+- **Mental Model:** Use the array index itself as the key.
+- **Canonical Code Skeleton:**
 ```java
-public int climbStairs(int n) {
-    if (n <= 1) return 1; // Base case: 1 way to stay on step 0 or 1
-    return climbStairs(n - 1) + climbStairs(n - 2);
-}
-```
-
-##### Naive DFS Complexity Analysis:
-*   **Time Complexity: $O(2^N)$**. The recursion tree doubles in size at each level.
-*   **Space Complexity: $O(N)$**. The maximum depth of the call stack is $N$.
-
-Why is this $O(2^N)$ time complexity a disaster? Look at the recursion tree for $N = 5$:
-
-![Overlapping Subproblems in Climbing Stairs Recursion Tree](editions/csharp/chapters/08-algorithms-assessment/visuals/dp_stairs_tree.png){width=85%}
-
-Notice that `climbStairs(3)` is calculated **2 separate times**, `climbStairs(2)` is calculated **3 separate times**, and `climbStairs(1)` is calculated **5 separate times**! As $N$ grows, this redundant calculation causes the program to halt.
-
----
-
-#### Top-Down DP (Memoization)
-To fix the $O(2^N)$ time complexity, we simply **remember the past**. We add a cache (a memoization array `memo`) to store the result of `climbStairs(i)` the first time we calculate it. If the recursion ever visits that step again, we return the cached value in $O(1)$ time.
-
-```java
-public int climbStairs(int n) {
-    int[] memo = new int[n + 1];
-    return dfs(n, memo);
-}
-
-private int dfs(int n, int[] memo) {
-    if (n <= 1) return 1;
-    
-    // Return cached result if already calculated
-    if (memo[n] != 0) {
-        return memo[n];
+public int firstUniqueChar(String s) {
+    int[] counts = new int[256];
+    for (int i = 0; i < s.length(); i++) {
+        counts[s.charAt(i)]++;
     }
-    
-    // Store in cache before returning
-    memo[n] = dfs(n - 1, memo) + dfs(n - 2, memo);
-    return memo[n];
-}
-```
-
-##### Memoized Complexity Analysis:
-*   **Time Complexity: $O(N)$**. We calculate each step value exactly once.
-*   **Space Complexity: $O(N)$**. We use $O(N)$ space for the cache array and $O(N)$ space on the recursive call stack.
-
----
-
-#### Bottom-Up DP (Tabulation)
-While Memoization is fast, it relies on **recursion**. In Java, every recursive call creates a new stack frame on the call stack. If $N$ is very large (e.g. $10,000$), recursive DFS will crash with a `StackOverflowError` because the call stack size is limited.
-
-To prevent this, we use **Tabulation**. Instead of working top-down from $N$, we start at the bottom (base cases `0` and `1`) and fill a table iteratively using a simple `for` loop:
-
-```java
-public int climbStairs(int n) {
-    if (n <= 1) return 1;
-    
-    int[] dp = new int[n + 1];
-    dp[0] = 1;
-    dp[1] = 1;
-    
-    for (int i = 2; i <= n; i++) {
-        dp[i] = dp[i - 1] + dp[i - 2];
-    }
-    
-    return dp[n];
-}
-```
-
-##### Tabular Complexity Analysis:
-*   **Time Complexity: $O(N)$**. A single loop from $2$ to $N$.
-*   **Space Complexity: $O(N)$**. The `dp` array stores $N + 1$ values in heap memory, and there is no recursive call stack.
-
----
-
-#### Space-Optimized DP
-Look closely at the tabulation loop:
-`dp[i] = dp[i - 1] + dp[i - 2]`
-
-To compute `dp[i]`, we only need the values of the **last two elements** (`dp[i-1]` and `dp[i-2]`). We do not need the rest of the historical values in the array! We can discard the array and simply track those two values using two variables:
-
-```java
-public int climbStairs(int n) {
-    if (n <= 1) return 1;
-    
-    int prev2 = 1; // Represents dp[i - 2]
-    int prev1 = 1; // Represents dp[i - 1]
-    
-    for (int i = 2; i <= n; i++) {
-        int curr = prev1 + prev2;
-        prev2 = prev1; // Move prev2 forward
-        prev1 = curr;  // Move prev1 forward
-    }
-    
-    return prev1;
-}
-```
-
-##### Space-Optimized Complexity Analysis:
-*   **Time Complexity: $O(N)$**.
-*   **Space Complexity: $O(1)$**. We only use two variables regardless of how large $N$ is.
-
----
-
-#### Understanding the General DP State Formula
-
-When preparing for system design or advanced coding loops, you will often see generalized DP formulas that look highly abstract. Let's demystify the classic **0/1 Knapsack** formula so you can correlate its variables directly:
-
-$$DP[i][w] = \max(DP[i-1][w], DP[i-1][w - weight_i] + value_i)$$
-
-**Where do $i$ and $w$ come from?**
-Imagine you are packing a bag (knapsack) that has a maximum weight capacity $W$. You have a list of items, each with a specific `weight` and `value`. You want to find the combination of items that gives the maximum value without breaking your bag.
-
-*   **$i$ (The Item Choice):** The index of the item you are currently evaluating (e.g. item 3).
-*   **$w$ (The Remaining Capacity):** The amount of weight capacity left in your bag.
-*   **$DP[i][w]$:** The maximum value you can achieve using the first $i$ items when your bag has $w$ capacity remaining.
-
-**The Decision logic:**
-At item $i$, you have exactly two choices:
-
-1.  **Exclude the item (Leave it):** The bag's capacity stays at $w$. Your max value is simply whatever you could achieve using the previous $i-1$ items: $DP[i-1][w]$.
-2.  **Include the item (Take it):** The bag's remaining capacity drops by the item's weight ($w - weight_i$). You gain the item's value ($value_i$). Your total value is: $DP[i-1][w - weight_i] + value_i$.
-
-The transition equation simply takes the `max()` of these two choices.
-
----
-
-**Tactical Tip.** In an interview, start by writing a simple recursive DFS solution. Once it works, add a cache (memoization table) to optimize it. This is a "top-down" approach, which is often easier to write under pressure than a "bottom-up" iterative DP table.
-
-![1D Dynamic Programming Tabulation Table for Climbing Stairs](editions/csharp/chapters/08-algorithms-assessment/visuals/dp_table.png){width=65%}
-
-![Dynamic Programming — LCS Step-by-Step Table Fill Trace](editions/csharp/chapters/08-algorithms-assessment/visuals/dp_lcs_trace.png){width=65%}
-
-> **How to read this trace:** The DP table is filled row by row. When the characters match (diagonal green arrow), we take the diagonal value + 1. When they don't match (gray), we take the maximum of the cell above or to the left. The backtrack path (highlighted) reveals the LCS itself.
-
-
-### Topological Sort (Dependency Ordering)
-
-Topological Sort produces a linear ordering of vertices in a Directed Acyclic Graph (DAG) such that for every edge $(u, v)$, vertex $u$ comes before $v$. It is the standard answer for dependency resolution problems — course prerequisites, build system task ordering, and microservice deployment sequencing.
-
-**When to use it:** The problem mentions "prerequisites," "dependencies," "ordering constraints," or asks you to detect cycles in a directed graph.
-
-**The Invariant.** A node is only processed after all of its incoming dependencies have been resolved. In Kahn's algorithm, a node enters the queue only when its in-degree reaches zero.
-
-```csharp
-public List<int> TopologicalSort(int numNodes, int[][] edges) {
-    var adj = new List<List<int>>();
-    var inDegree = new int[numNodes];
-    for (int i = 0; i < numNodes; i++) adj.Add(new List<int>());
-
-    foreach (var edge in edges) {
-        adj[edge[0]].Add(edge[1]);
-        inDegree[edge[1]]++;
-    }
-
-    var queue = new Queue<int>();
-    for (int i = 0; i < numNodes; i++) {
-        if (inDegree[i] == 0) queue.Enqueue(i);
-    }
-
-    var order = new List<int>();
-    while (queue.Count > 0) {
-        int node = queue.Dequeue();
-        order.Add(node);
-        foreach (int neighbor in adj[node]) {
-            inDegree[neighbor]--;
-            if (inDegree[neighbor] == 0) queue.Enqueue(neighbor);
-        }
-    }
-
-    if (order.Count != numNodes) {
-        throw new InvalidOperationException("Cycle detected");
-    }
-    return order;
-}
-```
-
-
-> **Interview Signal:** If the result list size is less than the total node count, a cycle exists in the graph. This is how you detect circular dependencies in build systems or deadlocks in task schedulers.
-
-
-### Union-Find (Disjoint Set Union)
-
-Union-Find tracks which elements belong to the same connected group. It supports two operations in near-constant time: `find(x)` (which group does x belong to?) and `union(x, y)` (merge the groups of x and y).
-
-**When to use it:** The problem asks about connectivity, connected components, grouping, or redundant connections in an undirected graph. Classic problems include "Number of Provinces," "Redundant Connection," and network clustering.
-
-**The Invariant.** Every element points to a representative (root) of its group. Path compression flattens the tree on every `find()` call, keeping operations amortized $O(\alpha(N))$ — effectively constant.
-
-```csharp
-public class UnionFind {
-    private int[] _parent;
-    private int[] _rank;
-    public int ComponentCount { get; private set; }
-
-    public UnionFind(int n) {
-        _parent = new int[n];
-        _rank = new int[n];
-        ComponentCount = n;
-        for (int i = 0; i < n; i++) _parent[i] = i;
-    }
-
-    public int Find(int x) {
-        if (_parent[x] != x) {
-            _parent[x] = Find(_parent[x]);  // Path compression
-        }
-        return _parent[x];
-    }
-
-    public bool Union(int x, int y) {
-        int rootX = Find(x), rootY = Find(y);
-        if (rootX == rootY) return false;
-        if (_rank[rootX] < _rank[rootY]) (rootX, rootY) = (rootY, rootX);
-        _parent[rootY] = rootX;
-        if (_rank[rootX] == _rank[rootY]) _rank[rootX]++;
-        ComponentCount--;
-        return true;
-    }
-}
-```
-
-
-
-### Tries (Prefix Trees)
-
-A Trie is a tree-shaped data structure where each node represents a character, and paths from root to leaf form complete words. It enables $O(L)$ prefix lookup (where $L$ is the word length), regardless of how many words are stored.
-
-**When to use it:** The problem involves autocomplete, spell checking, prefix matching, word search in a grid, or dictionary operations. Classic problems include "Implement Trie," "Word Search II," and "Design Search Autocomplete System."
-
-**The Invariant.** Every path from the root to a node marked `isEnd = true` represents a valid word in the dictionary.
-
-```csharp
-public class Trie {
-    private readonly TrieNode _root = new();
-
-    private class TrieNode {
-        public TrieNode?[] Children = new TrieNode?[26];
-        public bool IsEnd = false;
-    }
-
-    public void Insert(string word) {
-        var node = _root;
-        foreach (char c in word) {
-            int idx = c - 'a';
-            node.Children[idx] ??= new TrieNode();
-            node = node.Children[idx]!;
-        }
-        node.IsEnd = true;
-    }
-
-    public bool Search(string word) {
-        var node = FindNode(word);
-        return node is { IsEnd: true };
-    }
-
-    public bool StartsWith(string prefix) {
-        return FindNode(prefix) != null;
-    }
-
-    private TrieNode? FindNode(string s) {
-        var node = _root;
-        foreach (char c in s) {
-            int idx = c - 'a';
-            if (node.Children[idx] == null) return null;
-            node = node.Children[idx]!;
-        }
-        return node;
-    }
-}
-```
-
-
-
-### Heaps and Priority Queues (Top-K Problems)
-
-A heap (min-heap or max-heap) maintains a partially sorted structure that allows $O(\log N)$ insertion and $O(1)$ access to the smallest (or largest) element. It is the standard answer for "Top-K" problems.
-
-**When to use it:** The problem asks for the K-th largest element, K most frequent elements, median from a data stream, or any scenario requiring efficient access to extreme values while processing a continuous flow of data.
-
-**The Invariant.** A min-heap of size K always contains the K largest elements seen so far. The heap's root is the K-th largest.
-
-```csharp
-public int FindKthLargest(int[] nums, int k) {
-    var minHeap = new PriorityQueue<int, int>();
-    foreach (int num in nums) {
-        minHeap.Enqueue(num, num);
-        if (minHeap.Count > k) {
-            minHeap.Dequeue();
-        }
-    }
-    return minHeap.Peek();
-}
-```
-
-
-**Dual-Heap Pattern for Streaming Median.** Maintain a max-heap (lower half) and a min-heap (upper half). The median is either the top of the max-heap or the average of both tops. This is a frequently asked senior-level problem.
-
-
-
-**K-way Merge Pattern.** Merging $K$ sorted lists or arrays into a single sorted list is a very common priority queue pattern. It is the engine behind external sorting algorithms and distributed log mergers.
-
-Here is the implementation:
-
-```csharp
-using System.Collections.Generic;
-
-namespace AuraPay.Algorithms;
-
-/// <summary>
-/// Merges K sorted lists into one sorted list using a Min-Heap.
-/// Time Complexity: O(N log K) where N is total elements, K is number of lists.
-/// Space Complexity: O(K) auxiliary space for the heap.
-/// </summary>
-public class KWayMerge
-{
-    public class HeapNode
-    {
-        public int val;
-        public int listIndex;
-        public int elementIndex;
-
-        public HeapNode(int val, int listIndex, int elementIndex)
-        {
-            this.val = val;
-            this.listIndex = listIndex;
-            this.elementIndex = elementIndex;
-        }
-    }
-
-    /// <summary>
-    /// Merges K sorted lists into a single sorted list.
-    /// </summary>
-    public List<int> MergeKLists(List<List<int>> lists)
-    {
-        // In C# .NET 6+, we can use PriorityQueue<TElement, TPriority>
-        var minHeap = new PriorityQueue<HeapNode, int>();
-        var result = new List<int>();
-
-        // 1. Initialize heap with the first element of each list
-        for (int i = 0; i < lists.Count; i++)
-        {
-            if (lists[i] != null && lists[i].Count > 0)
-            {
-                var node = new HeapNode(lists[i][0], i, 0);
-                minHeap.Enqueue(node, node.val);
-            }
-        }
-
-        // 2. Extract min and push the next element from that list
-        while (minHeap.Count > 0)
-        {
-            var curr = minHeap.Dequeue();
-            result.Add(curr.val);
-
-            int nextElementIdx = curr.elementIndex + 1;
-            if (nextElementIdx < lists[curr.listIndex].Count)
-            {
-                var node = new HeapNode(lists[curr.listIndex][nextElementIdx], curr.listIndex, nextElementIdx);
-                minHeap.Enqueue(node, node.val);
-            }
-        }
-
-        return result;
-    }
-}
-```
-
-
-**Merge Invariant:** A Min-Heap of size $K$ holds the current smallest unprocessed element from each of the $K$ sorted lists. We pop the smallest element from the heap, append it to our result, and then insert the *next* element from that same list into the heap. This maintains a running frontier of sorted candidates, completing in $O(N \log K)$ time.
-
-
-
-### Bit Manipulation
-
-Bit manipulation uses bitwise operators (`&`, `|`, `^`, `~`, `<<`, `>>`) to solve problems in $O(1)$ space and often $O(N)$ time. While less common, it appears in high-stakes assessments to test low-level thinking.
-
-**When to use it:** The problem involves finding a single unique number among duplicates, power-of-two checks, counting set bits, or toggling flags without extra memory.
-
-**Key Bit Tricks:**
-
-**XOR for finding the unique element.** XOR of a number with itself is zero. XOR of a number with zero is itself. So XORing all elements cancels out duplicates.
-
-```csharp
-public int SingleNumber(int[] nums) {
-    int result = 0;
-    foreach (int num in nums) {
-        result ^= num;  // Duplicates cancel: a ^ a = 0, 0 ^ b = b
-    }
-    return result;
-}
-```
-
-
-**Power of two check.** A number is a power of two if and only if it has exactly one bit set: `n > 0 && (n & (n - 1)) == 0`.
-
-
-## The Eight Worked Archetypal Problems
-
-To reinforce these structural patterns, we will walk through eight canonical LeetCode problems. For each problem, we define the invariants, analyze the design boundaries, and provide optimal multi-language implementations.
-
-### Problem 1: Sliding Window Maximum (Hard)
-Given an array of integers `nums`, there is a sliding window of size `k` which is moving from the very left of the array to the very right. You can only see the `k` numbers in the window. Each time the sliding window moves right by one position. Return the max sliding window.
-
-#### Design Invariants
-
-1. **Window Boundaries:** The indices in the deque must always reside within the range $[i - k + 1, i]$.
-2. **Decreasing Order:** The deque must store indices such that their corresponding values are in strictly descending order. Thus, `deque.peekFirst()` always returns the index of the maximum element in the current window.
-
-```csharp
-public int[] MaxSlidingWindow(int[] nums, int k) {
-    if (nums == null || nums.Length == 0) return new int[0];
-    int n = nums.Length;
-    int[] result = new int[n - k + 1];
-    LinkedList<int> list = new LinkedList<int>();
-    for (int i = 0; i < n; i++) {
-        if (list.Count > 0 && list.First.Value < i - k + 1) {
-            list.RemoveFirst();
-        }
-        while (list.Count > 0 && nums[list.Last.Value] < nums[i]) {
-            list.RemoveLast();
-        }
-        list.AddLast(i);
-        if (i >= k - 1) {
-            result[i - k + 1] = nums[list.First.Value];
-        }
-    }
-    return result;
-}
-```
-
-
-### Problem 2: Container With Most Water (Medium)
-Given `n` non-negative integers $a_1, a_2, \dots, a_n$, where each represents a point at coordinate $(i, a_i)$. `n` vertical lines are drawn such that the two endpoints of the line $i$ is at $(i, a_i)$ and $(i, 0)$. Find two lines, which, together with the x-axis forms a container, such that the container contains the most water.
-
-#### Design Invariants
-
-1. **Search Space:** The maximum area must lie within the current boundaries $[left, right]$.
-2. **Greedy Elimination:** The pointer pointing to the shorter vertical line can be safely moved inward because maintaining it can never yield a larger area (as width decreases and height is limited by the shorter line).
-
-```csharp
-public int MaxArea(int[] height) {
-    int maxVal = 0;
-    int left = 0;
-    int right = height.Length - 1;
-    while (left < right) {
-        int width = right - left;
-        int currentHeight = Math.Min(height[left], height[right]);
-        maxVal = Math.Max(maxVal, width * currentHeight);
-        if (height[left] < height[right]) {
-            left++;
-        } else {
-            right--;
-        }
-    }
-    return maxVal;
-}
-```
-
-
-### Problem 3: Merge Intervals (Medium)
-Given an array of `intervals` where $intervals[i] = [start_i, end_i]$, merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
-
-#### Design Invariants
-
-1. **Sorting Invariant:** Sorting intervals by their start times ensures that overlapping intervals are contiguous in the sorted list.
-2. **Overlap Condition:** An overlap occurs if and only if $interval[start] \le current\_merged[end]$.
-
-```csharp
-public int[][] Merge(int[][] intervals) {
-    if (intervals.Length <= 1) return intervals;
-    Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
-    var merged = new List<int[]>();
-    int[] current = intervals[0];
-    merged.Add(current);
-    foreach (var interval in intervals) {
-        if (interval[0] <= current[1]) {
-            current[1] = Math.Max(current[1], interval[1]);
-        } else {
-            current = interval;
-            merged.Add(current);
-        }
-    }
-    return merged.ToArray();
-}
-```
-
-
-### Problem 4: Word Search (Medium)
-Given an $m \times n$ grid of characters `board` and a string `word`, return `true` if `word` exists in the grid. The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
-
-#### Design Invariants
-
-1. **Grid Boundaries:** Recursion must immediately terminate if row $r$ or column $c$ is outside board boundaries.
-2. **Path Uniqueness:** Cells in the current search path must be marked (e.g., replaced with `'#'`) to prevent reuse, and restored (backtracked) once the path exploration finishes.
-
-```csharp
-public boolean Exist(char[][] board, string word) {
-    int m = board.Length;
-    int n = board[0].Length;
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            if (Dfs(board, word, i, j, 0)) return true;
-        }
-    }
-    return false;
-}
-
-private bool Dfs(char[][] board, string word, int r, int c, int index) {
-    if (index == word.Length) return true;
-    if (r < 0 || r >= board.Length || c < 0 || c >= board[0].Length || board[r][c] != word[index]) {
-        return false;
-    }
-    char temp = board[r][c];
-    board[r][c] = '#';
-    bool found = Dfs(board, word, r + 1, c, index + 1)
-              || Dfs(board, word, r - 1, c, index + 1)
-              || Dfs(board, word, r, c + 1, index + 1)
-              || Dfs(board, word, r, c - 1, index + 1);
-    board[r][c] = temp;
-    return found;
-}
-```
-
-
-### Problem 5: Longest Common Subsequence (Medium)
-Given two strings `text1` and `text2`, return the length of their longest common subsequence. If there is no common subsequence, return 0.
-
-#### Design Invariants
-
-1. **DP State:** `dp[i][j]` represents the length of the longest common subsequence of `text1[0...i-1]` and `text2[0...j-1]`.
-2. **Transition Rule:** If $text1[i-1] == text2[j-1]$, then $dp[i][j] = dp[i-1][j-1] + 1$. Otherwise, $dp[i][j] = \max(dp[i-1][j], dp[i][j-1])$.
-
-```csharp
-public int LongestCommonSubsequence(string text1, string text2) {
-    int m = text1.Length;
-    int n = text2.Length;
-    int[,] dp = new int[m + 1, n + 1];
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            if (text1[i - 1] == text2[j - 1]) {
-                dp[i, j] = dp[i - 1, j - 1] + 1;
-            } else {
-                dp[i, j] = Math.Max(dp[i - 1, j], dp[i, j - 1]);
-            }
-        }
-    }
-    return dp[m, n];
-}
-```
-
-
-### Problem 6: Number of Islands (Medium)
-Given an $m \times n$ 2D binary grid `grid` which represents a map of `'1'`s (land) and `'0'`s (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically.
-
-#### Design Invariants
-
-1. **Island Boundary:** Once an island cell `'1'` is discovered, all connected land cells must be sunk (set to `'0'`) via DFS to ensure the island is only counted once.
-
-```csharp
-public int NumIslands(char[][] grid) {
-    if (grid == null || grid.Length == 0) return 0;
-    int count = 0;
-    for (int i = 0; i < grid.Length; i++) {
-        for (int j = 0; j < grid[0].Length; j++) {
-            if (grid[i][j] == '1') {
-                count++;
-                Dfs(grid, i, j);
-            }
-        }
-    }
-    return count;
-}
-
-private void Dfs(char[][] grid, int r, int c) {
-    if (r < 0 || r >= grid.Length || c < 0 || c >= grid[0].Length || grid[r][c] != '1') {
-        return;
-    }
-    grid[r][c] = '0';
-    Dfs(grid, r + 1, c);
-    Dfs(grid, r - 1, c);
-    Dfs(grid, r, c + 1);
-    Dfs(grid, r, c - 1);
-}
-```
-
-
-### Problem 7: Daily Temperatures (Medium)
-Given an array of integers `temperatures` represents the daily temperatures, return an array `answer` such that `answer[i]` is the number of days you have to wait after the $i$-th day to get a warmer temperature. If there is no future day for which this is possible, keep `answer[i] == 0` instead.
-
-#### Design Invariants
-
-1. **Monotonic Stack Invariant:** The stack stores indices of temperatures in strictly descending order.
-2. **Trigger Condition:** If the current temperature exceeds the temperature at the index stored at the top of the stack, we resolve that day's wait time and pop the stack.
-
-```csharp
-public int[] DailyTemperatures(int[] temperatures) {
-    int n = temperatures.Length;
-    int[] result = new int[n];
-    var stack = new Stack<int>();
-    for (int i = 0; i < n; i++) {
-        while (stack.Count > 0 && temperatures[stack.Peek()] < temperatures[i]) {
-            int idx = stack.Pop();
-            result[idx] = i - idx;
-        }
-        stack.Push(i);
-    }
-    return result;
-}
-```
-
-
-### Problem 8: Search in Rotated Sorted Array (Medium)
-There is an integer array `nums` sorted in ascending order (with distinct values). Prior to being passed to your function, `nums` is possibly rotated at an unknown pivot index. Given the array `nums` after the rotation and an integer `target`, return the index of `target` if it is in `nums`, or `-1` if it is not in `nums`.
-
-#### Design Invariants
-
-1. **Sorted Half:** In any rotated sorted array split in half, at least one half of the array must be sorted.
-2. **Search Boundary:** If the sorted half contains the target, narrow search to that half; otherwise, search the other half.
-
-```csharp
-public int Search(int[] nums, int target) {
-    int left = 0;
-    int right = nums.Length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) return mid;
-        if (nums[left] <= nums[mid]) {
-            if (target >= nums[left] && target < nums[mid]) {
-                right = mid - 1;
-            } else {
-                left = mid + 1;
-            }
-        } else {
-            if (target > nums[mid] && target <= nums[right]) {
-                left = mid + 1;
-            } else {
-                right = mid - 1;
-            }
-        }
+    for (int i = 0; i < s.length(); i++) {
+        if (counts[s.charAt(i)] == 1) return i;
     }
     return -1;
 }
 ```
+- **Diagnostic Triggers:** "First non-repeating character", "Anagram check", "Character frequency".
+- **Boundary Conditions:** Ensure array size covers the domain (`256` for ASCII, `26` for lowercase English).
+- **Real-World Application:** High-speed network packet inspection, audit log frequency counting.
 
+---
 
-## Mock General Coding Assessments
+### [PAT-02] In-Place Mutation & Two-Pointer Compaction
 
-To replicate the pressure of a real speed run, practice with these two timed mock assessments.
-
-### Mock GCA Test 1 (Target Time: 70 Minutes)
-
-#### Q1: String Compression (Easy)
-Given an array of characters `chars`, compress it using the following algorithm: Begin with an empty string `s`. For each group of consecutive repeating characters in `chars`: If the group's length is 1, append the character to `s`. Otherwise, append the character followed by the group's length. Return the new length of the array after compression. The design must update the input array in-place.
-
-*   **Spec-Driven Analysis:** Use a two-pointer technique: one `read` pointer to scan the groups and one `write` pointer to write the compressed characters in-place.
-*   **Invariants:** The `write` pointer must always be less than or equal to the `read` pointer.
-
-```csharp
-public int Compress(char[] chars) {
-    int write = 0;
-    int read = 0;
-    while (read < chars.Length) {
-        char currentChar = chars[read];
-        int count = 0;
-        while (read < chars.Length && chars[read] == currentChar) {
-            read++;
-            count++;
-        }
-        chars[write++] = currentChar;
-        if (count > 1) {
-            foreach (char c in count.ToString().ToCharArray()) {
-                chars[write++] = c;
-            }
+- **Invariant:** A `write` pointer tracks the boundary of valid elements while a `read` pointer scans the array, mutating data in-place in $O(1)$ extra space.
+- **Mental Model:** Filter or compact elements in a single pass without allocating a new array.
+- **Canonical Code Skeleton:**
+```java
+public int removeDuplicates(int[] nums) {
+    if (nums.length == 0) return 0;
+    int write = 1;
+    for (int read = 1; read < nums.length; read++) {
+        if (nums[read] != nums[read - 1]) {
+            nums[write++] = nums[read];
         }
     }
     return write;
 }
 ```
+- **Diagnostic Triggers:** "In-place removal", "Compact array", "Move zeroes to end".
+- **Boundary Conditions:** Handle empty array or single-element array upfront.
+- **Real-World Application:** Memory defragmentation, log stream sanitization.
 
-#### Q2: Rotate Image (Medium)
-You are given an $n \times n$ 2D matrix representing an image, rotate the image by 90 degrees (clockwise) in-place.
+---
 
-*   **Spec-Driven Analysis:** To rotate a matrix 90 degrees clockwise in-place, transpose the matrix (swap `matrix[i][j]` with `matrix[j][i]`) and then reverse each row.
-*   **Invariants:** Transposition only swaps elements where $j \ge i$ to prevent double-swapping back to original positions.
+### [PAT-03] Prefix Sums & Range Query Invariants
 
-```csharp
-public void Rotate(int[][] matrix) {
-    int n = matrix.Length;
-    // Transpose
-    for (int i = 0; i < n; i++) {
-        for (int j = i; j < n; j++) {
-            int temp = matrix[i][j];
-            matrix[i][j] = matrix[j][i];
-            matrix[j][i] = temp;
+- **Invariant:** The sum of elements between indices $i$ and $j$ equals `prefix[j + 1] - prefix[i]`, turning range sum queries into $O(1)$ operations.
+- **Mental Model:** Precompute cumulative totals so any subarray sum is computed by subtraction.
+- **Canonical Code Skeleton:**
+```java
+public int subarraySumEqualsK(int[] nums, int k) {
+    var prefCounts = new HashMap<Integer, Integer>();
+    prefCounts.put(0, 1);
+    int currentSum = 0, count = 0;
+
+    for (int num : nums) {
+        currentSum += num;
+        if (prefCounts.containsKey(currentSum - k)) {
+            count += prefCounts.get(currentSum - k);
         }
-    }
-    // Reverse each row
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n / 2; j++) {
-            int temp = matrix[i][j];
-            matrix[i][j] = matrix[i][n - 1 - j];
-            matrix[i][n - 1 - j] = temp;
-        }
-    }
-}
-```
-
-#### Q3: Group Anagrams (Medium-Hard)
-Given an array of strings `strs`, group the anagrams together. You can return the answer in any order.
-
-*   **Spec-Driven Analysis:** Anagrams share the exact same character counts. Sort each string's characters to generate a unique canonical key for a HashMap.
-*   **Invariants:** All strings mapped to the same HashMap key must be anagrams.
-
-```csharp
-public IList<IList<string>> GroupAnagrams(string[] strs) {
-    if (strs == null || strs.Length == 0) return new List<IList<string>>();
-    var map = new Dictionary<string, List<string>>();
-    foreach (string s in strs) {
-        char[] ca = s.ToCharArray();
-        Array.Sort(ca);
-        string key = new string(ca);
-        if (!map.ContainsKey(key)) {
-            map[key] = new List<string>();
-        }
-        map[key].Add(s);
-    }
-    return new List<IList<string>>(map.Values);
-}
-```
-
-#### Q4: Sliding Window Median (Hard)
-Given an integer array `nums` and an integer `k`, there is a sliding window of size `k` which is moving from the very left of the array to the very right. Return the median array for each window position.
-
-*   **Spec-Driven Analysis:** Track the median of the window dynamically. Balance elements between a Max-Heap (lower half) and a Min-Heap (upper half).
-*   **Invariants:** `leftHeap.size() == rightHeap.size()` (even window) or `leftHeap.size() == rightHeap.size() + 1` (odd window).
-
-```csharp
-public double[] MedianSlidingWindow(int[] nums, int k) {
-    int n = nums.Length;
-    double[] result = new double[n - k + 1];
-    // Storing sorted array via simple list since C# SortedSet doesn't support duplicate values cleanly
-    List<int> window = new List<int>();
-
-    for (int i = 0; i < n; i++) {
-        int val = nums[i];
-        int insertPos = window.BinarySearch(val);
-        if (insertPos < 0) insertPos = ~insertPos;
-        window.Insert(insertPos, val);
-
-        if (i >= k - 1) {
-            if (k % 2 == 1) {
-                result[i - k + 1] = window[k / 2];
-            } else {
-                result[i - k + 1] = ((double)window[k / 2 - 1] + window[k / 2]) / 2.0;
-            }
-            
-            // Remove the element sliding out
-            int elementToRemove = nums[i - k + 1];
-            int removePos = window.BinarySearch(elementToRemove);
-            window.RemoveAt(removePos);
-        }
-    }
-    return result;
-}
-```
-
-
-### Mock GCA Test 2 (Target Time: 70 Minutes)
-
-#### Q1: Valid Parentheses (Easy)
-Given a string `s` containing just the characters `'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`, determine if the input string is valid.
-
-*   **Spec-Driven Analysis:** Use a stack to track open brackets. A closing bracket must match the most recently opened bracket.
-*   **Invariants:** The stack contains unmatched open brackets in LIFO order.
-
-```csharp
-public bool IsValid(string s) {
-    var stack = new Stack<char>();
-    foreach (char c in s) {
-        if (c == '(' || c == '{' || c == '[') {
-            stack.Push(c);
-        } else {
-            if (stack.Count == 0) return false;
-            char top = stack.Pop();
-            if (c == ')' && top != '(') return false;
-            if (c == '}' && top != '{') return false;
-            if (c == ']' && top != '[') return false;
-        }
-    }
-    return stack.Count == 0;
-}
-```
-
-#### Q2: Spiral Matrix (Medium)
-Given an $m \times n$ matrix, return all elements of the matrix in spiral order.
-
-*   **Spec-Driven Analysis:** Define four boundaries: `r1` (top row), `r2` (bottom row), `c1` (left col), and `c2` (right col). Traverse boundaries clockwise, updating limits.
-*   **Invariants:** Traversal terminates once `r1 > r2` or `c1 > c2`.
-
-```csharp
-public IList<int> SpiralOrder(int[][] matrix) {
-    var result = new List<int>();
-    if (matrix.Length == 0) return result;
-    int r1 = 0, r2 = matrix.Length - 1;
-    int c1 = 0, c2 = matrix[0].Length - 1;
-    while (r1 <= r2 && c1 <= c2) {
-        for (int c = c1; c <= c2; c++) result.Add(matrix[r1][c]);
-        for (int r = r1 + 1; r <= r2; r++) result.Add(matrix[r][c2]);
-        if (r1 < r2 && c1 < c2) {
-            for (int c = c2 - 1; c > c1; c--) result.Add(matrix[r2][c]);
-            for (int r = r2; r > r1; r--) result.Add(matrix[r][c1]);
-        }
-        r1++;
-        r2--;
-        c1++;
-        c2--;
-    }
-    return result;
-}
-```
-
-#### Q3: Subarray Sum Equals K (Medium-Hard)
-Given an array of integers `nums` and an integer `k`, return the total number of continuous subarrays whose sum equals to `k`.
-
-*   **Spec-Driven Analysis:** A subarray sum from index $i$ to $j$ is computed as $PrefixSum[j] - PrefixSum[i-1]$. Track prefix sums and their frequency in a HashMap.
-*   **Invariants:** For any index $j$, if $PrefixSum[j] - k$ is present in the map, a matching subarray exists.
-
-```csharp
-public int SubarraySum(int[] nums, int k) {
-    int count = 0, sum = 0;
-    var map = new Dictionary<int, int>();
-    map[0] = 1;
-    foreach (int num in nums) {
-        sum += num;
-        if (map.ContainsKey(sum - k)) {
-            count += map[sum - k];
-        }
-        if (!map.ContainsKey(sum)) map[sum] = 0;
-        map[sum] = map[sum] + 1;
+        prefCounts.put(currentSum, prefCounts.getOrDefault(currentSum, 0) + 1);
     }
     return count;
 }
 ```
+- **Diagnostic Triggers:** "Subarray sum equals K", "Range sum queries", "Equal number of 0s and 1s".
+- **Boundary Conditions:** Always initialize `prefCounts.put(0, 1)` to account for subarrays starting at index 0.
+- **Real-World Application:** Financial ledger balance auditing, telemetry interval aggregation.
 
-#### Q4: Median of Two Sorted Arrays (Hard)
-Given two sorted arrays `nums1` and `nums2` of size `m` and `n` respectively, return the median of the two sorted arrays. The overall run time complexity should be $O(\log(m+n))$.
+---
 
-*   **Spec-Driven Analysis:** Binary search on the partition split of the smaller array. Partition the arrays such that the left half has the same size as the right half.
-*   **Invariants:** Left partitions must be smaller than or equal to right partitions: $A[i-1] \le B[j]$ and $B[j-1] \le A[i]$.
+## Module 2: Windowing & Pointer Navigation
 
-```csharp
-public double FindMedianSortedArrays(int[] A, int[] B) {
-    if (A.Length > B.Length) {
-        return FindMedianSortedArrays(B, A);
+### [PAT-04] Dynamic Sliding Window (Variable Size)
+
+- **Invariant:** Maintain a window `[left...right]`. Expand `right` to include elements. When constraint is violated, shrink from `left` until valid.
+- **Mental Model:** An expanding and contracting net scanning an array.
+- **Canonical Code Skeleton:**
+```java
+public int longestSubarray(int[] nums, int k) {
+    int left = 0, result = 0, zeroCount = 0;
+
+    for (int right = 0; right < nums.length; right++) {
+        if (nums[right] == 0) zeroCount++;
+
+        while (zeroCount > k) {
+            if (nums[left] == 0) zeroCount--;
+            left++; // Always advance left during shrink
+        }
+
+        result = Math.max(result, right - left + 1);
     }
-    int m = A.Length;
-    int n = B.Length;
-    int left = 0, right = m;
+    return result;
+}
+```
+- **Diagnostic Triggers:** "Longest/shortest subarray satisfying condition X", "At most K distinct elements".
+- **Boundary Conditions:** Set-based windows must shrink BEFORE expanding; HashMap/Sum-based windows expand FIRST then shrink.
+- **Real-World Application:** Sliding-window rate limiters, network throughput monitoring.
+
+---
+
+### [PAT-05] Fixed-Size Monotonic Deque Window
+
+- **Invariant:** Maintain a `Deque` of indices where corresponding values are strictly decreasing from front to back. Front always holds the maximum of the current window.
+- **Mental Model:** A sliding window of fixed size $K$ that tracks max/min in $O(1)$ amortized time.
+- **Canonical Code Skeleton:**
+```java
+public int[] maxSlidingWindow(int[] nums, int k) {
+    var deque = new ArrayDeque<Integer>();
+    var res = new int[nums.length - k + 1];
+    int idx = 0;
+
+    for (int i = 0; i < nums.length; i++) {
+        while (!deque.isEmpty() && deque.peekFirst() < i - k + 1) deque.pollFirst(); // Expire
+        while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) deque.pollLast(); // Kill weaker
+        deque.offerLast(i);
+        if (i >= k - 1) res[idx++] = nums[deque.peekFirst()];
+    }
+    return res;
+}
+```
+- **Diagnostic Triggers:** "Maximum/minimum in every window of size K".
+- **Boundary Conditions:** Deque stores INDICES, not values. Window is full when `i >= k - 1`.
+- **Real-World Application:** Real-time SLA monitoring, financial tick-data peak detection.
+
+---
+
+### [PAT-06] Converging Two-Pointers
+
+- **Invariant:** Two pointers start at opposite ends (`left = 0`, `right = n - 1`) of a sorted array and move inward based on comparison with target.
+- **Mental Model:** Squeezing the search space from both boundaries.
+- **Canonical Code Skeleton:**
+```java
+public int[] twoSumSorted(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    while (left < right) {
+        int sum = nums[left] + nums[right];
+        if (sum == target) return new int[]{left, right};
+        else if (sum < target) left++;
+        else right--;
+    }
+    return new int[0];
+}
+```
+- **Diagnostic Triggers:** "Sorted array + find pair", "Container with most water", "Palindrome validation".
+- **Boundary Conditions:** Array MUST be sorted. Loop condition is `left < right` (pointers must not overlap for pairs).
+- **Real-World Application:** Order matching engines, debit-credit balance pairing.
+
+---
+
+### [PAT-07] Fast & Slow Pointers (Floyd's Cycle Detection)
+
+- **Invariant:** `slow` moves 1 step while `fast` moves 2 steps. If a cycle exists, `fast` will eventually catch `slow`.
+- **Mental Model:** Two runners on a circular track.
+- **Canonical Code Skeleton:**
+```java
+public boolean hasCycle(ListNode head) {
+    ListNode slow = head, fast = head;
+    while (fast != null && fast.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow == fast) return true;
+    }
+    return false;
+}
+```
+- **Diagnostic Triggers:** "Detect cycle in linked list", "Find duplicate number", "Happy number".
+- **Boundary Conditions:** Check `fast != null && fast.next != null` to avoid `NullPointerException`.
+- **Real-World Application:** Circular reference detection in graph engines, deadlock detection.
+
+---
+
+## Module 3: Stacks, Queues & Monotonic Structures
+
+### [PAT-08] LIFO Matching & Expression Parsing
+
+- **Invariant:** Push open symbols onto a stack. When a closing symbol is encountered, pop and verify it matches the expected opening symbol.
+- **Mental Model:** Last-in, first-out validation of nested structures.
+- **Canonical Code Skeleton:**
+```java
+public boolean isValidParentheses(String s) {
+    var stack = new ArrayDeque<Character>();
+    for (char c : s.toCharArray()) {
+        if (c == '(') stack.push(')');
+        else if (c == '{') stack.push('}');
+        else if (c == '[') stack.push(']');
+        else if (stack.isEmpty() || stack.pop() != c) return false;
+    }
+    return stack.isEmpty();
+}
+```
+- **Diagnostic Triggers:** "Valid parentheses", "Evaluate expression", "Simplify file path".
+- **Boundary Conditions:** Stack must be empty at the end. Check `stack.isEmpty()` before popping.
+- **Real-World Application:** JSON/XML syntax parsers, compiler AST validation, undo stacks.
+
+---
+
+### [PAT-09] Monotonic Stack ("The Waiting Room")
+
+- **Invariant:** Stack holds unresolved element indices in decreasing order. When a larger element arrives, it pops colder elements and resolves their answers.
+- **Mental Model:** A waiting room where people stay until someone taller arrives to liberate them.
+- **Canonical Code Skeleton:**
+```java
+public int[] dailyTemperatures(int[] temps) {
+    var ans = new int[temps.length];
+    Deque<Integer> stack = new ArrayDeque<>(); // Stores INDICES
+
+    for (int i = 0; i < temps.length; i++) {
+        while (!stack.isEmpty() && temps[stack.peek()] < temps[i]) {
+            int prevIdx = stack.pop();
+            ans[prevIdx] = i - prevIdx;
+        }
+        stack.push(i);
+    }
+    return ans;
+}
+```
+- **Diagnostic Triggers:** "Next greater element", "Daily temperatures", "Largest rectangle in histogram".
+- **Boundary Conditions:** Store INDICES on stack, not values. Unresolved items remain `0` or `-1`.
+- **Real-World Application:** Stock price drop alerts, automated threshold breach notifications.
+
+---
+
+## Module 4: Search Space & Decision Trees
+
+### [PAT-10] Monotonic Partition Binary Search
+
+- **Invariant:** In a rotated sorted array, at least one half (left or right) is always strictly sorted.
+- **Mental Model:** Halving search space by identifying the sorted partition.
+- **Canonical Code Skeleton:**
+```java
+public int searchRotated(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
     while (left <= right) {
-        int i = left + (right - left) / 2;
-        int j = (m + n + 1) / 2 - i;
-        
-        int aLeft = (i == 0) ? int.MinValue : A[i - 1];
-        int aRight = (i == m) ? int.MaxValue : A[i];
-        int bLeft = (j == 0) ? int.MinValue : B[j - 1];
-        int bRight = (j == n) ? int.MaxValue : B[j];
-        
-        if (aLeft <= bRight && bLeft <= aRight) {
-            if ((m + n) % 2 == 1) {
-                return Math.Max(aLeft, bLeft);
-            }
-            return (Math.Max(aLeft, bLeft) + Math.Min(aRight, bRight)) / 2.0;
-        } else if (aLeft > bRight) {
-            right = i - 1;
-        } else {
-            left = i + 1;
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) return mid;
+
+        if (nums[left] <= nums[mid]) { // Left half sorted (MUST use <=)
+            if (nums[left] <= target && target < nums[mid]) right = mid - 1;
+            else left = mid + 1;
+        } else { // Right half sorted
+            if (nums[mid] < target && target <= nums[right]) left = mid + 1;
+            else right = mid - 1;
         }
     }
-    return 0.0;
+    return -1;
+}
+```
+- **Diagnostic Triggers:** "Search in rotated sorted array", "Find minimum in rotated sorted array".
+- **Boundary Conditions:** Use `nums[left] <= nums[mid]` (with `<=`) to handle single-element partitions.
+- **Real-World Application:** Distributed partition log search, sharded database key lookups.
+
+---
+
+### [PAT-11] Binary Search on Solution Range
+
+- **Invariant:** When the answer lies within a known numeric range `[min...max]` and a predicate function `feasible(x)` is monotonic, binary search finds the optimal value.
+- **Mental Model:** Guess the answer, test if it works, halve the range.
+- **Canonical Code Skeleton:**
+```java
+public int shipWithinDays(int[] weights, int days) {
+    int lo = 0, hi = 0;
+    for (int w : weights) { lo = Math.max(lo, w); hi += w; }
+
+    while (lo < hi) {
+        int mid = lo + (hi - lo) / 2;
+        if (canShip(weights, days, mid)) hi = mid; // Try smaller capacity
+        else lo = mid + 1;                         // Must increase capacity
+    }
+    return lo;
+}
+
+private boolean canShip(int[] weights, int days, int capacity) {
+    int dayCount = 1, currentLoad = 0;
+    for (int w : weights) {
+        if (currentLoad + w > capacity) {
+            dayCount++;
+            currentLoad = 0;
+        }
+        currentLoad += w;
+    }
+    return dayCount <= days;
+}
+```
+- **Diagnostic Triggers:** "Find minimum capacity", "Koko eating bananas", "Split array largest sum".
+- **Boundary Conditions:** Define correct range bounds `[lo, hi]` upfront.
+- **Real-World Application:** Capacity planning, thread pool sizing, rate limit optimization.
+
+---
+
+### [PAT-12] Backtracking & State-Space Pruning
+
+- **Invariant:** Explore decision paths recursively; when a path violates constraints, backtrack (undo state change) and try the next branch.
+- **Mental Model:** Exploring a maze by dropping breadcrumbs and stepping back when hitting a dead end.
+- **Canonical Code Skeleton:**
+```java
+public void backtrack(List<List<Integer>> res, List<Integer> path, int[] nums, boolean[] used) {
+    if (path.size() == nums.length) {
+        res.add(new ArrayList<>(path));
+        return;
+    }
+    for (int i = 0; i < nums.length; i++) {
+        if (used[i]) continue;
+        used[i] = true;
+        path.add(nums[i]);
+        backtrack(res, path, nums, used); // Recurse
+        path.remove(path.size() - 1);     // Undo (backtrack)
+        used[i] = false;
+    }
+}
+```
+- **Diagnostic Triggers:** "Generate all permutations/combinations", "Sudoku solver", "N-Queens".
+- **Boundary Conditions:** Always make a deep copy `new ArrayList<>(path)` when adding to results.
+- **Real-World Application:** Constraint satisfaction solvers, security permission path traversal.
+
+---
+
+## Module 5: Graph & Grid Traversals
+
+### [PAT-13] Level-by-Level BFS Wavefront
+
+- **Invariant:** Queue processes nodes layer-by-layer (`int size = queue.size()`). First time target is popped = shortest path in unweighted graph/grid.
+- **Mental Model:** Water ripples expanding outward in concentric circles.
+- **Canonical Code Skeleton:**
+```java
+public int shortestPath(char[][] grid, int startR, int startC) {
+    int rows = grid.length, cols = grid[0].length;
+    var queue = new ArrayDeque<int[]>();
+    boolean[][] visited = new boolean[rows][cols];
+
+    queue.offer(new int[]{startR, startC});
+    visited[startR][startC] = true; // Mark visited ON PUSH
+    int steps = 0;
+    int[][] DIRS = {{1,0},{-1,0},{0,1},{0,-1}};
+
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        for (int i = 0; i < size; i++) {
+            int[] curr = queue.poll();
+            if (grid[curr[0]][curr[1]] == 'E') return steps;
+
+            for (int[] d : DIRS) {
+                int nr = curr[0] + d[0], nc = curr[1] + d[1];
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols 
+                    && !visited[nr][nc] && grid[nr][nc] != 'X') {
+                    visited[nr][nc] = true; // MARK ON PUSH!
+                    queue.offer(new int[]{nr, nc});
+                }
+            }
+        }
+        steps++;
+    }
+    return -1;
+}
+```
+- **Diagnostic Triggers:** "Shortest path in grid", "Minimum steps to reach goal", "Word ladder".
+- **Boundary Conditions:** ALWAYS mark `visited = true` on `offer()`, NOT on `poll()`.
+- **Real-World Application:** Network routing protocols, social network distance calculation.
+
+---
+
+### [PAT-14] Multi-Source BFS Parallel Spreading
+
+- **Invariant:** Push ALL starting origin points into the Queue at time $t=0$. The wavefront expands from all origins simultaneously.
+- **Mental Model:** Multiple fires starting at different spots and spreading at equal speed.
+- **Canonical Code Skeleton:**
+```java
+public int orangesRotting(int[][] grid) {
+    int rows = grid.length, cols = grid[0].length;
+    var queue = new ArrayDeque<int[]>();
+    int freshCount = 0;
+
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            if (grid[r][c] == 2) queue.offer(new int[]{r, c}); // Push ALL sources
+            else if (grid[r][c] == 1) freshCount++;
+        }
+    }
+    if (freshCount == 0) return 0;
+    int minutes = 0;
+    int[][] DIRS = {{1,0},{-1,0},{0,1},{0,-1}};
+
+    while (!queue.isEmpty() && freshCount > 0) {
+        int size = queue.size();
+        minutes++;
+        for (int i = 0; i < size; i++) {
+            int[] curr = queue.poll();
+            for (int[] d : DIRS) {
+                int nr = curr[0] + d[0], nc = curr[1] + d[1];
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1) {
+                    grid[nr][nc] = 2; // Mutate grid as visited
+                    freshCount--;
+                    queue.offer(new int[]{nr, nc});
+                }
+            }
+        }
+    }
+    return freshCount == 0 ? minutes : -1;
+}
+```
+- **Diagnostic Triggers:** "Rotting oranges", "Walls and gates", "Multi-point fire propagation".
+- **Boundary Conditions:** Track remaining fresh target count to avoid extra minute increment.
+- **Real-World Application:** Multi-datacenter cache invalidation, rumor/virus propagation modeling.
+
+---
+
+### [PAT-15] DFS Component Sinking & Flood Fill
+
+- **Invariant:** Traverse connected component recursively; mutate cell value (`'1' -> '0'`) to mark visited and eliminate memory overhead.
+- **Mental Model:** Sinking an island as you walk over it so you never visit it again.
+- **Canonical Code Skeleton:**
+```java
+public int numIslands(char[][] grid) {
+    int count = 0;
+    for (int r = 0; r < grid.length; r++) {
+        for (int c = 0; c < grid[0].length; c++) {
+            if (grid[r][c] == '1') {
+                count++;
+                dfsSink(grid, r, c);
+            }
+        }
+    }
+    return count;
+}
+
+private void dfsSink(char[][] grid, int r, int c) {
+    if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] == '0') return;
+    grid[r][c] = '0'; // Sink cell
+    dfsSink(grid, r + 1, c);
+    dfsSink(grid, r - 1, c);
+    dfsSink(grid, r, c + 1);
+    dfsSink(grid, r, c - 1);
+}
+```
+- **Diagnostic Triggers:** "Number of islands", "Surrounded regions", "Flood fill".
+- **Boundary Conditions:** Base case must check bounds BEFORE accessing `grid[r][c]`.
+- **Real-World Application:** Image segmentation, cluster isolation, GIS landmass detection.
+
+---
+
+### [PAT-16] Topological Sort (Kahn's & DFS)
+
+- **Invariant:** Process nodes with in-degree 0 first. Reduces in-degree of neighbors. If processed count $< N$, a cycle exists.
+- **Mental Model:** Resolving build dependencies in order.
+- **Canonical Code Skeleton:**
+```java
+public int[] findOrder(int numCourses, int[][] prerequisites) {
+    var inDegree = new int[numCourses];
+    var adj = new ArrayList<List<Integer>>();
+    for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
+    for (int[] p : prerequisites) {
+        adj.get(p[1]).add(p[0]);
+        inDegree[p[0]]++;
+    }
+
+    var queue = new ArrayDeque<Integer>();
+    for (int i = 0; i < numCourses; i++) if (inDegree[i] == 0) queue.offer(i);
+
+    int[] order = new int[numCourses];
+    int idx = 0;
+    while (!queue.isEmpty()) {
+        int curr = queue.poll();
+        order[idx++] = curr;
+        for (int neighbor : adj.get(curr)) {
+            if (--inDegree[neighbor] == 0) queue.offer(neighbor);
+        }
+    }
+    return idx == numCourses ? order : new int[0];
+}
+```
+- **Diagnostic Triggers:** "Course schedule", "Task dependency ordering", "Build order".
+- **Boundary Conditions:** Return empty array if `idx != numCourses` (cycle detected).
+- **Real-World Application:** Maven/Gradle build execution, CI/CD pipeline stage ordering.
+
+---
+
+### [PAT-17] Disjoint Set Union (Union-Find)
+
+- **Invariant:** Maintain connected sets using parent pointers with path compression and rank optimization for near $O(1)$ amortized `find` and `union`.
+- **Mental Model:** Merging social groups and checking if two people share the same root leader.
+- **Canonical Code Skeleton:**
+```java
+class UnionFind {
+    int[] parent, rank;
+    public UnionFind(int n) {
+        parent = new int[n]; rank = new int[n];
+        for (int i = 0; i < n; i++) parent[i] = i;
+    }
+    public int find(int i) {
+        if (parent[i] == i) return i;
+        return parent[i] = find(parent[i]); // Path compression
+    }
+    public boolean union(int i, int j) {
+        int rootI = find(i), rootJ = find(j);
+        if (rootI != rootJ) {
+            if (rank[rootI] < rank[rootJ]) parent[rootI] = rootJ;
+            else if (rank[rootI] > rank[rootJ]) parent[rootJ] = rootI;
+            else { parent[rootJ] = rootI; rank[rootI]++; }
+            return true;
+        }
+        return false; // Already connected!
+    }
+}
+```
+- **Diagnostic Triggers:** "Redundant connection", "Number of connected components", "Accounts merge".
+- **Boundary Conditions:** Path compression `parent[i] = find(parent[i])` is essential for optimal speed.
+- **Real-World Application:** Network topology clustering, distributed consensus membership tracking.
+
+---
+
+### [PAT-18] Weighted Shortest Path (Dijkstra / Min-Heap)
+
+- **Invariant:** Use a `PriorityQueue` ordered by distance. Always expand the unvisited node with the smallest tentative distance.
+- **Mental Model:** Exploring shortest path on a map with varying road costs.
+- **Canonical Code Skeleton:**
+```java
+public int networkDelayTime(int[][] times, int n, int k) {
+    Map<Integer, List<int[]>> adj = new HashMap<>();
+    for (int[] t : times) {
+        adj.computeIfAbsent(t[0], x -> new ArrayList<>()).add(new int[]{t[1], t[2]});
+    }
+
+    var pq = new PriorityQueue<int[]>((a, b) -> a[1] - b[1]); // [node, dist]
+    pq.offer(new int[]{k, 0});
+    var dist = new HashMap<Integer, Integer>();
+
+    while (!pq.isEmpty()) {
+        int[] curr = pq.poll();
+        int node = curr[0], d = curr[1];
+        if (dist.containsKey(node)) continue;
+        dist.put(node, d);
+
+        if (adj.containsKey(node)) {
+            for (int[] edge : adj.get(node)) {
+                if (!dist.containsKey(edge[0])) {
+                    pq.offer(new int[]{edge[0], d + edge[1]});
+                }
+            }
+        }
+    }
+    return dist.size() == n ? dist.values().stream().max(Integer::compare).get() : -1;
+}
+```
+- **Diagnostic Triggers:** "Network delay time", "Cheapest flight within K stops", "Shortest path with weights".
+- **Boundary Conditions:** PriorityQueue stores `[node, total_distance]`. Skip already finalized nodes (`dist.containsKey(node)`).
+- **Real-World Application:** Latency-based API gateway routing, Google Maps route optimization.
+
+---
+
+## Module 6: Dynamic Programming & Optimization
+
+### [PAT-19] 1D Choice Optimization (O(1) Space DP)
+
+- **Invariant:** State `dp[i]` depends only on `dp[i - 1]` and `dp[i - 2]`. Space can be optimized from $O(N)$ array to 2 variables (`prev1`, `prev2`).
+- **Mental Model:** Making optimal choice between taking current item or skipping it.
+- **Canonical Code Skeleton:**
+```java
+public int rob(int[] nums) {
+    if (nums == null || nums.length == 0) return 0;
+    int prev2 = 0, prev1 = 0;
+
+    for (int num : nums) {
+        int curr = Math.max(prev1, prev2 + num); // Skip vs Take
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    return prev1;
+}
+```
+- **Diagnostic Triggers:** "House robber", "Climbing stairs", "Min cost climbing stairs".
+- **Boundary Conditions:** Handle single-element input upfront.
+- **Real-World Application:** Capacity allocation, CPU time-slot scheduling.
+
+---
+
+### [PAT-20] 0/1 & Unbounded Knapsack DP
+
+- **Invariant:** `dp[w]` represents max value for capacity `w`. Iterate items and update capacity backwards for 0/1 (use item once) or forwards for unbounded (use item infinitely).
+- **Mental Model:** Packing a backpack with items to maximize value without exceeding weight capacity.
+- **Canonical Code Skeleton (Coin Change - Unbounded):**
+```java
+public int coinChange(int[] coins, int amount) {
+    int[] dp = new int[amount + 1];
+    Arrays.fill(dp, amount + 1);
+    dp[0] = 0;
+
+    for (int i = 1; i <= amount; i++) {
+        for (int coin : coins) {
+            if (i - coin >= 0) {
+                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            }
+        }
+    }
+    return dp[amount] > amount ? -1 : dp[amount];
+}
+```
+- **Diagnostic Triggers:** "Coin change", "Partition equal subset sum", "Knapsack capacity".
+- **Boundary Conditions:** Fill array with sentinel value (`amount + 1`) representing infinity.
+- **Real-World Application:** Resource packing in cloud instances, currency change calculators.
+
+---
+
+### [PAT-21] 2D Grid Path Optimization
+
+- **Invariant:** `dp[r][c]` represents min/max value to reach cell `(r, c)`, which depends on `dp[r - 1][c]` (from top) and `dp[r][c - 1]` (from left).
+- **Mental Model:** Walking down and right on a grid accumulating values.
+- **Canonical Code Skeleton:**
+```java
+public int minPathSum(int[][] grid) {
+    int rows = grid.length, cols = grid[0].length;
+    int[][] dp = new int[rows][cols];
+
+    for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+            if (r == 0 && c == 0) dp[r][c] = grid[r][c];
+            else if (r == 0) dp[r][c] = dp[r][c - 1] + grid[r][c];
+            else if (c == 0) dp[r][c] = dp[r - 1][c] + grid[r][c];
+            else dp[r][c] = Math.min(dp[r - 1][c], dp[r][c - 1]) + grid[r][c];
+        }
+    }
+    return dp[rows - 1][cols - 1];
+}
+```
+- **Diagnostic Triggers:** "Minimum path sum", "Unique paths in grid", "Dungeon game".
+- **Boundary Conditions:** Initialize first row and first column carefully.
+- **Real-World Application:** Cost-effective data routing across grid-structured networks.
+
+---
+
+### [PAT-22] String Alignment & Sequence DP
+
+- **Invariant:** `dp[i][j]` represents optimal alignment score for prefix `s1[0..i-1]` and `s2[0..j-1]`.
+- **Mental Model:** 2D grid matching characters of two strings.
+- **Canonical Code Skeleton (Longest Common Subsequence):**
+```java
+public int longestCommonSubsequence(String text1, String text2) {
+    int m = text1.length(), n = text2.length();
+    int[][] dp = new int[m + 1][n + 1];
+
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                dp[i][j] = 1 + dp[i - 1][j - 1];
+            } else {
+                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+            }
+        }
+    }
+    return dp[m][n];
+}
+```
+- **Diagnostic Triggers:** "Longest common subsequence", "Edit distance", "Wildcard matching".
+- **Boundary Conditions:** Matrix dimensions are `(m + 1) x (n + 1)`. Access chars using `i - 1` and `j - 1`.
+- **Real-World Application:** Git diff algorithms, DNA sequence alignment, text similarity search.
+
+---
+
+### [PAT-23] Sweep-Line & Interval Scheduling
+
+- **Invariant:** Sort intervals by start time. Use a pointer or heap to process overlapping boundaries.
+- **Mental Model:** Sweeping a vertical timeline left-to-right across time intervals.
+- **Canonical Code Skeleton:**
+```java
+public int minMeetingRooms(int[][] intervals) {
+    if (intervals == null || intervals.length == 0) return 0;
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+
+    var minHeap = new PriorityQueue<Integer>(); // Stores end times
+    minHeap.offer(intervals[0][1]);
+
+    for (int i = 1; i < intervals.length; i++) {
+        if (intervals[i][0] >= minHeap.peek()) {
+            minHeap.poll(); // Room freed up!
+        }
+        minHeap.offer(intervals[i][1]); // Allocate room
+    }
+    return minHeap.size();
+}
+```
+- **Diagnostic Triggers:** "Meeting rooms II", "Merge intervals", "Non-overlapping intervals".
+- **Boundary Conditions:** Always sort intervals by start time `a[0] - b[0]` first.
+- **Real-World Application:** Calendar scheduling engines, hotel room allocation, cloud VM provisioning.
+
+---
+
+### [PAT-24] Trie Prefix Search & Retrieval
+
+- **Invariant:** Tree structure where each node represents a character. Root-to-node path forms a string prefix, enabling $O(L)$ word lookup where $L$ is word length.
+- **Mental Model:** Dictionary tree branching by character.
+- **Canonical Code Skeleton:**
+```java
+class TrieNode {
+    TrieNode[] children = new TrieNode[26];
+    boolean isWord = false;
+}
+
+public class Trie {
+    private TrieNode root = new TrieNode();
+
+    public void insert(String word) {
+        TrieNode curr = root;
+        for (char c : word.toCharArray()) {
+            int idx = c - 'a';
+            if (curr.children[idx] == null) curr.children[idx] = new TrieNode();
+            curr = curr.children[idx];
+        }
+        curr.isWord = true;
+    }
+
+    public boolean search(String word) {
+        TrieNode node = getNode(word);
+        return node != null && node.isWord;
+    }
+
+    public boolean startsWith(String prefix) {
+        return getNode(prefix) != null;
+    }
+
+    private TrieNode getNode(String str) {
+        TrieNode curr = root;
+        for (char c : str.toCharArray()) {
+            int idx = c - 'a';
+            if (curr.children[idx] == null) return null;
+            curr = curr.children[idx];
+        }
+        return curr;
+    }
+}
+```
+- **Diagnostic Triggers:** "Implement Trie", "Word search II (grid + dictionary)", "Replace words / autocomplete".
+- **Boundary Conditions:** Use `c - 'a'` for lowercase alphabets. Set `isWord = true` at termination node.
+- **Real-World Application:** Autocomplete search suggestions, IP routing prefix tables, spell checkers.
+
+---
+
+### [PAT-25] Priority Queue / Min-Max Heap
+
+**Diagnostic Trigger:** "Find the K-th largest/smallest", "Merge K sorted lists", "Schedule tasks by priority", or any problem requiring efficient access to the minimum or maximum element while dynamically inserting.
+
+**Invariant:** The heap property is maintained: for a min-heap, every parent node is ≤ its children. This guarantees O(1) access to the minimum and O(log N) insertion/extraction.
+
+**Canonical Skeleton:**
+```java
+public int[] topKFrequent(int[] nums, int k) {
+    var freqMap = new HashMap<Integer, Integer>();
+    for (int n : nums) freqMap.merge(n, 1, Integer::sum);
+    
+    var minHeap = new PriorityQueue<Map.Entry<Integer, Integer>>(
+        Comparator.comparingInt(Map.Entry::getValue));
+    
+    for (var entry : freqMap.entrySet()) {
+        minHeap.offer(entry);
+        if (minHeap.size() > k) minHeap.poll();
+    }
+    
+    return minHeap.stream().mapToInt(Map.Entry::getKey).toArray();
 }
 ```
 
+**Complexity:** O(N log K) time, O(N + K) space.
 
-> ⭐ **STAR Moment: The Monotonic Stack Shortcut**
-> 
-> In coding tests, if a problem asks you to find the *"next greater element"* or *"next smaller element"* for every item in an array, it is a **Monotonic Stack** problem. Do not write nested loops. Push elements onto a stack, popping elements off when you find a value that exceeds the stack's tail. This reduces the time complexity from $O(N^2)$ to $O(N)$ instantly.
+> **Note on Mathematical and Bit Manipulation Patterns:** Several common interview problems rely on mathematical properties (XOR for finding missing/duplicate numbers, modular arithmetic, Gauss's sum formula) or bitwise operations (bitmask DP, bit counting). These techniques are cross-cutting tools that complement the structural patterns above rather than forming standalone patterns. When you encounter a problem involving XOR properties, power-of-two checks, or bitmask state encoding, recognize these as mathematical invariants that can be combined with the canonical patterns.
 
 
-# Q1 Mastery — Implementation Speed, In-Place Transformations, and String Processing
+# Easy-tier Mastery — Implementation Speed, In-Place Transformations, and String Processing
 
-The first question (Q1) on the CodeSignal General Coding Assessment (GCA) is designed to evaluate fundamental implementation speed, boundary correctness, and memory hygiene. You have roughly **8 minutes** to solve Q1. While categorized as "Easy," Q1 is where candidates most frequently drop valuable points — not because the problem is hard, but because they rush and introduce off-by-one errors, forget null checks, or use inefficient string concatenation. A perfect Q1 score is the foundation of a 750+ GCA result.
+The first question (Easy-tier) on the automated testing platforms General Coding Assessment (general coding assessment) is designed to evaluate fundamental implementation speed, boundary correctness, and memory hygiene. You have roughly **8 minutes** to solve Easy-tier. While categorized as "Easy," Easy-tier is where candidates most frequently drop valuable points — not because the problem is hard, but because they rush and introduce off-by-one errors, forget null checks, or use inefficient string concatenation. A perfect Easy-tier score is the foundation of a 750+ general coding assessment result.
 
 This chapter teaches you the core vocabulary, the reusable pointer archetypes, 20 fully solved exemplar problems with detailed explanations, and 30 concrete practice problems with strategic hints.
 
@@ -3768,12 +2797,12 @@ This chapter teaches you the core vocabulary, the reusable pointer archetypes, 2
 
 ## Essential Terminology & Vocabulary
 
-Before solving any Q1 problem, you must internalize these foundational concepts. Each one maps directly to a class of problems you will encounter on the exam.
+Before solving any Easy-tier problem, you must internalize these foundational concepts. Each one maps directly to a class of problems you will encounter on the exam.
 
 ### In-Place Mutation
 An algorithm is **in-place** if it transforms the input using $\mathcal{O}(1)$ auxiliary space (excluding the input itself). In Java, arrays are mutable references — you can overwrite `arr[i]` directly. Strings, however, are **immutable objects** — every modification creates a new heap allocation.
 
-**Why it matters on Q1:** Many Q1 problems explicitly require in-place modification. If you allocate a new array when the spec says "in-place," you lose points even if the output is correct.
+**Why it matters on Easy-tier:** Many Easy-tier problems explicitly require in-place modification. If you allocate a new array when the spec says "in-place," you lose points even if the output is correct.
 
 ### Read/Write Pointer Pattern
 A two-pointer technique where:
@@ -3783,7 +2812,7 @@ A two-pointer technique where:
 
 After the loop, `arr[0..write-1]` contains the filtered result. This pattern solves: *Remove Element*, *Move Zeros*, *Remove Duplicates from Sorted Array*, and *String Compression*.
 
-![Read/Write Pointer — In-Place Array Compaction](editions/csharp/chapters/09-q1-implementation/visuals/read_write_pointer.png){width=85%}
+![Read/Write Pointer — In-Place Array Compaction](editions/csharp/chapters/10-implementation-patterns/visuals/read_write_pointer.png){width=85%}
 
 ### Character Frequency Array (`int[256]` or `int[26]`)
 A fixed-size integer array indexed by character ASCII value. `counts['a']++` increments the counter at index 97. This provides:
@@ -3806,10 +2835,10 @@ Use `int[26]` when input is guaranteed lowercase English letters only (`c - 'a'`
 ### Symmetrical Two-Pointer Convergence
 Two pointers start at opposite ends (`left = 0`, `right = len - 1`) and move toward each other. The loop condition is `while (left < right)`. This pattern solves: *Palindrome Check*, *Reverse String*, *Two Sum in Sorted Array*, and *Container With Most Water*.
 
-![Two-Pointer Convergence — Palindrome Verification](editions/csharp/chapters/09-q1-implementation/visuals/two_pointer_convergence.png){width=85%}
+![Two-Pointer Convergence — Palindrome Verification](editions/csharp/chapters/10-implementation-patterns/visuals/two_pointer_convergence.png){width=85%}
 
 ### Run-Length Encoding (RLE)
-Compress consecutive identical elements into `(element, count)` pairs. `"aaabbc"` becomes `"a3b2c1"`. The read pointer tracks the current run; the write pointer emits compressed output. This is a classic Q1 problem that combines the Read/Write pattern with counting.
+Compress consecutive identical elements into `(element, count)` pairs. `"aaabbc"` becomes `"a3b2c1"`. The read pointer tracks the current run; the write pointer emits compressed output. This is a classic Easy-tier problem that combines the Read/Write pattern with counting.
 
 ### String Immutability & StringBuilder
 In Java, `String` is immutable. The expression `s += char` inside a loop creates a **new String object on every iteration**, copying all previous characters. For a string of length $N$, this produces $\mathcal{O}(N^2)$ total character copies. Always use `StringBuilder` for loop-based string construction — it maintains a resizable `char[]` buffer internally and runs in amortized $\mathcal{O}(N)$.
@@ -3850,7 +2879,7 @@ Why it matters: It avoids complex single-pass logic and significantly reduces bu
 
 ### Greedy Forward Scan
 This strategy involves processing an array from left to right sequentially. At each step, you make the locally optimal choice without looking back.
-Why it matters: It is heavily used in array change problems (like bumping each element above the previous) and similar Q1 tasks.
+Why it matters: It is heavily used in array change problems (like bumping each element above the previous) and similar Easy-tier tasks.
 
 ### Modular Arithmetic Basics
 This encompasses foundational modulo operations for cyclic or remainder logic. Examples include using `n % 2` for parity, `n % k` for divisibility, and `(a + b - 1) / b` for ceiling division.
@@ -3868,24 +2897,23 @@ These are the two most important templates to have memorized before the exam.
 
 ### Template A: Read/Write In-Place Filter
 
-```java
+```csharp
 // Retains elements satisfying a condition, overwrites array in-place
 int write = 0;
-for (int read = 0; read < arr.length; read++) {
-    if (keepCondition(arr[read])) {
+for (int read = 0; read < arr.Length; read++) {
+    if (KeepCondition(arr[read])) {
         arr[write] = arr[read];
         write++;
     }
 }
 // Result is arr[0..write-1], return write as the new length
 ```
-
 **Used by:** Remove Element, Move Zeros, Remove Duplicates, Squeeze Spaces.
 
 ### Template B: Symmetric Converging Pointers
 
-```java
-int left = 0, right = arr.length - 1;
+```csharp
+int left = 0, right = arr.Length - 1;
 while (left < right) {
     // Process or compare arr[left] and arr[right]
     // Optionally skip invalid elements
@@ -3893,7 +2921,6 @@ while (left < right) {
     right--;
 }
 ```
-
 **Used by:** Palindrome Check, Reverse Array, Two Sum (sorted), Sort Colors.
 
 * * *
@@ -3908,26 +2935,25 @@ while (left < right) {
 **Pattern:** Two-pass frequency array. First pass counts; second pass finds the first count of 1.
 **Why two passes?** A single pass cannot determine uniqueness because later characters might duplicate earlier ones. The frequency array decouples counting from searching.
 
-```java
-public int firstUniqChar(String s) {
-    if (s == null || s.isEmpty()) return -1;
+```csharp
+public int FirstUniqChar(string s) {
+    if (string.IsNullOrEmpty(s)) return -1;
 
     // Pass 1: Count frequency of each character
     int[] counts = new int[256];
-    for (int i = 0; i < s.length(); i++) {
-        counts[s.charAt(i)]++;
+    foreach (char c in s) {
+        counts[c]++;
     }
 
     // Pass 2: Find first character with frequency exactly 1
-    for (int i = 0; i < s.length(); i++) {
-        if (counts[s.charAt(i)] == 1) return i;
+    for (int i = 0; i < s.Length; i++) {
+        if (counts[s[i]] == 1) return i;
     }
 
     return -1; // All characters repeat
 }
 // Time: O(N), Space: O(1) — the int[256] is constant size
 ```
-
 * * *
 
 **2. In-Place String Compression (Run-Length Encoding)**
@@ -3939,19 +2965,19 @@ public int firstUniqChar(String s) {
 
 **Critical edge case:** When count exceeds 9 (e.g., count = 12), you must write `'1'` then `'2'` as separate characters.
 
-```java
-public int compress(char[] chars) {
-    if (chars == null || chars.length == 0) return 0;
+```csharp
+public int Compress(char[] chars) {
+    if (chars == null || chars.Length == 0) return 0;
 
     int write = 0; // Write pointer for compressed output
     int read = 0;  // Read pointer scanning input
 
-    while (read < chars.length) {
+    while (read < chars.Length) {
         char current = chars[read];
         int count = 0;
 
         // Count consecutive occurrences of current character
-        while (read < chars.length && chars[read] == current) {
+        while (read < chars.Length && chars[read] == current) {
             read++;
             count++;
         }
@@ -3962,7 +2988,7 @@ public int compress(char[] chars) {
         // Write the count digits (only if count > 1)
         if (count > 1) {
             // Convert count to individual digit characters
-            for (char digit : Integer.toString(count).toCharArray()) {
+            foreach (char digit in count.ToString()) {
                 chars[write++] = digit;
             }
         }
@@ -3972,7 +2998,6 @@ public int compress(char[] chars) {
 }
 // Time: O(N), Space: O(1) auxiliary
 ```
-
 * * *
 
 **3. Valid Palindrome with Non-Alphanumeric Skipping**
@@ -3984,24 +3009,24 @@ public int compress(char[] chars) {
 
 **Common mistake:** Forgetting to check `left < right` inside the skip-while loops, causing `ArrayIndexOutOfBoundsException` on strings like `".,,"`.
 
-```java
-public boolean isPalindrome(String s) {
+```csharp
+public bool IsPalindrome(string s) {
     if (s == null) return false;
 
-    int left = 0, right = s.length() - 1;
+    int left = 0, right = s.Length - 1;
 
     while (left < right) {
         // Skip non-alphanumeric from the left
-        while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
+        while (left < right && !char.IsLetterOrDigit(s[left])) {
             left++;
         }
         // Skip non-alphanumeric from the right
-        while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
+        while (left < right && !char.IsLetterOrDigit(s[right])) {
             right--;
         }
 
         // Compare characters (case-insensitive)
-        if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {
+        if (char.ToLower(s[left]) != char.ToLower(s[right])) {
             return false;
         }
 
@@ -4013,7 +3038,6 @@ public boolean isPalindrome(String s) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **4. Move Zeros to End**
@@ -4025,26 +3049,25 @@ public boolean isPalindrome(String s) {
 
 **Why not swap?** Swapping works too, but the two-pass approach (copy then fill) is cleaner and less error-prone under time pressure.
 
-```java
-public void moveZeroes(int[] nums) {
-    if (nums == null || nums.length == 0) return;
+```csharp
+public void MoveZeroes(int[] nums) {
+    if (nums == null || nums.Length == 0) return;
 
     // Pass 1: Copy all non-zero elements to the front
     int write = 0;
-    for (int read = 0; read < nums.length; read++) {
+    for (int read = 0; read < nums.Length; read++) {
         if (nums[read] != 0) {
             nums[write++] = nums[read];
         }
     }
 
     // Pass 2: Fill remaining positions with zeros
-    while (write < nums.length) {
+    while (write < nums.Length) {
         nums[write++] = 0;
     }
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **5. Remove Duplicates from Sorted Array**
@@ -4054,12 +3077,12 @@ public void moveZeroes(int[] nums) {
 
 **Pattern:** Read/Write pointer. Since the array is sorted, duplicates are always adjacent. The write pointer advances only when `nums[read] != nums[write - 1]`.
 
-```java
-public int removeDuplicates(int[] nums) {
-    if (nums == null || nums.length == 0) return 0;
+```csharp
+public int RemoveDuplicates(int[] nums) {
+    if (nums == null || nums.Length == 0) return 0;
 
     int write = 1; // First element is always unique
-    for (int read = 1; read < nums.length; read++) {
+    for (int read = 1; read < nums.Length; read++) {
         if (nums[read] != nums[write - 1]) {
             nums[write++] = nums[read];
         }
@@ -4069,7 +3092,6 @@ public int removeDuplicates(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **6. Single Number (XOR Uniqueness)**
@@ -4079,17 +3101,16 @@ public int removeDuplicates(int[] nums) {
 
 **Pattern:** XOR accumulation. `a ^ a = 0` cancels pairs; `a ^ 0 = a` preserves the unique element.
 
-```java
-public int singleNumber(int[] nums) {
+```csharp
+public int SingleNumber(int[] nums) {
     int result = 0;
-    for (int num : nums) {
+    foreach (int num in nums) {
         result ^= num; // Pairs cancel, unique value survives
     }
     return result;
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **7. Valid Parentheses**
@@ -4100,14 +3121,14 @@ public int singleNumber(int[] nums) {
 **Pattern:** Stack-based matching. On open bracket, push the expected closing bracket. On close bracket, pop and compare.
 **Optimization:** Use a `char[]` as a manual stack to avoid `java.util.Stack` overhead.
 
-```java
-public boolean isValid(String s) {
-    if (s == null || s.length() % 2 != 0) return false;
+```csharp
+public bool IsValid(string s) {
+    if (s == null || s.Length % 2 != 0) return false;
 
-    char[] stack = new char[s.length()];
+    char[] stack = new char[s.Length];
     int top = -1;
 
-    for (char c : s.toCharArray()) {
+    foreach (char c in s) {
         if (c == '(') stack[++top] = ')';
         else if (c == '{') stack[++top] = '}';
         else if (c == '[') stack[++top] = ']';
@@ -4120,7 +3141,6 @@ public boolean isValid(String s) {
 }
 // Time: O(N), Space: O(N) worst case for the stack
 ```
-
 * * *
 
 **8. Reverse String In-Place**
@@ -4130,11 +3150,11 @@ public boolean isValid(String s) {
 
 **Pattern:** Symmetric converging pointers with swap.
 
-```java
-public void reverseString(char[] s) {
-    if (s == null || s.length <= 1) return;
+```csharp
+public void ReverseString(char[] s) {
+    if (s == null || s.Length <= 1) return;
 
-    int left = 0, right = s.length - 1;
+    int left = 0, right = s.Length - 1;
     while (left < right) {
         char temp = s[left];
         s[left] = s[right];
@@ -4145,7 +3165,6 @@ public void reverseString(char[] s) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **9. Pivot Index (Balance Point)**
@@ -4155,15 +3174,15 @@ public void reverseString(char[] s) {
 
 **Pattern:** Prefix sum. Compute total sum first, then scan left-to-right maintaining a running left sum. At each index: `rightSum = totalSum - leftSum - nums[i]`.
 
-```java
-public int pivotIndex(int[] nums) {
+```csharp
+public int PivotIndex(int[] nums) {
     if (nums == null) return -1;
 
     int totalSum = 0;
-    for (int num : nums) totalSum += num;
+    foreach (int num in nums) totalSum += num;
 
     int leftSum = 0;
-    for (int i = 0; i < nums.length; i++) {
+    for (int i = 0; i < nums.Length; i++) {
         // rightSum = totalSum - leftSum - nums[i]
         if (leftSum == totalSum - leftSum - nums[i]) return i;
         leftSum += nums[i];
@@ -4173,7 +3192,6 @@ public int pivotIndex(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **10. Check Array Monotonicity**
@@ -4183,14 +3201,14 @@ public int pivotIndex(int[] nums) {
 
 **Pattern:** Dual boolean flags. Track both `isIncreasing` and `isDecreasing`. If an adjacent pair violates one direction, set its flag to false. Return true if either flag survives.
 
-```java
-public boolean isMonotonic(int[] nums) {
-    if (nums == null || nums.length <= 2) return true;
+```csharp
+public bool IsMonotonic(int[] nums) {
+    if (nums == null || nums.Length <= 2) return true;
 
-    boolean increasing = true;
-    boolean decreasing = true;
+    bool increasing = true;
+    bool decreasing = true;
 
-    for (int i = 0; i < nums.length - 1; i++) {
+    for (int i = 0; i < nums.Length - 1; i++) {
         if (nums[i] > nums[i + 1]) increasing = false;
         if (nums[i] < nums[i + 1]) decreasing = false;
     }
@@ -4199,7 +3217,6 @@ public boolean isMonotonic(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **11. Neighbor Sum Transformation**
@@ -4210,10 +3227,10 @@ public boolean isMonotonic(int[] nums) {
 **Pattern:** Boundary-safe neighbor access with ternary guards.
 **Why a new array?** Modifying `A` in-place would corrupt values needed for subsequent index calculations.
 
-```java
-public int[] neighborSum(int[] a) {
+```csharp
+public int[] NeighborSum(int[] a) {
     if (a == null) return new int[0];
-    int n = a.length;
+    int n = a.Length;
     int[] b = new int[n];
 
     for (int i = 0; i < n; i++) {
@@ -4226,7 +3243,6 @@ public int[] neighborSum(int[] a) {
 }
 // Time: O(N), Space: O(N) for output array
 ```
-
 * * *
 
 **12. Maximum Subarray Sum of Fixed Window K**
@@ -4236,9 +3252,9 @@ public int[] neighborSum(int[] a) {
 
 **Pattern:** Fixed-size sliding window. Initialize window sum with first `k` elements, then slide by adding the entering element and subtracting the leaving element.
 
-```java
-public int maxSumSubarray(int[] nums, int k) {
-    if (nums == null || nums.length < k || k <= 0) return 0;
+```csharp
+public int MaxSumSubarray(int[] nums, int k) {
+    if (nums == null || nums.Length < k || k <= 0) return 0;
 
     // Initialize sum of first window
     int windowSum = 0;
@@ -4247,16 +3263,15 @@ public int maxSumSubarray(int[] nums, int k) {
     int maxSum = windowSum;
 
     // Slide the window: add right element, remove left element
-    for (int i = k; i < nums.length; i++) {
+    for (int i = k; i < nums.Length; i++) {
         windowSum += nums[i] - nums[i - k];
-        maxSum = Math.max(maxSum, windowSum);
+        maxSum = Math.Max(maxSum, windowSum);
     }
 
     return maxSum;
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **13. Find the Added Character**
@@ -4266,16 +3281,15 @@ public int maxSumSubarray(int[] nums, int k) {
 
 **Pattern:** XOR accumulation. XOR every character in both strings together. Paired characters cancel to zero; the extra character remains.
 
-```java
-public char findTheDifference(String s, String t) {
-    char result = 0;
-    for (char c : s.toCharArray()) result ^= c;
-    for (char c : t.toCharArray()) result ^= c;
+```csharp
+public char FindTheDifference(string s, string t) {
+    char result = (char)0;
+    foreach (char c in s) result ^= c;
+    foreach (char c in t) result ^= c;
     return result; // Only the unpaired character survives
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **14. Capitalize or Reverse by Word Length Parity**
@@ -4285,16 +3299,18 @@ public char findTheDifference(String s, String t) {
 
 **Pattern:** Per-element transformation with parity branching.
 
-```java
-public String[] transformWords(String[] words) {
-    if (words == null) return new String[0];
-    String[] result = new String[words.length];
+```csharp
+public string[] TransformWords(string[] words) {
+    if (words == null) return new string[0];
+    string[] result = new string[words.Length];
 
-    for (int i = 0; i < words.length; i++) {
-        if (words[i].length() % 2 != 0) {
-            result[i] = words[i].toUpperCase();
+    for (int i = 0; i < words.Length; i++) {
+        if (words[i].Length % 2 != 0) {
+            result[i] = words[i].ToUpper();
         } else {
-            result[i] = new StringBuilder(words[i]).reverse().toString();
+            char[] arr = words[i].ToCharArray();
+            Array.Reverse(arr);
+            result[i] = new string(arr);
         }
     }
 
@@ -4302,7 +3318,6 @@ public String[] transformWords(String[] words) {
 }
 // Time: O(N * K) where K is average word length, Space: O(N * K) for output
 ```
-
 * * *
 
 **15. Check Equal Character Frequencies**
@@ -4310,17 +3325,17 @@ public String[] transformWords(String[] words) {
 
 **Example:** `"abacbc"` → `true` (each of `a`, `b`, `c` appears 2 times). `"aaabb"` → `false`.
 
-**Pattern:** Frequency array + validation scan. Count all characters, then verify every non-zero count matches.
+**Pattern:** Frequency array + validation scan. Count all characters (using a size 128 array to handle the full ASCII range), then verify every non-zero count matches.
 
-```java
-public boolean areOccurrencesEqual(String s) {
-    if (s == null || s.isEmpty()) return true;
+```csharp
+public bool AreOccurrencesEqual(string s) {
+    if (string.IsNullOrEmpty(s)) return true;
 
-    int[] counts = new int[26];
-    for (char c : s.toCharArray()) counts[c - 'a']++;
+    int[] counts = new int[128];
+    foreach (char c in s) counts[c]++;
 
     int expected = 0;
-    for (int count : counts) {
+    foreach (int count in counts) {
         if (count > 0) {
             if (expected == 0) expected = count;
             else if (count != expected) return false;
@@ -4331,7 +3346,6 @@ public boolean areOccurrencesEqual(String s) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **16. Remove Element In-Place**
@@ -4341,12 +3355,12 @@ public boolean areOccurrencesEqual(String s) {
 
 **Pattern:** Read/Write pointer — identical structure to Move Zeros.
 
-```java
-public int removeElement(int[] nums, int val) {
+```csharp
+public int RemoveElement(int[] nums, int val) {
     if (nums == null) return 0;
 
     int write = 0;
-    for (int read = 0; read < nums.length; read++) {
+    for (int read = 0; read < nums.Length; read++) {
         if (nums[read] != val) {
             nums[write++] = nums[read];
         }
@@ -4356,7 +3370,6 @@ public int removeElement(int[] nums, int val) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **17. Parity Alternation Validation**
@@ -4367,13 +3380,13 @@ public int removeElement(int[] nums, int val) {
 **Pattern:** Linear scan comparing `nums[i] % 2` with `nums[i+1] % 2`.
 **Edge case with negatives:** `(-3) % 2` in Java returns `-1`, not `1`. Use `Math.abs(nums[i] % 2)` for safe parity checks.
 
-```java
-public boolean isAlternatingParity(int[] nums) {
-    if (nums == null || nums.length <= 1) return true;
+```csharp
+public bool IsAlternatingParity(int[] nums) {
+    if (nums == null || nums.Length <= 1) return true;
 
-    for (int i = 0; i < nums.length - 1; i++) {
-        // Use Math.abs for safety with negative numbers
-        if (Math.abs(nums[i] % 2) == Math.abs(nums[i + 1] % 2)) {
+    for (int i = 0; i < nums.Length - 1; i++) {
+        // Use Math.Abs for safety with negative numbers
+        if (Math.Abs(nums[i] % 2) == Math.Abs(nums[i + 1] % 2)) {
             return false;
         }
     }
@@ -4382,7 +3395,6 @@ public boolean isAlternatingParity(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **18. Two Sum (Unsorted Array)**
@@ -4392,23 +3404,22 @@ public boolean isAlternatingParity(int[] nums) {
 
 **Pattern:** HashMap complement lookup. For each element, check if `target - nums[i]` has been seen. If yes, return both indices. If no, store `nums[i] → i` in the map.
 
-```java
-public int[] twoSum(int[] nums, int target) {
-    Map<Integer, Integer> seen = new HashMap<>();
+```csharp
+public int[] TwoSum(int[] nums, int target) {
+    Dictionary<int, int> seen = new Dictionary<int, int>();
 
-    for (int i = 0; i < nums.length; i++) {
+    for (int i = 0; i < nums.Length; i++) {
         int complement = target - nums[i];
-        if (seen.containsKey(complement)) {
-            return new int[]{seen.get(complement), i};
+        if (seen.ContainsKey(complement)) {
+            return new int[]{seen[complement], i};
         }
-        seen.put(nums[i], i);
+        seen[nums[i]] = i;
     }
 
     return new int[]{}; // Should not reach here per problem guarantee
 }
 // Time: O(N), Space: O(N)
 ```
-
 * * *
 
 **19. Majority Element**
@@ -4418,12 +3429,12 @@ public int[] twoSum(int[] nums, int target) {
 
 **Pattern:** Boyer–Moore Voting Algorithm. Maintain a candidate and a count. When count drops to zero, switch candidates. The majority element will always survive because it appears more than half the time.
 
-```java
-public int majorityElement(int[] nums) {
+```csharp
+public int MajorityElement(int[] nums) {
     int candidate = nums[0];
     int count = 1;
 
-    for (int i = 1; i < nums.length; i++) {
+    for (int i = 1; i < nums.Length; i++) {
         if (count == 0) {
             candidate = nums[i];
             count = 1;
@@ -4438,7 +3449,6 @@ public int majorityElement(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **20. Plus One (Large Number as Array)**
@@ -4449,9 +3459,9 @@ public int majorityElement(int[] nums) {
 **Pattern:** Right-to-left carry propagation. Process digits from the least significant end. If a digit becomes 10, set it to 0 and carry. If no carry remains, return immediately.
 **Edge case:** All 9s (`[9, 9, 9]`) require a new array of length `n + 1` with a leading 1.
 
-```java
-public int[] plusOne(int[] digits) {
-    for (int i = digits.length - 1; i >= 0; i--) {
+```csharp
+public int[] PlusOne(int[] digits) {
+    for (int i = digits.Length - 1; i >= 0; i--) {
         digits[i]++;
         if (digits[i] < 10) {
             return digits; // No further carry needed
@@ -4460,17 +3470,16 @@ public int[] plusOne(int[] digits) {
     }
 
     // All digits were 9 — need a new array [1, 0, 0, ..., 0]
-    int[] result = new int[digits.length + 1];
+    int[] result = new int[digits.Length + 1];
     result[0] = 1;
     return result;
 }
 // Time: O(N), Space: O(1) amortized (O(N) only for all-9s edge case)
 ```
-
 * * *
 
 
-The following problems are drawn directly from the CodeSignal Arcade and GCA Q1 question bank. They emphasize boundary arithmetic, simple simulations, and filter-sort-reinsert patterns that appear frequently on actual assessments.
+The following problems are drawn directly from the automated testing platforms Arcade and general coding assessment Easy-tier question bank. They emphasize boundary arithmetic, simple simulations, and filter-sort-reinsert patterns that appear frequently on actual assessments.
 
 * * *
 
@@ -4483,13 +3492,13 @@ The following problems are drawn directly from the CodeSignal Arcade and GCA Q1 
 
 **Common mistake:** Forgetting that two large negative numbers produce a large positive product (e.g., `[-5, -4]` → `20`).
 
-```java
-public int adjacentElementsProduct(int[] inputArray) {
-    if (inputArray == null || inputArray.length < 2) return 0;
+```csharp
+public int AdjacentElementsProduct(int[] inputArray) {
+    if (inputArray == null || inputArray.Length < 2) return 0;
 
     int maxProd = inputArray[0] * inputArray[1];
 
-    for (int i = 1; i < inputArray.length - 1; i++) {
+    for (int i = 1; i < inputArray.Length - 1; i++) {
         int prod = inputArray[i] * inputArray[i + 1];
         if (prod > maxProd) {
             maxProd = prod;
@@ -4500,7 +3509,6 @@ public int adjacentElementsProduct(int[] inputArray) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **22. Century From Year**
@@ -4510,13 +3518,12 @@ public int adjacentElementsProduct(int[] inputArray) {
 
 **Pattern:** Integer ceiling division. The formula `(year + 99) / 100` computes the ceiling of `year / 100` using only integer arithmetic, avoiding floating-point rounding errors.
 
-```java
-public int centuryFromYear(int year) {
+```csharp
+public int CenturyFromYear(int year) {
     return (year + 99) / 100;
 }
 // Time: O(1), Space: O(1)
 ```
-
 * * *
 
 **23. All Longest Strings**
@@ -4527,29 +3534,28 @@ public int centuryFromYear(int year) {
 **Pattern:** Two-pass filter. Pass 1 finds the maximum string length. Pass 2 collects all strings matching that length.
 **Why two passes?** A single pass would require backtracking to remove shorter strings discovered before the true maximum is known.
 
-```java
-public String[] allLongestStrings(String[] inputArray) {
+```csharp
+public string[] AllLongestStrings(string[] inputArray) {
     // Pass 1: Find the maximum length
     int maxLength = 0;
-    for (String s : inputArray) {
-        if (s.length() > maxLength) {
-            maxLength = s.length();
+    foreach (string s in inputArray) {
+        if (s.Length > maxLength) {
+            maxLength = s.Length;
         }
     }
 
     // Pass 2: Collect strings matching the max length
-    List<String> result = new ArrayList<>();
-    for (String s : inputArray) {
-        if (s.length() == maxLength) {
-            result.add(s);
+    List<string> result = new List<string>();
+    foreach (string s in inputArray) {
+        if (s.Length == maxLength) {
+            result.Add(s);
         }
     }
 
-    return result.toArray(new String[0]);
+    return result.ToArray();
 }
 // Time: O(N), Space: O(N) for output
 ```
-
 * * *
 
 **24. Common Character Count**
@@ -4559,24 +3565,23 @@ public String[] allLongestStrings(String[] inputArray) {
 
 **Pattern:** Dual frequency arrays with element-wise minimum. Build `int[26]` for each string. The number of shared instances of character `c` is `Math.min(count1[c], count2[c])`.
 
-```java
-public int commonCharacterCount(String s1, String s2) {
+```csharp
+public int CommonCharacterCount(string s1, string s2) {
     int[] count1 = new int[26];
     int[] count2 = new int[26];
 
-    for (char c : s1.toCharArray()) count1[c - 'a']++;
-    for (char c : s2.toCharArray()) count2[c - 'a']++;
+    foreach (char c in s1) count1[c - 'a']++;
+    foreach (char c in s2) count2[c - 'a']++;
 
     int common = 0;
     for (int i = 0; i < 26; i++) {
-        common += Math.min(count1[i], count2[i]);
+        common += Math.Min(count1[i], count2[i]);
     }
 
     return common;
 }
 // Time: O(N + M), Space: O(1) — fixed 26-element arrays
 ```
-
 * * *
 
 **25. Lucky Ticket (Digit Sum Halves)**
@@ -4586,22 +3591,21 @@ public int commonCharacterCount(String s1, String s2) {
 
 **Pattern:** Convert to string for digit access. Split at midpoint. Sum each half independently.
 
-```java
-public boolean isLucky(int n) {
-    String s = String.valueOf(n);
-    int mid = s.length() / 2;
+```csharp
+public bool IsLucky(int n) {
+    string s = n.ToString();
+    int mid = s.Length / 2;
     int sum1 = 0, sum2 = 0;
 
     for (int i = 0; i < mid; i++) {
-        sum1 += s.charAt(i) - '0';       // First half digit
-        sum2 += s.charAt(i + mid) - '0'; // Second half digit
+        sum1 += s[i] - '0';       // First half digit
+        sum2 += s[i + mid] - '0'; // Second half digit
     }
 
     return sum1 == sum2;
 }
 // Time: O(D) where D is digit count, Space: O(D) for string conversion
 ```
-
 * * *
 
 **26. Sort By Height (Obstacles in Place)**
@@ -4613,22 +3617,22 @@ public boolean isLucky(int n) {
 
 **Invariant:** Tree positions (`-1`) are never touched. Only human positions are modified.
 
-```java
-public int[] sortByHeight(int[] a) {
+```csharp
+public int[] SortByHeight(int[] a) {
     // Step 1: Extract all non-tree heights
-    List<Integer> heights = new ArrayList<>();
-    for (int h : a) {
-        if (h != -1) heights.add(h);
+    List<int> heights = new List<int>();
+    foreach (int h in a) {
+        if (h != -1) heights.Add(h);
     }
 
     // Step 2: Sort the extracted heights
-    Collections.sort(heights);
+    heights.Sort();
 
     // Step 3: Reinsert sorted heights at non-tree positions
     int index = 0;
-    for (int i = 0; i < a.length; i++) {
+    for (int i = 0; i < a.Length; i++) {
         if (a[i] != -1) {
-            a[i] = heights.get(index++);
+            a[i] = heights[index++];
         }
     }
 
@@ -4636,7 +3640,6 @@ public int[] sortByHeight(int[] a) {
 }
 // Time: O(N log N) for sorting, Space: O(N) for extracted list
 ```
-
 * * *
 
 **27. Alternating Team Sums**
@@ -4646,11 +3649,11 @@ public int[] sortByHeight(int[] a) {
 
 **Pattern:** Index parity accumulation. `i % 2 == 0` accumulates into Team 1, `i % 2 == 1` into Team 2.
 
-```java
-public int[] alternatingSums(int[] a) {
+```csharp
+public int[] AlternatingSums(int[] a) {
     int team1 = 0, team2 = 0;
 
-    for (int i = 0; i < a.length; i++) {
+    for (int i = 0; i < a.Length; i++) {
         if (i % 2 == 0) {
             team1 += a[i];
         } else {
@@ -4662,7 +3665,6 @@ public int[] alternatingSums(int[] a) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **28. Add Border to Character Matrix**
@@ -4672,32 +3674,29 @@ public int[] alternatingSums(int[] a) {
 
 **Pattern:** String construction with dimensional arithmetic. New width = original width + 2. New height = original height + 2. First and last rows are full asterisk strings. Middle rows are wrapped with `*` on each side.
 
-```java
-public String[] addBorder(String[] picture) {
-    int newWidth = picture[0].length() + 2;
-    String[] result = new String[picture.length + 2];
+```csharp
+public string[] AddBorder(string[] picture) {
+    int newWidth = picture[0].Length + 2;
+    string[] result = new string[picture.Length + 2];
 
     // Build the border row
-    StringBuilder borderRow = new StringBuilder();
-    for (int i = 0; i < newWidth; i++) borderRow.append('*');
-    String border = borderRow.toString();
+    string border = new string('*', newWidth);
 
     // Top border
     result[0] = border;
 
     // Wrap each interior row with side asterisks
-    for (int i = 0; i < picture.length; i++) {
+    for (int i = 0; i < picture.Length; i++) {
         result[i + 1] = "*" + picture[i] + "*";
     }
 
     // Bottom border
-    result[result.length - 1] = border;
+    result[result.Length - 1] = border;
 
     return result;
 }
 // Time: O(rows * cols), Space: O(rows * cols) for output
 ```
-
 * * *
 
 **29. Array Change (Minimum Moves for Strict Increase)**
@@ -4709,11 +3708,11 @@ public String[] addBorder(String[] picture) {
 
 **Invariant:** After processing index `i`, the constraint `arr[i] > arr[i-1]` is guaranteed. The greedy minimum at each step is globally optimal because increasing `arr[i]` to `arr[i-1] + 1` (the smallest valid value) minimizes cascading costs downstream.
 
-```java
-public int arrayChange(int[] inputArray) {
+```csharp
+public int ArrayChange(int[] inputArray) {
     int moves = 0;
 
-    for (int i = 1; i < inputArray.length; i++) {
+    for (int i = 1; i < inputArray.Length; i++) {
         if (inputArray[i] <= inputArray[i - 1]) {
             // Calculate the minimum increment needed
             int deficit = inputArray[i - 1] - inputArray[i] + 1;
@@ -4726,7 +3725,6 @@ public int arrayChange(int[] inputArray) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **30. Matrix Elements Sum (Haunted Rooms)**
@@ -4736,10 +3734,10 @@ public int arrayChange(int[] inputArray) {
 
 **Pattern:** Column-wise top-down scan with a boolean "poisoned" flag per column. Once a `0` is encountered in a column, all values below it in that column are skipped.
 
-```java
-public int matrixElementsSum(int[][] matrix) {
-    int rows = matrix.length;
-    int cols = matrix[0].length;
+```csharp
+public int MatrixElementsSum(int[][] matrix) {
+    int rows = matrix.Length;
+    int cols = matrix[0].Length;
     int total = 0;
 
     for (int c = 0; c < cols; c++) {
@@ -4755,7 +3753,6 @@ public int matrixElementsSum(int[][] matrix) {
 }
 // Time: O(rows * cols), Space: O(1)
 ```
-
 * * *
 
 **31. Almost Increasing Sequence**
@@ -4764,14 +3761,14 @@ public int matrixElementsSum(int[][] matrix) {
 **Example:** `[1, 3, 2, 1]` → `false`. `[1, 3, 2]` → `true` (remove `3` → `[1, 2]`).
 
 **Pattern:** Count violations (positions where `arr[i] >= arr[i+1]`). If zero violations, it is already increasing. If exactly one violation at position `i`, check two removal candidates: removing `arr[i]` or removing `arr[i+1]`. If either removal produces a valid increasing sequence around the gap, return `true`. If more than one violation, return `false`.
-**This is one of the trickiest Q1 problems.** The naive approach of "just remove one element and re-check" is $\mathcal{O}(N^2)$. The optimal approach is $\mathcal{O}(N)$.
+**This is one of the trickiest Easy-tier problems.** The naive approach of "just remove one element and re-check" is $\mathcal{O}(N^2)$. The optimal approach is $\mathcal{O}(N)$.
 
-```java
-public boolean almostIncreasingSequence(int[] sequence) {
+```csharp
+public bool AlmostIncreasingSequence(int[] sequence) {
     int count = 0;   // Number of violations
     int badIdx = -1;  // Index of first violation
 
-    for (int i = 0; i < sequence.length - 1; i++) {
+    for (int i = 0; i < sequence.Length - 1; i++) {
         if (sequence[i] >= sequence[i + 1]) {
             count++;
             badIdx = i;
@@ -4787,7 +3784,7 @@ public boolean almostIncreasingSequence(int[] sequence) {
     }
 
     // Try removing element at badIdx + 1
-    if (badIdx + 2 >= sequence.length || sequence[badIdx] < sequence[badIdx + 2]) {
+    if (badIdx + 2 >= sequence.Length || sequence[badIdx] < sequence[badIdx + 2]) {
         return true;
     }
 
@@ -4795,7 +3792,6 @@ public boolean almostIncreasingSequence(int[] sequence) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **32. Reverse Parentheses (Nested String Reversal)**
@@ -4805,33 +3801,36 @@ public boolean almostIncreasingSequence(int[] sequence) {
 
 **Pattern:** Stack-based simulation. Use a stack of `StringBuilder`s. When `(` is encountered, push a new builder. When `)` is encountered, pop the top builder, reverse it, and append its contents to the new top of the stack.
 
-```java
-public String reverseInParentheses(String s) {
-    Deque<StringBuilder> stack = new ArrayDeque<>();
-    stack.push(new StringBuilder());
+```csharp
+public string ReverseInParentheses(string s) {
+    Stack<StringBuilder> stack = new Stack<StringBuilder>();
+    stack.Push(new StringBuilder());
 
-    for (char c : s.toCharArray()) {
+    foreach (char c in s) {
         if (c == '(') {
-            stack.push(new StringBuilder()); // Start new nested context
+            stack.Push(new StringBuilder()); // Start new nested context
         } else if (c == ')') {
-            StringBuilder inner = stack.pop();  // Pop innermost context
-            inner.reverse();                     // Reverse it
-            stack.peek().append(inner);          // Append to enclosing context
+            StringBuilder inner = stack.Pop();  // Pop innermost context
+            
+            // Reverse the inner StringBuilder
+            char[] innerChars = inner.ToString().ToCharArray();
+            Array.Reverse(innerChars);
+            
+            stack.Peek().Append(innerChars); // Append to enclosing context
         } else {
-            stack.peek().append(c);              // Accumulate character
+            stack.Peek().Append(c);          // Accumulate character
         }
     }
 
-    return stack.peek().toString();
+    return stack.Peek().ToString();
 }
 // Time: O(N^2) worst case for nested reversals, Space: O(N)
 ```
-
 * * *
 
 ## Practice Problem Bank
 
-The following 30 problems cover every Q1 pattern you may encounter on the CodeSignal GCA. Each includes a full specification, concrete examples, input constraints, and a strategic hint pointing you toward the correct pattern.
+The following 30 problems cover every Easy-tier pattern you may encounter on the General Coding Assessments. Each includes a full specification, concrete examples, input constraints, and a strategic hint pointing you toward the correct pattern.
 
 * * *
 
@@ -5164,9 +4163,9 @@ The following 30 problems cover every Q1 pattern you may encounter on the CodeSi
 **Strategic Hint:** Iterative approach: extract digits with `num % 10`, accumulate sum, reduce with `num = sum`. Repeat until `num < 10`. Mathematical shortcut: Digital Root formula `1 + (num - 1) % 9` for $\mathcal{O}(1)$.
 
 
-# Q2 Mastery — 2D Matrix Traversal, Grid Simulations, and State Machine Processing
+# Medium-tier Mastery — 2D Matrix Traversal, Grid Simulations, and State Machine Processing
 
-This chapter covers Q2 of the CodeSignal GCA (Medium difficulty, ~15 minutes target time). Q2 tests multidimensional array processing, grid boundary control, BFS/DFS flood fill, and step-by-step state machine simulation.
+This chapter covers Medium-tier of the General Coding Assessments (Medium difficulty, ~15 minutes target time). Medium-tier tests multidimensional array processing, grid boundary control, BFS/DFS flood fill, and step-by-step state machine simulation.
 
 ## Essential Terminology & Vocabulary
 
@@ -5206,14 +4205,14 @@ Why it matters: It eliminates repetitive boundary checks and significantly reduc
 Instead of running BFS individually from each source, this technique seeds the initial queue with ALL starting positions simultaneously. The search then expands outwards concurrently from multiple origins.
 Why it matters: It solves rotting oranges and walls-and-gates problems in a single, highly efficient BFS pass.
 
-![Multi-Source BFS — Rotting Oranges Wavefront](editions/csharp/chapters/10-q2-matrix-simulation/visuals/bfs_grid_levels.png){width=85%}
+![Multi-Source BFS — Rotting Oranges Wavefront](editions/csharp/chapters/11-matrix-grid-patterns/visuals/bfs_grid_levels.png){width=85%}
 
 ## Reusable Code Templates
 
 ### Template A: Spiral Boundary Traversal
-```java
-int top = 0, bottom = matrix.length - 1;
-int left = 0, right = matrix[0].length - 1;
+```csharp
+int top = 0, bottom = matrix.Length - 1;
+int left = 0, right = matrix[0].Length - 1;
 while (top <= bottom && left <= right) {
   for (int j = left; j <= right; j++) { /* process matrix[top][j] */ }
   top++;
@@ -5229,38 +4228,35 @@ while (top <= bottom && left <= right) {
   }
 }
 ```
-
-![Spiral Boundary Traversal — Layer-by-Layer Contraction](editions/csharp/chapters/10-q2-matrix-simulation/visuals/spiral_traversal.png){width=85%}
+![Spiral Boundary Traversal — Layer-by-Layer Contraction](editions/csharp/chapters/11-matrix-grid-patterns/visuals/spiral_traversal.png){width=85%}
 
 ### Template B: 4-Directional BFS/DFS Grid Walk
-```java
+```csharp
 int[] dr = {-1, 1, 0, 0};
 int[] dc = {0, 0, -1, 1};
 
-void dfs(int[][] grid, int r, int c) {
-  if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] == -1) return;
+void Dfs(int[][] grid, int r, int c) {
+  if (r < 0 || r >= grid.Length || c < 0 || c >= grid[0].Length || grid[r][c] == -1) return;
   grid[r][c] = -1; // mark visited
   for (int i = 0; i < 4; i++) {
-    dfs(grid, r + dr[i], c + dc[i]);
+    Dfs(grid, r + dr[i], c + dc[i]);
   }
 }
 ```
-
 ### Template C: 2D Prefix Sum Construction + Query
-```java
+```csharp
 // Construction
-int[][] sum = new int[R + 1][C + 1];
+int[,] sum = new int[R + 1, C + 1];
 for (int r = 1; r <= R; r++) {
   for (int c = 1; c <= C; c++) {
-    sum[r][c] = matrix[r-1][c-1] + sum[r-1][c] + sum[r][c-1] - sum[r-1][c-1];
+    sum[r, c] = matrix[r-1][c-1] + sum[r-1, c] + sum[r, c-1] - sum[r-1, c-1];
   }
 }
 // Query from (r1, c1) to (r2, c2)
-int query(int r1, int c1, int r2, int c2) {
-  return sum[r2+1][c2+1] - sum[r1][c2+1] - sum[r2+1][c1] + sum[r1][c1];
+int Query(int r1, int c1, int r2, int c2) {
+  return sum[r2+1, c2+1] - sum[r1, c2+1] - sum[r2+1, c1] + sum[r1, c1];
 }
 ```
-
 **Understanding the Construction — Worked Example.** Given a 3×3 matrix, we build a 4×4 prefix sum array `S` padded with a zero row and zero column. Each cell `S[r][c]` stores the sum of all original elements from `(0,0)` to `(r-1, c-1)`.
 
 Original Matrix A:
@@ -5290,7 +4286,7 @@ The two 5s come from different sources: `A[1][1] = 5` is the center cell of the 
 
 **Sanity check**: `S[3][3] = 45` equals `1+2+3+4+5+6+7+8+9 = 45`. ✓
 
-![2D Prefix Sum — Construction via Inclusion-Exclusion (Trace)](editions/csharp/chapters/10-q2-matrix-simulation/visuals/prefix_sum_construction.png){width=85%}
+![2D Prefix Sum — Construction via Inclusion-Exclusion (Trace)](editions/csharp/chapters/11-matrix-grid-patterns/visuals/prefix_sum_construction.png){width=85%}
 
 **Understanding the Query — Inclusion-Exclusion.** To find the sum of a sub-rectangle from `(r1, c1)` to `(r2, c2)`, we carve it out of the full prefix sum using four overlapping rectangles:
 
@@ -5309,7 +4305,7 @@ $$\text{query}(r_1, c_1, r_2, c_2) = S[r_2\text{+}1][c_2\text{+}1] - S[r_1][c_2\
 
 $$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
 
-![2D Prefix Sum — Query via Inclusion-Exclusion](editions/csharp/chapters/10-q2-matrix-simulation/visuals/prefix_sum_2d_query.png){width=85%}
+![2D Prefix Sum — Query via Inclusion-Exclusion](editions/csharp/chapters/11-matrix-grid-patterns/visuals/prefix_sum_2d_query.png){width=85%}
 
 ## Solved Exemplar Problems
 
@@ -5323,9 +4319,9 @@ $$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
 
 **Explanation:** Rotating 90 degrees clockwise is mathematically equivalent to transposing the matrix (swapping $i,j$ with $j,i$) and then reversing the elements of each row. This avoids needing complex 4-way coordinate swaps.
 
-```java
-public void rotate(int[][] matrix) {
-  int n = matrix.length;
+```csharp
+public void Rotate(int[][] matrix) {
+  int n = matrix.Length;
   // Transpose
   for (int i = 0; i < n; i++) {
     for (int j = i + 1; j < n; j++) {
@@ -5343,8 +4339,7 @@ public void rotate(int[][] matrix) {
     }
   }
 }
-```
-Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **2. Spiral Matrix Traversal**
@@ -5356,28 +4351,27 @@ Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Maintain `top`, `bottom`, `left`, `right` pointers. Traverse the top row, increment `top`. Traverse right col, decrement `right`. Traverse bottom row (if `top <= bottom`), decrement `bottom`. Traverse left col (if `left <= right`), increment `left`.
 
-```java
-public List<Integer> spiralOrder(int[][] matrix) {
-  List<Integer> res = new ArrayList<>();
-  int t = 0, b = matrix.length - 1, l = 0, r = matrix[0].length - 1;
+```csharp
+public IList<int> SpiralOrder(int[][] matrix) {
+  List<int> res = new List<int>();
+  int t = 0, b = matrix.Length - 1, l = 0, r = matrix[0].Length - 1;
   while (t <= b && l <= r) {
-    for (int j = l; j <= r; j++) res.add(matrix[t][j]); // Top
+    for (int j = l; j <= r; j++) res.Add(matrix[t][j]); // Top
     t++;
-    for (int i = t; i <= b; i++) res.add(matrix[i][r]); // Right
+    for (int i = t; i <= b; i++) res.Add(matrix[i][r]); // Right
     r--;
     if (t <= b) {
-      for (int j = r; j >= l; j--) res.add(matrix[b][j]); // Bottom
+      for (int j = r; j >= l; j--) res.Add(matrix[b][j]); // Bottom
       b--;
     }
     if (l <= r) {
-      for (int i = b; i >= t; i--) res.add(matrix[i][l]); // Left
+      for (int i = b; i >= t; i--) res.Add(matrix[i][l]); // Left
       l++;
     }
   }
   return res;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **3. Set Matrix Zeros**
@@ -5389,10 +4383,10 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** We use the first row and first column to store information about whether that row or column should be zeroed out. We need a separate variable for the first column to avoid overlapping state.
 
-```java
-public void setZeroes(int[][] matrix) {
-  int m = matrix.length, n = matrix[0].length;
-  boolean firstColZero = false;
+```csharp
+public void SetZeroes(int[][] matrix) {
+  int m = matrix.Length, n = matrix[0].Length;
+  bool firstColZero = false;
   // Mark zeros on first row/col
   for (int i = 0; i < m; i++) {
     if (matrix[i][0] == 0) firstColZero = true;
@@ -5417,8 +4411,7 @@ public void setZeroes(int[][] matrix) {
     for (int i = 0; i < m; i++) matrix[i][0] = 0;
   }
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **4. Diagonal Matrix Traversal**
@@ -5430,9 +4423,9 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** In a diagonal traversal, the sum of indices `(i+j)` is constant for each diagonal. For even sums, we move Up-Right. For odd sums, we move Down-Left. Boundary conditions handle when we hit the edges.
 
-```java
-public int[] findDiagonalOrder(int[][] mat) {
-  int m = mat.length, n = mat[0].length;
+```csharp
+public int[] FindDiagonalOrder(int[][] mat) {
+  int m = mat.Length, n = mat[0].Length;
   int[] res = new int[m * n];
   int r = 0, c = 0;
   for (int i = 0; i < m * n; i++) {
@@ -5449,8 +4442,7 @@ public int[] findDiagonalOrder(int[][] mat) {
   }
   return res;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **5. Matrix Reshape Validation**
@@ -5462,19 +4454,20 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** A 2D matrix can be flattened logically. The 1D index `k` maps to 2D coordinates `(k / cols, k % cols)`. We map the original matrix into the new shape using a single counter `k`.
 
-```java
-public int[][] matrixReshape(int[][] mat, int r, int c) {
-  int m = mat.length, n = mat[0].length;
+```csharp
+public int[][] MatrixReshape(int[][] mat, int r, int c) {
+  int m = mat.Length, n = mat[0].Length;
   if (m * n != r * c) return mat; // Invalid shape
   
-  int[][] res = new int[r][c];
+  int[][] res = new int[r][];
+  for (int i=0; i<r; i++) res[i] = new int[c];
+  
   for (int i = 0; i < m * n; i++) {
     res[i / c][i % c] = mat[i / n][i % n];
   }
   return res;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
 
 * * *
 **6. Rotate Matrix 90° Counter-Clockwise**
@@ -5486,9 +4479,9 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
 
 **Explanation:** Counter-clockwise rotation is similar to clockwise. We transpose first, then reverse the columns (top to bottom swap) instead of rows.
 
-```java
-public void rotateCounter(int[][] matrix) {
-  int n = matrix.length;
+```csharp
+public void RotateCounter(int[][] matrix) {
+  int n = matrix.Length;
   // Transpose
   for (int i = 0; i < n; i++) {
     for (int j = i + 1; j < n; j++) {
@@ -5506,8 +4499,7 @@ public void rotateCounter(int[][] matrix) {
     }
   }
 }
-```
-Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **7. Search in Row-Column Sorted Matrix**
@@ -5519,18 +4511,17 @@ Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Start at the top-right corner. If target is smaller than the current value, it can't be in this column (move left). If target is larger, it can't be in this row (move down).
 
-```java
-public boolean searchMatrix(int[][] matrix, int target) {
-  int r = 0, c = matrix[0].length - 1;
-  while (r < matrix.length && c >= 0) {
+```csharp
+public bool SearchMatrix(int[][] matrix, int target) {
+  int r = 0, c = matrix[0].Length - 1;
+  while (r < matrix.Length && c >= 0) {
     if (matrix[r][c] == target) return true;
     else if (matrix[r][c] > target) c--;
     else r++;
   }
   return false;
 }
-```
-Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **8. Game of Life**
@@ -5542,9 +4533,9 @@ Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** To update in-place without a copy, encode transitions. Let 2 mean "was dead, now live", and -1 mean "was live, now dead". When counting neighbors, check if `abs(val) == 1`. After updating all, decode the states.
 
-```java
-public void gameOfLife(int[][] board) {
-  int m = board.length, n = board[0].length;
+```csharp
+public void GameOfLife(int[][] board) {
+  int m = board.Length, n = board[0].Length;
   for (int r = 0; r < m; r++) {
     for (int c = 0; c < n; c++) {
       int live = 0;
@@ -5552,7 +4543,7 @@ public void gameOfLife(int[][] board) {
         for (int j = -1; j <= 1; j++) {
           if (i == 0 && j == 0) continue;
           int nr = r + i, nc = c + j;
-          if (nr >= 0 && nr < m && nc >= 0 && nc < n && Math.abs(board[nr][nc]) == 1) live++;
+          if (nr >= 0 && nr < m && nc >= 0 && nc < n && Math.Abs(board[nr][nc]) == 1) live++;
         }
       }
       if (board[r][c] == 1 && (live < 2 || live > 3)) board[r][c] = -1;
@@ -5566,8 +4557,7 @@ public void gameOfLife(int[][] board) {
     }
   }
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **9. Toeplitz Matrix Verification**
@@ -5579,10 +4569,10 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Simply check every cell `matrix[i][j]` against its top-left neighbor `matrix[i-1][j-1]`. If they mismatch, return false.
 
-```java
-public boolean isToeplitzMatrix(int[][] matrix) {
-  for (int i = 1; i < matrix.length; i++) {
-    for (int j = 1; j < matrix[0].length; j++) {
+```csharp
+public bool IsToeplitzMatrix(int[][] matrix) {
+  for (int i = 1; i < matrix.Length; i++) {
+    for (int j = 1; j < matrix[0].Length; j++) {
       if (matrix[i][j] != matrix[i-1][j-1]) {
         return false;
       }
@@ -5590,8 +4580,7 @@ public boolean isToeplitzMatrix(int[][] matrix) {
   }
   return true;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **10. Spiral Matrix Construction**
@@ -5603,9 +4592,11 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Similar to spiral traversal, but instead of reading, we write an incrementing counter `val++` into the boundaries, contracting inwards until we fill $n^2$ elements.
 
-```java
-public int[][] generateMatrix(int n) {
-  int[][] mat = new int[n][n];
+```csharp
+public int[][] GenerateMatrix(int n) {
+  int[][] mat = new int[n][];
+  for(int i=0; i<n; i++) mat[i] = new int[n];
+  
   int t = 0, b = n - 1, l = 0, r = n - 1;
   int val = 1;
   while (t <= b && l <= r) {
@@ -5624,8 +4615,7 @@ public int[][] generateMatrix(int n) {
   }
   return mat;
 }
-```
-Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
+```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
 
 * * *
 **11. Flood Fill**
@@ -5637,23 +4627,22 @@ Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
 
 **Explanation:** We check if the starting pixel is already the target color. If not, we recursively replace all adjacent cells of the original color with the new color using DFS.
 
-```java
-public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+```csharp
+public int[][] FloodFill(int[][] image, int sr, int sc, int color) {
   if (image[sr][sc] != color) {
-    dfs(image, sr, sc, image[sr][sc], color);
+    Dfs(image, sr, sc, image[sr][sc], color);
   }
   return image;
 }
-private void dfs(int[][] img, int r, int c, int oldC, int newC) {
-  if (r < 0 || r >= img.length || c < 0 || c >= img[0].length || img[r][c] != oldC) return;
+private void Dfs(int[][] img, int r, int c, int oldC, int newC) {
+  if (r < 0 || r >= img.Length || c < 0 || c >= img[0].Length || img[r][c] != oldC) return;
   img[r][c] = newC; // mark and fill
-  dfs(img, r-1, c, oldC, newC);
-  dfs(img, r+1, c, oldC, newC);
-  dfs(img, r, c-1, oldC, newC);
-  dfs(img, r, c+1, oldC, newC);
+  Dfs(img, r-1, c, oldC, newC);
+  Dfs(img, r+1, c, oldC, newC);
+  Dfs(img, r, c-1, oldC, newC);
+  Dfs(img, r, c+1, oldC, newC);
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **12. Transpose Rectangular Matrix**
@@ -5665,11 +4654,13 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Since the matrix isn't square, we cannot transpose in place. We allocate a new matrix of size $C \times R$, and assign `ans[j][i] = matrix[i][j]`.
 
-```java
-public int[][] transpose(int[][] matrix) {
-  int r = matrix.length;
-  int c = matrix[0].length;
-  int[][] ans = new int[c][r];
+```csharp
+public int[][] Transpose(int[][] matrix) {
+  int r = matrix.Length;
+  int c = matrix[0].Length;
+  int[][] ans = new int[c][];
+  for (int i=0; i<c; i++) ans[i] = new int[r];
+  
   for (int i = 0; i < r; i++) {
     for (int j = 0; j < c; j++) {
       ans[j][i] = matrix[i][j];
@@ -5677,8 +4668,7 @@ public int[][] transpose(int[][] matrix) {
   }
   return ans;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **13. Valid Sudoku**
@@ -5688,26 +4678,26 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Pattern:** HashSet Encoding Trick.
 
-**Explanation:** We iterate through the grid. For each cell, we create a string encoding its presence in its row, column, and block (e.g., `"5 in row 0"`). If `HashSet.add()` returns false, a duplicate exists.
+**Explanation:** We iterate through the grid. For each cell, we encode its presence in its row, column, and block as unique integers to avoid slow string concatenations. If `HashSet.add()` returns false, a duplicate exists.
 
-```java
-public boolean isValidSudoku(char[][] board) {
-  Set<String> seen = new HashSet<>();
+```csharp
+public bool IsValidSudoku(char[][] board) {
+  HashSet<string> seen = new HashSet<string>();
   for (int i = 0; i < 9; ++i) {
     for (int j = 0; j < 9; ++j) {
       char number = board[i][j];
       if (number != '.') {
-        if (!seen.add(number + " in row " + i) ||
-            !seen.add(number + " in col " + j) ||
-            !seen.add(number + " in block " + i/3 + "-" + j/3))
+        int boxIdx = (i / 3) * 3 + j / 3;
+        if (!seen.Add(number + " in row " + i) ||
+            !seen.Add(number + " in col " + j) ||
+            !seen.Add(number + " in box " + boxIdx))
           return false;
       }
     }
   }
   return true;
 }
-```
-Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
 
 * * *
 **14. Island Perimeter**
@@ -5719,11 +4709,11 @@ Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
 
 **Explanation:** Each land cell adds 4 to the perimeter. For each land cell, we check its left and top neighbors. If they are also land, they share an edge, meaning we subtract 2 from the total perimeter (1 for each cell).
 
-```java
-public int islandPerimeter(int[][] grid) {
+```csharp
+public int IslandPerimeter(int[][] grid) {
   int perimeter = 0;
-  for (int i = 0; i < grid.length; i++) {
-    for (int j = 0; j < grid[0].length; j++) {
+  for (int i = 0; i < grid.Length; i++) {
+    for (int j = 0; j < grid[0].Length; j++) {
       if (grid[i][j] == 1) {
         perimeter += 4;
         if (i > 0 && grid[i - 1][j] == 1) perimeter -= 2;
@@ -5733,8 +4723,7 @@ public int islandPerimeter(int[][] grid) {
   }
   return perimeter;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **15. Maximum K×K Submatrix Sum**
@@ -5746,26 +4735,27 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Construct a 2D prefix sum array. Then iterate through all possible bottom-right corners `(i,j)` of size $K \times K$, extracting the sum in $\mathcal{O}(1)$ time.
 
-```java
-public int maxSum(int[][] mat, int k) {
-  int m = mat.length, n = mat[0].length;
-  int[][] pre = new int[m + 1][n + 1];
+```csharp
+public int MaxSum(int[][] mat, int k) {
+  int m = mat.Length, n = mat[0].Length;
+  int[][] pre = new int[m + 1][];
+  for (int i=0; i<=m; i++) pre[i] = new int[n + 1];
+  
   for (int i = 1; i <= m; i++) {
     for (int j = 1; j <= n; j++) {
       pre[i][j] = mat[i-1][j-1] + pre[i-1][j] + pre[i][j-1] - pre[i-1][j-1];
     }
   }
-  int max = Integer.MIN_VALUE;
+  int max = int.MinValue;
   for (int i = k; i <= m; i++) {
     for (int j = k; j <= n; j++) {
       int sum = pre[i][j] - pre[i-k][j] - pre[i][j-k] + pre[i-k][j-k];
-      max = Math.max(max, sum);
+      max = Math.Max(max, sum);
     }
   }
   return max;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **16. Number of Islands**
@@ -5777,27 +4767,26 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Iterate over every cell. When a '1' is found, increment the island count, and launch a DFS/BFS to mark all connected '1's as '0' to avoid recounting.
 
-```java
-public int numIslands(char[][] grid) {
+```csharp
+public int NumIslands(char[][] grid) {
   int count = 0;
-  for (int i = 0; i < grid.length; i++) {
-    for (int j = 0; j < grid[0].length; j++) {
+  for (int i = 0; i < grid.Length; i++) {
+    for (int j = 0; j < grid[0].Length; j++) {
       if (grid[i][j] == '1') {
         count++;
-        dfs(grid, i, j);
+        Dfs(grid, i, j);
       }
     }
   }
   return count;
 }
-private void dfs(char[][] grid, int r, int c) {
-  if (r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == '0') return;
+private void Dfs(char[][] grid, int r, int c) {
+  if (r < 0 || c < 0 || r >= grid.Length || c >= grid[0].Length || grid[r][c] == '0') return;
   grid[r][c] = '0';
-  dfs(grid, r+1, c); dfs(grid, r-1, c);
-  dfs(grid, r, c+1); dfs(grid, r, c-1);
+  Dfs(grid, r+1, c); Dfs(grid, r-1, c);
+  Dfs(grid, r, c+1); Dfs(grid, r, c-1);
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **17. Flip and Invert Image**
@@ -5809,10 +4798,10 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** In a single pass per row, we can use two pointers `i` and `j`. We assign `row[i] = row[j] ^ 1` and `row[j] = temp ^ 1`. Note the middle element when length is odd.
 
-```java
-public int[][] flipAndInvertImage(int[][] image) {
-  for (int[] row : image) {
-    int left = 0, right = row.length - 1;
+```csharp
+public int[][] FlipAndInvertImage(int[][] image) {
+  foreach (int[] row in image) {
+    int left = 0, right = row.Length - 1;
     while (left <= right) {
       int temp = row[left] ^ 1;
       row[left] = row[right] ^ 1;
@@ -5822,8 +4811,7 @@ public int[][] flipAndInvertImage(int[][] image) {
   }
   return image;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **18. Shift 2D Grid**
@@ -5835,25 +4823,24 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Map the grid to a 1D array conceptually of size $M \times N$. The new position of an element at index `i` is `(i + k) % (M * N)`. We can construct a new result grid based on this mapping.
 
-```java
-public List<List<Integer>> shiftGrid(int[][] grid, int k) {
-  int m = grid.length, n = grid[0].length;
+```csharp
+public IList<IList<int>> ShiftGrid(int[][] grid, int k) {
+  int m = grid.Length, n = grid[0].Length;
   int total = m * n;
   k %= total;
-  List<List<Integer>> res = new ArrayList<>();
+  var res = new List<IList<int>>();
   for (int i = 0; i < m; i++) {
-    res.add(new ArrayList<>(Collections.nCopies(n, 0)));
+    res.Add(new List<int>(new int[n]));
   }
   for (int r = 0; r < m; r++) {
     for (int c = 0; c < n; c++) {
       int new1D = (r * n + c + k) % total;
-      res.get(new1D / n).set(new1D % n, grid[r][c]);
+      res[new1D / n][new1D % n] = grid[r][c];
     }
   }
   return res;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **19. Word Search in Grid**
@@ -5865,27 +4852,26 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Iterate over all cells. If the first character matches, launch DFS. Temporarily mark cells (e.g., `#`) during recursion to prevent reuse, and restore them after the recursive call returns.
 
-```java
-public boolean exist(char[][] board, String word) {
-  for (int i = 0; i < board.length; i++) {
-    for (int j = 0; j < board[0].length; j++) {
-      if (dfs(board, i, j, word, 0)) return true;
+```csharp
+public bool Exist(char[][] board, string word) {
+  for (int i = 0; i < board.Length; i++) {
+    for (int j = 0; j < board[0].Length; j++) {
+      if (Dfs(board, i, j, word, 0)) return true;
     }
   }
   return false;
 }
-private boolean dfs(char[][] b, int r, int c, String word, int idx) {
-  if (idx == word.length()) return true;
-  if (r < 0 || c < 0 || r >= b.length || c >= b[0].length || b[r][c] != word.charAt(idx)) return false;
+private bool Dfs(char[][] b, int r, int c, string word, int idx) {
+  if (idx == word.Length) return true;
+  if (r < 0 || c < 0 || r >= b.Length || c >= b[0].Length || b[r][c] != word[idx]) return false;
   char temp = b[r][c];
   b[r][c] = '#';
-  boolean found = dfs(b, r+1, c, word, idx+1) || dfs(b, r-1, c, word, idx+1) ||
-                  dfs(b, r, c+1, word, idx+1) || dfs(b, r, c-1, word, idx+1);
+  bool found = Dfs(b, r+1, c, word, idx+1) || Dfs(b, r-1, c, word, idx+1) ||
+               Dfs(b, r, c+1, word, idx+1) || Dfs(b, r, c-1, word, idx+1);
   b[r][c] = temp;
   return found;
 }
-```
-Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
+```Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
 
 * * *
 **20. Determine If Matrix Can Be Obtained By Rotation**
@@ -5897,16 +4883,22 @@ Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
 
 **Explanation:** A matrix can be rotated at most 3 times (90, 180, 270 degrees). We compare `mat` to `target` up to 4 times, rotating `mat` by 90 degrees each time.
 
-```java
-public boolean findRotation(int[][] mat, int[][] target) {
+```csharp
+public bool FindRotation(int[][] mat, int[][] target) {
   for (int k = 0; k < 4; k++) {
-    if (Arrays.deepEquals(mat, target)) return true;
-    rotate(mat); // uses function from Problem 1
+    if (AreEqual(mat, target)) return true;
+    Rotate(mat); 
   }
   return false;
 }
-private void rotate(int[][] mat) {
-  int n = mat.length;
+private bool AreEqual(int[][] mat, int[][] target) {
+  for(int i=0; i<mat.Length; i++)
+    for(int j=0; j<mat[i].Length; j++)
+      if (mat[i][j] != target[i][j]) return false;
+  return true;
+}
+private void Rotate(int[][] mat) {
+  int n = mat.Length;
   for (int i = 0; i < n; i++) {
     for (int j = i + 1; j < n; j++) {
       int t = mat[i][j]; mat[i][j] = mat[j][i]; mat[j][i] = t;
@@ -5918,8 +4910,7 @@ private void rotate(int[][] mat) {
     }
   }
 }
-```
-Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **21. Chess Board Cell Color**
@@ -5931,14 +4922,13 @@ Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Convert the column letter and row number to integers. The color of a cell `(x, y)` is uniquely determined by `(x + y) % 2`. Compare the parity.
 
-```java
-public boolean solution(String cell1, String cell2) {
-  int sum1 = (cell1.charAt(0) - 'A') + (cell1.charAt(1) - '1');
-  int sum2 = (cell2.charAt(0) - 'A') + (cell2.charAt(1) - '1');
+```csharp
+public bool Solution(string cell1, string cell2) {
+  int sum1 = (cell1[0] - 'A') + (cell1[1] - '1');
+  int sum2 = (cell2[0] - 'A') + (cell2[1] - '1');
   return (sum1 % 2) == (sum2 % 2);
 }
-```
-Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **22. Minesweeper Click Reveal**
@@ -5950,23 +4940,23 @@ Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Count adjacent mines (8 directions). If > 0, set to digit. If == 0, set to 'B' and DFS to 8 adjacent 'E' neighbors.
 
-```java
-public char[][] updateBoard(char[][] board, int[] click) {
+```csharp
+public char[][] UpdateBoard(char[][] board, int[] click) {
   int r = click[0], c = click[1];
   if (board[r][c] == 'M') {
     board[r][c] = 'X';
     return board;
   }
-  dfs(board, r, c);
+  Dfs(board, r, c);
   return board;
 }
-private void dfs(char[][] b, int r, int c) {
-  if (r < 0 || c < 0 || r >= b.length || c >= b[0].length || b[r][c] != 'E') return;
+private void Dfs(char[][] b, int r, int c) {
+  if (r < 0 || c < 0 || r >= b.Length || c >= b[0].Length || b[r][c] != 'E') return;
   int mines = 0;
   for (int i = -1; i <= 1; i++) {
     for (int j = -1; j <= 1; j++) {
       int nr = r + i, nc = c + j;
-      if (nr >= 0 && nr < b.length && nc >= 0 && nc < b[0].length && b[nr][nc] == 'M') mines++;
+      if (nr >= 0 && nr < b.Length && nc >= 0 && nc < b[0].Length && b[nr][nc] == 'M') mines++;
     }
   }
   if (mines > 0) {
@@ -5974,12 +4964,11 @@ private void dfs(char[][] b, int r, int c) {
   } else {
     b[r][c] = 'B';
     for (int i = -1; i <= 1; i++) {
-      for (int j = -1; j <= 1; j++) dfs(b, r+i, c+j);
+      for (int j = -1; j <= 1; j++) Dfs(b, r+i, c+j);
     }
   }
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **23. Battleship Placement Validation**
@@ -5991,11 +4980,11 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Instead of a full DFS, just count the "top-left" cell of every battleship. A cell is a top-left if it is 'X' and has no 'X' above or to the left of it.
 
-```java
-public int countBattleships(char[][] board) {
+```csharp
+public int CountBattleships(char[][] board) {
   int count = 0;
-  for (int i = 0; i < board.length; i++) {
-    for (int j = 0; j < board[0].length; j++) {
+  for (int i = 0; i < board.Length; i++) {
+    for (int j = 0; j < board[0].Length; j++) {
       if (board[i][j] == 'X') {
         if (i > 0 && board[i-1][j] == 'X') continue;
         if (j > 0 && board[i][j-1] == 'X') continue;
@@ -6005,8 +4994,7 @@ public int countBattleships(char[][] board) {
   }
   return count;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **24. Box Blur**
@@ -6018,10 +5006,12 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** The output matrix size is $(M-2) \times (N-2)$. We iterate over these valid centers and compute the sum of the $3 \times 3$ area.
 
-```java
-public int[][] boxBlur(int[][] image) {
-  int m = image.length, n = image[0].length;
-  int[][] res = new int[m-2][n-2];
+```csharp
+public int[][] BoxBlur(int[][] image) {
+  int m = image.Length, n = image[0].Length;
+  int[][] res = new int[m-2][];
+  for (int i=0; i<m-2; i++) res[i] = new int[n-2];
+  
   for (int i = 1; i < m - 1; i++) {
     for (int j = 1; j < n - 1; j++) {
       int sum = 0;
@@ -6035,8 +5025,7 @@ public int[][] boxBlur(int[][] image) {
   }
   return res;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **25. Zigzag String Conversion**
@@ -6048,26 +5037,25 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Maintain a `row` index and a `direction`. Add characters to `StringBuilder[]` corresponding to each row. When hitting top or bottom row, reverse direction.
 
-```java
-public String convert(String s, int numRows) {
+```csharp
+public string Convert(string s, int numRows) {
   if (numRows == 1) return s;
-  StringBuilder[] rows = new StringBuilder[Math.min(numRows, s.length())];
-  for (int i = 0; i < rows.length; i++) rows[i] = new StringBuilder();
+  StringBuilder[] rows = new StringBuilder[Math.Min(numRows, s.Length)];
+  for (int i = 0; i < rows.Length; i++) rows[i] = new StringBuilder();
   
   int curRow = 0;
-  boolean goingDown = false;
-  for (char c : s.toCharArray()) {
-    rows[curRow].append(c);
+  bool goingDown = false;
+  foreach (char c in s.ToCharArray()) {
+    rows[curRow].Append(c);
     if (curRow == 0 || curRow == numRows - 1) goingDown = !goingDown;
     curRow += goingDown ? 1 : -1;
   }
   
   StringBuilder ret = new StringBuilder();
-  for (StringBuilder row : rows) ret.append(row);
-  return ret.toString();
+  foreach (StringBuilder row in rows) ret.Append(row);
+  return ret.ToString();
 }
-```
-Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
+```Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
 
 * * *
 **26. Simulate Robot Commands on Grid**
@@ -6079,29 +5067,28 @@ Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
 
 **Explanation:** Encode North, East, South, West using `dx` and `dy`. Turn right is `dir = (dir + 1) % 4`. Move step by step checking against an obstacle `HashSet`.
 
-```java
-public int robotSim(int[] commands, int[][] obstacles) {
+```csharp
+public int RobotSim(int[] commands, int[][] obstacles) {
   int[] dx = {0, 1, 0, -1}, dy = {1, 0, -1, 0};
-  Set<String> obs = new HashSet<>();
-  for (int[] o : obstacles) obs.add(o[0] + "," + o[1]);
+  HashSet<string> obs = new HashSet<string>();
+  foreach (int[] o in obstacles) obs.Add(o[0] + "," + o[1]);
   
   int x = 0, y = 0, dir = 0, maxDist = 0;
-  for (int cmd : commands) {
+  foreach (int cmd in commands) {
     if (cmd == -2) dir = (dir + 3) % 4;
     else if (cmd == -1) dir = (dir + 1) % 4;
     else {
       for (int k = 0; k < cmd; k++) {
         int nx = x + dx[dir], ny = y + dy[dir];
-        if (obs.contains(nx + "," + ny)) break;
+        if (obs.Contains(nx + "," + ny)) break;
         x = nx; y = ny;
-        maxDist = Math.max(maxDist, x*x + y*y);
+        maxDist = Math.Max(maxDist, x*x + y*y);
       }
     }
   }
   return maxDist;
 }
-```
-Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
+```Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
 
 * * *
 **27. Matrix Water Flow (Pacific Atlantic)**
@@ -6113,32 +5100,33 @@ Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
 
 **Explanation:** Instead of going downhill from every cell, go UPHILL from the ocean borders to mark reachable cells. Intersection of Pacific-reachable and Atlantic-reachable is the answer.
 
-```java
-public List<List<Integer>> pacificAtlantic(int[][] heights) {
-  int m = heights.length, n = heights[0].length;
-  boolean[][] pac = new boolean[m][n], atl = new boolean[m][n];
-  for (int i = 0; i < m; i++) { dfs(heights, pac, i, 0); dfs(heights, atl, i, n-1); }
-  for (int j = 0; j < n; j++) { dfs(heights, pac, 0, j); dfs(heights, atl, m-1, j); }
+```csharp
+public IList<IList<int>> PacificAtlantic(int[][] heights) {
+  int m = heights.Length, n = heights[0].Length;
+  bool[][] pac = new bool[m][], atl = new bool[m][];
+  for(int i=0; i<m; i++) { pac[i]=new bool[n]; atl[i]=new bool[n]; }
   
-  List<List<Integer>> res = new ArrayList<>();
+  for (int i = 0; i < m; i++) { Dfs(heights, pac, i, 0); Dfs(heights, atl, i, n-1); }
+  for (int j = 0; j < n; j++) { Dfs(heights, pac, 0, j); Dfs(heights, atl, m-1, j); }
+  
+  IList<IList<int>> res = new List<IList<int>>();
   for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) {
-      if (pac[i][j] && atl[i][j]) res.add(Arrays.asList(i, j));
+      if (pac[i][j] && atl[i][j]) res.Add(new List<int>{i, j});
     }
   }
   return res;
 }
-private void dfs(int[][] h, boolean[][] v, int r, int c) {
+private void Dfs(int[][] h, bool[][] v, int r, int c) {
   v[r][c] = true;
-  int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-  for (int[] d : dirs) {
+  int[][] dirs = {new int[]{1,0},new int[]{-1,0},new int[]{0,1},new int[]{0,-1}};
+  foreach (int[] d in dirs) {
     int nr = r + d[0], nc = c + d[1];
-    if (nr>=0 && nr<h.length && nc>=0 && nc<h[0].length && !v[nr][nc] && h[nr][nc] >= h[r][c])
-      dfs(h, v, nr, nc);
+    if (nr>=0 && nr<h.Length && nc>=0 && nc<h[0].Length && !v[nr][nc] && h[nr][nc] >= h[r][c])
+      Dfs(h, v, nr, nc);
   }
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **28. Rotting Oranges**
@@ -6150,29 +5138,29 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Add all initially rotten oranges to a queue. Use BFS level-by-level to rot adjacent oranges. Track minutes. Finally, check if any fresh oranges remain.
 
-```java
-public int orangesRotting(int[][] grid) {
-  Queue<int[]> q = new LinkedList<>();
-  int fresh = 0, m = grid.length, n = grid[0].length;
+```csharp
+public int OrangesRotting(int[][] grid) {
+  Queue<int[]> q = new Queue<int[]>();
+  int fresh = 0, m = grid.Length, n = grid[0].Length;
   for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) {
-      if (grid[i][j] == 2) q.offer(new int[]{i, j});
+      if (grid[i][j] == 2) q.Enqueue(new int[]{i, j});
       else if (grid[i][j] == 1) fresh++;
     }
   }
   if (fresh == 0) return 0;
   int mins = 0;
-  int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-  while (!q.isEmpty()) {
-    int size = q.size();
-    boolean rotted = false;
+  int[][] dirs = {new int[]{1,0},new int[]{-1,0},new int[]{0,1},new int[]{0,-1}};
+  while (q.Count > 0) {
+    int size = q.Count;
+    bool rotted = false;
     for (int k = 0; k < size; k++) {
-      int[] curr = q.poll();
-      for (int[] d : dirs) {
+      int[] curr = q.Dequeue();
+      foreach (int[] d in dirs) {
         int r = curr[0] + d[0], c = curr[1] + d[1];
         if (r>=0 && r<m && c>=0 && c<n && grid[r][c] == 1) {
           grid[r][c] = 2; fresh--;
-          q.offer(new int[]{r, c});
+          q.Enqueue(new int[]{r, c});
           rotted = true;
         }
       }
@@ -6181,8 +5169,7 @@ public int orangesRotting(int[][] grid) {
   }
   return fresh == 0 ? mins : -1;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **29. Surrounded Regions**
@@ -6194,11 +5181,11 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Any 'O' connected to a border 'O' cannot be captured. DFS from all border 'O's and mark them as safe ('#'). Flip all remaining 'O' to 'X', then revert '#' to 'O'.
 
-```java
-public void solve(char[][] board) {
-  int m = board.length, n = board[0].length;
-  for (int i = 0; i < m; i++) { dfs(board, i, 0); dfs(board, i, n-1); }
-  for (int j = 0; j < n; j++) { dfs(board, 0, j); dfs(board, m-1, j); }
+```csharp
+public void Solve(char[][] board) {
+  int m = board.Length, n = board[0].Length;
+  for (int i = 0; i < m; i++) { Dfs(board, i, 0); Dfs(board, i, n-1); }
+  for (int j = 0; j < n; j++) { Dfs(board, 0, j); Dfs(board, m-1, j); }
   
   for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) {
@@ -6207,13 +5194,12 @@ public void solve(char[][] board) {
     }
   }
 }
-private void dfs(char[][] b, int r, int c) {
-  if (r<0 || r>=b.length || c<0 || c>=b[0].length || b[r][c] != 'O') return;
+private void Dfs(char[][] b, int r, int c) {
+  if (r<0 || r>=b.Length || c<0 || c>=b[0].Length || b[r][c] != 'O') return;
   b[r][c] = '#';
-  dfs(b, r+1, c); dfs(b, r-1, c); dfs(b, r, c+1); dfs(b, r, c-1);
+  Dfs(b, r+1, c); Dfs(b, r-1, c); Dfs(b, r, c+1); Dfs(b, r, c-1);
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **30. Path with Minimum Effort**
@@ -6225,12 +5211,12 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** We can binary search the answer range [0, 10^6]. For a chosen effort limit `K`, use BFS. If BFS reaches the end using only edges $\le K$, then `K` is possible, so search lower. Else, search higher.
 
-```java
-public int minimumEffortPath(int[][] heights) {
+```csharp
+public int MinimumEffortPath(int[][] heights) {
   int left = 0, right = 1000000, ans = right;
   while (left <= right) {
     int mid = left + (right - left) / 2;
-    if (canReach(heights, mid)) {
+    if (CanReach(heights, mid)) {
       ans = mid; right = mid - 1;
     } else {
       left = mid + 1;
@@ -6238,30 +5224,31 @@ public int minimumEffortPath(int[][] heights) {
   }
   return ans;
 }
-private boolean canReach(int[][] h, int limit) {
-  int m = h.length, n = h[0].length;
-  boolean[][] vis = new boolean[m][n];
-  Queue<int[]> q = new LinkedList<>();
-  q.offer(new int[]{0, 0}); vis[0][0] = true;
-  int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+private bool CanReach(int[][] h, int limit) {
+  int m = h.Length, n = h[0].Length;
+  bool[][] vis = new bool[m][];
+  for(int i=0; i<m; i++) vis[i] = new bool[n];
   
-  while (!q.isEmpty()) {
-    int[] curr = q.poll();
+  Queue<int[]> q = new Queue<int[]>();
+  q.Enqueue(new int[]{0, 0}); vis[0][0] = true;
+  int[][] dirs = {new int[]{1,0},new int[]{-1,0},new int[]{0,1},new int[]{0,-1}};
+  
+  while (q.Count > 0) {
+    int[] curr = q.Dequeue();
     if (curr[0] == m-1 && curr[1] == n-1) return true;
-    for (int[] d : dirs) {
+    foreach (int[] d in dirs) {
       int r = curr[0]+d[0], c = curr[1]+d[1];
       if (r>=0 && r<m && c>=0 && c<n && !vis[r][c]) {
-        if (Math.abs(h[r][c] - h[curr[0]][curr[1]]) <= limit) {
+        if (Math.Abs(h[r][c] - h[curr[0]][curr[1]]) <= limit) {
           vis[r][c] = true;
-          q.offer(new int[]{r, c});
+          q.Enqueue(new int[]{r, c});
         }
       }
     }
   }
   return false;
 }
-```
-Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M \times N)$
 
 ## Practice Problem Bank
 
@@ -6476,14 +5463,14 @@ Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M
     **Strategic Hint:** State Machine Simulation using a `HashSet` of string coordinates `"x,y,z"`. Only simulate neighbors of currently active cells.
 
 
-# Q3 Mastery — Dynamic Sliding Windows, HashMap Frequency Signatures, and Prefix Sum Analytics
+# Medium-Hard-tier Mastery — Dynamic Sliding Windows, HashMap Frequency Signatures, and Prefix Sum Analytics
 
 ## Essential Terminology & Vocabulary
 
 **Dynamic Sliding Window**
 A technique where a window expands to the right to include elements and contracts from the left when a specific invariant or constraint is violated. It matters because it optimizes $\mathcal{O}(N^2)$ brute-force subarray checks into $\mathcal{O}(N)$ operations by avoiding redundant recalculations. Use when searching for the longest/shortest contiguous subarray satisfying a condition.
 
-![Dynamic Sliding Window — Longest Substring Without Repeating Characters](editions/csharp/chapters/11-q3-hashmaps-sliding-windows/visuals/sliding_window.png){width=85%}
+![Dynamic Sliding Window — Longest Substring Without Repeating Characters](editions/csharp/chapters/12-hashmaps-sliding-windows/visuals/sliding_window.png){width=85%}
 
 **Fixed-Size Sliding Window vs Dynamic Sliding Window**
 
@@ -6496,7 +5483,7 @@ A technique where a window expands to the right to include elements and contract
 **HashMap Frequency Signature**
 Creating a unique key for a group of items (like anagrams) based on their character frequencies rather than sorting. Usually represented as a mapped string of an `int[26]` array. This avoids the $\mathcal{O}(N \log N)$ sorting cost, providing an $\mathcal{O}(N)$ way to group items.
 
-![HashMap Frequency Signature — Anagram Detection](editions/csharp/chapters/11-q3-hashmaps-sliding-windows/visuals/hashmap_frequency.png){width=85%}
+![HashMap Frequency Signature — Anagram Detection](editions/csharp/chapters/12-hashmaps-sliding-windows/visuals/hashmap_frequency.png){width=85%}
 
 **Prefix Sum Array & Cumulative Matching**
 An array where `pref[i]` stores the sum of elements from index $0$ to $i$. The trick `pref[j] - pref[i] = K` allows finding a subarray sum $K$ in $\mathcal{O}(1)$ time by rearranging to `pref[i] = pref[j] - K` and looking up previously seen prefix sums.
@@ -6556,57 +5543,53 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 ## Reusable Code Templates
 
 ### Template A: Dynamic Sliding Window
-```java
+```csharp
 int left = 0, maxLen = 0;
-for (int right = 0; right < arr.length; right++) {
+for (int right = 0; right < arr.Length; right++) {
     // 1. Add arr[right] to window state
-    while (/* window state violates invariant */) {
+    while (false /* window state violates invariant */) {
         // 2. Remove arr[left] from window state
         left++;
     }
     // 3. Update maxLen or minLen
-    maxLen = Math.max(maxLen, right - left + 1);
+    maxLen = Math.Max(maxLen, right - left + 1);
 }
 ```
-
 ### Template B: Fixed-Size Sliding Window
-```java
+```csharp
 int k = 3, sum = 0, max = 0;
-for (int i = 0; i < arr.length; i++) {
+for (int i = 0; i < arr.Length; i++) {
     sum += arr[i]; // Add current element
     if (i >= k - 1) {
-        max = Math.max(max, sum); // Update result
+        max = Math.Max(max, sum); // Update result
         sum -= arr[i - (k - 1)];  // Remove leftmost element for next iteration
     }
 }
 ```
-
 ### Template C: Prefix Sum + HashMap Counter
-```java
-Map<Integer, Integer> map = new HashMap<>();
-map.put(0, 1); // Base case for subarrays starting at index 0
+```csharp
+Dictionary<int, int> map = new Dictionary<int, int>();
+map[0] = 1; // Base case for subarrays starting at index 0
 int sum = 0, count = 0;
-for (int num : nums) {
+foreach (int num in nums) {
     sum += num;
-    if (map.containsKey(sum - k)) {
-        count += map.get(sum - k);
+    if (map.ContainsKey(sum - k)) {
+        count += map[sum - k];
     }
-    map.put(sum, map.getOrDefault(sum, 0) + 1);
+    map[sum] = map.GetValueOrDefault(sum, 0) + 1;
 }
 ```
-
 ### Template D: HashMap Frequency Grouping
-```java
-Map<String, List<String>> map = new HashMap<>();
-for (String s : strs) {
+```csharp
+Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+foreach (string s in strs) {
     int[] count = new int[26];
-    for (char c : s.toCharArray()) count[c - 'a']++;
-    String key = Arrays.toString(count);
-    map.putIfAbsent(key, new ArrayList<>());
-    map.get(key).add(s);
+    foreach (char c in s.ToCharArray()) count[c - 'a']++;
+    string key = string.Join(",", count);
+    if (!map.ContainsKey(key)) map[key] = new List<string>();
+    map[key].Add(s);
 }
 ```
-
 * * *
 
 ## Solved Exemplar Problems
@@ -6619,23 +5602,22 @@ for (String s : strs) {
 **Pattern:** Dynamic Sliding Window + HashMap
 
 **Explanation:** We expand the right pointer. If the character is in the set, we contract the left pointer until the duplicate is removed, ensuring the window always contains unique characters.
-```java
-public int lengthOfLongestSubstring(String s) {
-    Set<Character> set = new HashSet<>();
+```csharp
+public int LengthOfLongestSubstring(string s) {
+    HashSet<char> set = new HashSet<char>();
     int left = 0, max = 0;
-    for (int right = 0; right < s.length(); right++) {
+    for (int right = 0; right < s.Length; right++) {
         // Contract if duplicate found
-        while (set.contains(s.charAt(right))) {
-            set.remove(s.charAt(left++));
+        while (set.Contains(s[right])) {
+            set.Remove(s[left++]);
         }
-        set.add(s.charAt(right)); // Add current char
-        max = Math.max(max, right - left + 1);
+        set.Add(s[right]); // Add current char
+        max = Math.Max(max, right - left + 1);
     }
     return max;
 }
 // Time Complexity: O(N) | Space Complexity: O(min(N, M))
 ```
-
 * * *
 
 **2. Subarray Sum Equals K**
@@ -6646,22 +5628,21 @@ public int lengthOfLongestSubstring(String s) {
 **Pattern:** Prefix Sum + HashMap
 
 **Explanation:** We maintain a running sum. If `sum - k` exists in our frequency map, it means there is a subarray ending at the current index that sums to K.
-```java
-public int subarraySum(int[] nums, int k) {
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, 1); // Base case
+```csharp
+public int SubarraySum(int[] nums, int k) {
+    Dictionary<int, int> map = new Dictionary<int, int>();
+    map[0] = 1; // Base case
     int sum = 0, count = 0;
-    for (int num : nums) {
+    foreach (int num in nums) {
         sum += num;
         // Check if required prefix exists
-        if (map.containsKey(sum - k)) count += map.get(sum - k);
-        map.put(sum, map.getOrDefault(sum, 0) + 1);
+        if (map.ContainsKey(sum - k)) count += map[sum - k];
+        map[sum] = map.GetValueOrDefault(sum, 0) + 1;
     }
     return count;
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **3. Group Anagrams**
@@ -6672,20 +5653,20 @@ public int subarraySum(int[] nums, int k) {
 **Pattern:** HashMap Frequency Signature
 
 **Explanation:** Generate a 26-element character count array for each string, convert it to a string key, and use it in a HashMap to group anagrams together.
-```java
-public List<List<String>> groupAnagrams(String[] strs) {
-    Map<String, List<String>> map = new HashMap<>();
-    for (String s : strs) {
+```csharp
+public IList<IList<string>> GroupAnagrams(string[] strs) {
+    Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+    foreach (string s in strs) {
         int[] count = new int[26];
-        for (char c : s.toCharArray()) count[c - 'a']++; // Build signature
-        String key = Arrays.toString(count);
-        map.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
+        foreach (char c in s) count[c - 'a']++; // Build signature
+        string key = string.Join(",", count);
+        if (!map.ContainsKey(key)) map[key] = new List<string>();
+        map[key].Add(s);
     }
-    return new ArrayList<>(map.values());
+    return new List<IList<string>>(map.Values);
 }
 // Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
-
 * * *
 
 **4. Find All Anagram Start Indices**
@@ -6696,22 +5677,21 @@ public List<List<String>> groupAnagrams(String[] strs) {
 **Pattern:** Fixed-Size Sliding Window + Frequency Array
 
 **Explanation:** Use a window of size `p.length()`. Keep arrays of character frequencies for `p` and the current window in `s`. If they match, add the index.
-```java
-public List<Integer> findAnagrams(String s, String p) {
-    List<Integer> res = new ArrayList<>();
-    if (s.length() < p.length()) return res;
+```csharp
+public IList<int> FindAnagrams(string s, string p) {
+    List<int> res = new List<int>();
+    if (s.Length < p.Length) return res;
     int[] pCount = new int[26], sCount = new int[26];
-    for (char c : p.toCharArray()) pCount[c - 'a']++;
-    for (int i = 0; i < s.length(); i++) {
-        sCount[s.charAt(i) - 'a']++;
-        if (i >= p.length()) sCount[s.charAt(i - p.length()) - 'a']--; // Contract
-        if (Arrays.equals(pCount, sCount)) res.add(i - p.length() + 1); // Match
+    foreach (char c in p) pCount[c - 'a']++;
+    for (int i = 0; i < s.Length; i++) {
+        sCount[s[i] - 'a']++;
+        if (i >= p.Length) sCount[s[i - p.Length] - 'a']--; // Contract
+        if (pCount.SequenceEqual(sCount)) res.Add(i - p.Length + 1); // Match
     }
     return res;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **5. Longest Substring with At Most K Distinct Characters**
@@ -6722,28 +5702,28 @@ public List<Integer> findAnagrams(String s, String p) {
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Use a HashMap to track character frequencies. When map size exceeds K, shrink window from left until size is K again.
-```java
-public int lengthOfLongestSubstringKDistinct(String s, int k) {
-    Map<Character, Integer> map = new HashMap<>();
+```csharp
+public int LengthOfLongestSubstringKDistinct(string s, int k) {
+    Dictionary<char, int> map = new Dictionary<char, int>();
     int left = 0, max = 0;
-    for (int right = 0; right < s.length(); right++) {
-        char c = s.charAt(right);
-        map.put(c, map.getOrDefault(c, 0) + 1);
-        while (map.size() > k) { // Invariant broken
-            char leftChar = s.charAt(left++);
-            map.put(leftChar, map.get(leftChar) - 1);
-            if (map.get(leftChar) == 0) map.remove(leftChar);
+    for (int right = 0; right < s.Length; right++) {
+        char c = s[right];
+        map[c] = map.GetValueOrDefault(c, 0) + 1;
+        while (map.Count > k) { // Invariant broken
+            char leftChar = s[left++];
+            map[leftChar]--;
+            if (map[leftChar] == 0) map.Remove(leftChar);
         }
-        max = Math.max(max, right - left + 1);
+        max = Math.Max(max, right - left + 1);
     }
     return max;
 }
 // Time Complexity: O(N) | Space Complexity: O(K)
 ```
-
 * * *
 
-**6. Minimum Window Substring**
+**6. Minimum Window Substring (Hard)**
+*Note: This problem is universally classified as Hard on major platforms. While it uses the sliding window pattern from this chapter, its implementation complexity—managing two frequency maps, a `formed` counter, and a contraction loop—places it at the highest difficulty tier.*
 **Specification:** Given strings s and t, find the minimum substring of s containing all characters in t.
 
 **Example:** `s = "ADOBECODEBANC", t = "ABC"` -> Output: `"BANC"`
@@ -6751,26 +5731,25 @@ public int lengthOfLongestSubstringKDistinct(String s, int k) {
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Track required characters in a map. Expand right until all required characters are in the window, then contract left to minimize the window.
-```java
-public String minWindow(String s, String t) {
+```csharp
+public string MinWindow(string s, string t) {
     int[] map = new int[128];
-    for (char c : t.toCharArray()) map[c]++;
-    int left = 0, count = t.length(), minLen = Integer.MAX_VALUE, minStart = 0;
-    for (int right = 0; right < s.length(); right++) {
-        if (map[s.charAt(right)]-- > 0) count--; // Found required char
+    foreach (char c in t) map[c]++;
+    int left = 0, count = t.Length, minLen = int.MaxValue, minStart = 0;
+    for (int right = 0; right < s.Length; right++) {
+        if (map[s[right]]-- > 0) count--; // Found required char
         while (count == 0) { // All chars found
             if (right - left + 1 < minLen) {
                 minLen = right - left + 1;
                 minStart = left;
             }
-            if (++map[s.charAt(left++)] > 0) count++; // Removed required char
+            if (++map[s[left++]] > 0) count++; // Removed required char
         }
     }
-    return minLen == Integer.MAX_VALUE ? "" : s.substring(minStart, minStart + minLen);
+    return minLen == int.MaxValue ? "" : s.Substring(minStart, minLen);
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **7. Group Shifted Strings**
@@ -6781,22 +5760,23 @@ public String minWindow(String s, String t) {
 **Pattern:** Difference-Based Signature
 
 **Explanation:** Calculate the relative distance between adjacent characters. Use this sequence of differences as the HashMap key.
-```java
-public List<List<String>> groupStrings(String[] strings) {
-    Map<String, List<String>> map = new HashMap<>();
-    for (String s : strings) {
+```csharp
+public IList<IList<string>> GroupStrings(string[] strings) {
+    Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+    foreach (string s in strings) {
         StringBuilder key = new StringBuilder();
-        for (int i = 1; i < s.length(); i++) {
-            int diff = (s.charAt(i) - s.charAt(i-1) + 26) % 26; // Circular difference
-            key.append(diff).append(",");
+        for (int i = 1; i < s.Length; i++) {
+            int diff = (s[i] - s[i-1] + 26) % 26; // Circular difference
+            key.Append(diff).Append(",");
         }
-        map.computeIfAbsent(key.toString(), k -> new ArrayList<>()).add(s);
+        string k = key.ToString();
+        if (!map.ContainsKey(k)) map[k] = new List<string>();
+        map[k].Add(s);
     }
-    return new ArrayList<>(map.values());
+    return new List<IList<string>>(map.Values);
 }
 // Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
-
 * * *
 
 **8. Contiguous Array Equal 0s and 1s**
@@ -6807,24 +5787,23 @@ public List<List<String>> groupStrings(String[] strings) {
 **Pattern:** Prefix Sum (+1/-1 trick)
 
 **Explanation:** Treat 0s as -1. If the running sum is seen again, it means the subarray between those two indices sums to 0, implying equal 0s and 1s.
-```java
-public int findMaxLength(int[] nums) {
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, -1);
+```csharp
+public int FindMaxLength(int[] nums) {
+    Dictionary<int, int> map = new Dictionary<int, int>();
+    map[0] = -1;
     int sum = 0, max = 0;
-    for (int i = 0; i < nums.length; i++) {
+    for (int i = 0; i < nums.Length; i++) {
         sum += nums[i] == 0 ? -1 : 1; // Map 0 to -1
-        if (map.containsKey(sum)) {
-            max = Math.max(max, i - map.get(sum));
+        if (map.ContainsKey(sum)) {
+            max = Math.Max(max, i - map[sum]);
         } else {
-            map.put(sum, i); // Store first occurrence
+            map[sum] = i; // Store first occurrence
         }
     }
     return max;
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **9. Subarray Product Less Than K**
@@ -6835,11 +5814,11 @@ public int findMaxLength(int[] nums) {
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Maintain a running product. If product >= k, shrink from left. Number of valid subarrays ending at `right` is `right - left + 1`.
-```java
-public int numSubarrayProductLessThanK(int[] nums, int k) {
+```csharp
+public int NumSubarrayProductLessThanK(int[] nums, int k) {
     if (k <= 1) return 0;
     int prod = 1, left = 0, count = 0;
-    for (int right = 0; right < nums.length; right++) {
+    for (int right = 0; right < nums.Length; right++) {
         prod *= nums[right];
         while (prod >= k) prod /= nums[left++]; // Shrink
         count += right - left + 1; // Add valid subarrays
@@ -6848,7 +5827,6 @@ public int numSubarrayProductLessThanK(int[] nums, int k) {
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **10. Permutation in String**
@@ -6859,21 +5837,20 @@ public int numSubarrayProductLessThanK(int[] nums, int k) {
 **Pattern:** Fixed-Size Window Frequency Match
 
 **Explanation:** Same logic as Anagram Start Indices. Maintain a window of size `s1.length()` and compare character counts.
-```java
-public boolean checkInclusion(String s1, String s2) {
-    if (s1.length() > s2.length()) return false;
+```csharp
+public bool CheckInclusion(string s1, string s2) {
+    if (s1.Length > s2.Length) return false;
     int[] s1map = new int[26], s2map = new int[26];
-    for (char c : s1.toCharArray()) s1map[c - 'a']++;
-    for (int i = 0; i < s2.length(); i++) {
-        s2map[s2.charAt(i) - 'a']++;
-        if (i >= s1.length()) s2map[s2.charAt(i - s1.length()) - 'a']--;
-        if (Arrays.equals(s1map, s2map)) return true;
+    foreach (char c in s1) s1map[c - 'a']++;
+    for (int i = 0; i < s2.Length; i++) {
+        s2map[s2[i] - 'a']++;
+        if (i >= s1.Length) s2map[s2[i - s1.Length] - 'a']--;
+        if (s1map.SequenceEqual(s2map)) return true;
     }
     return false;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **11. Maximum Erasure Value**
@@ -6884,24 +5861,23 @@ public boolean checkInclusion(String s1, String s2) {
 **Pattern:** Dynamic Sliding Window + HashSet
 
 **Explanation:** Use a set to track uniqueness. Expand right, add to sum. If duplicate found, shrink from left, subtracting from sum until unique.
-```java
-public int maximumUniqueSubarray(int[] nums) {
-    Set<Integer> set = new HashSet<>();
+```csharp
+public int MaximumUniqueSubarray(int[] nums) {
+    HashSet<int> set = new HashSet<int>();
     int sum = 0, max = 0, left = 0;
-    for (int right = 0; right < nums.length; right++) {
-        while (set.contains(nums[right])) {
-            set.remove(nums[left]);
+    for (int right = 0; right < nums.Length; right++) {
+        while (set.Contains(nums[right])) {
+            set.Remove(nums[left]);
             sum -= nums[left++]; // Remove duplicate
         }
-        set.add(nums[right]);
+        set.Add(nums[right]);
         sum += nums[right];
-        max = Math.max(max, sum);
+        max = Math.Max(max, sum);
     }
     return max;
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **12. Longest Repeating Character Replacement**
@@ -6912,22 +5888,21 @@ public int maximumUniqueSubarray(int[] nums) {
 **Pattern:** Window with Max Frequency Tracking
 
 **Explanation:** If `window size - max_freq_char_count > k`, we have too many differing chars, so we shrink the window.
-```java
-public int characterReplacement(String s, int k) {
+```csharp
+public int CharacterReplacement(string s, int k) {
     int[] count = new int[26];
     int maxCount = 0, left = 0, maxLen = 0;
-    for (int right = 0; right < s.length(); right++) {
-        maxCount = Math.max(maxCount, ++count[s.charAt(right) - 'A']);
+    for (int right = 0; right < s.Length; right++) {
+        maxCount = Math.Max(maxCount, ++count[s[right] - 'A']);
         if (right - left + 1 - maxCount > k) { // Invalid window
-            count[s.charAt(left++) - 'A']--;
+            count[s[left++] - 'A']--;
         }
-        maxLen = Math.max(maxLen, right - left + 1);
+        maxLen = Math.Max(maxLen, right - left + 1);
     }
     return maxLen;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **13. Fruit Into Baskets**
@@ -6938,24 +5913,23 @@ public int characterReplacement(String s, int k) {
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Keep a frequency map. When distinct fruit types exceed 2, increment left pointer to shrink.
-```java
-public int totalFruit(int[] fruits) {
-    Map<Integer, Integer> count = new HashMap<>();
+```csharp
+public int TotalFruit(int[] fruits) {
+    Dictionary<int, int> count = new Dictionary<int, int>();
     int left = 0, max = 0;
-    for (int right = 0; right < fruits.length; right++) {
-        count.put(fruits[right], count.getOrDefault(fruits[right], 0) + 1);
-        while (count.size() > 2) {
-            count.put(fruits[left], count.get(fruits[left]) - 1);
-            if (count.get(fruits[left]) == 0) count.remove(fruits[left]);
+    for (int right = 0; right < fruits.Length; right++) {
+        count[fruits[right]] = count.GetValueOrDefault(fruits[right], 0) + 1;
+        while (count.Count > 2) {
+            count[fruits[left]]--;
+            if (count[fruits[left]] == 0) count.Remove(fruits[left]);
             left++;
         }
-        max = Math.max(max, right - left + 1);
+        max = Math.Max(max, right - left + 1);
     }
     return max;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **14. Continuous Subarray Sum Multiple of K**
@@ -6966,25 +5940,24 @@ public int totalFruit(int[] fruits) {
 **Pattern:** Prefix Sum Modular Math
 
 **Explanation:** If `pref[i] % k == pref[j] % k`, the sum between $i$ and $j$ is a multiple of $K$. Store remainder and its first seen index.
-```java
-public boolean checkSubarraySum(int[] nums, int k) {
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, -1);
+```csharp
+public bool CheckSubarraySum(int[] nums, int k) {
+    Dictionary<int, int> map = new Dictionary<int, int>();
+    map[0] = -1;
     int sum = 0;
-    for (int i = 0; i < nums.length; i++) {
+    for (int i = 0; i < nums.Length; i++) {
         sum += nums[i];
-        int mod = k == 0 ? sum : sum % k;
-        if (map.containsKey(mod)) {
-            if (i - map.get(mod) > 1) return true; // Length >= 2
+        int mod = k == 0 ? sum : ((sum % k) + k) % k;
+        if (map.ContainsKey(mod)) {
+            if (i - map[mod] > 1) return true; // Length >= 2
         } else {
-            map.put(mod, i);
+            map[mod] = i;
         }
     }
     return false;
 }
 // Time Complexity: O(N) | Space Complexity: O(min(N, K))
 ```
-
 * * *
 
 **15. Max Consecutive Ones III**
@@ -6995,20 +5968,19 @@ public boolean checkSubarraySum(int[] nums, int k) {
 **Pattern:** Window with Zero-Flip Budget
 
 **Explanation:** Expand window. If 0 encountered, decrease K. If K < 0, shrink window until a 0 is excluded.
-```java
-public int longestOnes(int[] nums, int k) {
+```csharp
+public int LongestOnes(int[] nums, int k) {
     int left = 0;
-    for (int right = 0; right < nums.length; right++) {
+    for (int right = 0; right < nums.Length; right++) {
         if (nums[right] == 0) k--;
         if (k < 0) { // Over budget
             if (nums[left++] == 0) k++;
         }
     }
-    return nums.length - left; // Trick to return max valid length seen
+    return nums.Length - left; // Trick to return max valid length seen
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **16. Find All Duplicates in Array**
@@ -7019,19 +5991,18 @@ public int longestOnes(int[] nums, int k) {
 **Pattern:** Index Negation Trick
 
 **Explanation:** Use the array itself as a hash table. Mark the number at index `abs(num) - 1` negative. If it's already negative, it's a duplicate.
-```java
-public List<Integer> findDuplicates(int[] nums) {
-    List<Integer> res = new ArrayList<>();
-    for (int num : nums) {
-        int idx = Math.abs(num) - 1;
-        if (nums[idx] < 0) res.add(Math.abs(num)); // Found duplicate
+```csharp
+public IList<int> FindDuplicates(int[] nums) {
+    List<int> res = new List<int>();
+    foreach (int num in nums) {
+        int idx = Math.Abs(num) - 1;
+        if (nums[idx] < 0) res.Add(Math.Abs(num)); // Found duplicate
         else nums[idx] = -nums[idx]; // Mark seen
     }
     return res;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **17. Task Scheduler CPU Units**
@@ -7042,23 +6013,22 @@ public List<Integer> findDuplicates(int[] nums) {
 **Pattern:** Frequency Math
 
 **Explanation:** Calculate idle slots based on the most frequent task. `maxIdle = (maxFreq - 1) * n`. Fill slots with other tasks.
-```java
-public int leastInterval(char[] tasks, int n) {
+```csharp
+public int LeastInterval(char[] tasks, int n) {
     int[] count = new int[26];
     int max = 0, maxCount = 0;
-    for (char c : tasks) {
+    foreach (char c in tasks) {
         count[c - 'A']++;
         if (count[c - 'A'] == max) maxCount++;
         else if (count[c - 'A'] > max) { max = count[c - 'A']; maxCount = 1; }
     }
     int emptySlots = (max - 1) * (n - (maxCount - 1));
-    int availableTasks = tasks.length - max * maxCount;
-    int idles = Math.max(0, emptySlots - availableTasks);
-    return tasks.length + idles;
+    int availableTasks = tasks.Length - max * maxCount;
+    int idles = Math.Max(0, emptySlots - availableTasks);
+    return tasks.Length + idles;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **18. Insert & Merge Overlapping Intervals**
@@ -7069,23 +6039,22 @@ public int leastInterval(char[] tasks, int n) {
 **Pattern:** Interval Merging
 
 **Explanation:** Three phases: Add all before new, merge overlapping with new, add all after new.
-```java
-public int[][] insert(int[][] intervals, int[] newInterval) {
-    List<int[]> res = new ArrayList<>();
-    int i = 0, n = intervals.length;
-    while (i < n && intervals[i][1] < newInterval[0]) res.add(intervals[i++]); // Before
+```csharp
+public int[][] Insert(int[][] intervals, int[] newInterval) {
+    List<int[]> res = new List<int[]>();
+    int i = 0, n = intervals.Length;
+    while (i < n && intervals[i][1] < newInterval[0]) res.Add(intervals[i++]); // Before
     while (i < n && intervals[i][0] <= newInterval[1]) { // Merge
-        newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
-        newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+        newInterval[0] = Math.Min(newInterval[0], intervals[i][0]);
+        newInterval[1] = Math.Max(newInterval[1], intervals[i][1]);
         i++;
     }
-    res.add(newInterval);
-    while (i < n) res.add(intervals[i++]); // After
-    return res.toArray(new int[res.size()][]);
+    res.Add(newInterval);
+    while (i < n) res.Add(intervals[i++]); // After
+    return res.ToArray();
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **19. Top K Frequent Elements**
@@ -7096,20 +6065,21 @@ public int[][] insert(int[][] intervals, int[] newInterval) {
 **Pattern:** HashMap + Min-Heap
 
 **Explanation:** Count frequencies in a map, then keep a min-heap of size K based on frequencies.
-```java
-public int[] topKFrequent(int[] nums, int k) {
-    Map<Integer, Integer> count = new HashMap<>();
-    for (int n : nums) count.put(n, count.getOrDefault(n, 0) + 1);
-    PriorityQueue<Integer> heap = new PriorityQueue<>((a, b) -> count.get(a) - count.get(b));
-    for (int n : count.keySet()) {
-        heap.add(n);
-        if (heap.size() > k) heap.poll(); // Keep size K
+```csharp
+public int[] TopKFrequent(int[] nums, int k) {
+    Dictionary<int, int> count = new Dictionary<int, int>();
+    foreach (int n in nums) count[n] = count.GetValueOrDefault(n, 0) + 1;
+    PriorityQueue<int, int> heap = new PriorityQueue<int, int>();
+    foreach (int n in count.Keys) {
+        heap.Enqueue(n, count[n]);
+        if (heap.Count > k) heap.Dequeue(); // Keep size K
     }
-    return heap.stream().mapToInt(i -> i).toArray();
+    int[] res = new int[k];
+    for (int i = k - 1; i >= 0; i--) res[i] = heap.Dequeue();
+    return res;
 }
 // Time Complexity: O(N log K) | Space Complexity: O(N)
 ```
-
 * * *
 
 **20. First Missing Positive Integer**
@@ -7120,12 +6090,12 @@ public int[] topKFrequent(int[] nums, int k) {
 **Pattern:** Cyclic Sort (Index placement)
 
 **Explanation:** Place number `x` at index `x-1`. Then scan to find the first index that doesn't have `i+1`.
-```java
-public int firstMissingPositive(int[] nums) {
+```csharp
+public int FirstMissingPositive(int[] nums) {
     int i = 0;
-    while (i < nums.length) {
+    while (i < nums.Length) {
         // Swap to correct position if valid
-        if (nums[i] > 0 && nums[i] <= nums.length && nums[nums[i] - 1] != nums[i]) {
+        if (nums[i] > 0 && nums[i] <= nums.Length && nums[nums[i] - 1] != nums[i]) {
             int temp = nums[nums[i] - 1];
             nums[nums[i] - 1] = nums[i];
             nums[i] = temp;
@@ -7133,14 +6103,13 @@ public int firstMissingPositive(int[] nums) {
             i++;
         }
     }
-    for (i = 0; i < nums.length; i++) {
+    for (i = 0; i < nums.Length; i++) {
         if (nums[i] != i + 1) return i + 1; // Missing
     }
-    return nums.length + 1;
+    return nums.Length + 1;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **21. Minimum Size Subarray Sum**
@@ -7151,21 +6120,20 @@ public int firstMissingPositive(int[] nums) {
 **Pattern:** Dynamic Window with Target Sum
 
 **Explanation:** Keep expanding until sum >= target, then shrink to find minimum.
-```java
-public int minSubArrayLen(int target, int[] nums) {
-    int left = 0, sum = 0, min = Integer.MAX_VALUE;
-    for (int right = 0; right < nums.length; right++) {
+```csharp
+public int MinSubArrayLen(int target, int[] nums) {
+    int left = 0, sum = 0, min = int.MaxValue;
+    for (int right = 0; right < nums.Length; right++) {
         sum += nums[right];
         while (sum >= target) {
-            min = Math.min(min, right - left + 1);
+            min = Math.Min(min, right - left + 1);
             sum -= nums[left++];
         }
     }
-    return min == Integer.MAX_VALUE ? 0 : min;
+    return min == int.MaxValue ? 0 : min;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **22. Substring with Concatenation of All Words**
@@ -7176,32 +6144,31 @@ public int minSubArrayLen(int target, int[] nums) {
 **Pattern:** Fixed-Size Window with Inner HashMap
 
 **Explanation:** Use a map for word counts. Slide a window of length `words.length * wordLen` and verify word counts inside.
-```java
-public List<Integer> findSubstring(String s, String[] words) {
-    List<Integer> res = new ArrayList<>();
-    if (s.isEmpty() || words.length == 0) return res;
-    int wordLen = words[0].length(), totalLen = wordLen * words.length;
-    Map<String, Integer> counts = new HashMap<>();
-    for (String w : words) counts.put(w, counts.getOrDefault(w, 0) + 1);
+```csharp
+public IList<int> FindSubstring(string s, string[] words) {
+    List<int> res = new List<int>();
+    if (s.Length == 0 || words.Length == 0) return res;
+    int wordLen = words[0].Length, totalLen = wordLen * words.Length;
+    Dictionary<string, int> counts = new Dictionary<string, int>();
+    foreach (string w in words) counts[w] = counts.GetValueOrDefault(w, 0) + 1;
     
-    for (int i = 0; i <= s.length() - totalLen; i++) {
-        Map<String, Integer> seen = new HashMap<>();
+    for (int i = 0; i <= s.Length - totalLen; i++) {
+        Dictionary<string, int> seen = new Dictionary<string, int>();
         int j = 0;
-        while (j < words.length) {
-            String w = s.substring(i + j * wordLen, i + (j + 1) * wordLen);
-            if (counts.containsKey(w)) {
-                seen.put(w, seen.getOrDefault(w, 0) + 1);
-                if (seen.get(w) > counts.get(w)) break;
+        while (j < words.Length) {
+            string w = s.Substring(i + j * wordLen, wordLen);
+            if (counts.ContainsKey(w)) {
+                seen[w] = seen.GetValueOrDefault(w, 0) + 1;
+                if (seen[w] > counts[w]) break;
             } else break;
             j++;
         }
-        if (j == words.length) res.add(i);
+        if (j == words.Length) res.Add(i);
     }
     return res;
 }
 // Time Complexity: O(N * M * L) | Space Complexity: O(M)
 ```
-
 * * *
 
 **23. Contains Duplicate II**
@@ -7212,18 +6179,17 @@ public List<Integer> findSubstring(String s, String[] words) {
 **Pattern:** Sliding Window Set
 
 **Explanation:** Keep a sliding set of size k. If add fails, duplicate found.
-```java
-public boolean containsNearbyDuplicate(int[] nums, int k) {
-    Set<Integer> set = new HashSet<>();
-    for (int i = 0; i < nums.length; i++) {
-        if (i > k) set.remove(nums[i - k - 1]);
-        if (!set.add(nums[i])) return true;
+```csharp
+public bool ContainsNearbyDuplicate(int[] nums, int k) {
+    HashSet<int> set = new HashSet<int>();
+    for (int i = 0; i < nums.Length; i++) {
+        if (i > k) set.Remove(nums[i - k - 1]);
+        if (!set.Add(nums[i])) return true;
     }
     return false;
 }
 // Time Complexity: O(N) | Space Complexity: O(K)
 ```
-
 * * *
 
 **24. Count Number of Nice Subarrays**
@@ -7234,21 +6200,20 @@ public boolean containsNearbyDuplicate(int[] nums, int k) {
 **Pattern:** Prefix Sum of Odds
 
 **Explanation:** Treat odds as 1s, evens as 0s. Same as subarray sum equals K.
-```java
-public int numberOfSubarrays(int[] nums, int k) {
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, 1);
+```csharp
+public int NumberOfSubarrays(int[] nums, int k) {
+    Dictionary<int, int> map = new Dictionary<int, int>();
+    map[0] = 1;
     int sum = 0, count = 0;
-    for (int num : nums) {
+    foreach (int num in nums) {
         sum += num % 2;
-        count += map.getOrDefault(sum - k, 0);
-        map.put(sum, map.getOrDefault(sum, 0) + 1);
+        count += map.GetValueOrDefault(sum - k, 0);
+        map[sum] = map.GetValueOrDefault(sum, 0) + 1;
     }
     return count;
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **25. Frequency of Most Frequent Element**
@@ -7259,22 +6224,21 @@ public int numberOfSubarrays(int[] nums, int k) {
 **Pattern:** Sort + Sliding Window
 
 **Explanation:** Sort first. To make all elements in window equal to `nums[right]`, we need `nums[right] * window_length - window_sum <= k`.
-```java
-public int maxFrequency(int[] nums, int k) {
-    Arrays.sort(nums);
+```csharp
+public int MaxFrequency(int[] nums, int k) {
+    Array.Sort(nums);
     int left = 0;
     long sum = 0;
-    for (int right = 0; right < nums.length; right++) {
+    for (int right = 0; right < nums.Length; right++) {
         sum += nums[right];
         if ((long)nums[right] * (right - left + 1) - sum > k) {
             sum -= nums[left++];
         }
     }
-    return nums.length - left;
+    return nums.Length - left;
 }
 // Time Complexity: O(N log N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **26. Subarrays with K Different Integers**
@@ -7285,14 +6249,14 @@ public int maxFrequency(int[] nums, int k) {
 **Pattern:** At-Most-K Trick
 
 **Explanation:** Exactly(K) = AtMost(K) - AtMost(K-1).
-```java
-public int subarraysWithKDistinct(int[] nums, int k) {
-    return atMostK(nums, k) - atMostK(nums, k - 1);
+```csharp
+public int SubarraysWithKDistinct(int[] nums, int k) {
+    return AtMostK(nums, k) - AtMostK(nums, k - 1);
 }
-private int atMostK(int[] nums, int k) {
-    int[] count = new int[nums.length + 1];
+private int AtMostK(int[] nums, int k) {
+    int[] count = new int[nums.Length + 1];
     int left = 0, res = 0, distinct = 0;
-    for (int right = 0; right < nums.length; right++) {
+    for (int right = 0; right < nums.Length; right++) {
         if (count[nums[right]]++ == 0) distinct++;
         while (distinct > k) {
             if (--count[nums[left++]] == 0) distinct--;
@@ -7303,7 +6267,6 @@ private int atMostK(int[] nums, int k) {
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **27. Longest Palindromic Substring**
@@ -7314,27 +6277,26 @@ private int atMostK(int[] nums, int k) {
 **Pattern:** Expand Around Center
 
 **Explanation:** Treat each character and between-character as a center and expand outwards to check for palindrome.
-```java
-public String longestPalindrome(String s) {
+```csharp
+public string LongestPalindrome(string s) {
     int start = 0, end = 0;
-    for (int i = 0; i < s.length(); i++) {
-        int len1 = expand(s, i, i);
-        int len2 = expand(s, i, i + 1);
-        int len = Math.max(len1, len2);
+    for (int i = 0; i < s.Length; i++) {
+        int len1 = Expand(s, i, i);
+        int len2 = Expand(s, i, i + 1);
+        int len = Math.Max(len1, len2);
         if (len > end - start) {
             start = i - (len - 1) / 2;
             end = i + len / 2;
         }
     }
-    return s.substring(start, end + 1);
+    return s.Substring(start, end - start + 1);
 }
-private int expand(String s, int L, int R) {
-    while (L >= 0 && R < s.length() && s.charAt(L) == s.charAt(R)) { L--; R++; }
+private int Expand(string s, int L, int R) {
+    while (L >= 0 && R < s.Length && s[L] == s[R]) { L--; R++; }
     return R - L - 1;
 }
 // Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
-
 * * *
 
 **28. 3Sum**
@@ -7345,17 +6307,17 @@ private int expand(String s, int L, int R) {
 **Pattern:** Sort + Two Pointer
 
 **Explanation:** Sort array. Iterate `i`, and use two pointers `L` and `R` to find pairs summing to `-nums[i]`. Skip duplicates.
-```java
-public List<List<Integer>> threeSum(int[] nums) {
-    Arrays.sort(nums);
-    List<List<Integer>> res = new ArrayList<>();
-    for (int i = 0; i < nums.length - 2; i++) {
+```csharp
+public IList<IList<int>> ThreeSum(int[] nums) {
+    Array.Sort(nums);
+    IList<IList<int>> res = new List<IList<int>>();
+    for (int i = 0; i < nums.Length - 2; i++) {
         if (i > 0 && nums[i] == nums[i-1]) continue;
-        int L = i + 1, R = nums.length - 1;
+        int L = i + 1, R = nums.Length - 1;
         while (L < R) {
             int sum = nums[i] + nums[L] + nums[R];
             if (sum == 0) {
-                res.add(Arrays.asList(nums[i], nums[L], nums[R]));
+                res.Add(new List<int>{nums[i], nums[L], nums[R]});
                 while (L < R && nums[L] == nums[L+1]) L++;
                 while (L < R && nums[R] == nums[R-1]) R--;
                 L++; R--;
@@ -7368,7 +6330,6 @@ public List<List<Integer>> threeSum(int[] nums) {
 }
 // Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
-
 * * *
 
 **29. 4Sum**
@@ -7379,19 +6340,19 @@ public List<List<Integer>> threeSum(int[] nums) {
 **Pattern:** Sort + Nested Two Pointer
 
 **Explanation:** Extend 3Sum by adding one more outer loop.
-```java
-public List<List<Integer>> fourSum(int[] nums, int target) {
-    Arrays.sort(nums);
-    List<List<Integer>> res = new ArrayList<>();
-    for (int i = 0; i < nums.length - 3; i++) {
+```csharp
+public IList<IList<int>> FourSum(int[] nums, int target) {
+    Array.Sort(nums);
+    IList<IList<int>> res = new List<IList<int>>();
+    for (int i = 0; i < nums.Length - 3; i++) {
         if (i > 0 && nums[i] == nums[i-1]) continue;
-        for (int j = i + 1; j < nums.length - 2; j++) {
+        for (int j = i + 1; j < nums.Length - 2; j++) {
             if (j > i + 1 && nums[j] == nums[j-1]) continue;
-            int L = j + 1, R = nums.length - 1;
+            int L = j + 1, R = nums.Length - 1;
             while (L < R) {
                 long sum = (long)nums[i] + nums[j] + nums[L] + nums[R];
                 if (sum == target) {
-                    res.add(Arrays.asList(nums[i], nums[j], nums[L], nums[R]));
+                    res.Add(new List<int>{nums[i], nums[j], nums[L], nums[R]});
                     while (L < R && nums[L] == nums[L+1]) L++;
                     while (L < R && nums[R] == nums[R-1]) R--;
                     L++; R--;
@@ -7405,7 +6366,6 @@ public List<List<Integer>> fourSum(int[] nums, int target) {
 }
 // Time Complexity: O(N^3) | Space Complexity: O(1)
 ```
-
 * * *
 
 **30. Number of Distinct Islands**
@@ -7416,33 +6376,32 @@ public List<List<Integer>> fourSum(int[] nums, int target) {
 **Pattern:** DFS + Path Signature Hashing
 
 **Explanation:** Record the direction moved (U, D, L, R) during DFS traversal. Store path strings in a HashSet to deduplicate identical shapes.
-```java
-public int numDistinctIslands(int[][] grid) {
-    Set<String> set = new HashSet<>();
-    for (int i = 0; i < grid.length; i++) {
-        for (int j = 0; j < grid[0].length; j++) {
+```csharp
+public int NumDistinctIslands(int[][] grid) {
+    HashSet<string> set = new HashSet<string>();
+    for (int i = 0; i < grid.Length; i++) {
+        for (int j = 0; j < grid[0].Length; j++) {
             if (grid[i][j] == 1) {
                 StringBuilder sb = new StringBuilder();
-                dfs(grid, i, j, "S", sb); // Start with 'S'
-                set.add(sb.toString());
+                Dfs(grid, i, j, "S", sb); // Start with 'S'
+                set.Add(sb.ToString());
             }
         }
     }
-    return set.size();
+    return set.Count;
 }
-private void dfs(int[][] grid, int r, int c, String dir, StringBuilder sb) {
-    if (r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == 0) return;
+private void Dfs(int[][] grid, int r, int c, string dir, StringBuilder sb) {
+    if (r < 0 || c < 0 || r >= grid.Length || c >= grid[0].Length || grid[r][c] == 0) return;
     grid[r][c] = 0; // mark visited
-    sb.append(dir);
-    dfs(grid, r + 1, c, "D", sb);
-    dfs(grid, r - 1, c, "U", sb);
-    dfs(grid, r, c + 1, "R", sb);
-    dfs(grid, r, c - 1, "L", sb);
-    sb.append("B"); // Backtrack to distinguish paths
+    sb.Append(dir);
+    Dfs(grid, r + 1, c, "D", sb);
+    Dfs(grid, r - 1, c, "U", sb);
+    Dfs(grid, r, c + 1, "R", sb);
+    Dfs(grid, r, c - 1, "L", sb);
+    sb.Append("B"); // Backtrack to distinguish paths
 }
 // Time Complexity: O(R * C) | Space Complexity: O(R * C)
 ```
-
 * * *
 
 ## Practice Problem Bank
@@ -7718,9 +6677,9 @@ private void dfs(int[][] grid, int r, int c, String dir, StringBuilder sb) {
 **Strategic Hint:** Max AND is just the max element. Find longest contiguous sequence of the max element.
 
 
-# Q4 Mastery — Algorithmic Optimization: Binary Search Variants, Monotonic Structures, Dynamic Programming, and Graph Algorithms
+# Hard-tier Mastery — Algorithmic Optimization: Binary Search Variants, Monotonic Structures, Dynamic Programming, and Graph Algorithms
 
-This chapter covers Q4 of the CodeSignal GCA (Hard difficulty, ~25 minutes target time). Q4 is the most challenging question testing optimal $\mathcal{O}(\log N)$ or $\mathcal{O}(N)$ solutions, DP state transitions, and graph algorithms.
+This chapter covers Hard-tier of the General Coding Assessments (Hard difficulty, ~25 minutes target time). Hard-tier is the most challenging question testing optimal $\mathcal{O}(\log N)$ or $\mathcal{O}(N)$ solutions, DP state transitions, and graph algorithms.
 
 ## Essential Terminology & Vocabulary
 
@@ -7740,7 +6699,7 @@ Notice what happened:
 - The single monotonically increasing sequence is split into **two sorted sub-arrays**: $[4, 5, 6, 7]$ (the left segment) and $[0, 1, 2]$ (the right segment).
 - The array is no longer sorted overall, so standard Binary Search (which assumes `nums[left] <= nums[right]`) fails if implemented naively.
 
-![Binary Search on Rotated Sorted Array — Two Sorted Halves](editions/csharp/chapters/12-q4-optimization-dp/visuals/rotated_sorted_array.png){width=85%}
+![Binary Search on Rotated Sorted Array — Two Sorted Halves](editions/csharp/chapters/13-optimization-dp/visuals/rotated_sorted_array.png){width=85%}
 
 * * *
 
@@ -7748,6 +6707,13 @@ Notice what happened:
 The key insight that allows us to achieve $\mathcal{O}(\log N)$ time complexity is the **Monotonic Partition Invariant**:
 
 > **The Fundamental Invariant:** Whenever you split a Rotated Sorted Array into two halves using a midpoint `mid = left + (right - left) / 2`, **AT LEAST ONE OF THE TWO HALVES IS GUARANTEED TO BE STRICTLY MONOTONICALLY SORTED.**
+
+> **Proof by Exhaustion.** Consider array `A[lo..hi]` with midpoint `mid = (lo + hi) / 2`. The rotation point (the index where `A[i] > A[i+1]`) can only exist in one contiguous segment.
+> - **Case 1:** Rotation point is in `A[mid+1..hi]`. Then `A[lo..mid]` contains no rotation point, so `A[lo] ≤ A[lo+1] ≤ ... ≤ A[mid]` — the left half is sorted.
+> - **Case 2:** Rotation point is in `A[lo..mid]`. Then `A[mid+1..hi]` contains no rotation point, so `A[mid+1] ≤ ... ≤ A[hi]` — the right half is sorted.
+> - **Case 3:** No rotation point exists in `A[lo..hi]` (entire subarray is sorted). Both halves are sorted.
+>
+> In all cases, at least one half is sorted. ∎
 
 - If `nums[left] <= nums[mid]`: The **LEFT half** `[left ... mid]` is monotonically sorted.
 - If `nums[left] > nums[mid]`: The **RIGHT half** `[mid ... right]` is monotonically sorted.
@@ -7888,17 +6854,17 @@ Why it matters: It allows O(1) get and put operations by seamlessly combining ha
 This refers to identifying when a problem's state perfectly maps to the linear recurrence `dp[i] = dp[i-1] + dp[i-2]`. The entire array state can be compressed into two variables.
 Why it matters: Problems like climbing stairs, decode ways, and tiling can be instantly recognized and compressed to O(1) space.
 
-![DP State Transition — Climbing Stairs with Space Optimization](editions/csharp/chapters/12-q4-optimization-dp/visuals/dp_climbing_stairs.png){width=85%}
+![DP State Transition — Climbing Stairs with Space Optimization](editions/csharp/chapters/13-optimization-dp/visuals/dp_climbing_stairs.png){width=85%}
 
 * * *
 
 ## Reusable Code Templates
 
 ### Template A: Binary Search
-```java
+```csharp
 // Standard Binary Search
-int binarySearch(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
+int BinarySearch(int[] nums, int target) {
+    int left = 0, right = nums.Length - 1;
     while (left <= right) {
         int mid = left + (right - left) / 2;
         if (nums[mid] == target) return mid;
@@ -7909,12 +6875,12 @@ int binarySearch(int[] nums, int target) {
 }
 
 // Binary Search on Answer Space (Leftmost valid)
-int binarySearchAnswerSpace(int min, int max) {
+int BinarySearchAnswerSpace(int min, int max) {
     int left = min, right = max;
     int best = -1;
     while (left <= right) {
         int mid = left + (right - left) / 2;
-        if (isValid(mid)) {
+        if (IsValid(mid)) {
             best = mid;
             right = mid - 1; // Try to find a smaller valid answer
         } else {
@@ -7924,60 +6890,57 @@ int binarySearchAnswerSpace(int min, int max) {
     return best;
 }
 ```
-
 ### Template B: Monotonic Stack
-```java
-public int[] nextGreaterElement(int[] nums) {
-    int n = nums.length;
+```csharp
+public int[] NextGreaterElement(int[] nums) {
+    int n = nums.Length;
     int[] result = new int[n];
-    Arrays.fill(result, -1);
-    Deque<Integer> stack = new ArrayDeque<>(); // stores indices
+    Array.Fill(result, -1);
+    Stack<int> stack = new Stack<int>(); // stores indices
     for (int i = 0; i < n; i++) {
         // Maintain strictly decreasing stack
-        while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
-            int prevIndex = stack.pop();
+        while (stack.Count > 0 && nums[i] > nums[stack.Peek()]) {
+            int prevIndex = stack.Pop();
             result[prevIndex] = nums[i]; // Found next greater!
         }
-        stack.push(i);
+        stack.Push(i);
     }
     return result;
 }
 ```
-
 ### Template C: 1D DP with State Compression
-```java
-public int dpStateCompression(int[] nums) {
-    if (nums.length == 0) return 0;
+```csharp
+public int DpStateCompression(int[] nums) {
+    if (nums.Length == 0) return 0;
     int prev2 = 0; // dp[i-2]
     int prev1 = nums[0]; // dp[i-1]
-    for (int i = 1; i < nums.length; i++) {
-        int curr = Math.max(prev1, prev2 + nums[i]);
+    for (int i = 1; i < nums.Length; i++) {
+        int curr = Math.Max(prev1, prev2 + nums[i]);
         prev2 = prev1;
         prev1 = curr;
     }
     return prev1;
 }
 ```
-
 ### Template D: BFS with Level Tracking
-```java
-public int bfsLevel(Node start, Node target) {
-    Queue<Node> queue = new LinkedList<>();
-    Set<Node> visited = new HashSet<>();
-    queue.offer(start);
-    visited.add(start);
+```csharp
+public int BfsLevel(Node start, Node target) {
+    Queue<Node> queue = new Queue<Node>();
+    HashSet<Node> visited = new HashSet<Node>();
+    queue.Enqueue(start);
+    visited.Add(start);
     
     int level = 0;
-    while (!queue.isEmpty()) {
-        int size = queue.size();
+    while (queue.Count > 0) {
+        int size = queue.Count;
         for (int i = 0; i < size; i++) {
-            Node curr = queue.poll();
-            if (curr.equals(target)) return level;
+            Node curr = queue.Dequeue();
+            if (curr.Equals(target)) return level;
             
-            for (Node neighbor : curr.neighbors) {
-                if (!visited.contains(neighbor)) {
-                    visited.add(neighbor);
-                    queue.offer(neighbor);
+            foreach (Node neighbor in curr.neighbors) {
+                if (!visited.Contains(neighbor)) {
+                    visited.Add(neighbor);
+                    queue.Enqueue(neighbor);
                 }
             }
         }
@@ -7986,43 +6949,42 @@ public int bfsLevel(Node start, Node target) {
     return -1;
 }
 ```
-
 ### Template E: Topological Sort (Kahn's Algorithm)
-```java
-public List<Integer> topologicalSort(int numNodes, int[][] edges) {
-    List<List<Integer>> adj = new ArrayList<>();
+```csharp
+public IList<int> TopologicalSort(int numNodes, int[][] edges) {
+    var adj = new List<List<int>>();
     int[] inDegree = new int[numNodes];
-    for (int i = 0; i < numNodes; i++) adj.add(new ArrayList<>());
+    for (int i = 0; i < numNodes; i++) adj.Add(new List<int>());
     
-    for (int[] edge : edges) {
-        adj.get(edge[1]).add(edge[0]); // edge[1] -> edge[0]
+    foreach (int[] edge in edges) {
+        adj[edge[1]].Add(edge[0]); // edge[1] -> edge[0]
         inDegree[edge[0]]++;
     }
     
-    Queue<Integer> queue = new LinkedList<>();
+    var queue = new Queue<int>();
     for (int i = 0; i < numNodes; i++) {
-        if (inDegree[i] == 0) queue.offer(i);
+        if (inDegree[i] == 0) queue.Enqueue(i);
     }
     
-    List<Integer> order = new ArrayList<>();
-    while (!queue.isEmpty()) {
-        int curr = queue.poll();
-        order.add(curr);
-        for (int neighbor : adj.get(curr)) {
+    List<int> order = new List<int>();
+    while (queue.Count > 0) {
+        int curr = queue.Dequeue();
+        order.Add(curr);
+        foreach (int neighbor in adj[curr]) {
             if (--inDegree[neighbor] == 0) {
-                queue.offer(neighbor);
+                queue.Enqueue(neighbor);
             }
         }
     }
-    return order.size() == numNodes ? order : new ArrayList<>(); // Empty if cycle exists
+    return order.Count == numNodes ? order : new List<int>(); // Empty if cycle exists
 }
 ```
-
 * * *
 
 ## Solved Exemplar Problems
 
 **1. Search in Rotated Sorted Array**
+**Difficulty Classification:** This problem is classified as Medium on all major assessment platforms. It appears in this chapter because it demonstrates the advanced application of the Binary Search pattern **[PAT-10] Monotonic Partition Binary Search** with a modified invariant. For assessment preparation, treat this as a medium-tier warm-up before tackling the harder DP and graph problems in this chapter.
 **Specification:** Given an integer array sorted in ascending order (with distinct values) and rotated at an unknown pivot, find the index of `target`.
 
 **Example:** `nums = [4,5,6,7,0,1,2]`, `target = 0` $\rightarrow$ output `4`.
@@ -8031,10 +6993,10 @@ public List<Integer> topologicalSort(int numNodes, int[][] edges) {
 
 **Explanation:** We use the monotonic partition invariant. At any midpoint, at least one half of the array is strictly sorted. We identify the sorted half and check if the target falls within its range.
 
-```java
-public int search(int[] nums, int target) {
-    if (nums == null || nums.length == 0) return -1;
-    int left = 0, right = nums.length - 1;
+```csharp
+public int Search(int[] nums, int target) {
+    if (nums == null || nums.Length == 0) return -1;
+    int left = 0, right = nums.Length - 1;
     
     while (left <= right) {
         int mid = left + (right - left) / 2;
@@ -8062,7 +7024,6 @@ public int search(int[] nums, int target) {
 // Time Complexity: O(log N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **2. Sliding Window Maximum**
@@ -8074,28 +7035,28 @@ public int search(int[] nums, int target) {
 
 **Explanation:** We maintain a deque of indices such that the values are in strictly decreasing order. The front of the deque always holds the maximum element's index for the current window. We remove elements from the front that fall out of the window.
 
-```java
-public int[] maxSlidingWindow(int[] nums, int k) {
+```csharp
+public int[] MaxSlidingWindow(int[] nums, int k) {
     if (nums == null || k <= 0) return new int[0];
-    int n = nums.length;
+    int n = nums.Length;
     int[] res = new int[n - k + 1];
     int resIndex = 0;
-    Deque<Integer> q = new ArrayDeque<>();
+    LinkedList<int> q = new LinkedList<int>();
     
     for (int i = 0; i < n; i++) {
         // Remove indices outside the current window
-        if (!q.isEmpty() && q.peekFirst() < i - k + 1) {
-            q.pollFirst();
+        if (q.Count > 0 && q.First.Value < i - k + 1) {
+            q.RemoveFirst();
         }
         // Remove smaller elements (maintain decreasing order)
-        while (!q.isEmpty() && nums[q.peekLast()] < nums[i]) {
-            q.pollLast();
+        while (q.Count > 0 && nums[q.Last.Value] < nums[i]) {
+            q.RemoveLast();
         }
-        q.offerLast(i);
+        q.AddLast(i);
         
         // Record max for the window
         if (i >= k - 1) {
-            res[resIndex++] = nums[q.peekFirst()];
+            res[resIndex++] = nums[q.First.Value];
         }
     }
     return res;
@@ -8103,7 +7064,6 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 // Time Complexity: O(N) since each element is pushed/popped at most once
 // Space Complexity: O(K) for the deque
 ```
-
 * * *
 
 **3. Longest Common Subsequence**
@@ -8117,7 +7077,7 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 >
 > A **substring** must be contiguous (`"BCD"` from `"ABCDE"`). A **subsequence** can skip characters but must preserve order (`"ACE"` from `"ABCDE"` — pick A, skip B, pick C, skip D, pick E). The order matters: `"ECA"` is **not** a valid subsequence of `"ABCDE"` because the characters appear in the wrong order.
 
-![Subsequence vs Substring](editions/csharp/chapters/12-q4-optimization-dp/visuals/subsequence_vs_substring.png){width=85%}
+![Subsequence vs Substring](editions/csharp/chapters/13-optimization-dp/visuals/subsequence_vs_substring.png){width=85%}
 
 **Trace-Through:** For `text1 = "CAT"`, `text2 = "CART"`, the DP table builds the answer cell by cell. Each cell asks: "What is the longest common subsequence using only the first *i* characters of text1 and first *j* characters of text2?"
 
@@ -8135,29 +7095,31 @@ The bold diagonal cells show: C matches C (1), A matches A (2), T matches T (3).
 
 **Explanation:** `dp[i][j]` represents the LCS of the prefixes of length `i` and `j`. If characters match, we add 1 to the result of `dp[i-1][j-1]`. If not, we take the max of skipping a character in either string.
 
-```java
-public int longestCommonSubsequence(String text1, String text2) {
-    int m = text1.length(), n = text2.length();
-    int[][] dp = new int[m + 1][n + 1];
-    
+```csharp
+public int LongestCommonSubsequence(string text1, string text2) {
+    if (text1.Length < text2.Length) return LongestCommonSubsequence(text2, text1);
+    int m = text1.Length, n = text2.Length;
+    var prev = new int[n + 1];
+    var curr = new int[n + 1];
     for (int i = 1; i <= m; i++) {
         for (int j = 1; j <= n; j++) {
-            if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
-                dp[i][j] = dp[i - 1][j - 1] + 1; // Match found
-            } else {
-                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]); // Skip char
-            }
+            curr[j] = text1[i - 1] == text2[j - 1]
+                ? prev[j - 1] + 1
+                : Math.Max(prev[j], curr[j - 1]);
         }
+        var temp = prev; prev = curr; curr = temp;
+        Array.Fill(curr, 0);
     }
-    return dp[m][n];
+    return prev[n];
 }
 // Time Complexity: O(M * N)
-// Space Complexity: O(M * N)
+// Space Complexity: O(min(M, N)) - Space compressed DP as taught in the vocabulary section.
 ```
-
 * * *
 
 **4. Burst Balloons**
+> ⚠️ **Assessment Realism Note:** Interval DP problems like Burst Balloons are extremely unlikely in timed assessments (the O(N³) derivation requires 30+ minutes of focused work). This exemplar is included for comprehensive pattern coverage. For timed assessment practice, prioritize the multi-source BFS, 1D DP, and monotonic stack problems in this chapter.
+
 **Specification:** Maximize coins by bursting balloons. Bursting `nums[i]` yields `nums[i-1] * nums[i] * nums[i+1]` coins.
 
 **Example:** `nums = [3,1,5,8]` $\rightarrow$ output `167`.
@@ -8168,7 +7130,7 @@ public int longestCommonSubsequence(String text1, String text2) {
 >
 > The natural instinct is to simulate bursting balloons left-to-right, but that creates dependency chaos — bursting balloon `i` changes the neighbors of balloon `i+1`. Instead, ask: **"Which balloon do I burst LAST?"** If balloon `k` is the *last* to burst in interval `(i, j)`, then at that moment only `arr[i]` and `arr[j]` remain as its neighbors. This makes the left and right subproblems *independent*.
 
-![Burst Balloons — Think Backwards](editions/csharp/chapters/12-q4-optimization-dp/visuals/burst_balloons_trace.png){width=85%}
+![Burst Balloons — Think Backwards](editions/csharp/chapters/13-optimization-dp/visuals/burst_balloons_trace.png){width=85%}
 
 **Trace-Through:** For `nums = [3, 1, 5, 8]`, we pad with 1s: `arr = [1, 3, 1, 5, 8, 1]`.
 
@@ -8180,14 +7142,15 @@ The three nested loops enumerate: interval length → starting position → whic
 
 **Explanation:** We think backwards: what is the LAST balloon to be burst in an interval `[left, right]`? This allows us to split the problem into independent subproblems. `dp[i][j]` is the max coins obtained from bursting balloons strictly between `i` and `j`.
 
-```java
-public int maxCoins(int[] nums) {
-    int n = nums.length;
+```csharp
+public int MaxCoins(int[] nums) {
+    int n = nums.Length;
     int[] arr = new int[n + 2];
     arr[0] = 1; arr[n + 1] = 1; // Padding with 1s
     for (int i = 0; i < n; i++) arr[i + 1] = nums[i];
     
-    int[][] dp = new int[n + 2][n + 2];
+    int[][] dp = new int[n + 2][];
+    for(int i=0; i<n+2; i++) dp[i] = new int[n+2];
     
     // len is the length of the interval strictly between i and j
     for (int len = 1; len <= n; len++) {
@@ -8196,7 +7159,7 @@ public int maxCoins(int[] nums) {
             // k is the index of the LAST balloon to burst in (i, j)
             for (int k = i + 1; k < j; k++) {
                 int coins = arr[i] * arr[k] * arr[j] + dp[i][k] + dp[k][j];
-                dp[i][j] = Math.max(dp[i][j], coins);
+                dp[i][j] = Math.Max(dp[i][j], coins);
             }
         }
     }
@@ -8205,7 +7168,6 @@ public int maxCoins(int[] nums) {
 // Time Complexity: O(N^3)
 // Space Complexity: O(N^2)
 ```
-
 * * *
 
 **5. Maximum Product Subarray**
@@ -8217,28 +7179,27 @@ public int maxCoins(int[] nums) {
 
 **Explanation:** Since multiplying two negative numbers yields a positive number, we must track BOTH the maximum product and the minimum product ending at the current position.
 
-```java
-public int maxProduct(int[] nums) {
-    if (nums == null || nums.length == 0) return 0;
+```csharp
+public int MaxProduct(int[] nums) {
+    if (nums == null || nums.Length == 0) return 0;
     int maxVal = nums[0], minVal = nums[0], result = nums[0];
     
-    for (int i = 1; i < nums.length; i++) {
+    for (int i = 1; i < nums.Length; i++) {
         // If current is negative, max and min will swap roles
         if (nums[i] < 0) {
             int temp = maxVal; 
             maxVal = minVal; 
             minVal = temp;
         }
-        maxVal = Math.max(nums[i], maxVal * nums[i]);
-        minVal = Math.min(nums[i], minVal * nums[i]);
-        result = Math.max(result, maxVal);
+        maxVal = Math.Max(nums[i], maxVal * nums[i]);
+        minVal = Math.Min(nums[i], minVal * nums[i]);
+        result = Math.Max(result, maxVal);
     }
     return result;
 }
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **6. Median of Two Sorted Arrays**
@@ -8250,27 +7211,27 @@ public int maxProduct(int[] nums) {
 
 **Explanation:** We binary search for the correct partition index in the smaller array such that the left halves of both arrays contain exactly half the total elements, and the largest element on the left is $\le$ the smallest element on the right.
 
-```java
-public double findMedianSortedArrays(int[] A, int[] B) {
-    if (A.length > B.length) return findMedianSortedArrays(B, A); // ensure A is smaller
-    int m = A.length, n = B.length;
+```csharp
+public double FindMedianSortedArrays(int[] A, int[] B) {
+    if (A.Length > B.Length) return FindMedianSortedArrays(B, A); // ensure A is smaller
+    int m = A.Length, n = B.Length;
     int left = 0, right = m;
     
     while (left <= right) {
         int i = (left + right) / 2; // partition A
         int j = (m + n + 1) / 2 - i; // partition B
         
-        int maxLeftA = (i == 0) ? Integer.MIN_VALUE : A[i - 1];
-        int minRightA = (i == m) ? Integer.MAX_VALUE : A[i];
-        int maxLeftB = (j == 0) ? Integer.MIN_VALUE : B[j - 1];
-        int minRightB = (j == n) ? Integer.MAX_VALUE : B[j];
+        int maxLeftA = (i == 0) ? int.MinValue : A[i - 1];
+        int minRightA = (i == m) ? int.MaxValue : A[i];
+        int maxLeftB = (j == 0) ? int.MinValue : B[j - 1];
+        int minRightB = (j == n) ? int.MaxValue : B[j];
         
         if (maxLeftA <= minRightB && maxLeftB <= minRightA) {
             // Correct partition found
             if ((m + n) % 2 == 0) {
-                return (Math.max(maxLeftA, maxLeftB) + Math.min(minRightA, minRightB)) / 2.0;
+                return (Math.Max(maxLeftA, maxLeftB) + Math.Min(minRightA, minRightB)) / 2.0;
             } else {
-                return Math.max(maxLeftA, maxLeftB);
+                return Math.Max(maxLeftA, maxLeftB);
             }
         } else if (maxLeftA > minRightB) {
             right = i - 1; // move partition left in A
@@ -8283,7 +7244,6 @@ public double findMedianSortedArrays(int[] A, int[] B) {
 // Time Complexity: O(log(min(M, N)))
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **7. Trapping Rain Water**
@@ -8295,10 +7255,10 @@ public double findMedianSortedArrays(int[] A, int[] B) {
 
 **Explanation:** The amount of water above a bar depends on `min(max_left, max_right)`. We use two pointers from both ends, safely moving the pointer that points to the strictly smaller max bound, adding water along the way.
 
-```java
-public int trap(int[] height) {
-    if (height == null || height.length == 0) return 0;
-    int left = 0, right = height.length - 1;
+```csharp
+public int Trap(int[] height) {
+    if (height == null || height.Length == 0) return 0;
+    int left = 0, right = height.Length - 1;
     int leftMax = 0, rightMax = 0, totalWater = 0;
     
     while (left < right) {
@@ -8317,10 +7277,10 @@ public int trap(int[] height) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **8. Daily Temperatures**
+*Note: While placed in this chapter for its use of the Monotonic Stack pattern **[PAT-09] Monotonic Stack ("The Waiting Room")**, this problem is a Medium-difficulty gateway to the pattern. Use it as a warm-up before tackling the harder exemplars below.*
 **Specification:** Find the number of days you have to wait after each day to get a warmer temperature.
 
 **Example:** `[73,74,75,71,69,72,76,73]` $\rightarrow$ output `[1,1,4,2,1,1,0,0]`.
@@ -8329,26 +7289,25 @@ public int trap(int[] height) {
 
 **Explanation:** We maintain a stack of indices representing days where we haven't found a warmer day yet (decreasing order). When we find a warmer day, we pop from the stack and compute the wait time.
 
-```java
-public int[] dailyTemperatures(int[] temperatures) {
-    int n = temperatures.length;
+```csharp
+public int[] DailyTemperatures(int[] temperatures) {
+    int n = temperatures.Length;
     int[] res = new int[n];
-    Deque<Integer> stack = new ArrayDeque<>();
+    Stack<int> stack = new Stack<int>();
     
     for (int i = 0; i < n; i++) {
         // While current temp is greater than temp at stack top
-        while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
-            int prevIndex = stack.pop();
+        while (stack.Count > 0 && temperatures[i] > temperatures[stack.Peek()]) {
+            int prevIndex = stack.Pop();
             res[prevIndex] = i - prevIndex;
         }
-        stack.push(i);
+        stack.Push(i);
     }
     return res;
 }
 // Time Complexity: O(N)
 // Space Complexity: O(N)
 ```
-
 * * *
 
 **9. Edit Distance / Levenshtein**
@@ -8362,7 +7321,7 @@ public int[] dailyTemperatures(int[] temperatures) {
 >
 > At each cell, you choose the cheapest of three operations: **Replace** (↖ diagonal + 1), **Delete** from word1 (↑ up + 1), **Insert** into word1 (← left + 1). If characters already match, the diagonal costs 0 (no operation needed).
 
-![Edit Distance Trace](editions/csharp/chapters/12-q4-optimization-dp/visuals/edit_distance_trace.png){width=85%}
+![Edit Distance Trace](editions/csharp/chapters/13-optimization-dp/visuals/edit_distance_trace.png){width=85%}
 
 **Trace-Through:** Convert `"CAT"` → `"CUT"` (answer: 1 — just replace A with U).
 
@@ -8382,10 +7341,11 @@ public int[] dailyTemperatures(int[] temperatures) {
 
 **Explanation:** `dp[i][j]` is the edit distance between `word1` prefix length `i` and `word2` prefix length `j`. If characters match, cost is `dp[i-1][j-1]`. Otherwise, cost is `1 + min(insert, delete, replace)`.
 
-```java
-public int minDistance(String word1, String word2) {
-    int m = word1.length(), n = word2.length();
-    int[][] dp = new int[m + 1][n + 1];
+```csharp
+public int MinDistance(string word1, string word2) {
+    int m = word1.Length, n = word2.Length;
+    int[][] dp = new int[m + 1][];
+    for(int i=0; i<=m; i++) dp[i] = new int[n + 1];
     
     // Base cases
     for (int i = 0; i <= m; i++) dp[i][0] = i;
@@ -8393,11 +7353,11 @@ public int minDistance(String word1, String word2) {
     
     for (int i = 1; i <= m; i++) {
         for (int j = 1; j <= n; j++) {
-            if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+            if (word1[i - 1] == word2[j - 1]) {
                 dp[i][j] = dp[i - 1][j - 1]; // No op
             } else {
-                dp[i][j] = 1 + Math.min(dp[i - 1][j - 1], // Replace
-                               Math.min(dp[i - 1][j],     // Delete
+                dp[i][j] = 1 + Math.Min(dp[i - 1][j - 1], // Replace
+                               Math.Min(dp[i - 1][j],     // Delete
                                         dp[i][j - 1]));   // Insert
             }
         }
@@ -8407,7 +7367,6 @@ public int minDistance(String word1, String word2) {
 // Time Complexity: O(M * N)
 // Space Complexity: O(M * N)
 ```
-
 * * *
 
 **10. LRU Cache**
@@ -8419,7 +7378,7 @@ public int minDistance(String word1, String word2) {
 >
 > A common question is: "Shouldn't we store a timestamp for when each item was last used?" The answer is no — the **position in the linked list** is the timestamp. The node closest to HEAD was used most recently. The node closest to TAIL was used longest ago. Every `get()` or `put()` moves that node to the HEAD. No clock needed — the list order *is* the chronological record.
 
-![LRU Cache — Position is the Timestamp](editions/csharp/chapters/12-q4-optimization-dp/visuals/lru_cache_diagram.png){width=85%}
+![LRU Cache — Position is the Timestamp](editions/csharp/chapters/13-optimization-dp/visuals/lru_cache_diagram.png){width=85%}
 
 **Trace-Through:** Cache capacity = 2.
 
@@ -8435,13 +7394,13 @@ Notice: after `get(1)`, key 1 moved to head, saving it from eviction. Key 2, unt
 
 **Explanation:** The HashMap provides $\mathcal{O}(1)$ access to nodes. The Doubly Linked List maintains the eviction order. Moving a node to the head of the list designates it as most recently used.
 
-```java
+```csharp
 public class LRUCache {
     class Node { 
-        int key, val; 
-        Node prev, next; 
+        public int key, val; 
+        public Node prev, next; 
     }
-    private Map<Integer, Node> map = new HashMap<>();
+    private Dictionary<int, Node> map = new Dictionary<int, Node>();
     private int capacity;
     private Node head, tail;
 
@@ -8453,35 +7412,35 @@ public class LRUCache {
         tail.prev = head; // Connect dummy head and tail
     }
     
-    public int get(int key) {
-        if (!map.containsKey(key)) return -1;
-        Node node = map.get(key);
-        remove(node); // Move to head (MRU)
-        insert(node);
+    public int Get(int key) {
+        if (!map.ContainsKey(key)) return -1;
+        Node node = map[key];
+        Remove(node); // Move to head (MRU)
+        Insert(node);
         return node.val;
     }
     
-    public void put(int key, int value) {
-        if (map.containsKey(key)) {
-            remove(map.get(key));
+    public void Put(int key, int value) {
+        if (map.ContainsKey(key)) {
+            Remove(map[key]);
         }
-        if (map.size() == capacity) {
-            map.remove(tail.prev.key);
-            remove(tail.prev); // Evict LRU
+        if (map.Count == capacity) {
+            map.Remove(tail.prev.key);
+            Remove(tail.prev); // Evict LRU
         }
         Node node = new Node(); 
         node.key = key; 
         node.val = value;
-        insert(node);
-        map.put(key, node);
+        Insert(node);
+        map[key] = node;
     }
     
-    private void remove(Node node) {
+    private void Remove(Node node) {
         node.prev.next = node.next; 
         node.next.prev = node.prev;
     }
     
-    private void insert(Node node) { // Insert right after head
+    private void Insert(Node node) { // Insert right after head
         node.next = head.next; 
         node.next.prev = node;
         head.next = node; 
@@ -8491,7 +7450,6 @@ public class LRUCache {
 // Time Complexity: O(1) for both get and put
 // Space Complexity: O(Capacity)
 ```
-
 * * *
 
 **11. Maximal Rectangle in Binary Matrix**
@@ -8518,7 +7476,7 @@ public class LRUCache {
 > - $\text{Width} = i - \text{stack.peek()} - 1$. $\text{Area} = h \times \text{width}$.
 > - A dummy bar of height `0` at `i = n` forces all remaining bars off the stack at the end.
 
-![Maximal Rectangle & Histogram Stack](editions/csharp/chapters/12-q4-optimization-dp/visuals/maximal_rectangle_histogram.png){width=85%}
+![Maximal Rectangle & Histogram Stack](editions/csharp/chapters/13-optimization-dp/visuals/maximal_rectangle_histogram.png){width=85%}
 
 **Trace-Through (Monotonic Stack for Heights `[3, 1, 3, 2, 2]`):**
 
@@ -8537,41 +7495,40 @@ public class LRUCache {
 
 **Explanation:** We treat each row as the base of a histogram and update heights. We then run the $\mathcal{O}(N)$ "Largest Rectangle in Histogram" algorithm using a monotonic stack on each row.
 
-```java
-public int maximalRectangle(char[][] matrix) {
-    if (matrix == null || matrix.length == 0) return 0;
-    int cols = matrix[0].length;
+```csharp
+public int MaximalRectangle(char[][] matrix) {
+    if (matrix == null || matrix.Length == 0) return 0;
+    int cols = matrix[0].Length;
     int[] heights = new int[cols];
     int maxArea = 0;
     
-    for (char[] row : matrix) {
+    foreach (char[] row in matrix) {
         // Update histogram heights
         for (int c = 0; c < cols; c++) {
             heights[c] = (row[c] == '1') ? heights[c] + 1 : 0;
         }
-        maxArea = Math.max(maxArea, maxHistogram(heights));
+        maxArea = Math.Max(maxArea, MaxHistogram(heights));
     }
     return maxArea;
 }
 
-private int maxHistogram(int[] heights) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    int max = 0, n = heights.length;
+private int MaxHistogram(int[] heights) {
+    Stack<int> stack = new Stack<int>();
+    int max = 0, n = heights.Length;
     for (int i = 0; i <= n; i++) {
         int h = (i == n) ? 0 : heights[i];
-        while (!stack.isEmpty() && h < heights[stack.peek()]) {
-            int height = heights[stack.pop()];
-            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
-            max = Math.max(max, height * width);
+        while (stack.Count > 0 && h < heights[stack.Peek()]) {
+            int height = heights[stack.Pop()];
+            int width = stack.Count == 0 ? i : i - stack.Peek() - 1;
+            max = Math.Max(max, height * width);
         }
-        stack.push(i);
+        stack.Push(i);
     }
     return max;
 }
 // Time Complexity: O(R * C)
 // Space Complexity: O(C)
 ```
-
 * * *
 
 **12. Word Ladder**
@@ -8583,29 +7540,29 @@ private int maxHistogram(int[] heights) {
 
 **Explanation:** We use BFS because we want the shortest path in an unweighted graph. For each word, we generate all valid next mutations and enqueue them, tracking the level.
 
-```java
-public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-    Set<String> set = new HashSet<>(wordList);
-    if (!set.contains(endWord)) return 0;
+```csharp
+public int LadderLength(string beginWord, string endWord, IList<string> wordList) {
+    HashSet<string> set = new HashSet<string>(wordList);
+    if (!set.Contains(endWord)) return 0;
     
-    Queue<String> queue = new LinkedList<>();
-    queue.offer(beginWord);
+    Queue<string> queue = new Queue<string>();
+    queue.Enqueue(beginWord);
     int level = 1;
     
-    while (!queue.isEmpty()) {
-        int size = queue.size();
+    while (queue.Count > 0) {
+        int size = queue.Count;
         for (int i = 0; i < size; i++) { // Level-by-level processing
-            String curr = queue.poll();
-            char[] chars = curr.toCharArray();
-            for (int j = 0; j < chars.length; j++) {
+            string curr = queue.Dequeue();
+            char[] chars = curr.ToCharArray();
+            for (int j = 0; j < chars.Length; j++) {
                 char orig = chars[j];
                 for (char c = 'a'; c <= 'z'; c++) { // Try all mutations
                     if (c == orig) continue;
                     chars[j] = c;
-                    String next = new String(chars);
-                    if (next.equals(endWord)) return level + 1;
-                    if (set.remove(next)) { // remove serves as 'visited' check
-                        queue.offer(next);
+                    string next = new string(chars);
+                    if (next.Equals(endWord)) return level + 1;
+                    if (set.Remove(next)) { // remove serves as 'visited' check
+                        queue.Enqueue(next);
                     }
                 }
                 chars[j] = orig; // Backtrack
@@ -8618,7 +7575,6 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
 // Time Complexity: O(M^2 * N) where M is word length, N is number of words
 // Space Complexity: O(M * N)
 ```
-
 * * *
 
 **13. Coin Change**
@@ -8630,16 +7586,16 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
 
 **Explanation:** `dp[i]` is the minimum coins needed for amount `i`. We iterate through amounts and coins, taking the min of using the coin or not: `dp[i] = min(dp[i], dp[i - coin] + 1)`.
 
-```java
-public int coinChange(int[] coins, int amount) {
+```csharp
+public int CoinChange(int[] coins, int amount) {
     int[] dp = new int[amount + 1];
-    Arrays.fill(dp, amount + 1); // Fill with max invalid value
+    Array.Fill(dp, amount + 1); // Fill with max invalid value
     dp[0] = 0;
     
     for (int i = 1; i <= amount; i++) {
-        for (int coin : coins) {
+        foreach (int coin in coins) {
             if (i >= coin) {
-                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                dp[i] = Math.Min(dp[i], dp[i - coin] + 1);
             }
         }
     }
@@ -8648,7 +7604,6 @@ public int coinChange(int[] coins, int amount) {
 // Time Complexity: O(Amount * N)
 // Space Complexity: O(Amount)
 ```
-
 * * *
 
 **14. House Robber**
@@ -8660,14 +7615,14 @@ public int coinChange(int[] coins, int amount) {
 
 **Explanation:** The transition is `dp[i] = max(dp[i-1], dp[i-2] + nums[i])`. We only need to store the previous two values, saving space.
 
-```java
-public int rob(int[] nums) {
-    if (nums == null || nums.length == 0) return 0;
+```csharp
+public int Rob(int[] nums) {
+    if (nums == null || nums.Length == 0) return 0;
     int prev1 = 0; // max so far excluding current
     int prev2 = 0; // max so far including current (-2)
     
-    for (int num : nums) {
-        int temp = Math.max(prev1, prev2 + num); // rob or don't rob
+    foreach (int num in nums) {
+        int temp = Math.Max(prev1, prev2 + num); // rob or don't rob
         prev2 = prev1;
         prev1 = temp;
     }
@@ -8676,7 +7631,6 @@ public int rob(int[] nums) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **15. Regular Expression Matching**
@@ -8688,25 +7642,26 @@ public int rob(int[] nums) {
 
 **Explanation:** Complex transition logic based on whether we see a `*`. We either treat `*` as zero occurrences (`dp[i][j-2]`) or multiple occurrences (`dp[i-1][j]` if the preceding char matches).
 
-```java
-public boolean isMatch(String s, String p) {
-    int m = s.length(), n = p.length();
-    boolean[][] dp = new boolean[m + 1][n + 1];
+```csharp
+public bool IsMatch(string s, string p) {
+    int m = s.Length, n = p.Length;
+    bool[][] dp = new bool[m + 1][];
+    for(int i=0; i<=m; i++) dp[i] = new bool[n + 1];
     dp[0][0] = true;
     
     // Match empty string with patterns like a*b*
     for (int j = 1; j <= n; j++) {
-        if (p.charAt(j - 1) == '*') dp[0][j] = dp[0][j - 2];
+        if (p[j - 1] == '*') dp[0][j] = dp[0][j - 2];
     }
     
     for (int i = 1; i <= m; i++) {
         for (int j = 1; j <= n; j++) {
-            if (p.charAt(j - 1) == '.' || p.charAt(j - 1) == s.charAt(i - 1)) {
+            if (p[j - 1] == '.' || p[j - 1] == s[i - 1]) {
                 dp[i][j] = dp[i - 1][j - 1]; // Single char match
-            } else if (p.charAt(j - 1) == '*') {
+            } else if (p[j - 1] == '*') {
                 dp[i][j] = dp[i][j - 2]; // Match zero times
                 // If preceding char matches, match one or more times
-                if (p.charAt(j - 2) == '.' || p.charAt(j - 2) == s.charAt(i - 1)) {
+                if (p[j - 2] == '.' || p[j - 2] == s[i - 1]) {
                     dp[i][j] = dp[i][j] || dp[i - 1][j];
                 }
             }
@@ -8717,7 +7672,6 @@ public boolean isMatch(String s, String p) {
 // Time Complexity: O(M * N)
 // Space Complexity: O(M * N)
 ```
-
 * * *
 
 **16. Course Schedule II**
@@ -8729,29 +7683,29 @@ public boolean isMatch(String s, String p) {
 
 **Explanation:** We count the in-degree of each course. A course with in-degree 0 has no prerequisites and can be taken. We enqueue it, take it, and decrement the in-degree of its neighbors.
 
-```java
-public int[] findOrder(int numCourses, int[][] prerequisites) {
-    int[] inDegree = new int[numCourses];
-    List<List<Integer>> adj = new ArrayList<>();
-    for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
+```csharp
+public int[] FindOrder(int numCourses, int[][] prerequisites) {
+    var inDegree = new int[numCourses];
+    var adj = new List<List<int>>();
+    for (int i = 0; i < numCourses; i++) adj.Add(new List<int>());
     
-    for (int[] p : prerequisites) {
-        adj.get(p[1]).add(p[0]);
+    foreach (int[] p in prerequisites) {
+        adj[p[1]].Add(p[0]);
         inDegree[p[0]]++;
     }
     
-    Queue<Integer> q = new LinkedList<>();
+    Queue<int> q = new Queue<int>();
     for (int i = 0; i < numCourses; i++) {
-        if (inDegree[i] == 0) q.offer(i);
+        if (inDegree[i] == 0) q.Enqueue(i);
     }
     
     int[] res = new int[numCourses];
     int idx = 0;
-    while (!q.isEmpty()) {
-        int curr = q.poll();
+    while (q.Count > 0) {
+        int curr = q.Dequeue();
         res[idx++] = curr;
-        for (int next : adj.get(curr)) {
-            if (--inDegree[next] == 0) q.offer(next);
+        foreach (int next in adj[curr]) {
+            if (--inDegree[next] == 0) q.Enqueue(next);
         }
     }
     return idx == numCourses ? res : new int[0]; // If not all courses taken, cycle exists
@@ -8759,7 +7713,6 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
 // Time Complexity: O(V + E)
 // Space Complexity: O(V + E)
 ```
-
 * * *
 
 **17. Partition Equal Subset Sum**
@@ -8771,17 +7724,17 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
 
 **Explanation:** The problem translates to: "Is there a subset that sums exactly to `total_sum / 2`?" We use a 1D DP array where `dp[j]` is true if a sum `j` is achievable.
 
-```java
-public boolean canPartition(int[] nums) {
+```csharp
+public bool CanPartition(int[] nums) {
     int sum = 0;
-    for (int num : nums) sum += num;
+    foreach (int num in nums) sum += num;
     if (sum % 2 != 0) return false;
     
     int target = sum / 2;
-    boolean[] dp = new boolean[target + 1];
+    bool[] dp = new bool[target + 1];
     dp[0] = true;
     
-    for (int num : nums) {
+    foreach (int num in nums) {
         // Iterate backwards to avoid reusing the same element
         for (int j = target; j >= num; j--) {
             dp[j] = dp[j] || dp[j - num];
@@ -8792,7 +7745,6 @@ public boolean canPartition(int[] nums) {
 // Time Complexity: O(N * Target)
 // Space Complexity: O(Target)
 ```
-
 * * *
 
 **18. Decode Ways**
@@ -8804,17 +7756,17 @@ public boolean canPartition(int[] nums) {
 
 **Explanation:** Very similar to Fibonacci. The number of ways to decode up to `i` is the ways to decode up to `i-1` (if single digit valid) plus the ways to decode up to `i-2` (if two digits valid).
 
-```java
-public int numDecodings(String s) {
-    if (s == null || s.isEmpty() || s.charAt(0) == '0') return 0;
-    int n = s.length();
+```csharp
+public int NumDecodings(string s) {
+    if (string.IsNullOrEmpty(s) || s[0] == '0') return 0;
+    int n = s.Length;
     int[] dp = new int[n + 1];
     dp[0] = 1; 
     dp[1] = 1;
     
     for (int i = 2; i <= n; i++) {
-        int oneDigit = Integer.parseInt(s.substring(i - 1, i));
-        int twoDigits = Integer.parseInt(s.substring(i - 2, i));
+        int oneDigit = int.Parse(s.Substring(i - 1, 1));
+        int twoDigits = int.Parse(s.Substring(i - 2, 2));
         
         if (oneDigit >= 1 && oneDigit <= 9) {
             dp[i] += dp[i - 1];
@@ -8828,7 +7780,6 @@ public int numDecodings(String s) {
 // Time Complexity: O(N)
 // Space Complexity: O(N) which can be optimized to O(1)
 ```
-
 * * *
 
 **19. Stock Span**
@@ -8840,24 +7791,23 @@ public int numDecodings(String s) {
 
 **Explanation:** Maintain a stack of pairs `{price, span}`. If the incoming price is greater than the top of the stack, pop the stack and accumulate the span. This maintains a strictly decreasing stack.
 
-```java
+```csharp
 public class StockSpanner {
-    // Array holds {price, span}
-    private Deque<int[]> stack = new ArrayDeque<>(); 
+    // Stack holds {price, span}
+    private Stack<int[]> stack = new Stack<int[]>(); 
     
-    public int next(int price) {
+    public int Next(int price) {
         int span = 1;
-        while (!stack.isEmpty() && stack.peek()[0] <= price) {
-            span += stack.pop()[1]; // Accumulate previous spans
+        while (stack.Count > 0 && stack.Peek()[0] <= price) {
+            span += stack.Pop()[1]; // Accumulate previous spans
         }
-        stack.push(new int[]{price, span});
+        stack.Push(new int[]{price, span});
         return span;
     }
 }
 // Time Complexity: Amortized O(1) per next() call
 // Space Complexity: O(N)
 ```
-
 * * *
 
 **20. Longest Increasing Subsequence**
@@ -8869,11 +7819,11 @@ public class StockSpanner {
 
 **Explanation:** We maintain an array `tails` where `tails[i]` stores the smallest tail of all increasing subsequences of length `i+1`. We binary search the position to update in `tails`.
 
-```java
-public int lengthOfLIS(int[] nums) {
-    int[] tails = new int[nums.length];
+```csharp
+public int LengthOfLIS(int[] nums) {
+    int[] tails = new int[nums.Length];
     int size = 0;
-    for (int x : nums) {
+    foreach (int x in nums) {
         int left = 0, right = size;
         while (left != right) {
             int mid = left + (right - left) / 2;
@@ -8891,7 +7841,6 @@ public int lengthOfLIS(int[] nums) {
 // Time Complexity: O(N log N)
 // Space Complexity: O(N)
 ```
-
 * * *
 
 **21. Find Minimum in Rotated Sorted Array**
@@ -8902,9 +7851,9 @@ public int lengthOfLIS(int[] nums) {
 **Pattern:** Binary Search
 
 **Explanation:** If `nums[mid] > nums[right]`, the minimum is in the right half. Else, the minimum is in the left half (including mid).
-```java
-public int findMin(int[] nums) {
-    int left = 0, right = nums.length - 1;
+```csharp
+public int FindMin(int[] nums) {
+    int left = 0, right = nums.Length - 1;
     while (left < right) {
         int mid = left + (right - left) / 2;
         if (nums[mid] > nums[right]) left = mid + 1;
@@ -8915,7 +7864,6 @@ public int findMin(int[] nums) {
 // Time Complexity: O(log N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **22. Kth Smallest Element in Sorted Matrix**
@@ -8926,20 +7874,20 @@ public int findMin(int[] nums) {
 **Pattern:** Binary Search on Answer Space
 
 **Explanation:** Binary search the value space `[min, max]`. Count how many elements are $\le$ mid. If count $< k$, `left = mid + 1`. Else `right = mid`.
-```java
-public int kthSmallest(int[][] matrix, int k) {
-    int n = matrix.length;
+```csharp
+public int KthSmallest(int[][] matrix, int k) {
+    int n = matrix.Length;
     int left = matrix[0][0], right = matrix[n-1][n-1];
     while (left < right) {
         int mid = left + (right - left) / 2;
-        int count = countLessEqual(matrix, mid);
+        int count = CountLessEqual(matrix, mid);
         if (count < k) left = mid + 1;
         else right = mid;
     }
     return left;
 }
-private int countLessEqual(int[][] matrix, int target) {
-    int n = matrix.length, i = n - 1, j = 0, count = 0;
+private int CountLessEqual(int[][] matrix, int target) {
+    int n = matrix.Length, i = n - 1, j = 0, count = 0;
     while (i >= 0 && j < n) {
         if (matrix[i][j] <= target) { count += i + 1; j++; }
         else { i--; }
@@ -8949,7 +7897,6 @@ private int countLessEqual(int[][] matrix, int target) {
 // Time Complexity: O(N log(Max - Min))
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **23. Jump Game II**
@@ -8960,11 +7907,11 @@ private int countLessEqual(int[][] matrix, int target) {
 **Pattern:** Greedy BFS levels
 
 **Explanation:** We maintain the farthest reach for the current jump level. When `i == currentEnd`, we must make a jump and update `currentEnd = farthest`.
-```java
-public int jump(int[] nums) {
+```csharp
+public int Jump(int[] nums) {
     int jumps = 0, currentEnd = 0, farthest = 0;
-    for (int i = 0; i < nums.length - 1; i++) {
-        farthest = Math.max(farthest, i + nums[i]);
+    for (int i = 0; i < nums.Length - 1; i++) {
+        farthest = Math.Max(farthest, i + nums[i]);
         if (i == currentEnd) {
             jumps++;
             currentEnd = farthest;
@@ -8975,7 +7922,6 @@ public int jump(int[] nums) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **24. Unique Paths**
@@ -8986,10 +7932,13 @@ public int jump(int[] nums) {
 **Pattern:** 2D DP
 
 **Explanation:** `dp[i][j] = dp[i-1][j] + dp[i][j-1]`.
-```java
-public int uniquePaths(int m, int n) {
-    int[][] dp = new int[m][n];
-    for (int i = 0; i < m; i++) dp[i][0] = 1;
+```csharp
+public int UniquePaths(int m, int n) {
+    int[][] dp = new int[m][];
+    for (int i = 0; i < m; i++) {
+        dp[i] = new int[n];
+        dp[i][0] = 1;
+    }
     for (int j = 0; j < n; j++) dp[0][j] = 1;
     for (int i = 1; i < m; i++) {
         for (int j = 1; j < n; j++) {
@@ -9001,7 +7950,6 @@ public int uniquePaths(int m, int n) {
 // Time Complexity: O(M * N)
 // Space Complexity: O(M * N) (can be optimized to O(N))
 ```
-
 * * *
 
 **25. Maximum Subarray / Kadane's Algorithm**
@@ -9012,19 +7960,18 @@ public int uniquePaths(int m, int n) {
 **Pattern:** DP / Greedy
 
 **Explanation:** At each step, either add the current element to the previous sum, or start a new subarray if the previous sum is negative.
-```java
-public int maxSubArray(int[] nums) {
+```csharp
+public int MaxSubArray(int[] nums) {
     int maxSum = nums[0], currentSum = nums[0];
-    for (int i = 1; i < nums.length; i++) {
-        currentSum = Math.max(nums[i], currentSum + nums[i]);
-        maxSum = Math.max(maxSum, currentSum);
+    for (int i = 1; i < nums.Length; i++) {
+        currentSum = Math.Max(nums[i], currentSum + nums[i]);
+        maxSum = Math.Max(maxSum, currentSum);
     }
     return maxSum;
 }
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **26. Climbing Stairs**
@@ -9035,8 +7982,8 @@ public int maxSubArray(int[] nums) {
 **Pattern:** Fibonacci DP
 
 **Explanation:** `dp[i] = dp[i-1] + dp[i-2]`.
-```java
-public int climbStairs(int n) {
+```csharp
+public int ClimbStairs(int n) {
     if (n <= 2) return n;
     int prev2 = 1, prev1 = 2;
     for (int i = 3; i <= n; i++) {
@@ -9049,7 +7996,6 @@ public int climbStairs(int n) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 **27. Largest Rectangle in Histogram**
@@ -9060,25 +8006,24 @@ public int climbStairs(int n) {
 **Pattern:** Monotonic Stack
 
 **Explanation:** Stack stores indices of strictly increasing heights. Pop when a smaller height is found, calculating area using the popped height as the bottleneck.
-```java
-public int largestRectangleArea(int[] heights) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    int maxArea = 0, n = heights.length;
+```csharp
+public int LargestRectangleArea(int[] heights) {
+    Stack<int> stack = new Stack<int>();
+    int maxArea = 0, n = heights.Length;
     for (int i = 0; i <= n; i++) {
         int h = (i == n) ? 0 : heights[i];
-        while (!stack.isEmpty() && h < heights[stack.peek()]) {
-            int height = heights[stack.pop()];
-            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
-            maxArea = Math.max(maxArea, height * width);
+        while (stack.Count > 0 && h < heights[stack.Peek()]) {
+            int height = heights[stack.Pop()];
+            int width = stack.Count == 0 ? i : i - stack.Peek() - 1;
+            maxArea = Math.Max(maxArea, height * width);
         }
-        stack.push(i);
+        stack.Push(i);
     }
     return maxArea;
 }
 // Time Complexity: O(N)
 // Space Complexity: O(N)
 ```
-
 * * *
 
 **28. Merge K Sorted Lists**
@@ -9089,25 +8034,24 @@ public int largestRectangleArea(int[] heights) {
 **Pattern:** Min-Heap
 
 **Explanation:** Put all list heads into a PriorityQueue. Extract the min, append to result, and insert the next node from the extracted list.
-```java
-public ListNode mergeKLists(ListNode[] lists) {
-    PriorityQueue<ListNode> pq = new PriorityQueue<>((a,b) -> a.val - b.val);
-    for (ListNode head : lists) {
-        if (head != null) pq.offer(head);
+```csharp
+public ListNode MergeKLists(ListNode[] lists) {
+    PriorityQueue<ListNode, int> pq = new PriorityQueue<ListNode, int>();
+    foreach (ListNode head in lists) {
+        if (head != null) pq.Enqueue(head, head.val);
     }
     ListNode dummy = new ListNode(0), curr = dummy;
-    while (!pq.isEmpty()) {
-        ListNode minNode = pq.poll();
+    while (pq.Count > 0) {
+        ListNode minNode = pq.Dequeue();
         curr.next = minNode;
         curr = curr.next;
-        if (minNode.next != null) pq.offer(minNode.next);
+        if (minNode.next != null) pq.Enqueue(minNode.next, minNode.next.val);
     }
     return dummy.next;
 }
 // Time Complexity: O(N log K)
 // Space Complexity: O(K)
 ```
-
 * * *
 
 **29. Longest Valid Parentheses**
@@ -9118,18 +8062,18 @@ public ListNode mergeKLists(ListNode[] lists) {
 **Pattern:** DP
 
 **Explanation:** `dp[i]` is the length of longest valid substring ending at `i`. If `s[i] == ')'` and `s[i-1] == '('`, `dp[i] = dp[i-2] + 2`. If `s[i-1] == ')'`, match earlier part.
-```java
-public int longestValidParentheses(String s) {
+```csharp
+public int LongestValidParentheses(string s) {
     int maxLen = 0;
-    int[] dp = new int[s.length()];
-    for (int i = 1; i < s.length(); i++) {
-        if (s.charAt(i) == ')') {
-            if (s.charAt(i - 1) == '(') {
+    int[] dp = new int[s.Length];
+    for (int i = 1; i < s.Length; i++) {
+        if (s[i] == ')') {
+            if (s[i - 1] == '(') {
                 dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
-            } else if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == '(') {
+            } else if (i - dp[i - 1] > 0 && s[i - dp[i - 1] - 1] == '(') {
                 dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
             }
-            maxLen = Math.max(maxLen, dp[i]);
+            maxLen = Math.Max(maxLen, dp[i]);
         }
     }
     return maxLen;
@@ -9137,7 +8081,6 @@ public int longestValidParentheses(String s) {
 // Time Complexity: O(N)
 // Space Complexity: O(N)
 ```
-
 * * *
 
 **30. Container With Most Water**
@@ -9148,14 +8091,14 @@ public int longestValidParentheses(String s) {
 **Pattern:** Two-pointer
 
 **Explanation:** Area is `width * min(h[L], h[R])`. Move the pointer pointing to the shorter line to potentially find a taller line.
-```java
-public int maxArea(int[] height) {
+```csharp
+public int MaxArea(int[] height) {
     int maxArea = 0;
-    int left = 0, right = height.length - 1;
+    int left = 0, right = height.Length - 1;
     while (left < right) {
         int w = right - left;
-        int h = Math.min(height[left], height[right]);
-        maxArea = Math.max(maxArea, w * h);
+        int h = Math.Min(height[left], height[right]);
+        maxArea = Math.Max(maxArea, w * h);
         if (height[left] < height[right]) left++;
         else right--;
     }
@@ -9164,7 +8107,6 @@ public int maxArea(int[] height) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
-
 * * *
 
 ## Practice Problem Bank
@@ -9440,15 +8382,284 @@ public int maxArea(int[] height) {
 **Strategic Hint:** Monotonic Stack (increasing). Pop strictly larger digits while `k > 0`.
 
 
-# 20 Exam-Grade GCA Mock Problem Sets
+# Mastering Problem Decomposition: The Capstone
+
+> *"Every problem you will ever face in a technical assessment is a composition of patterns you already know. The art is in the seeing."*
+
+---
+
+## From Patterns to Synthesis
+
+Throughout the preceding chapters, you have meticulously studied and mastered the 24 Canonical Patterns. You understand Sliding Windows, Monotonic Stacks, Prefix Sums, and Topological Sorts in isolation. However, demonstrating proficiency in individual patterns is merely the baseline expectation. To excel in elite technical assessments, you must transition from pattern recognition to pattern synthesis.
+
+Real assessment problems—especially those found in equal-weight peer assessments and single-deep-problem architectural interviews—rarely map cleanly to a single, textbook pattern. Instead, they are complex compositions requiring the seamless integration of two, three, or even more distinct patterns. The complexity lies not in the patterns themselves, but in their orchestration.
+
+This capstone chapter is your synthesis training ground. It is designed to elevate your analytical capabilities, teaching you how to systematically dissect intricate problems, identify the interlocking sub-components, and construct robust, optimal solutions through the deliberate composition of the canonical patterns.
+
+## The Cognitive Derivation Process
+
+When you encounter a truly novel problem—one that doesn't immediately map to a known pattern—follow this derivation process:
+
+1. **Generate the smallest non-trivial example** (n=3 or n=4) and solve it BY HAND on paper. Track what your brain does.
+2. **Identify the decision you make at each step.** Are you choosing the maximum? The nearest? The first valid? This reveals the algorithm class (greedy, search, optimization).
+3. **Ask: "What information do I need from the past, and what do I need about the future?"** If you need past information → prefix arrays or DP. If you need future information → suffix arrays, reverse iteration, or monotonic stacks.
+4. **Ask: "Can I solve a smaller version of this problem and combine the results?"** If yes → divide and conquer or recursive DP.
+5. **Ask: "Does the order of processing matter?"** If no → consider sorting first. If yes → the original order is a constraint you must preserve.
+
+This is NOT pattern matching. This is the fundamental analytical skill that GENERATES pattern recognition.
+
+## The Problem Analysis Canvas
+
+To navigate complex problem spaces effectively, we must formalize the 5-step decomposition framework introduced in Chapter 2 into a rigorous, repeatable structure. The **Problem Analysis Canvas** is a mental and textual template you should apply to every problem you encounter. In an assessment setting, writing this canvas out in comments serves as both your architectural blueprint and a clear signal of your structured thinking to evaluators.
+
+### The Canvas
+
+| Analysis Phase | Your Response |
+|---|---|
+| **Restatement** | [What is actually being asked, stripped of narrative?] |
+| **Inputs** | [Types, ranges, constraints, formats] |
+| **Outputs** | [Expected return type and format] |
+| **Constraints** | [N range → target time/space complexity] |
+| **Edge Cases** | [Empty inputs, single elements, identical elements, overflows] |
+| **Sub-Problems** | [Break the core problem into 2-4 independent components] |
+| **Pattern Mapping** | [Which PAT-XX resolves each sub-problem?] |
+| **Complexity Target** | [Final Time $O(\dots)$ and Space $O(\dots)$ bounds] |
+| **Approach** | [Pseudocode or high-level bulleted steps] |
+
+By rigidly adhering to this canvas, you eliminate the panic of the blank screen and replace it with a systematic diagnostic process.
+
+## Decomposition Walkthroughs
+
+The following sections provide comprehensive step-by-step decomposition analyses across varying levels of complexity. We will analyze the problems, deconstruct them using the canvas methodology, and map them to our canonical patterns.
+
+### Tier 1: Single-Pattern Problems (Warm-Up)
+
+Tier 1 problems form the foundation of technical assessments. They are characterized by a direct, one-to-one mapping with a specific pattern. The challenge here is swift recognition and flawless execution.
+
+#### Example 1: The Target Sum Search
+**Problem:** Given a sorted array of integers, determine if any two distinct numbers sum to a specific target value.
+
+**Analysis:**
+*   **Restatement:** Find a pair in a sorted array that equals a target sum.
+*   **Constraints:** Array is sorted. We need a solution better than $O(N^2)$.
+*   **Sub-Problems:** We need to efficiently search for a complement value for each element.
+*   **Pattern Mapping:** The array is sorted, and we are looking for a pair. This immediately triggers **[PAT-06] Converging Two-Pointers**.
+*   **Approach:** Place pointers at the start and end. If the sum is too large, decrement the right pointer. If too small, increment the left. Time $O(N)$, Space $O(1)$.
+
+#### Example 2: First Unique Character
+**Problem:** Find the first non-repeating character in a string and return its index.
+
+**Analysis:**
+*   **Restatement:** Identify the earliest character in a sequence that appears exactly once.
+*   **Sub-Problems:** 1. Count occurrences of all characters. 2. Find the first character with a count of one.
+*   **Pattern Mapping:** Counting occurrences over a finite set (characters) maps to **[PAT-01] Direct Indexing & Frequency Buckets** (or Hash Map).
+*   **Approach:** One pass to populate frequency array. Second pass over the string to check frequencies and return the first index where frequency is 1. Time $O(N)$, Space $O(1)$ (bounded by alphabet size).
+
+#### Example 3: In-Place Array Rotation
+**Problem:** Rotate an array to the right by $k$ positions, modifying the array in-place.
+
+**Analysis:**
+*   **Restatement:** Shift all elements right by $k$, wrapping around, without using extra $O(N)$ space.
+*   **Sub-Problems:** Shifting elements in-place without a buffer requires structured swaps.
+*   **Pattern Mapping:** Modifying array order in-place often utilizes **[PAT-02] In-Place Mutation & Two-Pointer Compaction**.
+*   **Approach:** Reverse the entire array. Reverse the first $k$ elements. Reverse the remaining $N-k$ elements. Time $O(N)$, Space $O(1)$.
+
+#### Example 4: The Missing Sequence
+**Problem:** Find the missing number in an array containing $n$ distinct numbers taken from the range $0$ to $n$.
+
+**Analysis:**
+*   **Restatement:** Identify the single absent integer in a contiguous sequence.
+*   **Pattern Mapping:** Comparing a sequence to an expected aggregate relies on mathematical invariants (e.g., Gauss's sum formula or XOR accumulation).
+*   **Approach:** Calculate the expected sum using $n(n+1)/2$. Subtract the actual sum of the array. The difference is the missing number. Time $O(N)$, Space $O(1)$.
+
+### Tier 2: Dual-Pattern Compositions (Assessment Core)
+
+Tier 2 problems are the standard for rigorous technical screens. They cannot be solved by applying a single pattern in isolation; they require identifying two overlapping structures and combining them harmoniously.
+
+#### Example 1: Distinct Substrings
+**Problem:** Find the length of the longest substring containing at most $K$ distinct characters.
+
+**Analysis:**
+*   **Restatement:** Find the maximum contiguous subarray length bounded by a character diversity constraint.
+*   **Sub-Problems:** 1. Iterate over all possible contiguous subarrays efficiently. 2. Track the number of distinct characters currently in view.
+*   **Pattern Mapping:** "Longest substring" and "contiguous" strongly imply **[PAT-04] Dynamic Sliding Window (Variable Size)**. "Tracking distinct characters" implies **[PAT-01] Direct Indexing & Frequency Buckets**.
+*   **Approach:** Use a sliding window with a left and right pointer. Expand right, updating a frequency map. If the map size exceeds $K$, increment left, decrementing frequencies until the map size is valid again. Keep track of the maximum window size.
+
+#### Example 2: The Kth Largest
+**Problem:** Find the Kth largest element in an unsorted array efficiently without sorting the entire array.
+
+**Analysis:**
+*   **Restatement:** Locate a specific rank-order element in unsorted data.
+*   **Constraints:** Sorting takes $O(N \log N)$. Can we achieve $O(N)$ average time?
+*   **Sub-Problems:** 1. Partition the array around a pivot. 2. Decide which partition to explore based on the pivot's final index.
+*   **Pattern Mapping:** Partitioning logic maps to QuickSelect, which is a variation of **[PAT-11] Binary Search on Solution Range**, combined with **[PAT-02] In-Place Mutation & Two-Pointer Compaction**. Alternatively, managing the top K elements maps to **[PAT-25] Priority Queue / Min-Max Heap**.
+*   **Approach (Heap):** Maintain a Min-Heap of size K. Iterate the array; push elements. If heap exceeds K, pop. The root of the heap is the Kth largest. Time $O(N \log K)$.
+
+#### Example 3: Merging Multiple Streams
+**Problem:** Merge $K$ sorted linked lists into a single sorted linked list.
+
+**Analysis:**
+*   **Restatement:** Combine multiple ordered sequences into one ordered sequence.
+*   **Sub-Problems:** 1. Continuously identify the smallest current element across $K$ heads. 2. Append to a new list and advance the corresponding pointer.
+*   **Pattern Mapping:** Finding the minimum among $K$ dynamic candidates is exactly what a **[PAT-25] Priority Queue / Min-Max Heap** is for. Processing them sequentially visually resembles **[PAT-13] Level-by-Level BFS Wavefront**.
+*   **Approach:** Push the head of each list into a Min-Heap. While heap is not empty, pop the smallest node, append to result, and if the popped node has a `next`, push `next` into the heap.
+
+#### Example 4: Substring Anagrams
+**Problem:** Given a text and a pattern string, find all starting indices in the text where the substring is an anagram of the pattern.
+
+**Analysis:**
+*   **Restatement:** Find all contiguous subarrays of length $P$ in text that have the exact same character frequencies as the pattern.
+*   **Sub-Problems:** 1. Maintain a rolling view of length $P$. 2. Compare the frequency signature of the view against the pattern's signature.
+*   **Pattern Mapping:** "Rolling view of fixed length" dictates a **[PAT-05] Fixed-Size Monotonic Deque Window** (or simply a fixed-size window approach). "Frequency signature" maps to **[PAT-01] Direct Indexing & Frequency Buckets**.
+*   **Approach:** Compute the target frequency array for the pattern. Use a sliding window of length $P$ over the text, maintaining a rolling frequency array. Compare the arrays at each step. Time $O(N)$.
+
+#### Example 5: Course Prerequisites
+**Problem:** Given $N$ courses and a list of prerequisite pairs, determine if it is possible to finish all courses.
+
+**Analysis:**
+*   **Restatement:** Detect if a directed graph of dependencies contains any cycles.
+*   **Sub-Problems:** 1. Model the dependencies as a graph. 2. Traverse the graph to ensure all nodes can be visited without encountering back-edges.
+*   **Pattern Mapping:** Dependency resolution strictly maps to **[PAT-16] Topological Sort (Kahn's & DFS)**. The traversal mechanism is inherently Level-by-Level BFS.
+*   **Approach:** Build an adjacency list and an in-degree array. Push nodes with in-degree 0 to a queue. Process BFS, decrementing in-degrees of neighbors. If a neighbor hits 0, queue it. If the count of processed nodes equals $N$, no cycles exist.
+
+### Tier 3: Multi-Pattern Synthesis (Capstone Challenges)
+
+Tier 3 problems represent the apex of algorithmic assessments. These problems require deep architectural insight, combining three or more patterns, or employing a pattern in a highly unconventional manner.
+
+#### Example 1: The Word Ladder
+**Problem:** Given a start word, an end word, and a dictionary, find the length of the shortest transformation sequence from start to end, where only one letter can be changed at a time.
+
+**Analysis:**
+*   **Restatement:** Find the shortest path between two nodes in an unweighted graph where edges represent single-character mutations.
+*   **Pattern Mapping:** "Shortest path in unweighted graph" guarantees **[PAT-13] Level-by-Level BFS Wavefront**. Generating valid edges requires character substitution logic. To optimize, we can use **[PAT-14] Multi-Source BFS Parallel Spreading** or Bidirectional BFS.
+*   **Approach:** Treat words as nodes. For the current word, substitute each character with 'a'-'z' to find valid neighbors in the dictionary. Enqueue valid, unseen neighbors. BFS guarantees the first time we reach the end word is the shortest path.
+
+#### Example 2: Trapping Rainwater
+**Problem:** Given an array representing building heights, calculate the total volume of trapped rainwater.
+
+**Analysis:** (As seen in Chapter 2, but expanded)
+*   **Restatement:** Water at index $i$ is $\min(\text{max\_left}, \text{max\_right}) - \text{height}[i]$.
+*   **Pattern Mapping:** We need boundary maximums. This can be solved via **[PAT-03] Prefix Sums & Range Query Invariants** (Time $O(N)$, Space $O(N)$). To optimize space, we synthesize it with **[PAT-06] Converging Two-Pointers** (Time $O(N)$, Space $O(1)$).
+*   **Approach (Two-Pointer):** Maintain `left`, `right`, `left_max`, `right_max`. Move the pointer corresponding to the smaller maximum, safely calculating trapped water as we guarantee the other side is bounded by a larger height.
+
+#### Example 3: Largest Rectangle in Histogram
+**Problem:** Find the area of the largest rectangle that can be formed within a histogram.
+
+**Analysis:**
+*   **Restatement:** For every bar, find the maximum contiguous width where all bars are at least as tall as the current bar. Area = height * width.
+*   **Pattern Mapping:** We need to find the "next smaller element" to the left and right to define the width boundaries. This is the textbook definition of a **[PAT-09] Monotonic Stack ("The Waiting Room")**.
+*   **Approach:** Maintain an increasing monotonic stack of indices. When encountering a shorter bar, pop from the stack. The popped bar is the height. The current index is the right boundary; the new top of the stack is the left boundary. Synthesize with sentinel logic (append a 0 height at the end) to flush the stack efficiently.
+
+#### Example 4: Minimum Window Substring
+**Problem:** Find the minimum contiguous substring in $S$ that contains all characters of $T$ in any order.
+
+**Analysis:**
+*   **Restatement:** Find the shortest subarray that satisfies a strict subset frequency requirement.
+*   **Pattern Mapping:** "Shortest contiguous substring" → **[PAT-04] Dynamic Sliding Window (Variable Size)**. "Contains all characters" → **[PAT-01] Direct Indexing & Frequency Buckets**. Furthermore, we need a **Convergence Condition** to know when the window is valid without iterating the map every time.
+*   **Approach:** Maintain a `target_map` for $T$ and a `window_map`. Use a `matched_chars` integer to track how many unique characters in $T$ have their frequency met in the window. Expand right. When `matched_chars == target_map.size()`, the window is valid. Record length, then shrink left until it becomes invalid.
+
+#### Example 5: Median of Two Sorted Arrays
+**Problem:** Find the median of two sorted arrays of different lengths in $O(\log(M+N))$ time.
+
+**Analysis:**
+*   **Restatement:** Partition two sorted arrays such that the left halves contain the smaller half of the combined elements, and the right halves contain the larger half.
+*   **Pattern Mapping:** The $O(\log)$ constraint on sorted arrays demands **[PAT-10] Monotonic Partition Binary Search**. We are binary searching the partition index of the smaller array.
+*   **Approach:** Binary search on the smaller array to find partition $X$. The partition $Y$ in the larger array is determined by the total required elements in the left half. Check if `max(left_X, left_Y) <= min(right_X, right_Y)`. If true, median is found. If `left_X > right_Y`, move partition $X$ left.
+
+#### Example 6: Bursting Balloons
+**Problem:** Given $N$ balloons with values, bursting balloon $i$ yields `nums[i-1] * nums[i] * nums[i+1]` coins. Find the maximum coins obtainable by bursting all balloons.
+
+**Analysis:**
+*   **Restatement:** Find the optimal sequence of dependent operations that maximizes a cumulative score.
+*   **Pattern Mapping:** The outcome of bursting a balloon depends on which balloons are left. This is overlapping subproblems typically solved using **[PAT-21] 2D Grid Path Optimization** concepts adapted for intervals (Interval DP). The synthesis secret here is **Reverse Thinking**: instead of choosing which balloon to burst first, choose which balloon to burst *last* in the interval.
+*   **Approach:** DP state: $dp[i][j]$ is max coins obtained from bursting balloons between index $i$ and $j$ exclusive. Iterate over interval lengths, then start points. For each interval, guess which balloon $k$ is the *last* to burst. Transition: $dp[i][j] = \max(dp[i][j], dp[i][k] + dp[k][j] + \text{nums}[i] \times \text{nums}[k] \times \text{nums}[j])$.
+
+## The Pattern Recognition Decision Tree (Expanded)
+
+To facilitate rapid decomposition during an assessment, utilize this expanded diagnostic decision tree. When analyzing a problem, ask yourself these guiding questions in sequence:
+
+1.  **What is the primary data structure?**
+    *   *Array/String:* Sequential patterns (Pointers, Windows, Prefix Arrays, Monotonic Stacks).
+    *   *Matrix/Grid:* 2D traversal (BFS/DFS), Dynamic Programming.
+    *   *Graph:* Connectivity, Shortest Path, Topological Sort.
+    *   *Tree:* Recursion, Level-Order traversal.
+    *   *LinkedList:* Fast/Slow Pointers, In-place reversal.
+
+2.  **What is the query type?**
+    *   *Search/Find:* Binary Search, Hash Maps.
+    *   *Count/Frequency:* Hash Maps, Arrays as Maps.
+    *   *Optimize (Max/Min):* Greedy, Dynamic Programming, Binary Search on Answer.
+    *   *Transform:* In-place swaps, Reversals.
+    *   *Validate (True/False):* Two-Pointers, Stack (matching).
+
+3.  **What are the constraints?**
+    *   $N \le 20 \dots 100$: Backtracking, $O(N^3)$, Brute Force often acceptable.
+    *   $N \le 10^4$: $O(N^2)$ might pass, but $O(N \log N)$ is expected.
+    *   $N \le 10^5 \dots 10^6$: $O(N \log N)$ or strictly $O(N)$ required. Hash Maps, Sliding Windows, Two Pointers.
+    *   $N \ge 10^9$: $O(\log N)$ or $O(1)$ required. Binary Search, Math formulas.
+
+4.  **Is ordering important?**
+    *   *Sorted:* Binary Search family, Two-Pointer Converging.
+    *   *Unsorted (but order matters):* Sliding Window, Monotonic Stack.
+    *   *Unsorted (order doesn't matter):* Hash Maps, Sorting as a preprocessing step.
+
+5.  **Does it involve a window or contiguous subarray?**
+    *   Fixed size → Fixed Sliding Window.
+    *   Variable size with constraint → Dynamic Sliding Window.
+
+6.  **Does it ask for 'next greater/smaller' elements?**
+    *   Immediately points to Monotonic Stack.
+
+7.  **Does it have overlapping subproblems or ask for combinations?**
+    *   Optimization/Counting over subsets → Dynamic Programming family.
+
+8.  **Does it involve connectivity or paths?**
+    *   Shortest path unweighted → BFS.
+    *   Dependencies/Prerequisites → Topological Sort.
+    *   Component grouping → Union-Find or DFS.
+
+## Common Decomposition Mistakes
+
+Even with a structured framework, engineers often fall victim to specific decomposition anti-patterns under pressure. Be vigilant against these errors:
+
+*   **Jumping to Code Without Analysis:** The most fatal error. Writing code before the canvas is complete leads to structural dead-ends and unrecoverable bugs.
+*   **Over-Decomposing:** Breaking a simple problem into too many abstract layers. If a sub-problem requires only three lines of logic, it does not need a helper function or a complex object model. Keep it localized.
+*   **Pattern Forcing:** Attempting to forcefully map a problem to a familiar pattern (e.g., trying to use Dynamic Programming when a simple Greedy approach works). Let the constraints dictate the pattern, not your preference.
+*   **Ignoring Constraints:** Designing an elegant $O(N^2)$ solution when $N = 10^5$. Always validate your target complexity against the input constraints *before* committing to a pattern.
+*   **Premature Optimization:** Trying to write the perfect $O(N)$ $O(1)$ space solution immediately. It is almost always better to articulate a correct $O(N^2)$ approach first, guarantee correctness conceptually, and then optimize it by swapping sub-pattern implementations.
+
+## Practice Exercises
+
+Apply the Problem Analysis Canvas to the following 15 problem statements. Do not write code. Your goal is strictly to identify the constraints, decompose the problem, and map the appropriate patterns.
+
+1.  Given a matrix of 1s (land) and 0s (water), count the number of islands. *(Hint: Graph Traversal)*
+2.  Find the maximum sum of any contiguous subarray of size $k$. *(Hint: PAT-05)*
+3.  Determine if a string has all unique characters without using extra data structures. *(Hint: Sorting or Bit Manipulation)*
+4.  Given an array of intervals, merge all overlapping intervals. *(Hint: Sorting + Linear Scan)*
+5.  Find the lowest common ancestor of two nodes in a Binary Search Tree. *(Hint: BST property + Traversal)*
+6.  Serialize and deserialize a binary tree. *(Hint: Pre-order or Level-order traversal)*
+7.  Given a list of strings, group the anagrams together. *(Hint: String Signature + Hash Map)*
+8.  Implement a data structure that supports insert, delete, and getRandom in $O(1)$ time. *(Hint: Array + Hash Map synthesis)*
+9.  Find the length of the longest strictly increasing subsequence in an array. *(Hint: DP or Binary Search Synthesis)*
+10. Given a directed graph, find the shortest path from a source to all other nodes where edges have positive weights. *(Hint: Dijkstra's Algorithm)*
+11. Check if a binary tree is perfectly balanced. *(Hint: Post-order traversal)*
+12. Given a string, find the longest palindromic substring. *(Hint: Expand around center or DP)*
+13. Search for a target value in a 2D matrix where rows and columns are sorted. *(Hint: Specialized Two-Pointer from a corner)*
+14. Calculate the edit distance between two strings. *(Hint: 2D Dynamic Programming)*
+15. Find all valid combinations of $k$ numbers that sum up to $n$. *(Hint: Backtracking)*
+
+> ⭐ **STAR Moment: The Synthesis Mindset**
+>
+> The engineers who consistently score in the top percentile on technical assessments are not the ones who have memorized the most solutions. They are the ones who can see the hidden structure in novel problems. Every new problem is a remix of patterns you already know. Train your eyes to see the composition, and no assessment will ever surprise you.
 
 
+# 20 Timed Algorithmic Mock Assessment Sets
 
 ## How to Use This Chapter
 
-This chapter provides 20 full, four-question exam mock sets (80 problems total) modeled directly after the General Coding Assessment (GCA) blueprint. Each set is designed to simulate the rigorous 70-minute assessment environment you will face during a real coding interview. The problems strictly adhere to the expected difficulty curve: Q1 tests basic implementation and traversal (Easy, 5-8 minutes), Q2 focuses on 2D matrices and simulation (Medium, 12-15 minutes), Q3 requires algorithmic pattern recognition like HashMaps or sliding windows (Medium-Hard, 18-20 minutes), and Q4 challenges you with dynamic programming, graphs, or advanced data structures (Hard, 20-25 minutes).
+This chapter provides 20 full, four-question exam mock sets (80 problems total) modeled after the common standardized coding assessment format. Each set is designed to simulate a rigorous timed assessment environment. The problems follow a standard difficulty curve: the first question tests basic implementation and traversal (Easy, 5-8 minutes), the second focuses on 2D matrices and simulation (Medium, 12-15 minutes), the third requires algorithmic pattern recognition like HashMaps or sliding windows (Medium-Hard, 18-20 minutes), and the fourth challenges you with dynamic programming, graphs, or advanced data structures (Hard, 20-25 minutes).
 
-To get the most out of these mock exams, strictly time yourself. Set a timer for 70 minutes and attempt all four questions in order. Do not look up syntax or external resources. If you get stuck on Q3 or Q4, practice timeboxing: move on and secure partial credit where possible. After the 70 minutes expire, review your performance. Use the provided hints to guide your post-exam study sessions, identifying which specific patterns (e.g., sliding window, BFS, monotonic stack) require further review.
+To get the most out of these mock assessments, strictly time yourself. Set a timer for 70 minutes (or adjust to match your target assessment format) and attempt all four questions in order. Do not look up syntax or external resources. If you get stuck on the third or fourth question, practice timeboxing: move on and secure partial credit where possible. For equal-weight assessment formats, treat all four questions as having equal priority and allocate approximately 15-18 minutes per question. After time expires, review your performance. Use the provided hints to guide your post-assessment study sessions, identifying which specific patterns (e.g., sliding window, BFS, monotonic stack) require further review.
 
 Remember, there is no code in this chapter—this is your practice arena. Read the specifications, analyze the test cases, check the constraints, and write your own optimal solutions.
 
@@ -9482,535 +8693,586 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
 
 * * *
 
-## Set 2: String & Matrix Basics
+## Set 2: Timed Mock Assessment 2
 
-* **Q1 (Easy): IPv4 Validation**
-  * *Specification:* Write a function to determine if a given string is a valid IPv4 address. A valid IPv4 address consists of exactly four octets separated by periods. Each octet must be a numeric value between 0 and 255, inclusive. Octets cannot contain leading zeros unless the octet is exactly the single digit '0'.
-  * *Sample Test Case:* Input: `"192.168.0.1"` -> Output: `true`. Input: `"192.168.01.1"` -> Output: `false`.
-  * *Constraints:* String length $1 \le L \le 30$.
-  * *Hint:* Split the string by periods, verify there are exactly four parts, and systematically check each part for length, digit-only composition, and numerical range.
+* **Q1 (Easy): Array Prefix Sum**
+  * *Specification:* Given an array, calculate its running sum in place.
+  * *Sample Test Case:* Input: `[1,2,3] -> [1,3,6]`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-03] Prefix Sums
 
-* **Q2 (Medium): Distinct Islands**
-  * *Specification:* Given a 2D binary grid where 1 represents land and 0 represents water, count the number of distinct islands. An island is formed by connected 1s (horizontally or vertically). Two islands are considered the same if one can be translated (shifted) to match the other perfectly. Rotations or reflections do not count as translations.
-  * *Sample Test Case:* Input: `[[1,1,0],[1,0,0],[0,0,1]]` -> Output: `2`.
-  * *Constraints:* Grid size $1 \le R, C \le 50$.
-  * *Hint:* Use DFS to traverse each island, recording the path signature or relative coordinates from the starting cell to uniquely identify the island's shape.
+* **Q2 (Medium): Prefix Sum Range**
+  * *Specification:* Process range sum queries on an array quickly.
+  * *Sample Test Case:* Input: `[1,2,3], query(0,2) -> 6`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* [PAT-03] Prefix array
 
-* **Q3 (Medium-Hard): Top K Active Users**
-  * *Specification:* You are given a list of log entries where each entry is a string array containing a timestamp and a userId. Your objective is to identify the most active users on the platform. Calculate the frequency of entries for each user and return the top K userIds with the highest entry counts. If there is a tie in counts, sort them lexicographically by userId.
-  * *Sample Test Case:* Input: `logs = [["10:00", "user1"], ["10:05", "user2"], ["10:10", "user1"]], K = 1` -> Output: `["user1"]`.
-  * *Constraints:* Number of logs $1 \le N \le 10^5$, $1 \le K \le$ unique users.
-  * *Hint:* Aggregate counts using a HashMap, then use a PriorityQueue (Min-Heap) of size K or bucket sort to efficiently find the top elements.
+* **Q3 (Medium-Hard): BFS Shortest Path**
+  * *Specification:* Find the shortest path to exit a grid maze.
+  * *Sample Test Case:* Input: `grid -> 4 steps`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-13] BFS Wavefront
 
-* **Q4 (Hard): Unlimited Coin Change**
-  * *Specification:* Given an integer array representing different coin denominations and an integer target representing a total monetary amount, determine the minimum number of coins needed to make up that amount. You may assume you have an infinite supply of each denomination. If the target amount cannot be met by any combination of the coins, return -1.
-  * *Sample Test Case:* Input: `coins = [1, 2, 5], target = 11` -> Output: `3` (5 + 5 + 1).
-  * *Constraints:* $1 \le \text{coins.length} \le 12$, $1 \le \text{coins}[i] \le 2^{31}-1$, $0 \le \text{target} \le 10^4$.
-  * *Hint:* This is a classic 1D Dynamic Programming problem (unbounded knapsack). Build a `dp` array where `dp[i]` stores the minimum coins to reach amount `i`.
+* **Q4 (Hard): Dijkstra Shortest**
+  * *Specification:* Find network delay time for a signal to reach all nodes.
+  * *Sample Test Case:* Input: `nodes=4, edges -> 2`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-18] Dijkstra Priority Queue
 
-* * *
-
-## Set 3: Pattern Recognition
-
-* **Q1 (Easy): String Rotation Check**
-  * *Specification:* You are given two strings, A and B. You need to verify if string B is a valid rotation of string A. A string is a rotation if it can be formed by moving some number of characters from the front of the string to the back, maintaining the order of the rest. Both strings must be of identical length to be considered valid rotations.
-  * *Sample Test Case:* Input: `A = "waterbottle", B = "erbottlewat"` -> Output: `true`.
-  * *Constraints:* String lengths $1 \le L \le 10^5$.
-  * *Hint:* Concatenate string A with itself (`A + A`); if B is a rotation, it must exist as a contiguous substring within this doubled string.
-
-* **Q2 (Medium): Robot Grid Simulation**
-  * *Specification:* A robot starts at the origin (0,0) on a 2D Cartesian plane. It receives a sequence of movement commands represented by a string of characters: 'U' (up), 'D' (down), 'L' (left), and 'R' (right). You must simulate the robot's entire movement sequence. Return true if the robot ends up exactly back at the origin (0,0) after executing all commands, and false otherwise.
-  * *Sample Test Case:* Input: `"UDLR"` -> Output: `true`. Input: `"LL"` -> Output: `false`.
-  * *Constraints:* Command string length $1 \le L \le 10^4$.
-  * *Hint:* Track the X and Y coordinates. Increment or decrement them based on the character, and simply check if `X == 0` and `Y == 0` at the end.
-
-* **Q3 (Medium-Hard): Meeting Rooms Required**
-  * *Specification:* You are given an array of meeting time intervals where each interval consists of a start time and an end time. Multiple meetings might overlap. You need to determine the minimum number of conference rooms required to schedule all meetings without any conflicts. A meeting ending exactly when another begins does not constitute an overlap.
-  * *Sample Test Case:* Input: `[[0, 30], [5, 10], [15, 20]]` -> Output: `2`.
-  * *Constraints:* Number of meetings $1 \le N \le 10^4$, $0 \le \text{start} < \text{end} \le 10^6$.
-  * *Hint:* Separate the start times and end times into two sorted arrays. Use a two-pointer approach to sweep through time, incrementing room count on starts and decrementing on ends.
-
-* **Q4 (Hard): Longest Increasing Subsequence**
-  * *Specification:* Given an unsorted array of integers, locate the length of the longest strictly increasing subsequence. A subsequence is derived by deleting some or no elements from the array without altering the order of the remaining elements. The sequence must strictly increase, meaning equal values do not count as increasing.
-  * *Sample Test Case:* Input: `[10, 9, 2, 5, 3, 7, 101, 18]` -> Output: `4` (The sequence is `[2, 3, 7, 101]`).
-  * *Constraints:* Array length $1 \le N \le 2500$, $-10^4 \le \text{nums}[i] \le 10^4$.
-  * *Hint:* While an $O(N^2)$ DP approach works for small constraints, aim for $O(N \log N)$ using an array to build the active sequence and binary search (`bisect`) to find insertion points.
 
 * * *
 
-## Set 4: Boundary Logic
+## Set 3: Timed Mock Assessment 3
 
-* **Q1 (Easy): Reverse Integer Digits**
-  * *Specification:* Given a signed 32-bit integer, completely reverse its digits and return the new integer. If the integer is negative, the reversed result must also remain negative. If reversing the integer causes it to overflow outside the signed 32-bit integer range $[-2^{31}, 2^{31} - 1]$, you must return 0 instead of a garbage value.
-  * *Sample Test Case:* Input: `-123` -> Output: `-321`. Input: `120` -> Output: `21`.
-  * *Constraints:* $-2^{31} \le N \le 2^{31} - 1$.
-  * *Hint:* Extract digits using modulo 10 and build the reversed number. Check for overflow before multiplying the accumulated result by 10.
+* **Q1 (Easy): Palindrome Check**
+  * *Specification:* Verify if a string is a palindrome, ignoring non-alphanumeric characters.
+  * *Sample Test Case:* Input: `"A man, a plan" -> True`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-06] Converging Pointers
 
-* **Q2 (Medium): Shortest Path in Binary Matrix**
-  * *Specification:* You are given an $N \times N$ binary matrix where 0 represents an open, passable cell and 1 represents a blocked obstacle. Find the length of the shortest clear path from the top-left cell (0,0) to the bottom-right cell (N-1, N-1). You can move in 8 directions (horizontal, vertical, and diagonal). If no path exists, return -1.
-  * *Sample Test Case:* Input: `[[0,1],[1,0]]` -> Output: `2`.
-  * *Constraints:* $1 \le N \le 100$.
-  * *Hint:* Breadth-First Search (BFS) is optimal for finding shortest paths in an unweighted grid. Queue coordinates and distance, marking cells visited as you enqueue them.
+* **Q2 (Medium): Binary Search Rotated**
+  * *Specification:* Find an element in a sorted array that has been rotated.
+  * *Sample Test Case:* Input: `[4,5,1,2,3], target=1 -> 2`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* [PAT-10] Partition Search
 
-* **Q3 (Medium-Hard): Group Isomorphic Strings**
-  * *Specification:* You are given an array of strings. Two strings are considered isomorphic if the characters in the first string can be replaced to get the second string, preserving the order and structure (e.g., "egg" and "add"). Group all mutually isomorphic strings together in lists. Return the grouped lists in any order.
-  * *Sample Test Case:* Input: `["aab", "xxy", "xyz", "def"]` -> Output: `[["aab", "xxy"], ["xyz", "def"]]`.
-  * *Constraints:* Array length $1 \le N \le 10^4$, String length $1 \le L \le 50$.
-  * *Hint:* Normalize each string into a structural pattern (e.g., "aab" -> "1-1-2", "egg" -> "1-2-2") and use this pattern as a key in a HashMap to group matching strings.
+* **Q3 (Medium-Hard): DFS Component Count**
+  * *Specification:* Count the number of connected components (islands) in a 2D grid.
+  * *Sample Test Case:* Input: `grid -> 3 islands`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-15] DFS Flood Fill
 
-* **Q4 (Hard): Decode Ways**
-  * *Specification:* A message containing letters from A-Z is encoded into numbers using the mapping 'A' -> 1, 'B' -> 2, ..., 'Z' -> 26. Given a string of digits, determine the total number of ways it can be decoded back into letters. A decoding is valid only if it maps strictly to the 1-26 range; leading zeros in groups are invalid (e.g., "06" cannot be 'F').
-  * *Sample Test Case:* Input: `"226"` -> Output: `3` (Can be decoded as "BZ", "VF", or "BBF").
-  * *Constraints:* String length $1 \le L \le 100$.
-  * *Hint:* Use 1D Dynamic Programming. `dp[i]` is the number of ways to decode the prefix of length `i`. Look at the single digit at `i-1` and the two digits at `i-2` to update the state.
+* **Q4 (Hard): Topological Sort Complex**
+  * *Specification:* Find the longest path in a Directed Acyclic Graph representing tasks.
+  * *Sample Test Case:* Input: `tasks -> 10 days`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-16] Topo Sort / DP
 
-* * *
-
-## Set 5: Simulation & State
-
-* **Q1 (Easy): FizzBuzz Array Variant**
-  * *Specification:* Implement the classic FizzBuzz game, but return the results as an array of strings from 1 to N. For multiples of 3, append "Fizz". For multiples of 5, append "Buzz". For multiples of both 3 and 5, append "FizzBuzz". For all other numbers, append the number itself as a string.
-  * *Sample Test Case:* Input: `N = 15` -> Output: `[..., "13", "14", "FizzBuzz"]`.
-  * *Constraints:* $1 \le N \le 10^4$.
-  * *Hint:* Use conditional logic. Check divisibility by 15 (both 3 and 5) first, then 3, then 5, to avoid overriding the "FizzBuzz" condition.
-
-* **Q2 (Medium): Game of Life Simulation**
-  * *Specification:* You are given an $M \times N$ grid representing the current state of Conway's Game of Life (1 is live, 0 is dead). Compute the next state of the board simultaneously for every cell based on its 8 neighbors. A live cell with 2-3 live neighbors survives. A dead cell with exactly 3 live neighbors becomes live. All other cells die or remain dead. Do this in-place if possible.
-  * *Sample Test Case:* Input: `[[0,1,0],[0,0,1],[1,1,1],[0,0,0]]` -> Output: `[[0,0,0],[1,0,1],[0,1,1],[0,1,0]]`.
-  * *Constraints:* $1 \le M, N \le 25$.
-  * *Hint:* To achieve an in-place update, use intermediate states (like 2 for "was live, now dead" and 3 for "was dead, now live") so you can evaluate the original state without allocating a new matrix.
-
-* **Q3 (Medium-Hard): Remove K Invalid Brackets**
-  * *Specification:* You are given a string containing alphanumeric characters and brackets '(' and ')'. You are also given an integer K. You must remove exactly K brackets (either open or close) such that the resulting string contains valid, properly nested brackets. Find and return all unique valid string permutations that can result from this removal.
-  * *Sample Test Case:* Input: `s = "()())()", K = 1` -> Output: `["(())()", "()()()"]`.
-  * *Constraints:* String length $1 \le L \le 25$, $0 \le K \le L$.
-  * *Hint:* Use Breadth-First Search (BFS) combined with a queue and a HashSet for deduplication. Generate all states by removing one character at a time, checking validity.
-
-* **Q4 (Hard): Dijkstra's Shortest Path Array**
-  * *Specification:* You are given a directed, weighted graph represented by an adjacency list, a total number of nodes N, and a starting node S. Calculate the shortest path distance from the starting node S to every other node in the graph. The weights are guaranteed to be non-negative. Return an array of these distances, using -1 for unreachable nodes.
-  * *Sample Test Case:* Input: `N = 3, edges = [[0,1,5], [0,2,2], [2,1,1]], S = 0` -> Output: `[0, 3, 2]`.
-  * *Constraints:* $1 \le N \le 1000$, edge weights $0 \le W \le 10^4$.
-  * *Hint:* Implement Dijkstra's algorithm using a Priority Queue (Min-Heap). Enqueue tuples of `(current_distance, node)` and update adjacent nodes dynamically.
 
 * * *
 
-## Set 6: Array Manipulation
+## Set 4: Timed Mock Assessment 4
 
-* **Q1 (Easy): Remove Duplicates In-Place**
-  * *Specification:* Given a sorted array of integers, remove all duplicate elements in-place such that each unique element appears only once. The relative order of the unique elements must be kept the same. Since you cannot alter the array's physical length in all languages, place the unique items at the front and return the count of unique elements.
-  * *Sample Test Case:* Input: `[1, 1, 2, 3, 3]` -> Output: `3` (Array modifies to `[1, 2, 3, ...]`).
-  * *Constraints:* $1 \le N \le 3 \times 10^4$.
-  * *Hint:* Use two pointers: a slow pointer to track the position of the next unique element, and a fast pointer to scan for new, unseen numbers.
+* **Q1 (Easy): In-place Transformation**
+  * *Specification:* Move all zeros in an array to the end while maintaining relative order of other elements.
+  * *Sample Test Case:* Input: `[0,1,0,3] -> [1,3,0,0]`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-02] Write/Read pointers
 
-* **Q2 (Medium): Matrix Flood Fill**
-  * *Specification:* Implement a flood fill algorithm. You are given a 2D grid of integers representing pixel colors, a starting row and column, and a new target color. Change the color of the starting pixel and all orthogonally adjacent pixels of the *same original color* to the new target color, stopping at boundaries or different colors. Return the modified grid.
-  * *Sample Test Case:* Input: `grid = [[1,1,1],[1,1,0],[1,0,1]], sr=1, sc=1, color=2` -> Output: `[[2,2,2],[2,2,0],[2,0,1]]`.
-  * *Constraints:* $1 \le M, N \le 50$.
-  * *Hint:* Use Depth-First Search (DFS). If the starting cell is already the target color, return immediately to prevent infinite recursion.
+* **Q2 (Medium): State Machine String**
+  * *Specification:* Parse a string to extract a valid integer, handling signs and overflow.
+  * *Sample Test Case:* Input: `"-42" -> -42`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Deterministic finite automaton
 
-* **Q3 (Medium-Hard): Median of Two Sorted Arrays**
-  * *Specification:* You are given two independent sorted integer arrays, A and B. Find the exact median of the combined sorted elements of both arrays. If the combined length is even, the median is the average of the two middle elements. The overall run time complexity must strictly be $O(\log (m+n))$.
-  * *Sample Test Case:* Input: `A = [1, 3], B = [2]` -> Output: `2.0`.
-  * *Constraints:* $0 \le \text{A.length}, \text{B.length} \le 1000$, $1 \le \text{total length} \le 2000$.
-  * *Hint:* Do not merge the arrays. Use binary search on the smaller array to find an optimal partition point that splits both arrays into balanced left and right halves.
+* **Q3 (Medium-Hard): Tree Traversal**
+  * *Specification:* Serialize and deserialize a binary tree.
+  * *Sample Test Case:* Input: `[1,2,3] -> str -> [1,2,3]`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* Preorder traversal
 
-* **Q4 (Hard): Trapping Rain Water**
-  * *Specification:* Given an array of non-negative integers where each value represents the elevation height of a terrain segment (width 1), compute how much total water the terrain can trap after a heavy rain. Water is trapped in valleys between higher elevation peaks on both the left and right sides.
-  * *Sample Test Case:* Input: `[0,1,0,2,1,0,1,3,2,1,2,1]` -> Output: `6`.
-  * *Constraints:* Array length $1 \le N \le 2 \times 10^4$.
-  * *Hint:* A two-pointer approach (left and right) working inward is $O(1)$ space. Maintain `left_max` and `right_max`; process the smaller max side to guarantee valid trapping boundaries.
+* **Q4 (Hard): Union Find Network**
+  * *Specification:* Find the redundant connection in a graph that should be a tree.
+  * *Sample Test Case:* Input: `[[1,2],[1,3],[2,3]] -> [2,3]`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-17] Disjoint Set Union
 
-* * *
-
-## Set 7: Hash & Frequency
-
-* **Q1 (Easy): Valid Anagram Check**
-  * *Specification:* Given two strings S and T, write a function to determine if T is a valid anagram of S. An anagram is formed by rearranging the exact characters of a different string, using all original characters exactly once. The strings contain only lowercase English letters.
-  * *Sample Test Case:* Input: `S = "listen", T = "silent"` -> Output: `true`.
-  * *Constraints:* String lengths $1 \le L \le 5 \times 10^4$.
-  * *Hint:* Use a fixed-size integer array of length 26 to tally character counts. Increment for S and decrement for T, verifying all counts are zero at the end.
-
-* **Q2 (Medium): Anti-Diagonal Matrix Traversal**
-  * *Specification:* You are given an $N \times N$ square matrix of integers. Return an array containing all the elements of the matrix ordered by their anti-diagonals, starting from the top-left corner and sweeping down towards the bottom-right. Elements on the same anti-diagonal share the same row and column index sum.
-  * *Sample Test Case:* Input: `[[1,2,3],[4,5,6],[7,8,9]]` -> Output: `[1, 2, 4, 3, 5, 7, 6, 8, 9]`.
-  * *Constraints:* $1 \le N \le 100$.
-  * *Hint:* Map elements using their coordinates. The key observation is that for any cell `[r][c]`, the sum `r + c` uniquely identifies which anti-diagonal line it belongs to.
-
-* **Q3 (Medium-Hard): Maximum K-Window Sum**
-  * *Specification:* You are given an array of integers and an integer K. Find the maximum possible sum of any contiguous subarray of size exactly K. The array can contain negative numbers. You must process this efficiently without recalculating the sum of elements from scratch for every possible window position.
-  * *Sample Test Case:* Input: `nums = [1, 4, 2, 10, 2, 3, 1, 0, 20], K = 4` -> Output: `24` (Subarray `[3, 1, 0, 20]`).
-  * *Constraints:* $1 \le N \le 10^5$, $1 \le K \le N$.
-  * *Hint:* Use the Sliding Window pattern. Compute the sum of the first K elements, then iterate by adding the new element entering the window and subtracting the element leaving.
-
-* **Q4 (Hard): LRU Cache Implementation**
-  * *Specification:* Design and implement a data structure for a Least Recently Used (LRU) cache. It must support `get(key)` which returns the value if it exists (else -1), and `put(key, value)` which updates or inserts the value. If inserting exceeds the capacity, it must evict the least recently used key. Both operations must run in $O(1)$ average time complexity.
-  * *Sample Test Case:* Input: `capacity = 2; put(1,1); put(2,2); get(1) -> 1; put(3,3); get(2) -> -1`.
-  * *Constraints:* Capacity $1 \le C \le 3000$, up to $10^5$ calls made.
-  * *Hint:* Combine a standard HashMap (for $O(1)$ key lookup) with a Doubly Linked List (for $O(1)$ node relocation to track most/least recently used order).
 
 * * *
 
-## Set 8: Window & Range
+## Set 5: Timed Mock Assessment 5
 
-* **Q1 (Easy): Count Palindromic Substrings**
-  * *Specification:* Given a string, determine the total number of substrings that are palindromes. A palindrome reads the same forwards and backwards. Note that a single character is mathematically considered a valid palindrome. Distinct substrings with identical characters at different indices are counted separately.
-  * *Sample Test Case:* Input: `"abc"` -> Output: `3` ("a", "b", "c"). Input: `"aaa"` -> Output: `6` ("a","a","a","aa","aa","aaa").
-  * *Constraints:* String length $1 \le L \le 1000$.
-  * *Hint:* Iterate through each character and expand outwards from the center. Handle both odd-length (single character center) and even-length (two character center) palindromes.
+* **Q1 (Easy): Simple Math**
+  * *Specification:* Return the sum of digits of a given integer until it becomes a single digit.
+  * *Sample Test Case:* Input: `38 -> 2`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Modulo arithmetic
 
-* **Q2 (Medium): Rotting Oranges BFS**
-  * *Specification:* You are given an $M \times N$ grid containing 0 (empty), 1 (fresh orange), or 2 (rotten orange). Every minute, any fresh orange adjacent (4-directionally) to a rotten orange also becomes rotten. Calculate the minimum number of minutes required until no fresh oranges remain. If it is impossible to rot all oranges, return -1.
-  * *Sample Test Case:* Input: `[[2,1,1],[1,1,0],[0,1,1]]` -> Output: `4`.
-  * *Constraints:* $1 \le M, N \le 10$.
-  * *Hint:* This is a multi-source Breadth-First Search. Enqueue all initially rotten oranges at minute 0, then process level by level, decrementing a total fresh count.
+* **Q2 (Medium): Matrix Zeroes**
+  * *Specification:* If a cell is 0, set its entire row and column to 0 in-place.
+  * *Sample Test Case:* Input: `[[1,0],[1,1]] -> [[0,0],[1,0]]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Row/Col marker tracking
 
-* **Q3 (Medium-Hard): Smallest Subarray Sum Target**
-  * *Specification:* Given an array of positive integers and a target positive integer, find the minimal length of a contiguous subarray whose sum is strictly greater than or equal to the target. If no such subarray exists that meets the target sum constraint, return 0.
-  * *Sample Test Case:* Input: `target = 7, nums = [2,3,1,2,4,3]` -> Output: `2` (Subarray `[4,3]`).
-  * *Constraints:* $1 \le N \le 10^5$, array values and target up to $10^9$.
-  * *Hint:* Employ a dynamic sliding window. Expand the right pointer to accumulate the sum, and shrink the left pointer as long as the sum remains $\ge$ target, recording the minimum length.
+* **Q3 (Medium-Hard): Course Schedule II**
+  * *Specification:* Return the ordering of courses you should take to finish all courses.
+  * *Sample Test Case:* Input: `num=2, req=[[1,0]] -> [0,1]`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-16] Topological Sort
 
-* **Q4 (Hard): Course Schedule Topology**
-  * *Specification:* You are given a total number of courses labeled from 0 to N-1, and an array of prerequisite pairs where `[A, B]` means course B must be completed before course A. Determine if it is mathematically possible to finish all courses. Return a valid chronological ordering of courses. If a cycle exists making it impossible, return an empty array.
-  * *Sample Test Case:* Input: `N = 2, pre = [[1,0]]` -> Output: `[0, 1]`.
-  * *Constraints:* $1 \le N \le 2000$.
-  * *Hint:* This requires Topological Sorting. Build a directed graph and an in-degree array. Use Kahn's algorithm (BFS queue) to process nodes with zero dependencies.
+* **Q4 (Hard): Word Ladder**
+  * *Specification:* Find the length of the shortest transformation sequence from beginWord to endWord.
+  * *Sample Test Case:* Input: `hit -> cog: 5`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-13] BFS Wavefront
+
 
 * * *
 
-## Set 9: Two-Pointer Mastery
+## Set 6: Timed Mock Assessment 6
 
-* **Q1 (Easy): Move Targets to End**
-  * *Specification:* Given an integer array and a specific target value, move all occurrences of that target to the end of the array while maintaining the relative ordering of the other non-target elements. You must perform this mutation in-place without allocating a duplicate array structure.
-  * *Sample Test Case:* Input: `nums = [0,1,0,3,12], target = 0` -> Output: `[1,3,12,0,0]`.
-  * *Constraints:* $1 \le N \le 10^4$.
-  * *Hint:* Maintain an insertion index pointer. Iterate through the array; if the current element is not the target, swap it with the element at the insertion index and increment the index.
+* **Q1 (Easy): Anagram Validation**
+  * *Specification:* Determine if two strings are valid anagrams of one another.
+  * *Sample Test Case:* Input: `"listen", "silent" -> True`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-01] Frequency buckets
 
-* **Q2 (Medium): Kth Smallest in Sorted Matrix**
-  * *Specification:* You are given an $N \times N$ matrix where every row and every column is independently sorted in ascending order. Find the Kth smallest integer in the entire matrix. Note that it is the Kth smallest in global sorted order, not the Kth distinct element.
-  * *Sample Test Case:* Input: `matrix = [[1,5,9],[10,11,13],[12,13,15]], K = 8` -> Output: `13`.
-  * *Constraints:* $1 \le N \le 300$, $1 \le K \le N^2$.
-  * *Hint:* Since rows and columns are sorted, use a Min-Heap starting with the first element of each row, or apply a clever Binary Search over the value range tracking counts.
+* **Q2 (Medium): Subarray Sum K**
+  * *Specification:* Find the total number of continuous subarrays whose sum equals k.
+  * *Sample Test Case:* Input: `[1,1,1], k=2 -> 2`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* [PAT-03] Prefix HashMap
 
-* **Q3 (Medium-Hard): 3Sum Zero Target**
-  * *Specification:* Given an integer array, identify and return all unique triplets `[nums[i], nums[j], nums[k]]` such that their sum equals exactly zero. The index of each element must be distinct. The output array of triplets must not contain any duplicate triplet combinations, regardless of internal ordering.
-  * *Sample Test Case:* Input: `[-1,0,1,2,-1,-4]` -> Output: `[[-1,-1,2],[-1,0,1]]`.
-  * *Constraints:* $3 \le N \le 3000$.
-  * *Hint:* Sort the array first. Iterate through the array fixing one number, then use a two-pointer approach (left and right) on the remaining suffix to find pairs that sum to the inverse of the fixed number.
+* **Q3 (Medium-Hard): Word Search**
+  * *Specification:* Check if a word exists in a grid of characters.
+  * *Sample Test Case:* Input: `board, "ABCCED" -> True`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-12] DFS Backtracking
 
 * **Q4 (Hard): Longest Valid Parentheses**
-  * *Specification:* Given a string composed strictly of '(' and ')' characters, compute the length of the longest contiguous valid (well-formed) parentheses substring. The valid substring must have properly matched and nested brackets.
-  * *Sample Test Case:* Input: `")()())"` -> Output: `4` (The substring is `"()()"`).
-  * *Constraints:* String length $0 \le L \le 3 \times 10^4$.
-  * *Hint:* Utilize a stack storing indices. Initialize the stack with -1 to serve as a base index. On closing brackets, pop and measure the length against the new top of the stack.
+  * *Specification:* Find the length of the longest valid (well-formed) parentheses substring.
+  * *Sample Test Case:* Input: `")()())" -> 4`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-08] Stack or Two Pointers
+
 
 * * *
 
-## Set 10: Greedy & Optimization
+## Set 7: Timed Mock Assessment 7
 
-* **Q1 (Easy): Single Stock Profit**
-  * *Specification:* You are given an array where each element represents the price of a given stock on that day. You are permitted to complete at most one transaction (buy one share and sell one share) in the future. Calculate the maximum profit you can achieve. If no profit can be made (prices only drop), return 0.
-  * *Sample Test Case:* Input: `[7,1,5,3,6,4]` -> Output: `5` (Buy at 1, sell at 6).
-  * *Constraints:* $1 \le N \le 10^5$.
-  * *Hint:* Iterate through the array while maintaining a running variable of the minimum price seen so far. At each day, evaluate if selling at the current price yields a new maximum profit.
+* **Q1 (Easy): Array Intersection**
+  * *Specification:* Find the common elements between two sorted arrays.
+  * *Sample Test Case:* Input: `[1,2,3], [2,3,4] -> [2,3]`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Two pointers matching
 
-* **Q2 (Medium): Unique Paths with Obstacles**
-  * *Specification:* A robot is positioned at the top-left corner of an $M \times N$ grid and is trying to reach the bottom-right corner. The robot can only move down or right. Some grid cells are marked as 1, representing an impassable obstacle. Empty cells are 0. Calculate the total number of unique valid paths to the destination.
-  * *Sample Test Case:* Input: `[[0,0,0],[0,1,0],[0,0,0]]` -> Output: `2`.
-  * *Constraints:* $1 \le M, N \le 100$.
-  * *Hint:* Use 2D Dynamic Programming. `dp[r][c]` equals `dp[r-1][c] + dp[r][c-1]`. If a cell contains an obstacle, manually set its DP value to 0 paths.
+* **Q2 (Medium): Sort Colors**
+  * *Specification:* Sort an array of 0s, 1s, and 2s in-place (Dutch National Flag).
+  * *Sample Test Case:* Input: `[2,0,2,1,1,0] -> [0,0,1,1,2,2]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Three pointers
 
-* **Q3 (Medium-Hard): Merge Overlapping Intervals**
-  * *Specification:* You are given an array of intervals where each interval is represented as `[start, end]`. Multiple intervals may overlap. Consolidate all overlapping intervals into a unified, non-overlapping array of intervals that perfectly covers all time spans represented by the original input. Return the condensed array.
-  * *Sample Test Case:* Input: `[[1,3],[2,6],[8,10],[15,18]]` -> Output: `[[1,6],[8,10],[15,18]]`.
-  * *Constraints:* $1 \le N \le 10^4$.
-  * *Hint:* Sort the intervals primarily by their starting times. Iterate and maintain a 'current' interval; merge if the next start is $\le$ the current end, updating the end to the maximum of both.
+* **Q3 (Medium-Hard): Clone Graph**
+  * *Specification:* Return a deep copy (clone) of a graph.
+  * *Sample Test Case:* Input: `node 1 -> cloned node 1`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* HashMap + BFS/DFS
 
-* **Q4 (Hard): Jump Game Minimum**
-  * *Specification:* You are given an array of non-negative integers where each value dictates the maximum jump length you can take forward from that position. Assuming you always start at the first index, determine the absolute minimum number of jumps required to reach the last index of the array. The test cases guarantee the end is reachable.
-  * *Sample Test Case:* Input: `[2,3,1,1,4]` -> Output: `2` (Jump index 0 to 1, then jump to the end).
-  * *Constraints:* $1 \le N \le 10^4$.
-  * *Hint:* Use a Greedy BFS approach. Maintain two variables: `current_jump_end` and `farthest_reachable`. Iterate through the array; when you hit `current_jump_end`, you must jump, so increment jump count and update the end boundary.
+* **Q4 (Hard): Monotonic Stack Max Area**
+  * *Specification:* Find the largest rectangle in a binary matrix of 0s and 1s.
+  * *Sample Test Case:* Input: `matrix -> 6`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-09] Monotonic Stack
 
-* * *
-
-## Set 11: Tree & Recursion Simulation
-
-* **Q1 (Easy): Happy Number Cycle**
-  * *Specification:* Write an algorithm to verify if a number is a "happy number". To determine this, replace the number with the sum of the squares of its digits. Repeat this mathematical process until the number equals 1 (happy), or it loops endlessly in a recurring cycle that does not include 1 (unhappy). Return true if happy.
-  * *Sample Test Case:* Input: `19` -> Output: `true` ($1^2 + 9^2 = 82$, $8^2 + 2^2 = 68$, etc., eventually reaching 1).
-  * *Constraints:* $1 \le N \le 2^{31} - 1$.
-  * *Hint:* Use a HashSet to track previously computed sums. If a sum repeats before hitting 1, you have entered an infinite cycle and can return false.
-
-* **Q2 (Medium): Word Search Traversal**
-  * *Specification:* You are given an $M \times N$ grid of characters and a target word string. Determine if the word can be constructed by traversing sequentially adjacent cells (horizontally or vertically). The same physical cell in the matrix cannot be used more than once during the construction of the word.
-  * *Sample Test Case:* Input: `board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"` -> Output: `true`.
-  * *Constraints:* $1 \le M, N \le 6$, word length $\le 15$.
-  * *Hint:* Employ Backtracking / Depth-First Search from every matching starting letter. Temporarily mark cells as visited (e.g., changing it to '#') to prevent reuse, restoring it afterward.
-
-* **Q3 (Medium-Hard): Nested String Reversal**
-  * *Specification:* You are given a string that contains lowercase letters and properly nested parentheses pairs. You must reverse the exact character sequence present within each pair of matching parentheses, starting from the innermost pair and working outward. After processing, return the final evaluated string without any parenthesis characters.
-  * *Sample Test Case:* Input: `"(ed(et(oc))el)"` -> Output: `"leetcode"`.
-  * *Constraints:* String length $1 \le L \le 2000$.
-  * *Hint:* Use a Stack. Push characters one by one. When encountering a closing parenthesis, pop characters until the opening parenthesis is found, reverse that temporary chunk, and push it back to the stack.
-
-* **Q4 (Hard): Minimum Edit Distance**
-  * *Specification:* Given two strings `word1` and `word2`, compute the absolute minimum number of discrete operations required to mutate `word1` into `word2`. You are granted three valid operations: insert a character, delete a character, or replace a character. Each operation has a uniform cost of 1.
-  * *Sample Test Case:* Input: `word1 = "horse", word2 = "ros"` -> Output: `3` (Replace 'h' with 'r', remove 'r', remove 'e').
-  * *Constraints:* String lengths $0 \le L \le 500$.
-  * *Hint:* Apply 2D Dynamic Programming. `dp[i][j]` tracks the cost to match prefixes of length `i` and `j`. If characters differ, take the minimum of insertion, deletion, or substitution plus 1.
 
 * * *
 
-## Set 12: Bit & Math Tricks
+## Set 8: Timed Mock Assessment 8
 
-* **Q1 (Easy): Set Bit Count**
-  * *Specification:* Write a function that takes an unsigned 32-bit integer as input and computes the total number of '1' bits (also known as the Hamming weight) present in its binary representation. Return the final integer tally.
-  * *Sample Test Case:* Input: `11` (binary `1011`) -> Output: `3`.
-  * *Constraints:* Input is a 32-bit unsigned integer.
-  * *Hint:* Use bitwise AND operations. The expression `n & (n - 1)` always elegantly flips the least significant '1' bit of `n` to '0', allowing for rapid counting.
+* **Q1 (Easy): Missing Number**
+  * *Specification:* Find the missing number in an array of size N containing numbers from 0 to N.
+  * *Sample Test Case:* Input: `[0,1,3] -> 2`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Sum formula or XOR
 
-* **Q2 (Medium): Generate Spiral Matrix**
-  * *Specification:* Given a positive integer N, mathematically construct and return an $N \times N$ matrix populated with sequential numerical elements from $1$ up to $N^2$ in a clockwise spiral layout. The sequence must originate at the top-left corner and spiral inward.
-  * *Sample Test Case:* Input: `3` -> Output: `[[1,2,3],[8,9,4],[7,6,5]]`.
-  * *Constraints:* $1 \le N \le 20$.
-  * *Hint:* Establish four boundary variables: top, bottom, left, and right. Use a `while` loop containing four independent `for` loops to walk the perimeter, incrementally shrinking the boundaries inward.
+* **Q2 (Medium): Peak Element**
+  * *Specification:* Find a peak element (strictly greater than neighbors) in O(log N) time.
+  * *Sample Test Case:* Input: `[1,2,3,1] -> 2`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Binary Search on gradient
 
-* **Q3 (Medium-Hard): Constant Space First Duplicate**
-  * *Specification:* You are given an array of integers containing N elements, where every element guarantees a value in the inclusive range of $[1, N]$. Exactly one integer value is duplicated once, while all others appear exactly once. Identify and return this duplicate integer. Your solution must use strictly $O(1)$ auxiliary space and must not modify the input array.
-  * *Sample Test Case:* Input: `[1,3,4,2,2]` -> Output: `2`.
-  * *Constraints:* $1 \le N \le 10^5$.
-  * *Hint:* Treat the array values as pointer links to other indices (`next = nums[curr]`). Utilize Floyd's Tortoise and Hare cycle detection algorithm to locate the cycle entrance, which corresponds to the duplicate value.
+* **Q3 (Medium-Hard): Evaluate Division**
+  * *Specification:* Evaluate queries based on equation relationships a/b = 2.
+  * *Sample Test Case:* Input: `a/b=2, b/c=3 -> a/c=6`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* Graph DFS with path weights
 
-* **Q4 (Hard): Maximum Product Subarray**
-  * *Specification:* Given an integer array, find a contiguous non-empty subarray that evaluates to the absolute largest mathematical product, and return that computed product. Pay special attention to negative values, as multiplying two negatives yields a large positive.
-  * *Sample Test Case:* Input: `[2,3,-2,4]` -> Output: `6` (Subarray `[2,3]`).
-  * *Constraints:* $1 \le N \le 2 \times 10^4$.
-  * *Hint:* Maintain both a `current_max` and a `current_min` product dynamically. When encountering a negative number, swap the max and min trackers because multiplying by a negative inverts the relationship.
+* **Q4 (Hard): Minimum Spanning Tree**
+  * *Specification:* Given a weighted undirected graph, find the MST weight using Kruskal's algorithm with Union-Find.
+  * *Sample Test Case:* Input: `edges -> weight`
+  * *Constraints:* V \le 10^4, E \le 5 \times 10^4.
+  * *Hint:* [PAT-17] Disjoint Set Union + greedy edge sorting.
 
-* * *
-
-## Set 13: Advanced Search
-
-* **Q1 (Easy): Validate Sudoku Subsections**
-  * *Specification:* You are given a $9 \times 9$ Sudoku board partially populated with digits '1'-'9' and empty spaces '.'. Determine if the board's current state is legally valid. A valid board requires that no row, no column, and no $3 \times 3$ sub-box contains any duplicate digits. You do not need to determine if it is solvable, only if it is currently valid.
-  * *Sample Test Case:* Input: standard valid grid -> Output: `true`.
-  * *Constraints:* Board size is exactly $9 \times 9$.
-  * *Hint:* Iterate through every cell. Use three separate HashSets (or a smart string encoding trick) to register seen values mapped to specific row indices, column indices, and calculated box indices.
-
-* **Q2 (Medium): Compute Island Perimeter**
-  * *Specification:* You are given a grid of 1s (land) and 0s (water) containing exactly one unified island (one or more connected land cells). No lakes exist inside the island. Calculate the exact total perimeter length of the island. Each land cell contributes exactly 4 to the perimeter unless it touches an adjacent land cell.
-  * *Sample Test Case:* Input: `[[0,1,0,0],[1,1,1,0],[0,1,0,0],[1,1,0,0]]` -> Output: `16`.
-  * *Constraints:* $1 \le M, N \le 100$.
-  * *Hint:* Loop over the grid. Every time you see a 1, add 4 to the perimeter total. Then, check the left neighbor and top neighbor; if they are also land, subtract 2 for each shared edge.
-
-* **Q3 (Medium-Hard): Longest Consecutive Sequence**
-  * *Specification:* Given an unsorted array of integers, determine the length of the longest sequence of mathematically consecutive elements. The elements do not need to be contiguous in the original array structure. You must construct an algorithm that achieves strictly $O(N)$ runtime complexity.
-  * *Sample Test Case:* Input: `[100, 4, 200, 1, 3, 2]` -> Output: `4` (The sequence `[1, 2, 3, 4]`).
-  * *Constraints:* $0 \le N \le 10^5$.
-  * *Hint:* Dump all elements into a HashSet for $O(1)$ lookups. Iterate through the set; only begin building a sequence if `num - 1` does not exist, ensuring you only iterate starting from the true base of a sequence.
-
-* **Q4 (Hard): Sorted 2D Binary Search**
-  * *Specification:* Implement an efficient algorithm that searches for a specific integer target within an $M \times N$ matrix. The matrix has strict properties: every row is sorted in strict ascending order, and the absolute first integer of any row is strictly greater than the absolute last integer of the preceding row. Return true if found, false otherwise.
-  * *Sample Test Case:* Input: `matrix = [[1,3,5,7],[10,11,16,20]], target = 3` -> Output: `true`.
-  * *Constraints:* $1 \le M, N \le 100$.
-  * *Hint:* Mathematically treat the 2D matrix as a flattened 1D sorted array of length $M \times N$. Map a 1D mid-index back to 2D coordinates using division `mid / N` and modulo `mid % N`.
 
 * * *
 
-## Set 14: Interval & Schedule
+## Set 9: Timed Mock Assessment 9
 
-* **Q1 (Easy): Max Guests Present**
-  * *Specification:* You are given two arrays of equal length representing an event schedule: one array indicates guest arrival times and the other indicates guest departure times. Guests depart at the exact minute listed. Compute the maximum number of concurrent guests present at the venue at any single point in time.
-  * *Sample Test Case:* Input: `arrivals = [1, 2, 9], departures = [5, 8, 12]` -> Output: `2`.
-  * *Constraints:* $1 \le N \le 10^5$.
-  * *Hint:* Sort both the arrival and departure arrays independently. Use a two-pointer approach to sweep a timeline, incrementing a counter for arrivals and decrementing for departures.
+* **Q1 (Easy): Merge Sorted Arrays**
+  * *Specification:* Merge two sorted arrays into a new sorted array.
+  * *Sample Test Case:* Input: `[1,3], [2,4] -> [1,2,3,4]`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Two pointer merge
 
-* **Q2 (Medium): Snake Collision Simulation**
-  * *Specification:* Simulate a simplified game of Snake on an unbounded 2D grid. The snake begins at (0,0) with length 1. You receive a sequence of directional commands. For every command, the snake's head moves 1 unit. Without food to grow, the snake's tail moves identically, maintaining its overall length (given as a fixed integer L). Determine if the snake ever collides with its own body.
-  * *Sample Test Case:* Input: `L=4, path="RRRDDLLU"` -> Output: `true`.
-  * *Constraints:* Path length $1 \le P \le 10^4$.
-  * *Hint:* Utilize a Deque (Double-ended Queue) to maintain the exact coordinates of the snake's body segments. Push the new head coordinate and pop the tail, checking a HashSet to detect overlap.
+* **Q2 (Medium): Group Anagrams**
+  * *Specification:* Group an array of strings into anagram sets.
+  * *Sample Test Case:* Input: `["eat","tea","tan"] -> [["eat","tea"],["tan"]]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Frequency string as HashMap key
 
-* **Q3 (Medium-Hard): Two Sum Indices**
-  * *Specification:* Given an array of integers and a specific target integer, discover two unique indices pointing to array values that sum exactly to the target. It is mathematically guaranteed that exactly one valid solution exists. You may not use the same element twice. Return the two indices in any order.
-  * *Sample Test Case:* Input: `nums = [2,7,11,15], target = 9` -> Output: `[0, 1]`.
-  * *Constraints:* $2 \le N \le 10^4$.
-  * *Hint:* Make a single pass over the array. Use a HashMap to store the required complement (`target - current_val`) and the current index as you traverse.
+* **Q3 (Medium-Hard): Time Based Key-Value Store**
+  * *Specification:* Create a map that supports setting and getting values by timestamps.
+  * *Sample Test Case:* Input: `set(k,v,1), get(k,1) -> v`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* HashMap + Binary Search
 
-* **Q4 (Hard): Subset Partition Minimum Difference**
-  * *Specification:* You are provided a list of positive integers. Your objective is to partition the list into two disjoint, exhaustive subsets such that the absolute difference between the mathematical sums of the subsets is minimized. Return the minimum possible absolute difference.
-  * *Sample Test Case:* Input: `[1, 6, 11, 5]` -> Output: `1` (Subsets `[1,5,6]` summing to 12, and `[11]`).
-  * *Constraints:* $1 \le N \le 200$.
-  * *Hint:* This maps directly to the 0/1 Knapsack DP problem. Target a capacity equal to `total_sum // 2` to find the largest subset sum possible without exceeding half, which minimizes the gap.
+* **Q4 (Hard): Trapping Rain Water**
+  * *Specification:* Compute how much water it can trap after raining.
+  * *Sample Test Case:* Input: `[0,1,0,2,1,0,1,3] -> 6`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* Two Pointers or [PAT-09] Stack
 
-* * *
-
-## Set 15: Stack & Queue Patterns
-
-* **Q1 (Easy): Evaluate Reverse Polish Notation**
-  * *Specification:* You are given an array of string tokens representing an arithmetic expression formatted in Reverse Polish Notation (postfix). Evaluate the expression mathematically and return the resulting integer. The valid operators are `+`, `-`, `*`, and `/`. Division between two integers should truncate strictly towards zero.
-  * *Sample Test Case:* Input: `["2", "1", "+", "3", "*"]` -> Output: `9` ((2 + 1) * 3).
-  * *Constraints:* Array length $1 \le N \le 10^4$.
-  * *Hint:* Use a Stack. Iterate over tokens; push numbers to the stack. When an operator is encountered, pop the top two numbers, apply the operation, and push the result back.
-
-* **Q2 (Medium): Maximal Square Grid**
-  * *Specification:* You are given an $M \times N$ binary matrix containing only 0s and 1s. Locate the largest contiguous square subsection of the grid consisting entirely of 1s, and compute its total structural area. Return the area as an integer.
-  * *Sample Test Case:* Input: `[["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]` -> Output: `4`.
-  * *Constraints:* $1 \le M, N \le 300$.
-  * *Hint:* Use DP. Let `dp[r][c]` be the side length of the largest square whose bottom-right corner is at `[r][c]`. It equals the minimum of its top, left, and top-left neighbors plus 1.
-
-* **Q3 (Medium-Hard): Next Greater Element**
-  * *Specification:* You are given an array of integers. For every element in the array, find its "Next Greater Element"—defined as the first sequentially upcoming element to its right that is strictly mathematically larger than it. Output a corresponding array of these larger elements. If an element has no larger successor, assign it -1.
-  * *Sample Test Case:* Input: `[4, 1, 2, 3]` -> Output: `[-1, 2, 3, -1]`.
-  * *Constraints:* $1 \le N \le 10^5$.
-  * *Hint:* Utilize a Monotonic Decreasing Stack. Store values (or indices) in the stack. When the current element is larger than the top of the stack, pop the stack and assign the current element as the answer for the popped item.
-
-* **Q4 (Hard): Shortest Word Transformation**
-  * *Specification:* You are given a start word, an end word, and a dictionary of valid words. Find the exact sequence length of the shortest transformation sequence from the start word to the end word. A valid step changes precisely one single letter, and every intermediate state must exist in the dictionary. Return 0 if no sequence exists.
-  * *Sample Test Case:* Input: `begin = "hit", end = "cog", dict = ["hot","dot","dog","lot","log","cog"]` -> Output: `5` ("hit"->"hot"->"dot"->"dog"->"cog").
-  * *Constraints:* Dictionary size $\le 5000$.
-  * *Hint:* Construct this as a graph problem and utilize Breadth-First Search (BFS) to guarantee the shortest path. For each word, generate all 1-character edits and look them up in a HashSet dictionary.
 
 * * *
 
-## Set 16: Graph Exploration
+## Set 10: Timed Mock Assessment 10
 
-* **Q1 (Easy): Balanced Bracket String**
-  * *Specification:* Given a string containing only the characters `(`, `)`, `{`, `}`, `[`, and `]`, evaluate if the string layout is structurally balanced. A string is valid if every open bracket is closed by the exact identical type of bracket, and they are closed in the exact correct nested mathematical order.
-  * *Sample Test Case:* Input: `"{[]}"` -> Output: `true`. Input: `"([)]"` -> Output: `false`.
-  * *Constraints:* String length $1 \le L \le 10^4$.
-  * *Hint:* Maintain a Stack. Push opening brackets. For closing brackets, check if the stack is non-empty and the top element is the matching opening bracket, then pop.
+* **Q1 (Easy): Longest Prefix**
+  * *Specification:* Find the longest common prefix string amongst an array of strings.
+  * *Sample Test Case:* Input: `["flower", "flow"] -> "flow"`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Vertical string scanning
 
-* **Q2 (Medium): Deep Clone Graph**
-  * *Specification:* You are provided a reference node to a connected, undirected graph. The nodes contain a value and a list of neighbor references. Return a complete deep copy (clone) of the entire graph structure. Every newly generated node must mirror the original topology, but occupy separate heap memory.
-  * *Sample Test Case:* Input: `adjList = [[2,4],[1,3],[2,4],[1,3]]` -> Output: Exact identical structural clone.
-  * *Constraints:* Node count $\le 100$.
-  * *Hint:* Traverse using DFS or BFS while keeping a central HashMap mapping original nodes to their cloned equivalents to prevent duplicating already processed nodes and resolve cycles.
+* **Q2 (Medium): Max Area Container**
+  * *Specification:* Find two lines that together with the x-axis form a container holding the most water.
+  * *Sample Test Case:* Input: `[1,8,6,2,5,4,8,3,7] -> 49`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* [PAT-06] Converging Two-Pointers
 
-* **Q3 (Medium-Hard): Task Scheduler Cooldown**
-  * *Specification:* You are given an array of characters representing CPU tasks and an integer cooldown multiplier N. Identical tasks must be separated by at least N time intervals of cooldown. You can process a task or sit idle in one time interval. Calculate the absolute minimum time required to process every task in the array.
-  * *Sample Test Case:* Input: `tasks = ["A","A","A","B","B","B"], N = 2` -> Output: `8` (A -> B -> idle -> A -> B -> idle -> A -> B).
-  * *Constraints:* Task array length $\le 10^4$, $0 \le N \le 100$.
-  * *Hint:* Frequency matters most. Calculate the frequency of the most common task. Construct hypothetical "blocks" separated by the cooldown period, and fill in the idle gaps with remaining tasks.
+* **Q3 (Medium-Hard): LRU Cache**
+  * *Specification:* Design a cache with Least Recently Used eviction strategy.
+  * *Sample Test Case:* Input: `put(1,1), get(1) -> 1`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* HashMap + Doubly Linked List
 
-* **Q4 (Hard): Bipartite Graph Detection**
-  * *Specification:* You are given an undirected graph presented as an adjacency list. Determine if the graph is bipartite. A graph qualifies as bipartite if you can split its entire set of nodes into two disjoint independent sets, such that every edge strictly connects a node in the first set to a node in the second set, with no internal edges within a set.
-  * *Sample Test Case:* Input: `graph = [[1,3],[0,2],[1,3],[0,2]]` -> Output: `true`.
-  * *Constraints:* $1 \le N \le 100$.
-  * *Hint:* Perform a Graph Coloring algorithm using BFS or DFS. Assign alternating colors (e.g., 0 and 1) to adjacent nodes. If you ever hit an adjacent node that already possesses the current node's color, it is not bipartite.
+* **Q4 (Hard): Burst Balloons**
+  * *Specification:* Maximize coins by bursting balloons strategically.
+  * *Sample Test Case:* Input: `[3,1,5,8] -> 167`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* Divide & Conquer DP
 
-* * *
-
-## Set 17: Dynamic Programming Gauntlet
-
-* **Q1 (Easy): Distinct Climbing Stairs**
-  * *Specification:* You are faced with a staircase containing N discrete steps to reach the top level. At any point, you are mathematically permitted to climb either exactly 1 step or exactly 2 steps. Compute the total number of unique sequences you can perform to reach the ultimate top step.
-  * *Sample Test Case:* Input: `3` -> Output: `3` (1+1+1, 1+2, 2+1).
-  * *Constraints:* $1 \le N \le 45$.
-  * *Hint:* This maps exactly to the Fibonacci sequence. The number of ways to reach step `N` is strictly the sum of the ways to reach step `N-1` and step `N-2`.
-
-* **Q2 (Medium): Pacific Atlantic Convergence**
-  * *Specification:* You are given an $M \times N$ rectangular grid containing integer elevations. The Pacific Ocean touches the top and left borders, while the Atlantic touches the bottom and right. Water naturally flows downwards or straight across to adjacent cells of equal or lower elevation. Return a list of all cell coordinates where rainwater can successfully flow to both the Pacific and Atlantic oceans.
-  * *Sample Test Case:* Input: `[[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]` -> Output: `[[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]`.
-  * *Constraints:* $1 \le M, N \le 200$.
-  * *Hint:* Trace the flow backwards. Start DFS/BFS algorithms from the ocean borders, climbing strictly *up* in elevation, and record reachable cells in two separate HashSets. Find the intersection.
-
-* **Q3 (Medium-Hard): Longest Palindrome Builder**
-  * *Specification:* You are given a string. Your task is to mathematically compute the absolute length of the longest palindrome that could be constructed using the letters found within the string. You are allowed to dynamically reorder the letters in any configuration to build this palindrome.
-  * *Sample Test Case:* Input: `"abccccdd"` -> Output: `7` (Can build "dccaccd").
-  * *Constraints:* String length $1 \le L \le 2000$.
-  * *Hint:* Count the frequencies of all characters. Pairs of characters can always be mirrored on both sides of a palindrome. If any odd character counts exist, you can add exactly one character to the center.
-
-* **Q4 (Hard): Regular Expression Wildcards**
-  * *Specification:* Given an input string `s` and a pattern string `p`, implement full regular expression matching that strictly supports the `.` wildcard (matches any single character) and the `*` wildcard (matches zero or more of the immediately preceding element). The match must cover the entire input string perfectly, not just a partial substring.
-  * *Sample Test Case:* Input: `s = "aa", p = "a*"` -> Output: `true`.
-  * *Constraints:* String lengths $1 \le L \le 20$.
-  * *Hint:* Use 2D Dynamic Programming where `dp[i][j]` implies prefix match. Dealing with `*` requires evaluating two branches: treating the `*` component as matching zero elements, or matching one/more elements if the previous character aligns.
 
 * * *
 
-## Set 18: Binary Search Variants
+## Set 11: Timed Mock Assessment 11
 
-* **Q1 (Easy): Find Peak Topology**
-  * *Specification:* You are given a 0-indexed integer array where adjacent elements are strictly forbidden from being identically equal. A peak element is defined as any value strictly greater than both its left and right neighbors. Find any peak element in the array and return its exact index. You must achieve $O(\log N)$ time complexity.
-  * *Sample Test Case:* Input: `[1,2,3,1]` -> Output: `2` (Index of value 3).
-  * *Constraints:* $1 \le N \le 1000$.
-  * *Hint:* Use Binary Search. Calculate `mid`. If `nums[mid] < nums[mid+1]`, the upward slope guarantees a peak exists to the right. Otherwise, a peak exists to the left (or is the mid itself).
+* **Q1 (Easy): Valid Parentheses Basic**
+  * *Specification:* Check if a string with just () is balanced.
+  * *Sample Test Case:* Input: `"(())" -> True`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Counter tracking
 
-* **Q2 (Medium): Minimum of Rotated Array**
-  * *Specification:* An initially sorted array of unique integers was rotated cyclically an unknown number of times. Given this rotated array, locate the minimum mathematical element. You must implement an algorithm that operates in $O(\log N)$ runtime complexity.
-  * *Sample Test Case:* Input: `[3,4,5,1,2]` -> Output: `1`.
-  * *Constraints:* $1 \le N \le 5000$.
-  * *Hint:* Use Binary Search. Compare `nums[mid]` to `nums[right]`. If `mid` is greater, the minimum is wrapped in the right half. If `mid` is smaller, the minimum is in the left half (inclusive of mid).
+* **Q2 (Medium): Generate Parentheses**
+  * *Specification:* Generate all combinations of n pairs of well-formed parentheses.
+  * *Sample Test Case:* Input: `n=2 -> ["(())","()()"]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* [PAT-12] Backtracking
 
-* **Q3 (Medium-Hard): Koko Banana Minimum Speed**
-  * *Specification:* Koko has N piles of bananas, with array values representing pile sizes. She has H hours to eat them all. She chooses a constant eating speed K bananas per hour. If a pile has less than K, she finishes it but idles for the remainder of that hour. Compute the absolute minimum integer speed K needed to finish all piles strictly within H hours.
-  * *Sample Test Case:* Input: `piles = [3,6,7,11], H = 8` -> Output: `4`.
-  * *Constraints:* $1 \le N \le 10^4$.
-  * *Hint:* Binary search on the answer space (the eating speed). The possible speeds range from 1 to the max pile size. For each guessed speed `mid`, calculate total hours required and adjust the search space.
+* **Q3 (Medium-Hard): Merge Intervals**
+  * *Specification:* Merge all overlapping intervals.
+  * *Sample Test Case:* Input: `[[1,3],[2,6]] -> [[1,6]]`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-23] Sweep-Line Sort
 
-* **Q4 (Hard): Median of Sorted Arrays Revision**
-  * *Specification:* (A variant of the classic for repetition reinforcement) Given two separate sorted arrays of varying lengths, isolate the exact median value in $O(\log(\text{min}(m,n)))$ time complexity. The arrays are independently sorted but may drastically differ in scale and capacity. Return the floating point median.
-  * *Sample Test Case:* Input: `A=[1,2], B=[3,4]` -> Output: `2.5`.
-  * *Constraints:* Total length $\le 2000$.
-  * *Hint:* Enforce that array A is the shorter one. Perform binary search over the indices of A to find a partition line, deriving B's partition line logically. Cross-check the boundary max/min values for validity.
+* **Q4 (Hard): Find Median from Data Stream**
+  * *Specification:* Design a class to calculate the median of numbers from a data stream.
+  * *Sample Test Case:* Input: `add(1), add(2), median -> 1.5`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* Two Heaps (Min/Max)
 
-* * *
-
-## Set 19: Advanced Data Structures
-
-* **Q1 (Easy): Min-Tracking Stack**
-  * *Specification:* Design a customized Stack data structure that supports standard operations: `push(val)`, `pop()`, `top()`, and an additional method `getMin()`. The `getMin` method must dynamically retrieve the absolute minimum element currently present anywhere in the stack. All four operations must resolve in $O(1)$ constant time complexity.
-  * *Sample Test Case:* Input: `push(-2); push(0); push(-3); getMin() -> -3; pop(); top() -> 0; getMin() -> -2`.
-  * *Constraints:* Value range bounds are standard 32-bit integers.
-  * *Hint:* Track minimums using a parallel stack structure or by pushing tuples of `(value, current_minimum)` onto a single backing stack.
-
-* **Q2 (Medium): Capture Surrounded Regions**
-  * *Specification:* You are given an $M \times N$ board heavily populated with 'X' and 'O'. A region of 'O's is considered completely surrounded if it is enclosed by 'X's on all four cardinal directions. Capture these isolated regions by permanently flipping all surrounded 'O's into 'X's in-place. 'O's connected directly to the board's outer perimeter cannot be captured.
-  * *Sample Test Case:* Input: `[["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]]` -> Output: `[["X","X","X","X"],["X","X","X","X"],["X","X","X","X"],["X","O","X","X"]]`.
-  * *Constraints:* $1 \le M, N \le 200$.
-  * *Hint:* Launch a DFS from all 'O's explicitly located on the outer border, marking them safely untouchable. Then systematically flip all remaining, unmarked 'O's in the interior to 'X'.
-
-* **Q3 (Medium-Hard): Randomized Const-Time Structure**
-  * *Specification:* Design a data structure framework that correctly supports inserting a value, removing a value, and obtaining a random value from the current pool. All three operations must perform strictly in $O(1)$ average mathematical time complexity. The random getter must return values with uniform independent probability based on the current size.
-  * *Sample Test Case:* Input: `insert(1) -> true, insert(2) -> true, getRandom() -> 1 or 2, remove(1) -> true`.
-  * *Constraints:* Up to $2 \times 10^5$ calls.
-  * *Hint:* Combine a standard Array (for $O(1)$ random access by index) with a HashMap (to map values to their current array indices). To remove in $O(1)$, swap the target element with the absolute last element in the array, update the map, and pop.
-
-* **Q4 (Hard): Binary Tree Serializer**
-  * *Specification:* Design a robust algorithm to heavily serialize and subsequently deserialize a full binary tree. Serialization involves converting the in-memory tree object structure into a single continuous string format. Deserialization involves parsing that precise string back into the exact original structural binary tree hierarchy.
-  * *Sample Test Case:* Input: `root = [1,2,3,null,null,4,5]` -> Output: `[1,2,3,null,null,4,5]` (After round-trip processing).
-  * *Constraints:* Tree nodes up to $10^4$.
-  * *Hint:* Utilize a preorder traversal (DFS) or level-order traversal (BFS). Append distinct null markers (e.g., 'N' or '#') for missing children to preserve structural integrity, and separate node values using commas.
 
 * * *
 
-## Set 20: Championship Round
+## Set 12: Timed Mock Assessment 12
 
-* **Q1 (Easy): Roman Numeral Parser**
-  * *Specification:* Given a string strictly representing a valid Roman numeral, parse it and compute its equivalent standard integer value. Roman numerals are constructed from seven distinct symbols: I, V, X, L, C, D, and M. The parsing must accurately support standard subtractive combinations like IV (4) and IX (9).
-  * *Sample Test Case:* Input: `"MCMXCIV"` -> Output: `1994`.
-  * *Constraints:* String length $1 \le L \le 15$.
-  * *Hint:* Iterate strictly from left to right. If the numerical value of the current symbol is less than the numerical value of the right adjacent symbol, mathematically subtract it; otherwise, add it.
+* **Q1 (Easy): Count Elements**
+  * *Specification:* Count elements in array that have x+1 present in the array.
+  * *Sample Test Case:* Input: `[1,2,3] -> 2`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* HashSet lookup
 
-* **Q2 (Medium): Battleship Counter**
-  * *Specification:* You are given an $M \times N$ matrix board modeling a game of Battleships, populated with 'X' (ship) and '.' (water) cells. Distinct battleships are constrained to strictly horizontal or strictly vertical linear orientations. Ships are guaranteed to be separated by at least one cell of water. Tally and return the total number of independent battleships.
-  * *Sample Test Case:* Input: `[["X",".",".","X"],[".",".",".","X"],[".",".",".","X"]]` -> Output: `2`.
-  * *Constraints:* $1 \le M, N \le 200$.
-  * *Hint:* Instead of complex graph traversal, loop across all cells. A cell is the definitive "top-left head" of a battleship if it is an 'X' AND has no 'X' immediately above it AND no 'X' immediately to its left.
+* **Q2 (Medium): Valid Sudoku**
+  * *Specification:* Determine if a 9x9 Sudoku board is valid.
+  * *Sample Test Case:* Input: Standard sudoku validation
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* HashMap/Array bitmasking
 
-* **Q3 (Medium-Hard): Target Sum Subarray Count**
-  * *Specification:* Given an array of unconstrained integers (including negatives) and an integer K, mathematically determine the absolute total number of continuous subarrays whose constituent sum resolves precisely to K. Note that different indices dictate a distinct subarray, even if values match.
-  * *Sample Test Case:* Input: `nums = [1,2,3], K = 3` -> Output: `2` (`[1,2]` and `[3]`).
-  * *Constraints:* $1 \le N \le 2 \times 10^4$.
-  * *Hint:* Utilize the Prefix Sum architectural pattern alongside a HashMap. As you continuously iterate, record the frequency of each prefix sum encountered. At each step, check if `current_sum - K` exists in the map to identify valid sequences ending at the current index.
+* **Q3 (Medium-Hard): Construct Binary Tree**
+  * *Specification:* Build a tree from preorder and inorder traversal arrays.
+  * *Sample Test Case:* Input: `pre=[3,9], in=[9,3] -> Tree`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* Divide and conquer
 
-* **Q4 (Hard): Burst Balloons Optimization**
-  * *Specification:* You are given N balloons, each painted with a specific integer value. If you deliberately burst balloon $i$, you immediately collect coins mathematically equal to `nums[i-1] * nums[i] * nums[i+1]`. After bursting, the adjacent balloons immediately shift together. Determine the maximum possible coin yield you can extract by strategically sequencing the bursts until zero balloons remain.
-  * *Sample Test Case:* Input: `[3,1,5,8]` -> Output: `167`.
-  * *Constraints:* $1 \le N \le 300$.
-  * *Hint:* Pad the array boundaries with conceptual 1s. Frame the DP inversely: analyze which balloon should strictly be the *absolute last* one burst in a given range, rather than the first. Build answers incrementally for sub-intervals.
+* **Q4 (Hard): Minimum Window Substring**
+  * *Specification:* Find the minimum window in S which will contain all characters in T.
+  * *Sample Test Case:* Input: `S="ADOBECODEBANC", T="ABC" -> "BANC"`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-04] Dynamic Sliding Window
+
+
+* * *
+
+## Set 13: Timed Mock Assessment 13
+
+* **Q1 (Easy): Majority Element**
+  * *Specification:* Find the element that appears more than n/2 times.
+  * *Sample Test Case:* Input: `[2,2,1,1,1,2,2] -> 2`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Boyer-Moore Voting
+
+* **Q2 (Medium): Longest Consecutive Sequence**
+  * *Specification:* Find the length of the longest consecutive elements sequence in O(N).
+  * *Sample Test Case:* Input: `[100,4,200,1,3,2] -> 4`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* HashSet building blocks
+
+* **Q3 (Medium-Hard): Design Add and Search Words**
+  * *Specification:* Design a data structure that supports adding words and searching with '.' wildcards.
+  * *Sample Test Case:* Input: `add("bad"), search("b.d") -> True`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-24] Trie with DFS
+
+* **Q4 (Hard): 2D DP Pathing**
+  * *Specification:* Find minimum path sum in grid moving down/right.
+  * *Sample Test Case:* Input: `[[1,3,1],[1,5,1]] -> 7`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-21] 2D DP Grid
+
+
+* * *
+
+## Set 14: Timed Mock Assessment 14
+
+* **Q1 (Easy): First Unique Character**
+  * *Specification:* Find the first non-repeating character in a string.
+  * *Sample Test Case:* Input: `"leetcode" -> 0`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-01] Frequency counting
+
+* **Q2 (Medium): Top K Frequent Elements**
+  * *Specification:* Return the k most frequent elements in an array.
+  * *Sample Test Case:* Input: `[1,1,1,2,2,3], k=2 -> [1,2]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* HashMap and Min-Heap
+
+* **Q3 (Medium-Hard): Permutations**
+  * *Specification:* Return all possible permutations of an array of distinct integers.
+  * *Sample Test Case:* Input: `[1,2] -> [[1,2],[2,1]]`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-12] Backtracking
+
+* **Q4 (Hard): Course Schedule III**
+  * *Specification:* Given N courses with (duration, deadline), maximize courses completed.
+  * *Sample Test Case:* Input: `courses -> max`
+  * *Constraints:* N \le 10^4.
+  * *Hint:* [PAT-25] Priority Queue / Greedy with heap.
+
+
+* * *
+
+## Set 15: Timed Mock Assessment 15
+
+* **Q1 (Easy): Detect Capital**
+  * *Specification:* Verify if the capitalization of a word is correct (all caps, all lower, or title).
+  * *Sample Test Case:* Input: `"USA" -> True`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* String traversal
+
+* **Q2 (Medium): Product of Array Except Self**
+  * *Specification:* Return array such that answer[i] is product of all elements except nums[i].
+  * *Sample Test Case:* Input: `[1,2,3,4] -> [24,12,8,6]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Left/Right prefix products
+
+* **Q3 (Medium-Hard): Pacific Atlantic Water Flow**
+  * *Specification:* Find grid coordinates where water can flow to both Pacific and Atlantic oceans.
+  * *Sample Test Case:* Input: `grid -> [[0,4],[1,3]]`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-15] DFS from borders
+
+* **Q4 (Hard): Word Search II**
+  * *Specification:* Given an M×N board of characters and a list of words, find all words that can be formed by sequentially adjacent cells (horizontally or vertically). Each cell may only be used once per word.
+  * *Sample Test Case:* Input: `board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], words = ["oath","pea","eat","rain"] -> ["eat","oath"]`
+  * *Constraints:* M, N \le 12, words.length \le 3 \times 10^4, words[i].length \le 10.
+  * *Hint:* Combine Trie prefix tree with DFS backtracking for efficient multi-word search.
+
+
+* * *
+
+## Set 16: Timed Mock Assessment 16
+
+* **Q1 (Easy): Reverse Words**
+  * *Specification:* Reverse the order of words in a string.
+  * *Sample Test Case:* Input: `"the sky is blue" -> "blue is sky the"`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* Split and reverse
+
+* **Q2 (Medium): Search 2D Matrix**
+  * *Specification:* Search for a value in a sorted 2D matrix in O(log(MN)).
+  * *Sample Test Case:* Input: `matrix, target=3 -> True`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Virtual 1D Binary Search
+
+* **Q3 (Medium-Hard): Accounts Merge**
+  * *Specification:* Merge user accounts that share common email addresses.
+  * *Sample Test Case:* Input: `[[John, a@a.com, b@b.com]] -> merged`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-17] Union-Find
+
+* **Q4 (Hard): Longest Increasing Path**
+  * *Specification:* Find the longest increasing path in a matrix.
+  * *Sample Test Case:* Input: `[[9,9,4],[6,6,8]] -> 4`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* DFS + Memoization
+
+
+* * *
+
+## Set 17: Timed Mock Assessment 17
+
+* **Q1 (Easy): Contains Duplicate**
+  * *Specification:* Return true if any value appears at least twice in the array.
+  * *Sample Test Case:* Input: `[1,2,3,1] -> True`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* HashSet
+
+* **Q2 (Medium): Minimum Size Subarray Sum**
+  * *Specification:* Find minimal length of subarray with sum >= target.
+  * *Sample Test Case:* Input: `target=7, [2,3,1,2,4,3] -> 2`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* [PAT-04] Dynamic Sliding Window
+
+* **Q3 (Medium-Hard): Daily Temperatures**
+  * *Specification:* Find how many days to wait for a warmer temperature.
+  * *Sample Test Case:* Input: `[73,74,75,71] -> [1,1,0,0]`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-09] Monotonic Stack
+
+* **Q4 (Hard): Sliding Window Maximum**
+  * *Specification:* Return the max sliding window of size k.
+  * *Sample Test Case:* Input: `[1,3,-1,-3,5,3], k=3 -> [3,3,5,5]`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-05] Monotonic Deque
+
+
+* * *
+
+## Set 18: Timed Mock Assessment 18
+
+* **Q1 (Easy): Remove Element**
+  * *Specification:* Remove all instances of a specific value in-place.
+  * *Sample Test Case:* Input: `[3,2,2,3], val=3 -> len=2`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-02] Mutation
+
+* **Q2 (Medium): Kth Largest Element**
+  * *Specification:* Find the kth largest element in an unsorted array.
+  * *Sample Test Case:* Input: `[3,2,1,5,6,4], k=2 -> 5`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Min-Heap or QuickSelect
+
+* **Q3 (Medium-Hard): Reorder List**
+  * *Specification:* Reorder a linked list to L0 -> Ln -> L1 -> Ln-1.
+  * *Sample Test Case:* Input: `1->2->3->4 -> 1->4->2->3`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* Middle finding + Reverse + Merge
+
+* **Q4 (Hard): Serialize N-ary Tree**
+  * *Specification:* Design an algorithm to serialize and deserialize an N-ary tree.
+  * *Sample Test Case:* Input: `tree -> string -> tree`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* DFS Preorder
+
+
+* * *
+
+## Set 19: Timed Mock Assessment 19
+
+* **Q1 (Easy): String Reversal**
+  * *Specification:* Reverse a given string preserving whitespace and capitalization constraints.
+  * *Sample Test Case:* Input: `"Hello" -> "olleH"`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-02] Two pointers
+
+* **Q2 (Medium): Matrix Spiral**
+  * *Specification:* Traverse a 2D matrix in spiral order and return the elements.
+  * *Sample Test Case:* Input: `[[1,2],[3,4]] -> [1,2,4,3]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* Boundary tracking simulation
+
+* **Q3 (Medium-Hard): Sliding Window Max**
+  * *Specification:* Find the maximum string length without repeating characters.
+  * *Sample Test Case:* Input: `"abcabc" -> 3`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-04] Dynamic Sliding Window
+
+* **Q4 (Hard): 1D DP Robber**
+  * *Specification:* Find max value you can rob without triggering adjacent alarms in a circular street.
+  * *Sample Test Case:* Input: `[2,3,2] -> 3`
+  * *Constraints:* Complexity bounds requiring optimal solution.
+  * *Hint:* [PAT-19] DP State Machine
+
+
+* * *
+
+## Set 20: Timed Mock Assessment 20
+
+* **Q1 (Easy): Frequency Counting**
+  * *Specification:* Find the most frequent character in a given string. Break ties alphabetically.
+  * *Sample Test Case:* Input: `"abac" -> 'a'`
+  * *Constraints:* Array/String length $1 \le N \le 10^5$.
+  * *Hint:* [PAT-01] Frequency Array
+
+* **Q2 (Medium): Two Pointer Target**
+  * *Specification:* Find two numbers in a sorted array that add up to target.
+  * *Sample Test Case:* Input: `[2,7,11,15], target=9 -> [0,1]`
+  * *Constraints:* Appropriate bounds $1 \le N \le 10^4$.
+  * *Hint:* [PAT-06] Converging Pointers
+
+* **Q3 (Medium-Hard): HashMap Multi-key**
+  * *Specification:* Find the longest subarray with equal numbers of 0s and 1s.
+  * *Sample Test Case:* Input: `[0,1,0] -> 2`
+  * *Constraints:* Bounds $1 \le N \le 10^5$.
+  * *Hint:* [PAT-03] Prefix Sums Hash
+
+* **Q4 (Hard): Alien Dictionary**
+  * *Specification:* Given sorted alien words, derive character ordering.
+  * *Sample Test Case:* Input: `words -> ordering`
+  * *Constraints:* words \le 300, word length \le 100.
+  * *Hint:* Topological Sort on character graph.
+
+
+* * *
+
+## Exam Day 10-Point Speed & Debugging Survival Guide
+
+Before jumping into the 20 Mock Sets, review this executive checklist of top speed traps and invariant bugs to ensure zero lost points on test day:
+
+1. **String Concatenation in Loops ($O(N^2)$ TLE Trap):**  
+   Never do `s += c` inside a loop in Java or C#. Creating new String objects on every iteration turns $O(N)$ into $O(N^2)$ time limit exceeded. Always use `StringBuilder` (or `char[]`).
+2. **Negative Modulo in Java/C#:**  
+   In Java and C#, `-5 % 3` returns `-2` (preserves sign), causing negative array index crashes. Always use the circular safe modulo formula: `(index % N + N) % N`.
+3. **Monotonic Stack Width Invariant:**  
+   In histogram / largest rectangle problems, after popping height `h = heights[stack.pop()]`, the width is **NOT** `i - poppedIdx + 1`! The true left boundary is `stack.peek()` after popping. Use: `int w = stack.isEmpty() ? i : (i - stack.peek() - 1);`.
+4. **Monotonic Stack Sentinel vs. `if (i < n)` Rule:**  
+   - *Daily Temperatures / Next Greater:* Pop when `current > top`. Un-popped elements at `i == n` never found a warmer day—leave answer as default 0 using `if (i < n)`.
+   - *Histogram Max Area:* Use ghost bar `0` at `i == n`. Do **NOT** skip calculation when `i == n`! The bar extends to the right edge `n - 1`.
+5. **Plus One / Add Last Digit Invariant:**  
+   Don't write complex `% 10` / `/ 10` / `write--` loops. Walk right-to-left: if `digits[i] < 9`, increment and `return digits;` immediately! If loop finishes, return `new int[N+1]` with `res[0] = 1`.
+6. **Character Frequency Indexing (`int[26]` vs `int[10]` vs `int[128]`):**  
+   - Lowercase `a-z`: `counts[c - 'a']++` (size 26).
+   - Digits `'0'-'9'`: `counts[c - '0']++` (size 10).
+   - Mixed ASCII: `counts[c]++;` (size 128 direct ASCII indexing, no HashMap allocation needed).
+   - Common Character Count: `common += Math.min(count1[i], count2[i]);` across 0..25.
+7. **Matrix Rotation 90° Clockwise Formulas:**  
+   - *Rectangular $R \times C \rightarrow C \times R$:* `target[j][R - 1 - i] = matrix[i][j]`
+   - *Square $N \times N$ In-Place:* Transpose (`swap(matrix[i][j], matrix[j][i])` for `j > i`), then reverse each row horizontally (`swap(matrix[i][j], matrix[i][N - 1 - j])` for `j < N / 2`).
+8. **Binary Search Middle Overflow & Bounds:**  
+   Always write `mid = left + (right - left) / 2`. In rotated sorted arrays, check sorted half first: if `nums[left] <= nums[mid]`, left half is monotonically sorted.
+9. **Numeric Accumulator Overflow:**  
+   When calculating product, array sums, or coordinate products, initialize sum/product accumulators as `long` to prevent 32-bit integer overflow before returning `(int) sum`.
+10. **Array Bounds Guarding:**  
+    Always check `array != null && array.length > 0` before accessing index `0`, and ensure loops end at `i < array.length` (or `i <= array.length` when using a sentinel).
 
 
 \part{System Design \& Architecture at Scale}
@@ -10051,7 +9313,7 @@ A bounded context defines the boundary within which a particular domain model ap
 -   **Entities:** Objects with a distinct identity that persists over time (e.g., a `LedgerAccount` with a unique UUID).
 -   **Value Objects:** Immutable objects with no identity defined solely by their attributes (e.g., a `Money` value object containing `amount` and `currency`). Value objects have no setters; they are replaced entirely, making them thread-safe.
 
-![DDD Bounded Context Map](editions/csharp/chapters/14-system-architecture/visuals/ddd_contexts.png){width=85%}
+![DDD Bounded Context Map](editions/csharp/chapters/16-system-architecture/visuals/ddd_contexts.png){width=85%}
 
 
 ## Monolithic vs. Microservices vs. Event-Driven
@@ -10077,7 +9339,7 @@ Choosing an architectural style is a trade-off between latency, complexity, and 
 -   **Pros:** High decoupling, loose runtime dependencies, and high resilience.
 -   **Cons:** Eventual consistency. If the matching engine publishes a "TradeExecuted" event, the ledger balances might not update for several milliseconds.
 
-![Monolithic vs Microservices vs Event-Driven Architecture](editions/csharp/chapters/14-system-architecture/visuals/arch_styles.png){width=80%}
+![Monolithic vs Microservices vs Event-Driven Architecture](editions/csharp/chapters/16-system-architecture/visuals/arch_styles.png){width=80%}
 
 
 ## Scaling Out: Partitioning & Consistent Hashing
@@ -10129,7 +9391,7 @@ When designing APIs for microservices, you must handle network failures graceful
 
 The following sequence diagram maps out how an order is submitted, validated, matched inside the memory buffer, and settled inside the ledger:
 
-![ZenithTrade Order Lifecycle Sequence](editions/csharp/chapters/14-system-architecture/visuals/order_lifecycle.png){width=95%}
+![ZenithTrade Order Lifecycle Sequence](editions/csharp/chapters/16-system-architecture/visuals/order_lifecycle.png){width=95%}
 
 ### Explaining the Sequence:
 
@@ -10158,35 +9420,28 @@ The token bucket algorithm maintains a bucket that holds a maximum number of tok
 import java.util.concurrent.atomic.AtomicLong;
 
 public class TokenBucket {
-    private final long capacity;
-    private final long refillTokensPerSecond;
-    private AtomicLong tokens;
-    private AtomicLong lastRefillTimestamp;
+    private record State(long tokens, long timestampNanos) {}
+    
+    private final AtomicReference<State> state;
+    private final long maxTokens;
+    private final long refillRatePerSecond;
 
-    public TokenBucket(long capacity, long refillTokensPerSecond) {
-        this.capacity = capacity;
-        this.refillTokensPerSecond = refillTokensPerSecond;
-        this.tokens = new AtomicLong(capacity);
-        this.lastRefillTimestamp = new AtomicLong(System.currentTimeMillis());
+    public TokenBucket(long maxTokens, long refillRatePerSecond) {
+        this.maxTokens = maxTokens;
+        this.refillRatePerSecond = refillRatePerSecond;
+        this.state = new AtomicReference<>(new State(maxTokens, System.nanoTime()));
     }
 
-    public synchronized boolean allowRequest() {
-        refill();
-        if (tokens.get() > 0) {
-            tokens.decrementAndGet();
-            return true;
-        }
-        return false;
-    }
-
-    private void refill() {
-        long now = System.currentTimeMillis();
-        long elapsedTime = now - lastRefillTimestamp.get();
-        long tokensToAdd = (elapsedTime / 1000) * refillTokensPerSecond;
-        
-        if (tokensToAdd > 0) {
-            tokens.set(Math.min(capacity, tokens.get() + tokensToAdd));
-            lastRefillTimestamp.set(now);
+    public boolean allowRequest() {
+        while (true) {
+            State current = state.get();
+            long now = System.nanoTime();
+            long elapsed = now - current.timestampNanos();
+            long refilled = Math.min(maxTokens,
+                current.tokens() + elapsed * refillRatePerSecond / 1_000_000_000L);
+            if (refilled <= 0) return false;
+            State next = new State(refilled - 1, now);
+            if (state.compareAndSet(current, next)) return true;
         }
     }
 }
@@ -10289,6 +9544,40 @@ A cache stampede occurs when a highly requested cache entry expires (TTL elapses
 - **Solution 3: Probabilistic Early Expiry:** Each incoming request has a small, random probability of refreshing the cache just before it naturally expires, spreading the DB load gracefully.
 
 
+## Consumer-Scale System Design Archetypes
+
+While this book's case studies emphasize financial systems with strict consistency requirements, many interviews target consumer-scale platforms. Here are the key architectural patterns for the most common system design questions:
+
+**Design a Social Media Feed (Twitter/X Timeline)**
+- Fan-out-on-write vs fan-out-on-read trade-off
+- Celebrity problem: hybrid approach for users with >10K followers
+- Timeline cache per user (Redis sorted sets by timestamp)
+- Media storage: object store (S3) with CDN distribution
+- Key metric: Feed generation < 200ms for 99th percentile
+
+**Design a Ride-Sharing Service (Uber/Lyft)**
+- Geospatial indexing: QuadTree or Geohash for driver location
+- Driver-rider matching: nearest-neighbor search with ETA ranking
+- Real-time location updates: WebSocket with 3-second heartbeats
+- Surge pricing: demand/supply ratio per geohash cell
+- Key metric: Match latency < 5 seconds in urban areas
+
+**Design a Video Streaming Platform (Netflix/YouTube)**
+- Adaptive bitrate streaming (HLS/DASH) with multiple encodings
+- CDN edge caching: hot content pushed to 200+ PoPs globally
+- Recommendation engine: collaborative filtering + content-based hybrid
+- Upload pipeline: async transcoding queue (multiple resolutions)
+- Key metric: Start-to-play < 2 seconds, rebuffer ratio < 0.5%
+
+**Design a URL Shortener (bit.ly)**
+- Base62 encoding of auto-increment ID (or MD5 hash truncation)
+- Read-heavy (100:1 read/write ratio) → heavy caching layer
+- 301 (permanent) vs 302 (temporary) redirect trade-offs for analytics
+- Key metric: Redirect latency < 10ms at 100K QPS
+
+For each archetype, the candidate should follow the same spec-driven approach used throughout this book: define the invariants (what must ALWAYS be true), identify the data flow, and select patterns from the canonical set.
+
+
 ## System Design Mock Interview: Sharded Order Matching Engine
 
 To demonstrate how a senior candidate should navigate a system design round, here is a transcript-style mock interview.
@@ -10364,6 +9653,19 @@ message PlaceOrderRequest {
 
 *"Additionally, each matching partition runs as a Raft consensus group containing one Leader and two Followers. The Leader streams the WAL to the Followers. If the Leader crashes, the Followers elect a new Leader, which replays the log from its last committed index to rebuild the in-memory state. This guarantees no order loss and sub-second failover recovery."*
 
+
+
+## Modern Infrastructure Patterns (2024+)
+
+Modern system design interviews increasingly expect familiarity with container orchestration and cloud-native patterns:
+
+**Kubernetes Pod Autoscaling:** Horizontal Pod Autoscaler (HPA) scales replicas based on CPU/memory or custom metrics. For AuraPay's payment gateway, HPA with target CPU utilization of 70% ensures elastic scaling during Black Friday traffic spikes.
+
+**Sidecar Proxy Pattern (Envoy/Istio):** Instead of application-level circuit breakers (like Resilience4j), modern architectures delegate traffic management to sidecar proxies. Each microservice pod gets an Envoy sidecar that handles circuit breaking, retry budgets, and mutual TLS — without any application code changes.
+
+**Observability with eBPF:** Extended Berkeley Packet Filter enables kernel-level observability without code instrumentation. Tools like Cilium and Pixie capture request latencies, error rates, and network flows at the kernel level, providing distributed tracing with zero application overhead.
+
+**Serverless Trade-offs:** Lambda/Cloud Functions eliminate infrastructure management but introduce cold start latency (100ms-2s), vendor lock-in, and debugging complexity. Use for event-driven workloads (image processing, webhook handling), not for latency-critical paths.
 
 > ⭐ **STAR Moment: Bounded Context Isolation**
 > 
@@ -10486,7 +9788,7 @@ namespace AuraPay.Integration
 ```
 
 
-![Transactional Outbox Pattern](editions/csharp/chapters/15-resiliency/visuals/outbox_pattern.png){width=85%}
+![Transactional Outbox Pattern](editions/csharp/chapters/17-resiliency/visuals/outbox_pattern.png){width=85%}
 
 If the message broker fails during publication, the event remains unmarked in the database and will be retried in the next execution cycle. This ensures that the message is eventually delivered at least once.
 
@@ -10528,7 +9830,7 @@ In an orchestration-based saga, a central service (the orchestrator) coordinates
 -   **Pros:** Clear visibility into the state of the transaction; easier to debug and manage complex flows.
 -   **Cons:** Introduces a central point of failure; requires a state-machine engine.
 
-![Saga Orchestration vs Choreography](editions/csharp/chapters/15-resiliency/visuals/saga_comparison.png){width=90%}
+![Saga Orchestration vs Choreography](editions/csharp/chapters/17-resiliency/visuals/saga_comparison.png){width=90%}
 
 
 ## Distributed Rate Limiting
@@ -10543,7 +9845,7 @@ We use Redis to store request timestamps. A sliding window rate limiter maintain
 3.  **Count Volume:** Count active timestamps using `ZCARD`.
 4.  **Enforce Limit:** If the count exceeds the threshold, reject the request. Otherwise, allow it and set a key TTL (`EXPIRE`) to reclaim memory when the client goes inactive.
 
-![Redis Sliding Window Rate Limiting](editions/csharp/chapters/15-resiliency/visuals/rate_limiter.png){width=70%}
+![Redis Sliding Window Rate Limiting](editions/csharp/chapters/17-resiliency/visuals/rate_limiter.png){width=70%}
 
 
 ## Microservice Resiliency Patterns
@@ -10562,7 +9864,7 @@ A **Circuit Breaker** wraps remote calls. It monitors failure rates.
 -   **Open State:** When the failure rate crosses a threshold (e.g., 50% failures over 10 seconds), the circuit trips (opens). Subsequent requests fail fast immediately, preventing resource exhaustion on the caller.
 -   **Half-Open State:** After a timeout, the breaker allows a few probe requests to pass. If they succeed, it closes; if they fail, it opens again.
 
-![Circuit Breaker State Machine](editions/csharp/chapters/15-resiliency/visuals/circuit_breaker.png){width=85%}
+![Circuit Breaker State Machine](editions/csharp/chapters/17-resiliency/visuals/circuit_breaker.png){width=85%}
 
 > **Why is it called a "Circuit Breaker"?** The pattern is borrowed directly from **electrical engineering**. In your home's breaker panel, a circuit breaker trips (opens) when it detects excessive current, preventing an electrical fire. Michael Nygard popularized the software version in his 2007 book *Release It!*, mapping the electrical metaphor to distributed systems: when a downstream service is failing, "trip the breaker" to fail fast and protect the calling system from cascading overload. The three states (Closed, Open, Half-Open) mirror how a physical breaker resets after the fault clears.
 
@@ -10627,7 +9929,7 @@ RDBMS engines (PostgreSQL, MySQL, Oracle) utilize **ACID** transactions (Atomici
 -   **NoSQL (Cassandra, DynamoDB):** Trade consistency for scalability (BASE model - Basically Available, Soft state, Eventual consistency). They use LSM-Tree (Log-Structured Merge-tree) storage engines, which write sequentially to memory buffers (MemTable) before flushing to disk (SSTable), providing very high write speeds but slow random reads.
 -   **NewSQL (Spanner, CockroachDB):** Provide the scale of NoSQL with the ACID guarantees of an RDBMS using distributed consensus protocols (Raft/Paxos) and atomic clocks.
 
-![B-Tree vs LSM-Tree Storage Engines](editions/csharp/chapters/16-database-compliance/visuals/btree_vs_lsm.png){width=85%}
+![B-Tree vs LSM-Tree Storage Engines](editions/csharp/chapters/18-database-compliance/visuals/btree_vs_lsm.png){width=85%}
 
 > **Why is it called \"PostgreSQL\"?** The name traces back to the 1970s. UC Berkeley professor Michael Stonebraker created a relational database called **Ingres**. In 1986, he started a successor project called **Post-Ingres** (i.e., \"after Ingres\"), later shortened to **Postgres**. When SQL support was added in 1996, the name became **PostgreSQL** \u2014 literally \"Post-Ingres with SQL.\" The elephant logo? Chosen simply because elephants *never forget* \u2014 a fitting mascot for a database.
 
@@ -10683,7 +9985,7 @@ To minimize audit scope, you must implement **Tokenization**:
 2.  **Encryption:** Inside the Vault, PAN data is encrypted using AES-256-GCM before storage.
 3.  **Application Separation:** The main billing and ledger applications only store and reference the token. Since they never store, process, or transmit raw card data, they are kept outside the scope of PCI-DSS regulations.
 
-![PCI-DSS Tokenization Vault Architecture](editions/csharp/chapters/16-database-compliance/visuals/tokenization_vault.png){width=85%}
+![PCI-DSS Tokenization Vault Architecture](editions/csharp/chapters/18-database-compliance/visuals/tokenization_vault.png){width=85%}
 
 The following utility demonstrates the encryption standard (AES-256 in Galois/Counter Mode) required for encrypting PANs or PII:
 
@@ -10812,7 +10114,7 @@ For compliance frameworks like SOC2, you must maintain a tamper-proof audit trai
 2.  **Cryptographic Chaining:** Each audit log row should contain a cryptographic hash of the current row and the previous row's hash (similar to a blockchain ledger). If an attacker modifies a historical row, the chain break is instantly detectable during audit validation.
 3.  **Immutable Databases:** Utilize native ledger databases (like Amazon QLDB) or WORM (Write Once, Read Many) storage to mathematically guarantee data immutability.
 
-![Cryptographic Audit Trail Chain](editions/csharp/chapters/16-database-compliance/visuals/audit_trail.png){width=85%}
+![Cryptographic Audit Trail Chain](editions/csharp/chapters/18-database-compliance/visuals/audit_trail.png){width=85%}
 
 
 ## Hardening the Data Tier & Audits
@@ -10860,7 +10162,7 @@ In this chapter, we adapt the classic **STAR (Situation, Task, Action, Result)**
 
 To present your career achievements effectively, structure your behavioral narratives around technical metrics and architectural trade-offs:
 
-![The Technical STAR Framework](editions/csharp/chapters/17-behavioral-leadership/visuals/technical_star.png){width=90%}
+![The Technical STAR Framework](editions/csharp/chapters/19-behavioral-leadership/visuals/technical_star.png){width=90%}
 
 > **How to apply the framework:**
 >
@@ -10880,11 +10182,11 @@ A junior candidate focuses on the personal conflict or tries to prove they were 
 ### The Response Transcript
 > *"In my previous role at ZenithTrade, my team was tasked with scaling our matching engine to handle a 5x spike in transaction volume. A principal architect proposed rewriting our processing loops using a reactive programming model (Spring WebFlux). I had serious concerns about the operational overhead of reactive code, specifically debuggability, stack trace readability, and the steep learning curve for our support engineers.*
 >
-> *Rather than engaging in an ideological debate, I proposed a 3-day time-boxed prototyping run. I built two benchmark pipelines: one using the proposed reactive model, and another using Java 21's new Virtual Threads (Project Loom).*
+> *The first approach I proposed actually failed to gain traction because I didn't provide enough empirical data. Realizing this, I pivoted and suggested a 3-day time-boxed prototyping run. My senior engineer Sarah and I built two benchmark pipelines: one using the proposed reactive model, and another using Java 21's new Virtual Threads (Project Loom).*
 >
-> *The prototype metrics revealed that while both models handled the required 20,000 concurrent requests without thread exhaustion, the virtual threads implementation reduced CPU utilization by 15% (due to lower context-switch overhead) and preserved our existing synchronous debugging tools.*
+> *The prototype metrics revealed that while both models handled the required 20,000 concurrent requests without thread exhaustion, the virtual threads implementation reduced CPU utilization by 15% and preserved our existing synchronous debugging tools.*
 >
-> *I presented these findings in an architecture review document, outlining the maintenance costs of both approaches. The principal architect agreed with the data, and we proceeded with the Virtual Threads design. The system successfully launched, sustaining 5x load with zero stability incidents."*
+> *I presented these findings in an architecture review document. Leadership was skeptical until they saw the raw trace logs side-by-side. The principal architect agreed with the data, and we proceeded collaboratively with the Virtual Threads design. In hindsight, I would have prototyped sooner rather than debating theory. The system successfully launched, sustaining 5x load with zero stability incidents."*
 
 
 ## Mock Scenario B: Production Crisis Management (Engineering Manager Perspective)
@@ -10895,11 +10197,11 @@ A junior candidate focuses on the personal conflict or tries to prove they were 
 Focus on command composure, blameless post-mortem culture, and root-cause remediation rather than pointing fingers or downplaying the event.
 
 ### The Response Transcript
-> *"During a high-volume retail promotion on AuraPay, our ledger database connection pool saturated, causing transaction failures for approximately 15% of our users. As the Engineering Manager, I immediately initiated our incident response protocol, establishing a dedicated bridge call and assigning roles: one engineer to analyze database metrics, one to review application logs, and a product manager to handle external client communications.*
+> *"During a high-volume retail promotion on AuraPay, our ledger database connection pool saturated, causing transaction failures for approximately 15% of our users. As the Engineering Manager, I immediately initiated our incident response protocol. We hit a wall when the initial metrics didn't point to any specific query, so the team collectively decided to split up: one engineer analyzing database metrics, one reviewing application logs, and a product manager handling external client communications.*
 >
-> *We identified that our connection pool size was set to 200, which was starving the database CPU with constant thread context switching. I instructed the team to apply the HikariCP pool sizing formula, reducing the connection limit to 30. This immediately stabilized database CPU utilization from 98% down to 42%, restoring transaction flow.*
+> *We eventually identified that our connection pool size was set to 200, which was starving the database CPU with constant thread context switching. I instructed the team to apply the HikariCP pool sizing formula, reducing the connection limit to 30. This immediately stabilized database CPU utilization from 98% down to 42%, restoring transaction flow.*
 >
-> *To prevent future occurrences, I led a blameless post-mortem. We discovered that a recent release had introduced a database query inside a parallel stream pipeline, starving the common ForkJoinPool. We refactored the stream to execute asynchronously outside the transaction boundary and set up automated alert thresholds on connection pool saturation. Since then, our system uptime has remained at 99.99% under peak promotional events."*
+> *To prevent future occurrences, I led a blameless post-mortem. We discovered that a recent release had introduced a database query inside a parallel stream pipeline, starving the common ForkJoinPool. What I learned from that failure was the importance of strict code boundaries. We refactored the stream to execute asynchronously outside the transaction boundary. Since then, our system uptime has remained at 99.99% under peak promotional events."*
 
 
 ## Mock Scenario C: Balancing Technical Debt vs. Features (Director Perspective)
@@ -10910,13 +10212,33 @@ Focus on command composure, blameless post-mortem culture, and root-cause remedi
 Frame technical debt as a financial risk to the business. Show that you can speak the language of product managers and executives, translating code quality into operational velocity.
 
 ### The Response Transcript
-> *"When I joined ChiramTrust, the identity consent module was built as an anemic domain model with scattered business logic. Product management wanted to launch three new OAuth integrations within two months, but our engineering velocity was bottlenecked because every minor change to our domain models broke unrelated validation paths, requiring days of manual patching.*
+> *"When I joined ChiramTrust, the identity consent module was built as an anemic domain model with scattered business logic. Product management wanted to launch three new OAuth integrations within two months, but our engineering velocity was bottlenecked because every minor change broke unrelated validation paths.*
 >
-> *I knew that pushing features without refactoring would increase our defect rate in production. I met with the VP of Product and translated our technical debt into business risk: our current regression bug rate was 18%, and continuing at this pace would delay the integration launch by at least four weeks due to QA cycles.*
+> *I knew that pushing features without refactoring would increase our defect rate in production. I met with the VP of Product and translated our technical debt into business risk. The product manager pushed back because of the strict timeline, arguing we couldn't afford a pause.*
 >
-> *I proposed a compromise: we would dedicate 30% of our capacity in the next two sprints to refactor the consent model into an encapsulated aggregate root, establishing clean validation boundaries. The remaining 70% would be spent on the integration layouts.*
+> *I proposed a compromise: we would dedicate 30% of our capacity in the next two sprints to refactor the consent model into an encapsulated aggregate root. The remaining 70% would be spent on the integration layouts. The team collectively decided this was the most pragmatic path forward.*
 >
-> *The team successfully executed the refactor, removing setters and enclosing the invariants inside the domain objects. This refactoring reduced our regression bug rate to less than 2% and actually accelerated the development of the final two integrations, allowing us to launch the features a week ahead of the original deadline."*
+> *The team successfully executed the refactor, removing setters and enclosing the invariants inside the domain objects. In hindsight, I would have involved QA earlier in the refactor planning, but the outcome was still solid. This reduced our regression bug rate to less than 2% and actually accelerated the development of the final two integrations, allowing us to launch the features a week ahead of the original deadline."*
+
+
+### Scenario 4: Managing Underperformance
+**Interviewer:** Tell me about a time you had to manage an underperforming team member.
+
+**Candidate:** Six months into my role as engineering lead, one of our senior developers—let's call him Alex—had missed three consecutive sprint commitments. Rather than jumping to a PIP, I scheduled a private 1:1 to understand the root cause. It turned out Alex was struggling with our migration from monolith to microservices and felt embarrassed to ask for help after 8 years at the company.
+
+I paired him with our most patient architect for bi-weekly knowledge transfer sessions and adjusted his sprint load to 70% for six weeks. I was transparent with the team that Alex was ramping on the new architecture without singling him out. Within two months, Alex was not only back to full velocity but had become our go-to person for the data migration layer because he understood both the old and new systems intimately.
+
+The lesson I took away: underperformance is usually a symptom, not a character flaw. Diagnosing the root cause before applying a remedy saved us from losing an incredibly valuable engineer.
+
+
+### Scenario 5: Leading a Project Pivot
+**Interviewer:** Describe a time when you had to pivot a project mid-execution.
+
+**Candidate:** Our team had spent five weeks building a custom real-time analytics dashboard when our VP of Product shared early results from a customer advisory board: customers wanted pre-built compliance reports, not custom dashboards. My first reaction was frustration—we'd invested significant effort. But after sleeping on it, I realized the data pipeline we'd built was reusable.
+
+I called a team retrospective and was honest: "The analytics engine we built is solid, but the UI layer needs to pivot to templated reports." One engineer pushed back hard, feeling her frontend work was wasted. I acknowledged that directly and proposed we salvage her component library for the new report designer.
+
+We re-scoped to a 3-week sprint, reusing 60% of the backend. The compliance reports shipped on time and became our highest-adopted feature that quarter. What I learned: pivot announcements need to honor the work already done, not just dictate the new direction.
 
 
 ## Checklist for Video (Teams) & In-Person Technical Interviews
@@ -10944,7 +10266,7 @@ In technical interviews for lead, staff, or engineering manager roles, coding ch
 
 Many candidates respond with simple unit tests. However, a senior candidate must present a structured **Testing Pyramid** strategy, showing how they balance unit tests with Testcontainers-based integration tests, API contract tests, and continuous delivery (CI/CD) verification.
 
-![The Technical Testing Pyramid](editions/csharp/chapters/18-testing-cicd/visuals/testing_pyramid.png){width=80%}
+![The Technical Testing Pyramid](editions/csharp/chapters/20-testing-cicd/visuals/testing_pyramid.png){width=80%}
 
 
 ## The Testing Pyramid
@@ -11233,7 +10555,7 @@ If you stop there, you miss the opportunity to demonstrate depth. A senior syste
 
 In this chapter, we deep-dive into Apache Kafka's storage internals and partition routing mechanics, showing how AuraPay shards event streams to maintain ledger correctness.
 
-![Apache Kafka Topic Partitions and Consumer Groups](editions/csharp/chapters/19-message-brokers/visuals/kafka_internals.png){width=90%}
+![Apache Kafka Topic Partitions and Consumer Groups](editions/csharp/chapters/21-message-brokers/visuals/kafka_internals.png){width=90%}
 
 
 ## Apache Kafka Internals & Sharding
@@ -11401,7 +10723,7 @@ Junior candidates treat AI as magic, describing prompt calls without considering
 
 In this chapter, we outline a structured approach to AI/ML system design, focusing on the ML system design framework, vector databases, RAG architecture pipelines, agentic tool-use patterns, and prompt gateway security.
 
-![Retrieval-Augmented Generation (RAG) Architecture Pipeline](editions/csharp/chapters/20-aiml-llm/visuals/rag_architecture.png){width=90%}
+![Retrieval-Augmented Generation (RAG) Architecture Pipeline](editions/csharp/chapters/22-aiml-llm/visuals/rag_architecture.png){width=90%}
 
 
 ## The AI/ML System Design Framework
@@ -11563,6 +10885,14 @@ public class LlmGatewaySecurityFilter
 Any incoming prompt containing injection signatures is blocked immediately before execution, protecting the LLM boundary from security drift.
 
 
+## Case Study Integration: ML in Practice
+
+**AuraPay: Real-Time Fraud Detection Pipeline**
+AuraPay processes 50,000 transactions per second. Its fraud detection pipeline combines rule-based filters (velocity checks, geo-anomaly flags) with a gradient-boosted ensemble model trained on 18 months of labeled transaction data. Feature engineering extracts 47 signals per transaction: merchant category deviation, time-of-day risk scores, device fingerprint similarity, and spending velocity z-scores. The model runs inference in < 5ms per transaction via ONNX Runtime, with a fallback to rule-only evaluation if the ML service is unavailable (graceful degradation, per Chapter 17's resiliency patterns).
+
+**ZenithTrade: LLM-Powered Compliance Checker**
+ZenithTrade's regulatory compliance team reviews 200+ SEC filings weekly. Their LLM pipeline uses Retrieval-Augmented Generation (RAG) to cross-reference new filings against the firm's internal compliance rulebook (12,000 rules). The system generates structured compliance reports highlighting potential violations, with confidence scores and source citations. Human compliance officers review flagged items — the LLM augments but never replaces human judgment on regulatory decisions.
+
 ## Cost Optimization for LLM-Powered Systems
 
 LLM inference costs scale directly with token volume. At enterprise scale, unoptimized architectures can generate six-figure monthly bills:
@@ -11662,18 +10992,22 @@ In system design interviews, refer to these rules of thumb to justify your infra
 
 To make back-of-the-envelope calculations, memorize these rough access latency scales:
 
-| Operation | Time (ns) | Time (Human Scale) |
+| Operation | Time | Time (Human Scale) |
 |---|---|---|
-| **L1 Cache reference** | 0.5 ns | 0.5 sec |
+| **L1 Cache reference** | 1 ns | 1 sec |
 | **Branch mispredict** | 5 ns | 5 sec |
-| **L2 Cache reference** | 7 ns | 7 sec |
-| **Main Memory reference (RAM)** | 100 ns | 1.6 min |
+| **L2 Cache reference** | 4 ns | 4 sec |
+| **Main Memory reference (DDR5)** | 50 ns | 50 sec |
 | **Compress 1K bytes with Zippy** | 3,000 ns | 50 min |
 | **Send 2K bytes over 1 Gbps network** | 20,000 ns | 5.5 hours |
-| **Read 1MB sequentially from SSD** | 1,000,000 ns | 11.5 days |
-| **Round trip within same datacenter** | 500,000 ns | 5.7 days |
+| **NVMe SSD random read** | 10-20 μs | ~3-6 hours |
+| **NVMe SSD sequential 1MB read** | 100-200 μs | ~1-2 days |
+| **Round trip within same datacenter** | 250-500 μs | ~3-6 days |
+| **HDD seek** | 2-5 ms | ~1-2 months |
 | **Read 1MB sequentially from Disk** | 20,000,000 ns | 7.5 months |
 | **Send packet CA to Netherlands to CA** | 150,000,000 ns | 4.7 years |
+
+These numbers reflect 2024 NVMe Gen4/5 SSDs and DDR5 RAM. Original latency numbers by Jeff Dean (2012) have been updated. Cloud VM performance may vary based on instance type and IO throttling.
 
 
 ## Day of the Interview Checklist
@@ -11754,3 +11088,13 @@ Subramanian, S. (2015). *Python Concurrency with asyncio*. Manning Publications.
 Tanenbaum, A. S., & Van Steen, M. (2007). *Distributed Systems: Principles and Paradigms*. Prentice Hall.
 
 W3C. (2022). *Decentralized Identifiers (DIDs) v1.0*. World Wide Web Consortium. https://www.w3.org/TR/did-core/
+
+Vaswani, A., Shazeer, N., Parmar, N., et al. (2017). Attention Is All You Need. *Advances in Neural Information Processing Systems*, 30. https://arxiv.org/abs/1706.03762
+
+Lewis, P., Perez, E., Piktus, A., et al. (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. *Advances in Neural Information Processing Systems*, 33. https://arxiv.org/abs/2005.11401
+
+Elhemaly, M., Gallagher, N., Tang, B., et al. (2022). Amazon DynamoDB: A Scalable, Predictably Performant, and Fully Managed NoSQL Database Service. *Proceedings of USENIX ATC '22*.
+
+Forsgren, N., Humble, J., & Kim, G. (2018). *Accelerate: The Science of Lean Software and DevOps*. IT Revolution.
+
+Burns, B., Beda, J., Hightower, K., & Evenson, L. (2022). *Kubernetes: Up and Running* (3rd ed.). O'Reilly.

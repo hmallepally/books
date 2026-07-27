@@ -45,9 +45,9 @@ Why it matters: It solves rotting oranges and walls-and-gates problems in a sing
 ## Reusable Code Templates
 
 ### Template A: Spiral Boundary Traversal
-```java
-int top = 0, bottom = matrix.length - 1;
-int left = 0, right = matrix[0].length - 1;
+```csharp
+int top = 0, bottom = matrix.Length - 1;
+int left = 0, right = matrix[0].Length - 1;
 while (top <= bottom && left <= right) {
   for (int j = left; j <= right; j++) { /* process matrix[top][j] */ }
   top++;
@@ -63,38 +63,35 @@ while (top <= bottom && left <= right) {
   }
 }
 ```
-
 ![Spiral Boundary Traversal — Layer-by-Layer Contraction](visuals/spiral_traversal.png){width=85%}
 
 ### Template B: 4-Directional BFS/DFS Grid Walk
-```java
+```csharp
 int[] dr = {-1, 1, 0, 0};
 int[] dc = {0, 0, -1, 1};
 
-void dfs(int[][] grid, int r, int c) {
-  if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] == -1) return;
+void Dfs(int[][] grid, int r, int c) {
+  if (r < 0 || r >= grid.Length || c < 0 || c >= grid[0].Length || grid[r][c] == -1) return;
   grid[r][c] = -1; // mark visited
   for (int i = 0; i < 4; i++) {
-    dfs(grid, r + dr[i], c + dc[i]);
+    Dfs(grid, r + dr[i], c + dc[i]);
   }
 }
 ```
-
 ### Template C: 2D Prefix Sum Construction + Query
-```java
+```csharp
 // Construction
-int[][] sum = new int[R + 1][C + 1];
+int[,] sum = new int[R + 1, C + 1];
 for (int r = 1; r <= R; r++) {
   for (int c = 1; c <= C; c++) {
-    sum[r][c] = matrix[r-1][c-1] + sum[r-1][c] + sum[r][c-1] - sum[r-1][c-1];
+    sum[r, c] = matrix[r-1][c-1] + sum[r-1, c] + sum[r, c-1] - sum[r-1, c-1];
   }
 }
 // Query from (r1, c1) to (r2, c2)
-int query(int r1, int c1, int r2, int c2) {
-  return sum[r2+1][c2+1] - sum[r1][c2+1] - sum[r2+1][c1] + sum[r1][c1];
+int Query(int r1, int c1, int r2, int c2) {
+  return sum[r2+1, c2+1] - sum[r1, c2+1] - sum[r2+1, c1] + sum[r1, c1];
 }
 ```
-
 **Understanding the Construction — Worked Example.** Given a 3×3 matrix, we build a 4×4 prefix sum array `S` padded with a zero row and zero column. Each cell `S[r][c]` stores the sum of all original elements from `(0,0)` to `(r-1, c-1)`.
 
 Original Matrix A:
@@ -157,9 +154,9 @@ $$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
 
 **Explanation:** Rotating 90 degrees clockwise is mathematically equivalent to transposing the matrix (swapping $i,j$ with $j,i$) and then reversing the elements of each row. This avoids needing complex 4-way coordinate swaps.
 
-```java
-public void rotate(int[][] matrix) {
-  int n = matrix.length;
+```csharp
+public void Rotate(int[][] matrix) {
+  int n = matrix.Length;
   // Transpose
   for (int i = 0; i < n; i++) {
     for (int j = i + 1; j < n; j++) {
@@ -177,8 +174,7 @@ public void rotate(int[][] matrix) {
     }
   }
 }
-```
-Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **2. Spiral Matrix Traversal**
@@ -190,28 +186,27 @@ Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Maintain `top`, `bottom`, `left`, `right` pointers. Traverse the top row, increment `top`. Traverse right col, decrement `right`. Traverse bottom row (if `top <= bottom`), decrement `bottom`. Traverse left col (if `left <= right`), increment `left`.
 
-```java
-public List<Integer> spiralOrder(int[][] matrix) {
-  List<Integer> res = new ArrayList<>();
-  int t = 0, b = matrix.length - 1, l = 0, r = matrix[0].length - 1;
+```csharp
+public IList<int> SpiralOrder(int[][] matrix) {
+  List<int> res = new List<int>();
+  int t = 0, b = matrix.Length - 1, l = 0, r = matrix[0].Length - 1;
   while (t <= b && l <= r) {
-    for (int j = l; j <= r; j++) res.add(matrix[t][j]); // Top
+    for (int j = l; j <= r; j++) res.Add(matrix[t][j]); // Top
     t++;
-    for (int i = t; i <= b; i++) res.add(matrix[i][r]); // Right
+    for (int i = t; i <= b; i++) res.Add(matrix[i][r]); // Right
     r--;
     if (t <= b) {
-      for (int j = r; j >= l; j--) res.add(matrix[b][j]); // Bottom
+      for (int j = r; j >= l; j--) res.Add(matrix[b][j]); // Bottom
       b--;
     }
     if (l <= r) {
-      for (int i = b; i >= t; i--) res.add(matrix[i][l]); // Left
+      for (int i = b; i >= t; i--) res.Add(matrix[i][l]); // Left
       l++;
     }
   }
   return res;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **3. Set Matrix Zeros**
@@ -223,10 +218,10 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** We use the first row and first column to store information about whether that row or column should be zeroed out. We need a separate variable for the first column to avoid overlapping state.
 
-```java
-public void setZeroes(int[][] matrix) {
-  int m = matrix.length, n = matrix[0].length;
-  boolean firstColZero = false;
+```csharp
+public void SetZeroes(int[][] matrix) {
+  int m = matrix.Length, n = matrix[0].Length;
+  bool firstColZero = false;
   // Mark zeros on first row/col
   for (int i = 0; i < m; i++) {
     if (matrix[i][0] == 0) firstColZero = true;
@@ -251,8 +246,7 @@ public void setZeroes(int[][] matrix) {
     for (int i = 0; i < m; i++) matrix[i][0] = 0;
   }
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **4. Diagonal Matrix Traversal**
@@ -264,9 +258,9 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** In a diagonal traversal, the sum of indices `(i+j)` is constant for each diagonal. For even sums, we move Up-Right. For odd sums, we move Down-Left. Boundary conditions handle when we hit the edges.
 
-```java
-public int[] findDiagonalOrder(int[][] mat) {
-  int m = mat.length, n = mat[0].length;
+```csharp
+public int[] FindDiagonalOrder(int[][] mat) {
+  int m = mat.Length, n = mat[0].Length;
   int[] res = new int[m * n];
   int r = 0, c = 0;
   for (int i = 0; i < m * n; i++) {
@@ -283,8 +277,7 @@ public int[] findDiagonalOrder(int[][] mat) {
   }
   return res;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **5. Matrix Reshape Validation**
@@ -296,19 +289,20 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** A 2D matrix can be flattened logically. The 1D index `k` maps to 2D coordinates `(k / cols, k % cols)`. We map the original matrix into the new shape using a single counter `k`.
 
-```java
-public int[][] matrixReshape(int[][] mat, int r, int c) {
-  int m = mat.length, n = mat[0].length;
+```csharp
+public int[][] MatrixReshape(int[][] mat, int r, int c) {
+  int m = mat.Length, n = mat[0].Length;
   if (m * n != r * c) return mat; // Invalid shape
   
-  int[][] res = new int[r][c];
+  int[][] res = new int[r][];
+  for (int i=0; i<r; i++) res[i] = new int[c];
+  
   for (int i = 0; i < m * n; i++) {
     res[i / c][i % c] = mat[i / n][i % n];
   }
   return res;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
 
 * * *
 **6. Rotate Matrix 90° Counter-Clockwise**
@@ -320,9 +314,9 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
 
 **Explanation:** Counter-clockwise rotation is similar to clockwise. We transpose first, then reverse the columns (top to bottom swap) instead of rows.
 
-```java
-public void rotateCounter(int[][] matrix) {
-  int n = matrix.length;
+```csharp
+public void RotateCounter(int[][] matrix) {
+  int n = matrix.Length;
   // Transpose
   for (int i = 0; i < n; i++) {
     for (int j = i + 1; j < n; j++) {
@@ -340,8 +334,7 @@ public void rotateCounter(int[][] matrix) {
     }
   }
 }
-```
-Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **7. Search in Row-Column Sorted Matrix**
@@ -353,18 +346,17 @@ Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Start at the top-right corner. If target is smaller than the current value, it can't be in this column (move left). If target is larger, it can't be in this row (move down).
 
-```java
-public boolean searchMatrix(int[][] matrix, int target) {
-  int r = 0, c = matrix[0].length - 1;
-  while (r < matrix.length && c >= 0) {
+```csharp
+public bool SearchMatrix(int[][] matrix, int target) {
+  int r = 0, c = matrix[0].Length - 1;
+  while (r < matrix.Length && c >= 0) {
     if (matrix[r][c] == target) return true;
     else if (matrix[r][c] > target) c--;
     else r++;
   }
   return false;
 }
-```
-Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **8. Game of Life**
@@ -376,9 +368,9 @@ Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** To update in-place without a copy, encode transitions. Let 2 mean "was dead, now live", and -1 mean "was live, now dead". When counting neighbors, check if `abs(val) == 1`. After updating all, decode the states.
 
-```java
-public void gameOfLife(int[][] board) {
-  int m = board.length, n = board[0].length;
+```csharp
+public void GameOfLife(int[][] board) {
+  int m = board.Length, n = board[0].Length;
   for (int r = 0; r < m; r++) {
     for (int c = 0; c < n; c++) {
       int live = 0;
@@ -386,7 +378,7 @@ public void gameOfLife(int[][] board) {
         for (int j = -1; j <= 1; j++) {
           if (i == 0 && j == 0) continue;
           int nr = r + i, nc = c + j;
-          if (nr >= 0 && nr < m && nc >= 0 && nc < n && Math.abs(board[nr][nc]) == 1) live++;
+          if (nr >= 0 && nr < m && nc >= 0 && nc < n && Math.Abs(board[nr][nc]) == 1) live++;
         }
       }
       if (board[r][c] == 1 && (live < 2 || live > 3)) board[r][c] = -1;
@@ -400,8 +392,7 @@ public void gameOfLife(int[][] board) {
     }
   }
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **9. Toeplitz Matrix Verification**
@@ -413,10 +404,10 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Simply check every cell `matrix[i][j]` against its top-left neighbor `matrix[i-1][j-1]`. If they mismatch, return false.
 
-```java
-public boolean isToeplitzMatrix(int[][] matrix) {
-  for (int i = 1; i < matrix.length; i++) {
-    for (int j = 1; j < matrix[0].length; j++) {
+```csharp
+public bool IsToeplitzMatrix(int[][] matrix) {
+  for (int i = 1; i < matrix.Length; i++) {
+    for (int j = 1; j < matrix[0].Length; j++) {
       if (matrix[i][j] != matrix[i-1][j-1]) {
         return false;
       }
@@ -424,8 +415,7 @@ public boolean isToeplitzMatrix(int[][] matrix) {
   }
   return true;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **10. Spiral Matrix Construction**
@@ -437,9 +427,11 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Similar to spiral traversal, but instead of reading, we write an incrementing counter `val++` into the boundaries, contracting inwards until we fill $n^2$ elements.
 
-```java
-public int[][] generateMatrix(int n) {
-  int[][] mat = new int[n][n];
+```csharp
+public int[][] GenerateMatrix(int n) {
+  int[][] mat = new int[n][];
+  for(int i=0; i<n; i++) mat[i] = new int[n];
+  
   int t = 0, b = n - 1, l = 0, r = n - 1;
   int val = 1;
   while (t <= b && l <= r) {
@@ -458,8 +450,7 @@ public int[][] generateMatrix(int n) {
   }
   return mat;
 }
-```
-Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
+```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
 
 * * *
 **11. Flood Fill**
@@ -471,23 +462,22 @@ Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
 
 **Explanation:** We check if the starting pixel is already the target color. If not, we recursively replace all adjacent cells of the original color with the new color using DFS.
 
-```java
-public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+```csharp
+public int[][] FloodFill(int[][] image, int sr, int sc, int color) {
   if (image[sr][sc] != color) {
-    dfs(image, sr, sc, image[sr][sc], color);
+    Dfs(image, sr, sc, image[sr][sc], color);
   }
   return image;
 }
-private void dfs(int[][] img, int r, int c, int oldC, int newC) {
-  if (r < 0 || r >= img.length || c < 0 || c >= img[0].length || img[r][c] != oldC) return;
+private void Dfs(int[][] img, int r, int c, int oldC, int newC) {
+  if (r < 0 || r >= img.Length || c < 0 || c >= img[0].Length || img[r][c] != oldC) return;
   img[r][c] = newC; // mark and fill
-  dfs(img, r-1, c, oldC, newC);
-  dfs(img, r+1, c, oldC, newC);
-  dfs(img, r, c-1, oldC, newC);
-  dfs(img, r, c+1, oldC, newC);
+  Dfs(img, r-1, c, oldC, newC);
+  Dfs(img, r+1, c, oldC, newC);
+  Dfs(img, r, c-1, oldC, newC);
+  Dfs(img, r, c+1, oldC, newC);
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **12. Transpose Rectangular Matrix**
@@ -499,11 +489,13 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Since the matrix isn't square, we cannot transpose in place. We allocate a new matrix of size $C \times R$, and assign `ans[j][i] = matrix[i][j]`.
 
-```java
-public int[][] transpose(int[][] matrix) {
-  int r = matrix.length;
-  int c = matrix[0].length;
-  int[][] ans = new int[c][r];
+```csharp
+public int[][] Transpose(int[][] matrix) {
+  int r = matrix.Length;
+  int c = matrix[0].Length;
+  int[][] ans = new int[c][];
+  for (int i=0; i<c; i++) ans[i] = new int[r];
+  
   for (int i = 0; i < r; i++) {
     for (int j = 0; j < c; j++) {
       ans[j][i] = matrix[i][j];
@@ -511,8 +503,7 @@ public int[][] transpose(int[][] matrix) {
   }
   return ans;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **13. Valid Sudoku**
@@ -524,28 +515,24 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** We iterate through the grid. For each cell, we encode its presence in its row, column, and block as unique integers to avoid slow string concatenations. If `HashSet.add()` returns false, a duplicate exists.
 
-```java
-public boolean isValidSudoku(char[][] board) {
-  Set<Integer> seen = new HashSet<>();
+```csharp
+public bool IsValidSudoku(char[][] board) {
+  HashSet<string> seen = new HashSet<string>();
   for (int i = 0; i < 9; ++i) {
     for (int j = 0; j < 9; ++j) {
       char number = board[i][j];
       if (number != '.') {
         int boxIdx = (i / 3) * 3 + j / 3;
-        int rowKey = number * 100 + i;
-        int colKey = number * 100 + j + 27;
-        int boxKey = number * 100 + boxIdx + 54;
-        if (!seen.add(rowKey) ||
-            !seen.add(colKey) ||
-            !seen.add(boxKey))
+        if (!seen.Add(number + " in row " + i) ||
+            !seen.Add(number + " in col " + j) ||
+            !seen.Add(number + " in box " + boxIdx))
           return false;
       }
     }
   }
   return true;
 }
-```
-Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
 
 * * *
 **14. Island Perimeter**
@@ -557,11 +544,11 @@ Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
 
 **Explanation:** Each land cell adds 4 to the perimeter. For each land cell, we check its left and top neighbors. If they are also land, they share an edge, meaning we subtract 2 from the total perimeter (1 for each cell).
 
-```java
-public int islandPerimeter(int[][] grid) {
+```csharp
+public int IslandPerimeter(int[][] grid) {
   int perimeter = 0;
-  for (int i = 0; i < grid.length; i++) {
-    for (int j = 0; j < grid[0].length; j++) {
+  for (int i = 0; i < grid.Length; i++) {
+    for (int j = 0; j < grid[0].Length; j++) {
       if (grid[i][j] == 1) {
         perimeter += 4;
         if (i > 0 && grid[i - 1][j] == 1) perimeter -= 2;
@@ -571,8 +558,7 @@ public int islandPerimeter(int[][] grid) {
   }
   return perimeter;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **15. Maximum K×K Submatrix Sum**
@@ -584,26 +570,27 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Construct a 2D prefix sum array. Then iterate through all possible bottom-right corners `(i,j)` of size $K \times K$, extracting the sum in $\mathcal{O}(1)$ time.
 
-```java
-public int maxSum(int[][] mat, int k) {
-  int m = mat.length, n = mat[0].length;
-  int[][] pre = new int[m + 1][n + 1];
+```csharp
+public int MaxSum(int[][] mat, int k) {
+  int m = mat.Length, n = mat[0].Length;
+  int[][] pre = new int[m + 1][];
+  for (int i=0; i<=m; i++) pre[i] = new int[n + 1];
+  
   for (int i = 1; i <= m; i++) {
     for (int j = 1; j <= n; j++) {
       pre[i][j] = mat[i-1][j-1] + pre[i-1][j] + pre[i][j-1] - pre[i-1][j-1];
     }
   }
-  int max = Integer.MIN_VALUE;
+  int max = int.MinValue;
   for (int i = k; i <= m; i++) {
     for (int j = k; j <= n; j++) {
       int sum = pre[i][j] - pre[i-k][j] - pre[i][j-k] + pre[i-k][j-k];
-      max = Math.max(max, sum);
+      max = Math.Max(max, sum);
     }
   }
   return max;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **16. Number of Islands**
@@ -615,27 +602,26 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Iterate over every cell. When a '1' is found, increment the island count, and launch a DFS/BFS to mark all connected '1's as '0' to avoid recounting.
 
-```java
-public int numIslands(char[][] grid) {
+```csharp
+public int NumIslands(char[][] grid) {
   int count = 0;
-  for (int i = 0; i < grid.length; i++) {
-    for (int j = 0; j < grid[0].length; j++) {
+  for (int i = 0; i < grid.Length; i++) {
+    for (int j = 0; j < grid[0].Length; j++) {
       if (grid[i][j] == '1') {
         count++;
-        dfs(grid, i, j);
+        Dfs(grid, i, j);
       }
     }
   }
   return count;
 }
-private void dfs(char[][] grid, int r, int c) {
-  if (r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == '0') return;
+private void Dfs(char[][] grid, int r, int c) {
+  if (r < 0 || c < 0 || r >= grid.Length || c >= grid[0].Length || grid[r][c] == '0') return;
   grid[r][c] = '0';
-  dfs(grid, r+1, c); dfs(grid, r-1, c);
-  dfs(grid, r, c+1); dfs(grid, r, c-1);
+  Dfs(grid, r+1, c); Dfs(grid, r-1, c);
+  Dfs(grid, r, c+1); Dfs(grid, r, c-1);
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **17. Flip and Invert Image**
@@ -647,10 +633,10 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** In a single pass per row, we can use two pointers `i` and `j`. We assign `row[i] = row[j] ^ 1` and `row[j] = temp ^ 1`. Note the middle element when length is odd.
 
-```java
-public int[][] flipAndInvertImage(int[][] image) {
-  for (int[] row : image) {
-    int left = 0, right = row.length - 1;
+```csharp
+public int[][] FlipAndInvertImage(int[][] image) {
+  foreach (int[] row in image) {
+    int left = 0, right = row.Length - 1;
     while (left <= right) {
       int temp = row[left] ^ 1;
       row[left] = row[right] ^ 1;
@@ -660,8 +646,7 @@ public int[][] flipAndInvertImage(int[][] image) {
   }
   return image;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **18. Shift 2D Grid**
@@ -673,25 +658,24 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Map the grid to a 1D array conceptually of size $M \times N$. The new position of an element at index `i` is `(i + k) % (M * N)`. We can construct a new result grid based on this mapping.
 
-```java
-public List<List<Integer>> shiftGrid(int[][] grid, int k) {
-  int m = grid.length, n = grid[0].length;
+```csharp
+public IList<IList<int>> ShiftGrid(int[][] grid, int k) {
+  int m = grid.Length, n = grid[0].Length;
   int total = m * n;
   k %= total;
-  List<List<Integer>> res = new ArrayList<>();
+  var res = new List<IList<int>>();
   for (int i = 0; i < m; i++) {
-    res.add(new ArrayList<>(Collections.nCopies(n, 0)));
+    res.Add(new List<int>(new int[n]));
   }
   for (int r = 0; r < m; r++) {
     for (int c = 0; c < n; c++) {
       int new1D = (r * n + c + k) % total;
-      res.get(new1D / n).set(new1D % n, grid[r][c]);
+      res[new1D / n][new1D % n] = grid[r][c];
     }
   }
   return res;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **19. Word Search in Grid**
@@ -703,27 +687,26 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Iterate over all cells. If the first character matches, launch DFS. Temporarily mark cells (e.g., `#`) during recursion to prevent reuse, and restore them after the recursive call returns.
 
-```java
-public boolean exist(char[][] board, String word) {
-  for (int i = 0; i < board.length; i++) {
-    for (int j = 0; j < board[0].length; j++) {
-      if (dfs(board, i, j, word, 0)) return true;
+```csharp
+public bool Exist(char[][] board, string word) {
+  for (int i = 0; i < board.Length; i++) {
+    for (int j = 0; j < board[0].Length; j++) {
+      if (Dfs(board, i, j, word, 0)) return true;
     }
   }
   return false;
 }
-private boolean dfs(char[][] b, int r, int c, String word, int idx) {
-  if (idx == word.length()) return true;
-  if (r < 0 || c < 0 || r >= b.length || c >= b[0].length || b[r][c] != word.charAt(idx)) return false;
+private bool Dfs(char[][] b, int r, int c, string word, int idx) {
+  if (idx == word.Length) return true;
+  if (r < 0 || c < 0 || r >= b.Length || c >= b[0].Length || b[r][c] != word[idx]) return false;
   char temp = b[r][c];
   b[r][c] = '#';
-  boolean found = dfs(b, r+1, c, word, idx+1) || dfs(b, r-1, c, word, idx+1) ||
-                  dfs(b, r, c+1, word, idx+1) || dfs(b, r, c-1, word, idx+1);
+  bool found = Dfs(b, r+1, c, word, idx+1) || Dfs(b, r-1, c, word, idx+1) ||
+               Dfs(b, r, c+1, word, idx+1) || Dfs(b, r, c-1, word, idx+1);
   b[r][c] = temp;
   return found;
 }
-```
-Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
+```Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
 
 * * *
 **20. Determine If Matrix Can Be Obtained By Rotation**
@@ -735,16 +718,22 @@ Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
 
 **Explanation:** A matrix can be rotated at most 3 times (90, 180, 270 degrees). We compare `mat` to `target` up to 4 times, rotating `mat` by 90 degrees each time.
 
-```java
-public boolean findRotation(int[][] mat, int[][] target) {
+```csharp
+public bool FindRotation(int[][] mat, int[][] target) {
   for (int k = 0; k < 4; k++) {
-    if (Arrays.deepEquals(mat, target)) return true;
-    rotate(mat); // uses function from Problem 1
+    if (AreEqual(mat, target)) return true;
+    Rotate(mat); 
   }
   return false;
 }
-private void rotate(int[][] mat) {
-  int n = mat.length;
+private bool AreEqual(int[][] mat, int[][] target) {
+  for(int i=0; i<mat.Length; i++)
+    for(int j=0; j<mat[i].Length; j++)
+      if (mat[i][j] != target[i][j]) return false;
+  return true;
+}
+private void Rotate(int[][] mat) {
+  int n = mat.Length;
   for (int i = 0; i < n; i++) {
     for (int j = i + 1; j < n; j++) {
       int t = mat[i][j]; mat[i][j] = mat[j][i]; mat[j][i] = t;
@@ -756,8 +745,7 @@ private void rotate(int[][] mat) {
     }
   }
 }
-```
-Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **21. Chess Board Cell Color**
@@ -769,14 +757,13 @@ Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Convert the column letter and row number to integers. The color of a cell `(x, y)` is uniquely determined by `(x + y) % 2`. Compare the parity.
 
-```java
-public boolean solution(String cell1, String cell2) {
-  int sum1 = (cell1.charAt(0) - 'A') + (cell1.charAt(1) - '1');
-  int sum2 = (cell2.charAt(0) - 'A') + (cell2.charAt(1) - '1');
+```csharp
+public bool Solution(string cell1, string cell2) {
+  int sum1 = (cell1[0] - 'A') + (cell1[1] - '1');
+  int sum2 = (cell2[0] - 'A') + (cell2[1] - '1');
   return (sum1 % 2) == (sum2 % 2);
 }
-```
-Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **22. Minesweeper Click Reveal**
@@ -788,23 +775,23 @@ Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** Count adjacent mines (8 directions). If > 0, set to digit. If == 0, set to 'B' and DFS to 8 adjacent 'E' neighbors.
 
-```java
-public char[][] updateBoard(char[][] board, int[] click) {
+```csharp
+public char[][] UpdateBoard(char[][] board, int[] click) {
   int r = click[0], c = click[1];
   if (board[r][c] == 'M') {
     board[r][c] = 'X';
     return board;
   }
-  dfs(board, r, c);
+  Dfs(board, r, c);
   return board;
 }
-private void dfs(char[][] b, int r, int c) {
-  if (r < 0 || c < 0 || r >= b.length || c >= b[0].length || b[r][c] != 'E') return;
+private void Dfs(char[][] b, int r, int c) {
+  if (r < 0 || c < 0 || r >= b.Length || c >= b[0].Length || b[r][c] != 'E') return;
   int mines = 0;
   for (int i = -1; i <= 1; i++) {
     for (int j = -1; j <= 1; j++) {
       int nr = r + i, nc = c + j;
-      if (nr >= 0 && nr < b.length && nc >= 0 && nc < b[0].length && b[nr][nc] == 'M') mines++;
+      if (nr >= 0 && nr < b.Length && nc >= 0 && nc < b[0].Length && b[nr][nc] == 'M') mines++;
     }
   }
   if (mines > 0) {
@@ -812,12 +799,11 @@ private void dfs(char[][] b, int r, int c) {
   } else {
     b[r][c] = 'B';
     for (int i = -1; i <= 1; i++) {
-      for (int j = -1; j <= 1; j++) dfs(b, r+i, c+j);
+      for (int j = -1; j <= 1; j++) Dfs(b, r+i, c+j);
     }
   }
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **23. Battleship Placement Validation**
@@ -829,11 +815,11 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Instead of a full DFS, just count the "top-left" cell of every battleship. A cell is a top-left if it is 'X' and has no 'X' above or to the left of it.
 
-```java
-public int countBattleships(char[][] board) {
+```csharp
+public int CountBattleships(char[][] board) {
   int count = 0;
-  for (int i = 0; i < board.length; i++) {
-    for (int j = 0; j < board[0].length; j++) {
+  for (int i = 0; i < board.Length; i++) {
+    for (int j = 0; j < board[0].Length; j++) {
       if (board[i][j] == 'X') {
         if (i > 0 && board[i-1][j] == 'X') continue;
         if (j > 0 && board[i][j-1] == 'X') continue;
@@ -843,8 +829,7 @@ public int countBattleships(char[][] board) {
   }
   return count;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **24. Box Blur**
@@ -856,10 +841,12 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Explanation:** The output matrix size is $(M-2) \times (N-2)$. We iterate over these valid centers and compute the sum of the $3 \times 3$ area.
 
-```java
-public int[][] boxBlur(int[][] image) {
-  int m = image.length, n = image[0].length;
-  int[][] res = new int[m-2][n-2];
+```csharp
+public int[][] BoxBlur(int[][] image) {
+  int m = image.Length, n = image[0].Length;
+  int[][] res = new int[m-2][];
+  for (int i=0; i<m-2; i++) res[i] = new int[n-2];
+  
   for (int i = 1; i < m - 1; i++) {
     for (int j = 1; j < n - 1; j++) {
       int sum = 0;
@@ -873,8 +860,7 @@ public int[][] boxBlur(int[][] image) {
   }
   return res;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **25. Zigzag String Conversion**
@@ -886,26 +872,25 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Maintain a `row` index and a `direction`. Add characters to `StringBuilder[]` corresponding to each row. When hitting top or bottom row, reverse direction.
 
-```java
-public String convert(String s, int numRows) {
+```csharp
+public string Convert(string s, int numRows) {
   if (numRows == 1) return s;
-  StringBuilder[] rows = new StringBuilder[Math.min(numRows, s.length())];
-  for (int i = 0; i < rows.length; i++) rows[i] = new StringBuilder();
+  StringBuilder[] rows = new StringBuilder[Math.Min(numRows, s.Length)];
+  for (int i = 0; i < rows.Length; i++) rows[i] = new StringBuilder();
   
   int curRow = 0;
-  boolean goingDown = false;
-  for (char c : s.toCharArray()) {
-    rows[curRow].append(c);
+  bool goingDown = false;
+  foreach (char c in s.ToCharArray()) {
+    rows[curRow].Append(c);
     if (curRow == 0 || curRow == numRows - 1) goingDown = !goingDown;
     curRow += goingDown ? 1 : -1;
   }
   
   StringBuilder ret = new StringBuilder();
-  for (StringBuilder row : rows) ret.append(row);
-  return ret.toString();
+  foreach (StringBuilder row in rows) ret.Append(row);
+  return ret.ToString();
 }
-```
-Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
+```Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
 
 * * *
 **26. Simulate Robot Commands on Grid**
@@ -917,29 +902,28 @@ Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
 
 **Explanation:** Encode North, East, South, West using `dx` and `dy`. Turn right is `dir = (dir + 1) % 4`. Move step by step checking against an obstacle `HashSet`.
 
-```java
-public int robotSim(int[] commands, int[][] obstacles) {
+```csharp
+public int RobotSim(int[] commands, int[][] obstacles) {
   int[] dx = {0, 1, 0, -1}, dy = {1, 0, -1, 0};
-  Set<String> obs = new HashSet<>();
-  for (int[] o : obstacles) obs.add(o[0] + "," + o[1]);
+  HashSet<string> obs = new HashSet<string>();
+  foreach (int[] o in obstacles) obs.Add(o[0] + "," + o[1]);
   
   int x = 0, y = 0, dir = 0, maxDist = 0;
-  for (int cmd : commands) {
+  foreach (int cmd in commands) {
     if (cmd == -2) dir = (dir + 3) % 4;
     else if (cmd == -1) dir = (dir + 1) % 4;
     else {
       for (int k = 0; k < cmd; k++) {
         int nx = x + dx[dir], ny = y + dy[dir];
-        if (obs.contains(nx + "," + ny)) break;
+        if (obs.Contains(nx + "," + ny)) break;
         x = nx; y = ny;
-        maxDist = Math.max(maxDist, x*x + y*y);
+        maxDist = Math.Max(maxDist, x*x + y*y);
       }
     }
   }
   return maxDist;
 }
-```
-Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
+```Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
 
 * * *
 **27. Matrix Water Flow (Pacific Atlantic)**
@@ -951,32 +935,33 @@ Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
 
 **Explanation:** Instead of going downhill from every cell, go UPHILL from the ocean borders to mark reachable cells. Intersection of Pacific-reachable and Atlantic-reachable is the answer.
 
-```java
-public List<List<Integer>> pacificAtlantic(int[][] heights) {
-  int m = heights.length, n = heights[0].length;
-  boolean[][] pac = new boolean[m][n], atl = new boolean[m][n];
-  for (int i = 0; i < m; i++) { dfs(heights, pac, i, 0); dfs(heights, atl, i, n-1); }
-  for (int j = 0; j < n; j++) { dfs(heights, pac, 0, j); dfs(heights, atl, m-1, j); }
+```csharp
+public IList<IList<int>> PacificAtlantic(int[][] heights) {
+  int m = heights.Length, n = heights[0].Length;
+  bool[][] pac = new bool[m][], atl = new bool[m][];
+  for(int i=0; i<m; i++) { pac[i]=new bool[n]; atl[i]=new bool[n]; }
   
-  List<List<Integer>> res = new ArrayList<>();
+  for (int i = 0; i < m; i++) { Dfs(heights, pac, i, 0); Dfs(heights, atl, i, n-1); }
+  for (int j = 0; j < n; j++) { Dfs(heights, pac, 0, j); Dfs(heights, atl, m-1, j); }
+  
+  IList<IList<int>> res = new List<IList<int>>();
   for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) {
-      if (pac[i][j] && atl[i][j]) res.add(Arrays.asList(i, j));
+      if (pac[i][j] && atl[i][j]) res.Add(new List<int>{i, j});
     }
   }
   return res;
 }
-private void dfs(int[][] h, boolean[][] v, int r, int c) {
+private void Dfs(int[][] h, bool[][] v, int r, int c) {
   v[r][c] = true;
-  int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-  for (int[] d : dirs) {
+  int[][] dirs = {new int[]{1,0},new int[]{-1,0},new int[]{0,1},new int[]{0,-1}};
+  foreach (int[] d in dirs) {
     int nr = r + d[0], nc = c + d[1];
-    if (nr>=0 && nr<h.length && nc>=0 && nc<h[0].length && !v[nr][nc] && h[nr][nc] >= h[r][c])
-      dfs(h, v, nr, nc);
+    if (nr>=0 && nr<h.Length && nc>=0 && nc<h[0].Length && !v[nr][nc] && h[nr][nc] >= h[r][c])
+      Dfs(h, v, nr, nc);
   }
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **28. Rotting Oranges**
@@ -988,29 +973,29 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Add all initially rotten oranges to a queue. Use BFS level-by-level to rot adjacent oranges. Track minutes. Finally, check if any fresh oranges remain.
 
-```java
-public int orangesRotting(int[][] grid) {
-  Queue<int[]> q = new ArrayDeque<>();
-  int fresh = 0, m = grid.length, n = grid[0].length;
+```csharp
+public int OrangesRotting(int[][] grid) {
+  Queue<int[]> q = new Queue<int[]>();
+  int fresh = 0, m = grid.Length, n = grid[0].Length;
   for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) {
-      if (grid[i][j] == 2) q.offer(new int[]{i, j});
+      if (grid[i][j] == 2) q.Enqueue(new int[]{i, j});
       else if (grid[i][j] == 1) fresh++;
     }
   }
   if (fresh == 0) return 0;
   int mins = 0;
-  int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-  while (!q.isEmpty()) {
-    int size = q.size();
-    boolean rotted = false;
+  int[][] dirs = {new int[]{1,0},new int[]{-1,0},new int[]{0,1},new int[]{0,-1}};
+  while (q.Count > 0) {
+    int size = q.Count;
+    bool rotted = false;
     for (int k = 0; k < size; k++) {
-      int[] curr = q.poll();
-      for (int[] d : dirs) {
+      int[] curr = q.Dequeue();
+      foreach (int[] d in dirs) {
         int r = curr[0] + d[0], c = curr[1] + d[1];
         if (r>=0 && r<m && c>=0 && c<n && grid[r][c] == 1) {
           grid[r][c] = 2; fresh--;
-          q.offer(new int[]{r, c});
+          q.Enqueue(new int[]{r, c});
           rotted = true;
         }
       }
@@ -1019,8 +1004,7 @@ public int orangesRotting(int[][] grid) {
   }
   return fresh == 0 ? mins : -1;
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **29. Surrounded Regions**
@@ -1032,11 +1016,11 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** Any 'O' connected to a border 'O' cannot be captured. DFS from all border 'O's and mark them as safe ('#'). Flip all remaining 'O' to 'X', then revert '#' to 'O'.
 
-```java
-public void solve(char[][] board) {
-  int m = board.length, n = board[0].length;
-  for (int i = 0; i < m; i++) { dfs(board, i, 0); dfs(board, i, n-1); }
-  for (int j = 0; j < n; j++) { dfs(board, 0, j); dfs(board, m-1, j); }
+```csharp
+public void Solve(char[][] board) {
+  int m = board.Length, n = board[0].Length;
+  for (int i = 0; i < m; i++) { Dfs(board, i, 0); Dfs(board, i, n-1); }
+  for (int j = 0; j < n; j++) { Dfs(board, 0, j); Dfs(board, m-1, j); }
   
   for (int i = 0; i < m; i++) {
     for (int j = 0; j < n; j++) {
@@ -1045,13 +1029,12 @@ public void solve(char[][] board) {
     }
   }
 }
-private void dfs(char[][] b, int r, int c) {
-  if (r<0 || r>=b.length || c<0 || c>=b[0].length || b[r][c] != 'O') return;
+private void Dfs(char[][] b, int r, int c) {
+  if (r<0 || r>=b.Length || c<0 || c>=b[0].Length || b[r][c] != 'O') return;
   b[r][c] = '#';
-  dfs(b, r+1, c); dfs(b, r-1, c); dfs(b, r, c+1); dfs(b, r, c-1);
+  Dfs(b, r+1, c); Dfs(b, r-1, c); Dfs(b, r, c+1); Dfs(b, r, c-1);
 }
-```
-Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **30. Path with Minimum Effort**
@@ -1063,12 +1046,12 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Explanation:** We can binary search the answer range [0, 10^6]. For a chosen effort limit `K`, use BFS. If BFS reaches the end using only edges $\le K$, then `K` is possible, so search lower. Else, search higher.
 
-```java
-public int minimumEffortPath(int[][] heights) {
+```csharp
+public int MinimumEffortPath(int[][] heights) {
   int left = 0, right = 1000000, ans = right;
   while (left <= right) {
     int mid = left + (right - left) / 2;
-    if (canReach(heights, mid)) {
+    if (CanReach(heights, mid)) {
       ans = mid; right = mid - 1;
     } else {
       left = mid + 1;
@@ -1076,30 +1059,31 @@ public int minimumEffortPath(int[][] heights) {
   }
   return ans;
 }
-private boolean canReach(int[][] h, int limit) {
-  int m = h.length, n = h[0].length;
-  boolean[][] vis = new boolean[m][n];
-  Queue<int[]> q = new ArrayDeque<>();
-  q.offer(new int[]{0, 0}); vis[0][0] = true;
-  int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+private bool CanReach(int[][] h, int limit) {
+  int m = h.Length, n = h[0].Length;
+  bool[][] vis = new bool[m][];
+  for(int i=0; i<m; i++) vis[i] = new bool[n];
   
-  while (!q.isEmpty()) {
-    int[] curr = q.poll();
+  Queue<int[]> q = new Queue<int[]>();
+  q.Enqueue(new int[]{0, 0}); vis[0][0] = true;
+  int[][] dirs = {new int[]{1,0},new int[]{-1,0},new int[]{0,1},new int[]{0,-1}};
+  
+  while (q.Count > 0) {
+    int[] curr = q.Dequeue();
     if (curr[0] == m-1 && curr[1] == n-1) return true;
-    for (int[] d : dirs) {
+    foreach (int[] d in dirs) {
       int r = curr[0]+d[0], c = curr[1]+d[1];
       if (r>=0 && r<m && c>=0 && c<n && !vis[r][c]) {
-        if (Math.abs(h[r][c] - h[curr[0]][curr[1]]) <= limit) {
+        if (Math.Abs(h[r][c] - h[curr[0]][curr[1]]) <= limit) {
           vis[r][c] = true;
-          q.offer(new int[]{r, c});
+          q.Enqueue(new int[]{r, c});
         }
       }
     }
   }
   return false;
 }
-```
-Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M \times N)$
+```Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M \times N)$
 
 ## Practice Problem Bank
 

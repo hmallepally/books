@@ -264,6 +264,40 @@ A cache stampede occurs when a highly requested cache entry expires (TTL elapses
 - **Solution 3: Probabilistic Early Expiry:** Each incoming request has a small, random probability of refreshing the cache just before it naturally expires, spreading the DB load gracefully.
 
 
+## Consumer-Scale System Design Archetypes
+
+While this book's case studies emphasize financial systems with strict consistency requirements, many interviews target consumer-scale platforms. Here are the key architectural patterns for the most common system design questions:
+
+**Design a Social Media Feed (Twitter/X Timeline)**
+- Fan-out-on-write vs fan-out-on-read trade-off
+- Celebrity problem: hybrid approach for users with >10K followers
+- Timeline cache per user (Redis sorted sets by timestamp)
+- Media storage: object store (S3) with CDN distribution
+- Key metric: Feed generation < 200ms for 99th percentile
+
+**Design a Ride-Sharing Service (Uber/Lyft)**
+- Geospatial indexing: QuadTree or Geohash for driver location
+- Driver-rider matching: nearest-neighbor search with ETA ranking
+- Real-time location updates: WebSocket with 3-second heartbeats
+- Surge pricing: demand/supply ratio per geohash cell
+- Key metric: Match latency < 5 seconds in urban areas
+
+**Design a Video Streaming Platform (Netflix/YouTube)**
+- Adaptive bitrate streaming (HLS/DASH) with multiple encodings
+- CDN edge caching: hot content pushed to 200+ PoPs globally
+- Recommendation engine: collaborative filtering + content-based hybrid
+- Upload pipeline: async transcoding queue (multiple resolutions)
+- Key metric: Start-to-play < 2 seconds, rebuffer ratio < 0.5%
+
+**Design a URL Shortener (bit.ly)**
+- Base62 encoding of auto-increment ID (or MD5 hash truncation)
+- Read-heavy (100:1 read/write ratio) → heavy caching layer
+- 301 (permanent) vs 302 (temporary) redirect trade-offs for analytics
+- Key metric: Redirect latency < 10ms at 100K QPS
+
+For each archetype, the candidate should follow the same spec-driven approach used throughout this book: define the invariants (what must ALWAYS be true), identify the data flow, and select patterns from the canonical set.
+
+
 ## System Design Mock Interview: Sharded Order Matching Engine
 
 To demonstrate how a senior candidate should navigate a system design round, here is a transcript-style mock interview.

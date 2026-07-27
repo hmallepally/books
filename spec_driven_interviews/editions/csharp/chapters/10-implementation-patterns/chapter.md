@@ -108,24 +108,23 @@ These are the two most important templates to have memorized before the exam.
 
 ### Template A: Read/Write In-Place Filter
 
-```java
+```csharp
 // Retains elements satisfying a condition, overwrites array in-place
 int write = 0;
-for (int read = 0; read < arr.length; read++) {
-    if (keepCondition(arr[read])) {
+for (int read = 0; read < arr.Length; read++) {
+    if (KeepCondition(arr[read])) {
         arr[write] = arr[read];
         write++;
     }
 }
 // Result is arr[0..write-1], return write as the new length
 ```
-
 **Used by:** Remove Element, Move Zeros, Remove Duplicates, Squeeze Spaces.
 
 ### Template B: Symmetric Converging Pointers
 
-```java
-int left = 0, right = arr.length - 1;
+```csharp
+int left = 0, right = arr.Length - 1;
 while (left < right) {
     // Process or compare arr[left] and arr[right]
     // Optionally skip invalid elements
@@ -133,7 +132,6 @@ while (left < right) {
     right--;
 }
 ```
-
 **Used by:** Palindrome Check, Reverse Array, Two Sum (sorted), Sort Colors.
 
 * * *
@@ -148,26 +146,25 @@ while (left < right) {
 **Pattern:** Two-pass frequency array. First pass counts; second pass finds the first count of 1.
 **Why two passes?** A single pass cannot determine uniqueness because later characters might duplicate earlier ones. The frequency array decouples counting from searching.
 
-```java
-public int firstUniqChar(String s) {
-    if (s == null || s.isEmpty()) return -1;
+```csharp
+public int FirstUniqChar(string s) {
+    if (string.IsNullOrEmpty(s)) return -1;
 
     // Pass 1: Count frequency of each character
     int[] counts = new int[256];
-    for (int i = 0; i < s.length(); i++) {
-        counts[s.charAt(i)]++;
+    foreach (char c in s) {
+        counts[c]++;
     }
 
     // Pass 2: Find first character with frequency exactly 1
-    for (int i = 0; i < s.length(); i++) {
-        if (counts[s.charAt(i)] == 1) return i;
+    for (int i = 0; i < s.Length; i++) {
+        if (counts[s[i]] == 1) return i;
     }
 
     return -1; // All characters repeat
 }
 // Time: O(N), Space: O(1) — the int[256] is constant size
 ```
-
 * * *
 
 **2. In-Place String Compression (Run-Length Encoding)**
@@ -179,19 +176,19 @@ public int firstUniqChar(String s) {
 
 **Critical edge case:** When count exceeds 9 (e.g., count = 12), you must write `'1'` then `'2'` as separate characters.
 
-```java
-public int compress(char[] chars) {
-    if (chars == null || chars.length == 0) return 0;
+```csharp
+public int Compress(char[] chars) {
+    if (chars == null || chars.Length == 0) return 0;
 
     int write = 0; // Write pointer for compressed output
     int read = 0;  // Read pointer scanning input
 
-    while (read < chars.length) {
+    while (read < chars.Length) {
         char current = chars[read];
         int count = 0;
 
         // Count consecutive occurrences of current character
-        while (read < chars.length && chars[read] == current) {
+        while (read < chars.Length && chars[read] == current) {
             read++;
             count++;
         }
@@ -202,7 +199,7 @@ public int compress(char[] chars) {
         // Write the count digits (only if count > 1)
         if (count > 1) {
             // Convert count to individual digit characters
-            for (char digit : Integer.toString(count).toCharArray()) {
+            foreach (char digit in count.ToString()) {
                 chars[write++] = digit;
             }
         }
@@ -212,7 +209,6 @@ public int compress(char[] chars) {
 }
 // Time: O(N), Space: O(1) auxiliary
 ```
-
 * * *
 
 **3. Valid Palindrome with Non-Alphanumeric Skipping**
@@ -224,24 +220,24 @@ public int compress(char[] chars) {
 
 **Common mistake:** Forgetting to check `left < right` inside the skip-while loops, causing `ArrayIndexOutOfBoundsException` on strings like `".,,"`.
 
-```java
-public boolean isPalindrome(String s) {
+```csharp
+public bool IsPalindrome(string s) {
     if (s == null) return false;
 
-    int left = 0, right = s.length() - 1;
+    int left = 0, right = s.Length - 1;
 
     while (left < right) {
         // Skip non-alphanumeric from the left
-        while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
+        while (left < right && !char.IsLetterOrDigit(s[left])) {
             left++;
         }
         // Skip non-alphanumeric from the right
-        while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
+        while (left < right && !char.IsLetterOrDigit(s[right])) {
             right--;
         }
 
         // Compare characters (case-insensitive)
-        if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {
+        if (char.ToLower(s[left]) != char.ToLower(s[right])) {
             return false;
         }
 
@@ -253,7 +249,6 @@ public boolean isPalindrome(String s) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **4. Move Zeros to End**
@@ -265,26 +260,25 @@ public boolean isPalindrome(String s) {
 
 **Why not swap?** Swapping works too, but the two-pass approach (copy then fill) is cleaner and less error-prone under time pressure.
 
-```java
-public void moveZeroes(int[] nums) {
-    if (nums == null || nums.length == 0) return;
+```csharp
+public void MoveZeroes(int[] nums) {
+    if (nums == null || nums.Length == 0) return;
 
     // Pass 1: Copy all non-zero elements to the front
     int write = 0;
-    for (int read = 0; read < nums.length; read++) {
+    for (int read = 0; read < nums.Length; read++) {
         if (nums[read] != 0) {
             nums[write++] = nums[read];
         }
     }
 
     // Pass 2: Fill remaining positions with zeros
-    while (write < nums.length) {
+    while (write < nums.Length) {
         nums[write++] = 0;
     }
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **5. Remove Duplicates from Sorted Array**
@@ -294,12 +288,12 @@ public void moveZeroes(int[] nums) {
 
 **Pattern:** Read/Write pointer. Since the array is sorted, duplicates are always adjacent. The write pointer advances only when `nums[read] != nums[write - 1]`.
 
-```java
-public int removeDuplicates(int[] nums) {
-    if (nums == null || nums.length == 0) return 0;
+```csharp
+public int RemoveDuplicates(int[] nums) {
+    if (nums == null || nums.Length == 0) return 0;
 
     int write = 1; // First element is always unique
-    for (int read = 1; read < nums.length; read++) {
+    for (int read = 1; read < nums.Length; read++) {
         if (nums[read] != nums[write - 1]) {
             nums[write++] = nums[read];
         }
@@ -309,7 +303,6 @@ public int removeDuplicates(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **6. Single Number (XOR Uniqueness)**
@@ -319,17 +312,16 @@ public int removeDuplicates(int[] nums) {
 
 **Pattern:** XOR accumulation. `a ^ a = 0` cancels pairs; `a ^ 0 = a` preserves the unique element.
 
-```java
-public int singleNumber(int[] nums) {
+```csharp
+public int SingleNumber(int[] nums) {
     int result = 0;
-    for (int num : nums) {
+    foreach (int num in nums) {
         result ^= num; // Pairs cancel, unique value survives
     }
     return result;
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **7. Valid Parentheses**
@@ -340,14 +332,14 @@ public int singleNumber(int[] nums) {
 **Pattern:** Stack-based matching. On open bracket, push the expected closing bracket. On close bracket, pop and compare.
 **Optimization:** Use a `char[]` as a manual stack to avoid `java.util.Stack` overhead.
 
-```java
-public boolean isValid(String s) {
-    if (s == null || s.length() % 2 != 0) return false;
+```csharp
+public bool IsValid(string s) {
+    if (s == null || s.Length % 2 != 0) return false;
 
-    char[] stack = new char[s.length()];
+    char[] stack = new char[s.Length];
     int top = -1;
 
-    for (char c : s.toCharArray()) {
+    foreach (char c in s) {
         if (c == '(') stack[++top] = ')';
         else if (c == '{') stack[++top] = '}';
         else if (c == '[') stack[++top] = ']';
@@ -360,7 +352,6 @@ public boolean isValid(String s) {
 }
 // Time: O(N), Space: O(N) worst case for the stack
 ```
-
 * * *
 
 **8. Reverse String In-Place**
@@ -370,11 +361,11 @@ public boolean isValid(String s) {
 
 **Pattern:** Symmetric converging pointers with swap.
 
-```java
-public void reverseString(char[] s) {
-    if (s == null || s.length <= 1) return;
+```csharp
+public void ReverseString(char[] s) {
+    if (s == null || s.Length <= 1) return;
 
-    int left = 0, right = s.length - 1;
+    int left = 0, right = s.Length - 1;
     while (left < right) {
         char temp = s[left];
         s[left] = s[right];
@@ -385,7 +376,6 @@ public void reverseString(char[] s) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **9. Pivot Index (Balance Point)**
@@ -395,15 +385,15 @@ public void reverseString(char[] s) {
 
 **Pattern:** Prefix sum. Compute total sum first, then scan left-to-right maintaining a running left sum. At each index: `rightSum = totalSum - leftSum - nums[i]`.
 
-```java
-public int pivotIndex(int[] nums) {
+```csharp
+public int PivotIndex(int[] nums) {
     if (nums == null) return -1;
 
     int totalSum = 0;
-    for (int num : nums) totalSum += num;
+    foreach (int num in nums) totalSum += num;
 
     int leftSum = 0;
-    for (int i = 0; i < nums.length; i++) {
+    for (int i = 0; i < nums.Length; i++) {
         // rightSum = totalSum - leftSum - nums[i]
         if (leftSum == totalSum - leftSum - nums[i]) return i;
         leftSum += nums[i];
@@ -413,7 +403,6 @@ public int pivotIndex(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **10. Check Array Monotonicity**
@@ -423,14 +412,14 @@ public int pivotIndex(int[] nums) {
 
 **Pattern:** Dual boolean flags. Track both `isIncreasing` and `isDecreasing`. If an adjacent pair violates one direction, set its flag to false. Return true if either flag survives.
 
-```java
-public boolean isMonotonic(int[] nums) {
-    if (nums == null || nums.length <= 2) return true;
+```csharp
+public bool IsMonotonic(int[] nums) {
+    if (nums == null || nums.Length <= 2) return true;
 
-    boolean increasing = true;
-    boolean decreasing = true;
+    bool increasing = true;
+    bool decreasing = true;
 
-    for (int i = 0; i < nums.length - 1; i++) {
+    for (int i = 0; i < nums.Length - 1; i++) {
         if (nums[i] > nums[i + 1]) increasing = false;
         if (nums[i] < nums[i + 1]) decreasing = false;
     }
@@ -439,7 +428,6 @@ public boolean isMonotonic(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **11. Neighbor Sum Transformation**
@@ -450,10 +438,10 @@ public boolean isMonotonic(int[] nums) {
 **Pattern:** Boundary-safe neighbor access with ternary guards.
 **Why a new array?** Modifying `A` in-place would corrupt values needed for subsequent index calculations.
 
-```java
-public int[] neighborSum(int[] a) {
+```csharp
+public int[] NeighborSum(int[] a) {
     if (a == null) return new int[0];
-    int n = a.length;
+    int n = a.Length;
     int[] b = new int[n];
 
     for (int i = 0; i < n; i++) {
@@ -466,7 +454,6 @@ public int[] neighborSum(int[] a) {
 }
 // Time: O(N), Space: O(N) for output array
 ```
-
 * * *
 
 **12. Maximum Subarray Sum of Fixed Window K**
@@ -476,9 +463,9 @@ public int[] neighborSum(int[] a) {
 
 **Pattern:** Fixed-size sliding window. Initialize window sum with first `k` elements, then slide by adding the entering element and subtracting the leaving element.
 
-```java
-public int maxSumSubarray(int[] nums, int k) {
-    if (nums == null || nums.length < k || k <= 0) return 0;
+```csharp
+public int MaxSumSubarray(int[] nums, int k) {
+    if (nums == null || nums.Length < k || k <= 0) return 0;
 
     // Initialize sum of first window
     int windowSum = 0;
@@ -487,16 +474,15 @@ public int maxSumSubarray(int[] nums, int k) {
     int maxSum = windowSum;
 
     // Slide the window: add right element, remove left element
-    for (int i = k; i < nums.length; i++) {
+    for (int i = k; i < nums.Length; i++) {
         windowSum += nums[i] - nums[i - k];
-        maxSum = Math.max(maxSum, windowSum);
+        maxSum = Math.Max(maxSum, windowSum);
     }
 
     return maxSum;
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **13. Find the Added Character**
@@ -506,16 +492,15 @@ public int maxSumSubarray(int[] nums, int k) {
 
 **Pattern:** XOR accumulation. XOR every character in both strings together. Paired characters cancel to zero; the extra character remains.
 
-```java
-public char findTheDifference(String s, String t) {
-    char result = 0;
-    for (char c : s.toCharArray()) result ^= c;
-    for (char c : t.toCharArray()) result ^= c;
+```csharp
+public char FindTheDifference(string s, string t) {
+    char result = (char)0;
+    foreach (char c in s) result ^= c;
+    foreach (char c in t) result ^= c;
     return result; // Only the unpaired character survives
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **14. Capitalize or Reverse by Word Length Parity**
@@ -525,16 +510,18 @@ public char findTheDifference(String s, String t) {
 
 **Pattern:** Per-element transformation with parity branching.
 
-```java
-public String[] transformWords(String[] words) {
-    if (words == null) return new String[0];
-    String[] result = new String[words.length];
+```csharp
+public string[] TransformWords(string[] words) {
+    if (words == null) return new string[0];
+    string[] result = new string[words.Length];
 
-    for (int i = 0; i < words.length; i++) {
-        if (words[i].length() % 2 != 0) {
-            result[i] = words[i].toUpperCase();
+    for (int i = 0; i < words.Length; i++) {
+        if (words[i].Length % 2 != 0) {
+            result[i] = words[i].ToUpper();
         } else {
-            result[i] = new StringBuilder(words[i]).reverse().toString();
+            char[] arr = words[i].ToCharArray();
+            Array.Reverse(arr);
+            result[i] = new string(arr);
         }
     }
 
@@ -542,7 +529,6 @@ public String[] transformWords(String[] words) {
 }
 // Time: O(N * K) where K is average word length, Space: O(N * K) for output
 ```
-
 * * *
 
 **15. Check Equal Character Frequencies**
@@ -552,15 +538,15 @@ public String[] transformWords(String[] words) {
 
 **Pattern:** Frequency array + validation scan. Count all characters (using a size 128 array to handle the full ASCII range), then verify every non-zero count matches.
 
-```java
-public boolean areOccurrencesEqual(String s) {
-    if (s == null || s.isEmpty()) return true;
+```csharp
+public bool AreOccurrencesEqual(string s) {
+    if (string.IsNullOrEmpty(s)) return true;
 
     int[] counts = new int[128];
-    for (char c : s.toCharArray()) counts[(int) c]++;
+    foreach (char c in s) counts[c]++;
 
     int expected = 0;
-    for (int count : counts) {
+    foreach (int count in counts) {
         if (count > 0) {
             if (expected == 0) expected = count;
             else if (count != expected) return false;
@@ -571,7 +557,6 @@ public boolean areOccurrencesEqual(String s) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **16. Remove Element In-Place**
@@ -581,12 +566,12 @@ public boolean areOccurrencesEqual(String s) {
 
 **Pattern:** Read/Write pointer — identical structure to Move Zeros.
 
-```java
-public int removeElement(int[] nums, int val) {
+```csharp
+public int RemoveElement(int[] nums, int val) {
     if (nums == null) return 0;
 
     int write = 0;
-    for (int read = 0; read < nums.length; read++) {
+    for (int read = 0; read < nums.Length; read++) {
         if (nums[read] != val) {
             nums[write++] = nums[read];
         }
@@ -596,7 +581,6 @@ public int removeElement(int[] nums, int val) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **17. Parity Alternation Validation**
@@ -607,13 +591,13 @@ public int removeElement(int[] nums, int val) {
 **Pattern:** Linear scan comparing `nums[i] % 2` with `nums[i+1] % 2`.
 **Edge case with negatives:** `(-3) % 2` in Java returns `-1`, not `1`. Use `Math.abs(nums[i] % 2)` for safe parity checks.
 
-```java
-public boolean isAlternatingParity(int[] nums) {
-    if (nums == null || nums.length <= 1) return true;
+```csharp
+public bool IsAlternatingParity(int[] nums) {
+    if (nums == null || nums.Length <= 1) return true;
 
-    for (int i = 0; i < nums.length - 1; i++) {
-        // Use Math.abs for safety with negative numbers
-        if (Math.abs(nums[i] % 2) == Math.abs(nums[i + 1] % 2)) {
+    for (int i = 0; i < nums.Length - 1; i++) {
+        // Use Math.Abs for safety with negative numbers
+        if (Math.Abs(nums[i] % 2) == Math.Abs(nums[i + 1] % 2)) {
             return false;
         }
     }
@@ -622,7 +606,6 @@ public boolean isAlternatingParity(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **18. Two Sum (Unsorted Array)**
@@ -632,23 +615,22 @@ public boolean isAlternatingParity(int[] nums) {
 
 **Pattern:** HashMap complement lookup. For each element, check if `target - nums[i]` has been seen. If yes, return both indices. If no, store `nums[i] → i` in the map.
 
-```java
-public int[] twoSum(int[] nums, int target) {
-    Map<Integer, Integer> seen = new HashMap<>();
+```csharp
+public int[] TwoSum(int[] nums, int target) {
+    Dictionary<int, int> seen = new Dictionary<int, int>();
 
-    for (int i = 0; i < nums.length; i++) {
+    for (int i = 0; i < nums.Length; i++) {
         int complement = target - nums[i];
-        if (seen.containsKey(complement)) {
-            return new int[]{seen.get(complement), i};
+        if (seen.ContainsKey(complement)) {
+            return new int[]{seen[complement], i};
         }
-        seen.put(nums[i], i);
+        seen[nums[i]] = i;
     }
 
     return new int[]{}; // Should not reach here per problem guarantee
 }
 // Time: O(N), Space: O(N)
 ```
-
 * * *
 
 **19. Majority Element**
@@ -658,12 +640,12 @@ public int[] twoSum(int[] nums, int target) {
 
 **Pattern:** Boyer–Moore Voting Algorithm. Maintain a candidate and a count. When count drops to zero, switch candidates. The majority element will always survive because it appears more than half the time.
 
-```java
-public int majorityElement(int[] nums) {
+```csharp
+public int MajorityElement(int[] nums) {
     int candidate = nums[0];
     int count = 1;
 
-    for (int i = 1; i < nums.length; i++) {
+    for (int i = 1; i < nums.Length; i++) {
         if (count == 0) {
             candidate = nums[i];
             count = 1;
@@ -678,7 +660,6 @@ public int majorityElement(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **20. Plus One (Large Number as Array)**
@@ -689,9 +670,9 @@ public int majorityElement(int[] nums) {
 **Pattern:** Right-to-left carry propagation. Process digits from the least significant end. If a digit becomes 10, set it to 0 and carry. If no carry remains, return immediately.
 **Edge case:** All 9s (`[9, 9, 9]`) require a new array of length `n + 1` with a leading 1.
 
-```java
-public int[] plusOne(int[] digits) {
-    for (int i = digits.length - 1; i >= 0; i--) {
+```csharp
+public int[] PlusOne(int[] digits) {
+    for (int i = digits.Length - 1; i >= 0; i--) {
         digits[i]++;
         if (digits[i] < 10) {
             return digits; // No further carry needed
@@ -700,13 +681,12 @@ public int[] plusOne(int[] digits) {
     }
 
     // All digits were 9 — need a new array [1, 0, 0, ..., 0]
-    int[] result = new int[digits.length + 1];
+    int[] result = new int[digits.Length + 1];
     result[0] = 1;
     return result;
 }
 // Time: O(N), Space: O(1) amortized (O(N) only for all-9s edge case)
 ```
-
 * * *
 
 
@@ -723,13 +703,13 @@ The following problems are drawn directly from the automated testing platforms A
 
 **Common mistake:** Forgetting that two large negative numbers produce a large positive product (e.g., `[-5, -4]` → `20`).
 
-```java
-public int adjacentElementsProduct(int[] inputArray) {
-    if (inputArray == null || inputArray.length < 2) return 0;
+```csharp
+public int AdjacentElementsProduct(int[] inputArray) {
+    if (inputArray == null || inputArray.Length < 2) return 0;
 
     int maxProd = inputArray[0] * inputArray[1];
 
-    for (int i = 1; i < inputArray.length - 1; i++) {
+    for (int i = 1; i < inputArray.Length - 1; i++) {
         int prod = inputArray[i] * inputArray[i + 1];
         if (prod > maxProd) {
             maxProd = prod;
@@ -740,7 +720,6 @@ public int adjacentElementsProduct(int[] inputArray) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **22. Century From Year**
@@ -750,13 +729,12 @@ public int adjacentElementsProduct(int[] inputArray) {
 
 **Pattern:** Integer ceiling division. The formula `(year + 99) / 100` computes the ceiling of `year / 100` using only integer arithmetic, avoiding floating-point rounding errors.
 
-```java
-public int centuryFromYear(int year) {
+```csharp
+public int CenturyFromYear(int year) {
     return (year + 99) / 100;
 }
 // Time: O(1), Space: O(1)
 ```
-
 * * *
 
 **23. All Longest Strings**
@@ -767,29 +745,28 @@ public int centuryFromYear(int year) {
 **Pattern:** Two-pass filter. Pass 1 finds the maximum string length. Pass 2 collects all strings matching that length.
 **Why two passes?** A single pass would require backtracking to remove shorter strings discovered before the true maximum is known.
 
-```java
-public String[] allLongestStrings(String[] inputArray) {
+```csharp
+public string[] AllLongestStrings(string[] inputArray) {
     // Pass 1: Find the maximum length
     int maxLength = 0;
-    for (String s : inputArray) {
-        if (s.length() > maxLength) {
-            maxLength = s.length();
+    foreach (string s in inputArray) {
+        if (s.Length > maxLength) {
+            maxLength = s.Length;
         }
     }
 
     // Pass 2: Collect strings matching the max length
-    List<String> result = new ArrayList<>();
-    for (String s : inputArray) {
-        if (s.length() == maxLength) {
-            result.add(s);
+    List<string> result = new List<string>();
+    foreach (string s in inputArray) {
+        if (s.Length == maxLength) {
+            result.Add(s);
         }
     }
 
-    return result.toArray(new String[0]);
+    return result.ToArray();
 }
 // Time: O(N), Space: O(N) for output
 ```
-
 * * *
 
 **24. Common Character Count**
@@ -799,24 +776,23 @@ public String[] allLongestStrings(String[] inputArray) {
 
 **Pattern:** Dual frequency arrays with element-wise minimum. Build `int[26]` for each string. The number of shared instances of character `c` is `Math.min(count1[c], count2[c])`.
 
-```java
-public int commonCharacterCount(String s1, String s2) {
+```csharp
+public int CommonCharacterCount(string s1, string s2) {
     int[] count1 = new int[26];
     int[] count2 = new int[26];
 
-    for (char c : s1.toCharArray()) count1[c - 'a']++;
-    for (char c : s2.toCharArray()) count2[c - 'a']++;
+    foreach (char c in s1) count1[c - 'a']++;
+    foreach (char c in s2) count2[c - 'a']++;
 
     int common = 0;
     for (int i = 0; i < 26; i++) {
-        common += Math.min(count1[i], count2[i]);
+        common += Math.Min(count1[i], count2[i]);
     }
 
     return common;
 }
 // Time: O(N + M), Space: O(1) — fixed 26-element arrays
 ```
-
 * * *
 
 **25. Lucky Ticket (Digit Sum Halves)**
@@ -826,22 +802,21 @@ public int commonCharacterCount(String s1, String s2) {
 
 **Pattern:** Convert to string for digit access. Split at midpoint. Sum each half independently.
 
-```java
-public boolean isLucky(int n) {
-    String s = String.valueOf(n);
-    int mid = s.length() / 2;
+```csharp
+public bool IsLucky(int n) {
+    string s = n.ToString();
+    int mid = s.Length / 2;
     int sum1 = 0, sum2 = 0;
 
     for (int i = 0; i < mid; i++) {
-        sum1 += s.charAt(i) - '0';       // First half digit
-        sum2 += s.charAt(i + mid) - '0'; // Second half digit
+        sum1 += s[i] - '0';       // First half digit
+        sum2 += s[i + mid] - '0'; // Second half digit
     }
 
     return sum1 == sum2;
 }
 // Time: O(D) where D is digit count, Space: O(D) for string conversion
 ```
-
 * * *
 
 **26. Sort By Height (Obstacles in Place)**
@@ -853,22 +828,22 @@ public boolean isLucky(int n) {
 
 **Invariant:** Tree positions (`-1`) are never touched. Only human positions are modified.
 
-```java
-public int[] sortByHeight(int[] a) {
+```csharp
+public int[] SortByHeight(int[] a) {
     // Step 1: Extract all non-tree heights
-    List<Integer> heights = new ArrayList<>();
-    for (int h : a) {
-        if (h != -1) heights.add(h);
+    List<int> heights = new List<int>();
+    foreach (int h in a) {
+        if (h != -1) heights.Add(h);
     }
 
     // Step 2: Sort the extracted heights
-    Collections.sort(heights);
+    heights.Sort();
 
     // Step 3: Reinsert sorted heights at non-tree positions
     int index = 0;
-    for (int i = 0; i < a.length; i++) {
+    for (int i = 0; i < a.Length; i++) {
         if (a[i] != -1) {
-            a[i] = heights.get(index++);
+            a[i] = heights[index++];
         }
     }
 
@@ -876,7 +851,6 @@ public int[] sortByHeight(int[] a) {
 }
 // Time: O(N log N) for sorting, Space: O(N) for extracted list
 ```
-
 * * *
 
 **27. Alternating Team Sums**
@@ -886,11 +860,11 @@ public int[] sortByHeight(int[] a) {
 
 **Pattern:** Index parity accumulation. `i % 2 == 0` accumulates into Team 1, `i % 2 == 1` into Team 2.
 
-```java
-public int[] alternatingSums(int[] a) {
+```csharp
+public int[] AlternatingSums(int[] a) {
     int team1 = 0, team2 = 0;
 
-    for (int i = 0; i < a.length; i++) {
+    for (int i = 0; i < a.Length; i++) {
         if (i % 2 == 0) {
             team1 += a[i];
         } else {
@@ -902,7 +876,6 @@ public int[] alternatingSums(int[] a) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **28. Add Border to Character Matrix**
@@ -912,32 +885,29 @@ public int[] alternatingSums(int[] a) {
 
 **Pattern:** String construction with dimensional arithmetic. New width = original width + 2. New height = original height + 2. First and last rows are full asterisk strings. Middle rows are wrapped with `*` on each side.
 
-```java
-public String[] addBorder(String[] picture) {
-    int newWidth = picture[0].length() + 2;
-    String[] result = new String[picture.length + 2];
+```csharp
+public string[] AddBorder(string[] picture) {
+    int newWidth = picture[0].Length + 2;
+    string[] result = new string[picture.Length + 2];
 
     // Build the border row
-    StringBuilder borderRow = new StringBuilder();
-    for (int i = 0; i < newWidth; i++) borderRow.append('*');
-    String border = borderRow.toString();
+    string border = new string('*', newWidth);
 
     // Top border
     result[0] = border;
 
     // Wrap each interior row with side asterisks
-    for (int i = 0; i < picture.length; i++) {
+    for (int i = 0; i < picture.Length; i++) {
         result[i + 1] = "*" + picture[i] + "*";
     }
 
     // Bottom border
-    result[result.length - 1] = border;
+    result[result.Length - 1] = border;
 
     return result;
 }
 // Time: O(rows * cols), Space: O(rows * cols) for output
 ```
-
 * * *
 
 **29. Array Change (Minimum Moves for Strict Increase)**
@@ -949,11 +919,11 @@ public String[] addBorder(String[] picture) {
 
 **Invariant:** After processing index `i`, the constraint `arr[i] > arr[i-1]` is guaranteed. The greedy minimum at each step is globally optimal because increasing `arr[i]` to `arr[i-1] + 1` (the smallest valid value) minimizes cascading costs downstream.
 
-```java
-public int arrayChange(int[] inputArray) {
+```csharp
+public int ArrayChange(int[] inputArray) {
     int moves = 0;
 
-    for (int i = 1; i < inputArray.length; i++) {
+    for (int i = 1; i < inputArray.Length; i++) {
         if (inputArray[i] <= inputArray[i - 1]) {
             // Calculate the minimum increment needed
             int deficit = inputArray[i - 1] - inputArray[i] + 1;
@@ -966,7 +936,6 @@ public int arrayChange(int[] inputArray) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **30. Matrix Elements Sum (Haunted Rooms)**
@@ -976,10 +945,10 @@ public int arrayChange(int[] inputArray) {
 
 **Pattern:** Column-wise top-down scan with a boolean "poisoned" flag per column. Once a `0` is encountered in a column, all values below it in that column are skipped.
 
-```java
-public int matrixElementsSum(int[][] matrix) {
-    int rows = matrix.length;
-    int cols = matrix[0].length;
+```csharp
+public int MatrixElementsSum(int[][] matrix) {
+    int rows = matrix.Length;
+    int cols = matrix[0].Length;
     int total = 0;
 
     for (int c = 0; c < cols; c++) {
@@ -995,7 +964,6 @@ public int matrixElementsSum(int[][] matrix) {
 }
 // Time: O(rows * cols), Space: O(1)
 ```
-
 * * *
 
 **31. Almost Increasing Sequence**
@@ -1006,12 +974,12 @@ public int matrixElementsSum(int[][] matrix) {
 **Pattern:** Count violations (positions where `arr[i] >= arr[i+1]`). If zero violations, it is already increasing. If exactly one violation at position `i`, check two removal candidates: removing `arr[i]` or removing `arr[i+1]`. If either removal produces a valid increasing sequence around the gap, return `true`. If more than one violation, return `false`.
 **This is one of the trickiest Easy-tier problems.** The naive approach of "just remove one element and re-check" is $\mathcal{O}(N^2)$. The optimal approach is $\mathcal{O}(N)$.
 
-```java
-public boolean almostIncreasingSequence(int[] sequence) {
+```csharp
+public bool AlmostIncreasingSequence(int[] sequence) {
     int count = 0;   // Number of violations
     int badIdx = -1;  // Index of first violation
 
-    for (int i = 0; i < sequence.length - 1; i++) {
+    for (int i = 0; i < sequence.Length - 1; i++) {
         if (sequence[i] >= sequence[i + 1]) {
             count++;
             badIdx = i;
@@ -1027,7 +995,7 @@ public boolean almostIncreasingSequence(int[] sequence) {
     }
 
     // Try removing element at badIdx + 1
-    if (badIdx + 2 >= sequence.length || sequence[badIdx] < sequence[badIdx + 2]) {
+    if (badIdx + 2 >= sequence.Length || sequence[badIdx] < sequence[badIdx + 2]) {
         return true;
     }
 
@@ -1035,7 +1003,6 @@ public boolean almostIncreasingSequence(int[] sequence) {
 }
 // Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **32. Reverse Parentheses (Nested String Reversal)**
@@ -1045,28 +1012,31 @@ public boolean almostIncreasingSequence(int[] sequence) {
 
 **Pattern:** Stack-based simulation. Use a stack of `StringBuilder`s. When `(` is encountered, push a new builder. When `)` is encountered, pop the top builder, reverse it, and append its contents to the new top of the stack.
 
-```java
-public String reverseInParentheses(String s) {
-    Deque<StringBuilder> stack = new ArrayDeque<>();
-    stack.push(new StringBuilder());
+```csharp
+public string ReverseInParentheses(string s) {
+    Stack<StringBuilder> stack = new Stack<StringBuilder>();
+    stack.Push(new StringBuilder());
 
-    for (char c : s.toCharArray()) {
+    foreach (char c in s) {
         if (c == '(') {
-            stack.push(new StringBuilder()); // Start new nested context
+            stack.Push(new StringBuilder()); // Start new nested context
         } else if (c == ')') {
-            StringBuilder inner = stack.pop();  // Pop innermost context
-            inner.reverse();                     // Reverse it
-            stack.peek().append(inner);          // Append to enclosing context
+            StringBuilder inner = stack.Pop();  // Pop innermost context
+            
+            // Reverse the inner StringBuilder
+            char[] innerChars = inner.ToString().ToCharArray();
+            Array.Reverse(innerChars);
+            
+            stack.Peek().Append(innerChars); // Append to enclosing context
         } else {
-            stack.peek().append(c);              // Accumulate character
+            stack.Peek().Append(c);          // Accumulate character
         }
     }
 
-    return stack.peek().toString();
+    return stack.Peek().ToString();
 }
 // Time: O(N^2) worst case for nested reversals, Space: O(N)
 ```
-
 * * *
 
 ## Practice Problem Bank

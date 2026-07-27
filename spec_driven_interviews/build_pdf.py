@@ -4,7 +4,7 @@ import argparse
 import subprocess
 import shutil
 
-def combine_chapters(edition_dir):
+def combine_chapters(edition_dir, for_epub=False):
     """
     Combines all chapter.md files in the sorted directory structure of the given edition.
     """
@@ -21,15 +21,16 @@ def combine_chapters(edition_dir):
         if not os.path.exists(chapter_file):
             continue
         
-        # Insert Part divider if we hit the boundary
-        if folder == '00-prologue':
-            combined_content += "\n\n\\part{The Spec-Driven Paradigm for Technical Interviews}\n"
-        elif folder == '03-oop-principles':
-            combined_content += "\n\n\\part{Code Design and Craftsmanship}\n"
-        elif folder == '07-concurrency-performance':
-            combined_content += "\n\n\\part{Code Performance and Data Structures}\n"
-        elif folder == '14-system-architecture':
-            combined_content += "\n\n\\part{System Design \\& Architecture at Scale}\n"
+        # Insert Part dividers at section boundaries (updated for 25-chapter structure)
+        if not for_epub:
+            if folder == '00-prologue':
+                combined_content += "\n\n\\part{The Spec-Driven Paradigm}\n"
+            elif folder == '04-oop-principles':
+                combined_content += "\n\n\\part{Code Design and Craftsmanship}\n"
+            elif folder == '09-algorithms-assessment':
+                combined_content += "\n\n\\part{Algorithmic Mastery}\n"
+            elif folder == '16-system-architecture':
+                combined_content += "\n\n\\part{System Design \\& Architecture at Scale}\n"
 
         print(f"  Adding {folder}...")
         with open(chapter_file, 'r', encoding='utf-8') as f:
@@ -111,8 +112,72 @@ def build_pdf(edition):
     except Exception as e:
         print(f"Error building PDF: {e}")
 
+def build_epub(edition):
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    edition_dir = os.path.join(base_dir, 'editions', edition)
+    
+    if not os.path.exists(edition_dir):
+        print(f"Edition '{edition}' not compiled. Run: python build_edition.py --lang {edition} first.")
+        return
+
+    build_dir = os.path.join(base_dir, '_build')
+    os.makedirs(build_dir, exist_ok=True)
+    
+    # 1. Combine chapters (without LaTeX part dividers)
+    try:
+        combined_md = combine_chapters(edition_dir, for_epub=True)
+    except Exception as e:
+        print(f"Error combining chapters: {e}")
+        return
+
+    manuscript_path = os.path.join(build_dir, f'manuscript_{edition}_epub.md')
+    with open(manuscript_path, 'w', encoding='utf-8') as f:
+        f.write(combined_md)
+    print(f"Combined manuscript written to: {manuscript_path}")
+
+    # 2. Run Pandoc to generate EPUB
+    lang_label = edition.capitalize()
+    if edition == 'csharp':
+        lang_label = 'CSharp'
+    epub_output_name = f"Spec_Driven_Coding_Interviews_{lang_label}_Edition.epub"
+    epub_output_path = os.path.join(base_dir, epub_output_name)
+    metadata_path = os.path.join(base_dir, 'metadata.yaml')
+    
+    print(f"Compiling EPUB via Pandoc to: {epub_output_name}...")
+    try:
+        cmd = [
+            'pandoc',
+            manuscript_path,
+            '-o', epub_output_path,
+            '--toc',
+            '--toc-depth=2',
+            '--metadata', f'title=Spec-Driven Coding Interviews ({lang_label} Edition)',
+            '--metadata', 'author=Harinath Mallepally',
+            '--metadata', 'lang=en-US',
+            '--epub-chapter-level=1',
+        ]
+        
+        # Add cover image if it exists
+        cover_path = os.path.join(base_dir, 'visuals', 'cover.png')
+        if os.path.exists(cover_path):
+            cmd.extend(['--epub-cover-image', cover_path])
+        
+        result = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding='utf-8', errors='replace')
+        print(f"EPUB generated successfully: {epub_output_name}")
+            
+    except subprocess.CalledProcessError as e:
+        print(f"Pandoc EPUB compilation failed: {e}")
+        print(f"Error output:\n{e.stderr}")
+    except Exception as e:
+        print(f"Error building EPUB: {e}")
+
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="PDF builder for Spec-Driven Coding Interviews")
+    parser = argparse.ArgumentParser(description="PDF/EPUB builder for Spec-Driven Coding Interviews")
     parser.add_argument('--edition', default='java', choices=['java', 'python', 'csharp'], help="Language edition to build (default: java)")
+    parser.add_argument('--format', default='all', choices=['pdf', 'epub', 'all'], help="Output format (default: all)")
     args = parser.parse_args()
-    build_pdf(args.edition)
+    
+    if args.format in ('pdf', 'all'):
+        build_pdf(args.edition)
+    if args.format in ('epub', 'all'):
+        build_epub(args.edition)

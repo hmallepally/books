@@ -78,57 +78,53 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 ## Reusable Code Templates
 
 ### Template A: Dynamic Sliding Window
-```java
+```csharp
 int left = 0, maxLen = 0;
-for (int right = 0; right < arr.length; right++) {
+for (int right = 0; right < arr.Length; right++) {
     // 1. Add arr[right] to window state
-    while (/* window state violates invariant */) {
+    while (false /* window state violates invariant */) {
         // 2. Remove arr[left] from window state
         left++;
     }
     // 3. Update maxLen or minLen
-    maxLen = Math.max(maxLen, right - left + 1);
+    maxLen = Math.Max(maxLen, right - left + 1);
 }
 ```
-
 ### Template B: Fixed-Size Sliding Window
-```java
+```csharp
 int k = 3, sum = 0, max = 0;
-for (int i = 0; i < arr.length; i++) {
+for (int i = 0; i < arr.Length; i++) {
     sum += arr[i]; // Add current element
     if (i >= k - 1) {
-        max = Math.max(max, sum); // Update result
+        max = Math.Max(max, sum); // Update result
         sum -= arr[i - (k - 1)];  // Remove leftmost element for next iteration
     }
 }
 ```
-
 ### Template C: Prefix Sum + HashMap Counter
-```java
-Map<Integer, Integer> map = new HashMap<>();
-map.put(0, 1); // Base case for subarrays starting at index 0
+```csharp
+Dictionary<int, int> map = new Dictionary<int, int>();
+map[0] = 1; // Base case for subarrays starting at index 0
 int sum = 0, count = 0;
-for (int num : nums) {
+foreach (int num in nums) {
     sum += num;
-    if (map.containsKey(sum - k)) {
-        count += map.get(sum - k);
+    if (map.ContainsKey(sum - k)) {
+        count += map[sum - k];
     }
-    map.put(sum, map.getOrDefault(sum, 0) + 1);
+    map[sum] = map.GetValueOrDefault(sum, 0) + 1;
 }
 ```
-
 ### Template D: HashMap Frequency Grouping
-```java
-Map<String, List<String>> map = new HashMap<>();
-for (String s : strs) {
+```csharp
+Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+foreach (string s in strs) {
     int[] count = new int[26];
-    for (char c : s.toCharArray()) count[c - 'a']++;
-    String key = Arrays.toString(count);
-    map.putIfAbsent(key, new ArrayList<>());
-    map.get(key).add(s);
+    foreach (char c in s.ToCharArray()) count[c - 'a']++;
+    string key = string.Join(",", count);
+    if (!map.ContainsKey(key)) map[key] = new List<string>();
+    map[key].Add(s);
 }
 ```
-
 * * *
 
 ## Solved Exemplar Problems
@@ -141,23 +137,22 @@ for (String s : strs) {
 **Pattern:** Dynamic Sliding Window + HashMap
 
 **Explanation:** We expand the right pointer. If the character is in the set, we contract the left pointer until the duplicate is removed, ensuring the window always contains unique characters.
-```java
-public int lengthOfLongestSubstring(String s) {
-    Set<Character> set = new HashSet<>();
+```csharp
+public int LengthOfLongestSubstring(string s) {
+    HashSet<char> set = new HashSet<char>();
     int left = 0, max = 0;
-    for (int right = 0; right < s.length(); right++) {
+    for (int right = 0; right < s.Length; right++) {
         // Contract if duplicate found
-        while (set.contains(s.charAt(right))) {
-            set.remove(s.charAt(left++));
+        while (set.Contains(s[right])) {
+            set.Remove(s[left++]);
         }
-        set.add(s.charAt(right)); // Add current char
-        max = Math.max(max, right - left + 1);
+        set.Add(s[right]); // Add current char
+        max = Math.Max(max, right - left + 1);
     }
     return max;
 }
 // Time Complexity: O(N) | Space Complexity: O(min(N, M))
 ```
-
 * * *
 
 **2. Subarray Sum Equals K**
@@ -168,22 +163,21 @@ public int lengthOfLongestSubstring(String s) {
 **Pattern:** Prefix Sum + HashMap
 
 **Explanation:** We maintain a running sum. If `sum - k` exists in our frequency map, it means there is a subarray ending at the current index that sums to K.
-```java
-public int subarraySum(int[] nums, int k) {
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, 1); // Base case
+```csharp
+public int SubarraySum(int[] nums, int k) {
+    Dictionary<int, int> map = new Dictionary<int, int>();
+    map[0] = 1; // Base case
     int sum = 0, count = 0;
-    for (int num : nums) {
+    foreach (int num in nums) {
         sum += num;
         // Check if required prefix exists
-        if (map.containsKey(sum - k)) count += map.get(sum - k);
-        map.put(sum, map.getOrDefault(sum, 0) + 1);
+        if (map.ContainsKey(sum - k)) count += map[sum - k];
+        map[sum] = map.GetValueOrDefault(sum, 0) + 1;
     }
     return count;
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **3. Group Anagrams**
@@ -194,20 +188,20 @@ public int subarraySum(int[] nums, int k) {
 **Pattern:** HashMap Frequency Signature
 
 **Explanation:** Generate a 26-element character count array for each string, convert it to a string key, and use it in a HashMap to group anagrams together.
-```java
-public List<List<String>> groupAnagrams(String[] strs) {
-    Map<String, List<String>> map = new HashMap<>();
-    for (String s : strs) {
+```csharp
+public IList<IList<string>> GroupAnagrams(string[] strs) {
+    Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+    foreach (string s in strs) {
         int[] count = new int[26];
-        for (char c : s.toCharArray()) count[c - 'a']++; // Build signature
-        String key = Arrays.toString(count);
-        map.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
+        foreach (char c in s) count[c - 'a']++; // Build signature
+        string key = string.Join(",", count);
+        if (!map.ContainsKey(key)) map[key] = new List<string>();
+        map[key].Add(s);
     }
-    return new ArrayList<>(map.values());
+    return new List<IList<string>>(map.Values);
 }
 // Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
-
 * * *
 
 **4. Find All Anagram Start Indices**
@@ -218,22 +212,21 @@ public List<List<String>> groupAnagrams(String[] strs) {
 **Pattern:** Fixed-Size Sliding Window + Frequency Array
 
 **Explanation:** Use a window of size `p.length()`. Keep arrays of character frequencies for `p` and the current window in `s`. If they match, add the index.
-```java
-public List<Integer> findAnagrams(String s, String p) {
-    List<Integer> res = new ArrayList<>();
-    if (s.length() < p.length()) return res;
+```csharp
+public IList<int> FindAnagrams(string s, string p) {
+    List<int> res = new List<int>();
+    if (s.Length < p.Length) return res;
     int[] pCount = new int[26], sCount = new int[26];
-    for (char c : p.toCharArray()) pCount[c - 'a']++;
-    for (int i = 0; i < s.length(); i++) {
-        sCount[s.charAt(i) - 'a']++;
-        if (i >= p.length()) sCount[s.charAt(i - p.length()) - 'a']--; // Contract
-        if (Arrays.equals(pCount, sCount)) res.add(i - p.length() + 1); // Match
+    foreach (char c in p) pCount[c - 'a']++;
+    for (int i = 0; i < s.Length; i++) {
+        sCount[s[i] - 'a']++;
+        if (i >= p.Length) sCount[s[i - p.Length] - 'a']--; // Contract
+        if (pCount.SequenceEqual(sCount)) res.Add(i - p.Length + 1); // Match
     }
     return res;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **5. Longest Substring with At Most K Distinct Characters**
@@ -244,25 +237,24 @@ public List<Integer> findAnagrams(String s, String p) {
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Use a HashMap to track character frequencies. When map size exceeds K, shrink window from left until size is K again.
-```java
-public int lengthOfLongestSubstringKDistinct(String s, int k) {
-    Map<Character, Integer> map = new HashMap<>();
+```csharp
+public int LengthOfLongestSubstringKDistinct(string s, int k) {
+    Dictionary<char, int> map = new Dictionary<char, int>();
     int left = 0, max = 0;
-    for (int right = 0; right < s.length(); right++) {
-        char c = s.charAt(right);
-        map.put(c, map.getOrDefault(c, 0) + 1);
-        while (map.size() > k) { // Invariant broken
-            char leftChar = s.charAt(left++);
-            map.put(leftChar, map.get(leftChar) - 1);
-            if (map.get(leftChar) == 0) map.remove(leftChar);
+    for (int right = 0; right < s.Length; right++) {
+        char c = s[right];
+        map[c] = map.GetValueOrDefault(c, 0) + 1;
+        while (map.Count > k) { // Invariant broken
+            char leftChar = s[left++];
+            map[leftChar]--;
+            if (map[leftChar] == 0) map.Remove(leftChar);
         }
-        max = Math.max(max, right - left + 1);
+        max = Math.Max(max, right - left + 1);
     }
     return max;
 }
 // Time Complexity: O(N) | Space Complexity: O(K)
 ```
-
 * * *
 
 **6. Minimum Window Substring (Hard)**
@@ -274,26 +266,25 @@ public int lengthOfLongestSubstringKDistinct(String s, int k) {
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Track required characters in a map. Expand right until all required characters are in the window, then contract left to minimize the window.
-```java
-public String minWindow(String s, String t) {
+```csharp
+public string MinWindow(string s, string t) {
     int[] map = new int[128];
-    for (char c : t.toCharArray()) map[c]++;
-    int left = 0, count = t.length(), minLen = Integer.MAX_VALUE, minStart = 0;
-    for (int right = 0; right < s.length(); right++) {
-        if (map[s.charAt(right)]-- > 0) count--; // Found required char
+    foreach (char c in t) map[c]++;
+    int left = 0, count = t.Length, minLen = int.MaxValue, minStart = 0;
+    for (int right = 0; right < s.Length; right++) {
+        if (map[s[right]]-- > 0) count--; // Found required char
         while (count == 0) { // All chars found
             if (right - left + 1 < minLen) {
                 minLen = right - left + 1;
                 minStart = left;
             }
-            if (++map[s.charAt(left++)] > 0) count++; // Removed required char
+            if (++map[s[left++]] > 0) count++; // Removed required char
         }
     }
-    return minLen == Integer.MAX_VALUE ? "" : s.substring(minStart, minStart + minLen);
+    return minLen == int.MaxValue ? "" : s.Substring(minStart, minLen);
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **7. Group Shifted Strings**
@@ -304,22 +295,23 @@ public String minWindow(String s, String t) {
 **Pattern:** Difference-Based Signature
 
 **Explanation:** Calculate the relative distance between adjacent characters. Use this sequence of differences as the HashMap key.
-```java
-public List<List<String>> groupStrings(String[] strings) {
-    Map<String, List<String>> map = new HashMap<>();
-    for (String s : strings) {
+```csharp
+public IList<IList<string>> GroupStrings(string[] strings) {
+    Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+    foreach (string s in strings) {
         StringBuilder key = new StringBuilder();
-        for (int i = 1; i < s.length(); i++) {
-            int diff = (s.charAt(i) - s.charAt(i-1) + 26) % 26; // Circular difference
-            key.append(diff).append(",");
+        for (int i = 1; i < s.Length; i++) {
+            int diff = (s[i] - s[i-1] + 26) % 26; // Circular difference
+            key.Append(diff).Append(",");
         }
-        map.computeIfAbsent(key.toString(), k -> new ArrayList<>()).add(s);
+        string k = key.ToString();
+        if (!map.ContainsKey(k)) map[k] = new List<string>();
+        map[k].Add(s);
     }
-    return new ArrayList<>(map.values());
+    return new List<IList<string>>(map.Values);
 }
 // Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
-
 * * *
 
 **8. Contiguous Array Equal 0s and 1s**
@@ -330,24 +322,23 @@ public List<List<String>> groupStrings(String[] strings) {
 **Pattern:** Prefix Sum (+1/-1 trick)
 
 **Explanation:** Treat 0s as -1. If the running sum is seen again, it means the subarray between those two indices sums to 0, implying equal 0s and 1s.
-```java
-public int findMaxLength(int[] nums) {
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, -1);
+```csharp
+public int FindMaxLength(int[] nums) {
+    Dictionary<int, int> map = new Dictionary<int, int>();
+    map[0] = -1;
     int sum = 0, max = 0;
-    for (int i = 0; i < nums.length; i++) {
+    for (int i = 0; i < nums.Length; i++) {
         sum += nums[i] == 0 ? -1 : 1; // Map 0 to -1
-        if (map.containsKey(sum)) {
-            max = Math.max(max, i - map.get(sum));
+        if (map.ContainsKey(sum)) {
+            max = Math.Max(max, i - map[sum]);
         } else {
-            map.put(sum, i); // Store first occurrence
+            map[sum] = i; // Store first occurrence
         }
     }
     return max;
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **9. Subarray Product Less Than K**
@@ -358,11 +349,11 @@ public int findMaxLength(int[] nums) {
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Maintain a running product. If product >= k, shrink from left. Number of valid subarrays ending at `right` is `right - left + 1`.
-```java
-public int numSubarrayProductLessThanK(int[] nums, int k) {
+```csharp
+public int NumSubarrayProductLessThanK(int[] nums, int k) {
     if (k <= 1) return 0;
     int prod = 1, left = 0, count = 0;
-    for (int right = 0; right < nums.length; right++) {
+    for (int right = 0; right < nums.Length; right++) {
         prod *= nums[right];
         while (prod >= k) prod /= nums[left++]; // Shrink
         count += right - left + 1; // Add valid subarrays
@@ -371,7 +362,6 @@ public int numSubarrayProductLessThanK(int[] nums, int k) {
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **10. Permutation in String**
@@ -382,21 +372,20 @@ public int numSubarrayProductLessThanK(int[] nums, int k) {
 **Pattern:** Fixed-Size Window Frequency Match
 
 **Explanation:** Same logic as Anagram Start Indices. Maintain a window of size `s1.length()` and compare character counts.
-```java
-public boolean checkInclusion(String s1, String s2) {
-    if (s1.length() > s2.length()) return false;
+```csharp
+public bool CheckInclusion(string s1, string s2) {
+    if (s1.Length > s2.Length) return false;
     int[] s1map = new int[26], s2map = new int[26];
-    for (char c : s1.toCharArray()) s1map[c - 'a']++;
-    for (int i = 0; i < s2.length(); i++) {
-        s2map[s2.charAt(i) - 'a']++;
-        if (i >= s1.length()) s2map[s2.charAt(i - s1.length()) - 'a']--;
-        if (Arrays.equals(s1map, s2map)) return true;
+    foreach (char c in s1) s1map[c - 'a']++;
+    for (int i = 0; i < s2.Length; i++) {
+        s2map[s2[i] - 'a']++;
+        if (i >= s1.Length) s2map[s2[i - s1.Length] - 'a']--;
+        if (s1map.SequenceEqual(s2map)) return true;
     }
     return false;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **11. Maximum Erasure Value**
@@ -407,24 +396,23 @@ public boolean checkInclusion(String s1, String s2) {
 **Pattern:** Dynamic Sliding Window + HashSet
 
 **Explanation:** Use a set to track uniqueness. Expand right, add to sum. If duplicate found, shrink from left, subtracting from sum until unique.
-```java
-public int maximumUniqueSubarray(int[] nums) {
-    Set<Integer> set = new HashSet<>();
+```csharp
+public int MaximumUniqueSubarray(int[] nums) {
+    HashSet<int> set = new HashSet<int>();
     int sum = 0, max = 0, left = 0;
-    for (int right = 0; right < nums.length; right++) {
-        while (set.contains(nums[right])) {
-            set.remove(nums[left]);
+    for (int right = 0; right < nums.Length; right++) {
+        while (set.Contains(nums[right])) {
+            set.Remove(nums[left]);
             sum -= nums[left++]; // Remove duplicate
         }
-        set.add(nums[right]);
+        set.Add(nums[right]);
         sum += nums[right];
-        max = Math.max(max, sum);
+        max = Math.Max(max, sum);
     }
     return max;
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **12. Longest Repeating Character Replacement**
@@ -435,22 +423,21 @@ public int maximumUniqueSubarray(int[] nums) {
 **Pattern:** Window with Max Frequency Tracking
 
 **Explanation:** If `window size - max_freq_char_count > k`, we have too many differing chars, so we shrink the window.
-```java
-public int characterReplacement(String s, int k) {
+```csharp
+public int CharacterReplacement(string s, int k) {
     int[] count = new int[26];
     int maxCount = 0, left = 0, maxLen = 0;
-    for (int right = 0; right < s.length(); right++) {
-        maxCount = Math.max(maxCount, ++count[s.charAt(right) - 'A']);
+    for (int right = 0; right < s.Length; right++) {
+        maxCount = Math.Max(maxCount, ++count[s[right] - 'A']);
         if (right - left + 1 - maxCount > k) { // Invalid window
-            count[s.charAt(left++) - 'A']--;
+            count[s[left++] - 'A']--;
         }
-        maxLen = Math.max(maxLen, right - left + 1);
+        maxLen = Math.Max(maxLen, right - left + 1);
     }
     return maxLen;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **13. Fruit Into Baskets**
@@ -461,24 +448,23 @@ public int characterReplacement(String s, int k) {
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Keep a frequency map. When distinct fruit types exceed 2, increment left pointer to shrink.
-```java
-public int totalFruit(int[] fruits) {
-    Map<Integer, Integer> count = new HashMap<>();
+```csharp
+public int TotalFruit(int[] fruits) {
+    Dictionary<int, int> count = new Dictionary<int, int>();
     int left = 0, max = 0;
-    for (int right = 0; right < fruits.length; right++) {
-        count.put(fruits[right], count.getOrDefault(fruits[right], 0) + 1);
-        while (count.size() > 2) {
-            count.put(fruits[left], count.get(fruits[left]) - 1);
-            if (count.get(fruits[left]) == 0) count.remove(fruits[left]);
+    for (int right = 0; right < fruits.Length; right++) {
+        count[fruits[right]] = count.GetValueOrDefault(fruits[right], 0) + 1;
+        while (count.Count > 2) {
+            count[fruits[left]]--;
+            if (count[fruits[left]] == 0) count.Remove(fruits[left]);
             left++;
         }
-        max = Math.max(max, right - left + 1);
+        max = Math.Max(max, right - left + 1);
     }
     return max;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **14. Continuous Subarray Sum Multiple of K**
@@ -489,25 +475,24 @@ public int totalFruit(int[] fruits) {
 **Pattern:** Prefix Sum Modular Math
 
 **Explanation:** If `pref[i] % k == pref[j] % k`, the sum between $i$ and $j$ is a multiple of $K$. Store remainder and its first seen index.
-```java
-public boolean checkSubarraySum(int[] nums, int k) {
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, -1);
+```csharp
+public bool CheckSubarraySum(int[] nums, int k) {
+    Dictionary<int, int> map = new Dictionary<int, int>();
+    map[0] = -1;
     int sum = 0;
-    for (int i = 0; i < nums.length; i++) {
+    for (int i = 0; i < nums.Length; i++) {
         sum += nums[i];
         int mod = k == 0 ? sum : ((sum % k) + k) % k;
-        if (map.containsKey(mod)) {
-            if (i - map.get(mod) > 1) return true; // Length >= 2
+        if (map.ContainsKey(mod)) {
+            if (i - map[mod] > 1) return true; // Length >= 2
         } else {
-            map.put(mod, i);
+            map[mod] = i;
         }
     }
     return false;
 }
 // Time Complexity: O(N) | Space Complexity: O(min(N, K))
 ```
-
 * * *
 
 **15. Max Consecutive Ones III**
@@ -518,20 +503,19 @@ public boolean checkSubarraySum(int[] nums, int k) {
 **Pattern:** Window with Zero-Flip Budget
 
 **Explanation:** Expand window. If 0 encountered, decrease K. If K < 0, shrink window until a 0 is excluded.
-```java
-public int longestOnes(int[] nums, int k) {
+```csharp
+public int LongestOnes(int[] nums, int k) {
     int left = 0;
-    for (int right = 0; right < nums.length; right++) {
+    for (int right = 0; right < nums.Length; right++) {
         if (nums[right] == 0) k--;
         if (k < 0) { // Over budget
             if (nums[left++] == 0) k++;
         }
     }
-    return nums.length - left; // Trick to return max valid length seen
+    return nums.Length - left; // Trick to return max valid length seen
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **16. Find All Duplicates in Array**
@@ -542,19 +526,18 @@ public int longestOnes(int[] nums, int k) {
 **Pattern:** Index Negation Trick
 
 **Explanation:** Use the array itself as a hash table. Mark the number at index `abs(num) - 1` negative. If it's already negative, it's a duplicate.
-```java
-public List<Integer> findDuplicates(int[] nums) {
-    List<Integer> res = new ArrayList<>();
-    for (int num : nums) {
-        int idx = Math.abs(num) - 1;
-        if (nums[idx] < 0) res.add(Math.abs(num)); // Found duplicate
+```csharp
+public IList<int> FindDuplicates(int[] nums) {
+    List<int> res = new List<int>();
+    foreach (int num in nums) {
+        int idx = Math.Abs(num) - 1;
+        if (nums[idx] < 0) res.Add(Math.Abs(num)); // Found duplicate
         else nums[idx] = -nums[idx]; // Mark seen
     }
     return res;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **17. Task Scheduler CPU Units**
@@ -565,23 +548,22 @@ public List<Integer> findDuplicates(int[] nums) {
 **Pattern:** Frequency Math
 
 **Explanation:** Calculate idle slots based on the most frequent task. `maxIdle = (maxFreq - 1) * n`. Fill slots with other tasks.
-```java
-public int leastInterval(char[] tasks, int n) {
+```csharp
+public int LeastInterval(char[] tasks, int n) {
     int[] count = new int[26];
     int max = 0, maxCount = 0;
-    for (char c : tasks) {
+    foreach (char c in tasks) {
         count[c - 'A']++;
         if (count[c - 'A'] == max) maxCount++;
         else if (count[c - 'A'] > max) { max = count[c - 'A']; maxCount = 1; }
     }
     int emptySlots = (max - 1) * (n - (maxCount - 1));
-    int availableTasks = tasks.length - max * maxCount;
-    int idles = Math.max(0, emptySlots - availableTasks);
-    return tasks.length + idles;
+    int availableTasks = tasks.Length - max * maxCount;
+    int idles = Math.Max(0, emptySlots - availableTasks);
+    return tasks.Length + idles;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **18. Insert & Merge Overlapping Intervals**
@@ -592,23 +574,22 @@ public int leastInterval(char[] tasks, int n) {
 **Pattern:** Interval Merging
 
 **Explanation:** Three phases: Add all before new, merge overlapping with new, add all after new.
-```java
-public int[][] insert(int[][] intervals, int[] newInterval) {
-    List<int[]> res = new ArrayList<>();
-    int i = 0, n = intervals.length;
-    while (i < n && intervals[i][1] < newInterval[0]) res.add(intervals[i++]); // Before
+```csharp
+public int[][] Insert(int[][] intervals, int[] newInterval) {
+    List<int[]> res = new List<int[]>();
+    int i = 0, n = intervals.Length;
+    while (i < n && intervals[i][1] < newInterval[0]) res.Add(intervals[i++]); // Before
     while (i < n && intervals[i][0] <= newInterval[1]) { // Merge
-        newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
-        newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
+        newInterval[0] = Math.Min(newInterval[0], intervals[i][0]);
+        newInterval[1] = Math.Max(newInterval[1], intervals[i][1]);
         i++;
     }
-    res.add(newInterval);
-    while (i < n) res.add(intervals[i++]); // After
-    return res.toArray(new int[res.size()][]);
+    res.Add(newInterval);
+    while (i < n) res.Add(intervals[i++]); // After
+    return res.ToArray();
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **19. Top K Frequent Elements**
@@ -619,20 +600,21 @@ public int[][] insert(int[][] intervals, int[] newInterval) {
 **Pattern:** HashMap + Min-Heap
 
 **Explanation:** Count frequencies in a map, then keep a min-heap of size K based on frequencies.
-```java
-public int[] topKFrequent(int[] nums, int k) {
-    Map<Integer, Integer> count = new HashMap<>();
-    for (int n : nums) count.put(n, count.getOrDefault(n, 0) + 1);
-    PriorityQueue<Integer> heap = new PriorityQueue<>((a, b) -> count.get(a) - count.get(b));
-    for (int n : count.keySet()) {
-        heap.add(n);
-        if (heap.size() > k) heap.poll(); // Keep size K
+```csharp
+public int[] TopKFrequent(int[] nums, int k) {
+    Dictionary<int, int> count = new Dictionary<int, int>();
+    foreach (int n in nums) count[n] = count.GetValueOrDefault(n, 0) + 1;
+    PriorityQueue<int, int> heap = new PriorityQueue<int, int>();
+    foreach (int n in count.Keys) {
+        heap.Enqueue(n, count[n]);
+        if (heap.Count > k) heap.Dequeue(); // Keep size K
     }
-    return heap.stream().mapToInt(i -> i).toArray();
+    int[] res = new int[k];
+    for (int i = k - 1; i >= 0; i--) res[i] = heap.Dequeue();
+    return res;
 }
 // Time Complexity: O(N log K) | Space Complexity: O(N)
 ```
-
 * * *
 
 **20. First Missing Positive Integer**
@@ -643,12 +625,12 @@ public int[] topKFrequent(int[] nums, int k) {
 **Pattern:** Cyclic Sort (Index placement)
 
 **Explanation:** Place number `x` at index `x-1`. Then scan to find the first index that doesn't have `i+1`.
-```java
-public int firstMissingPositive(int[] nums) {
+```csharp
+public int FirstMissingPositive(int[] nums) {
     int i = 0;
-    while (i < nums.length) {
+    while (i < nums.Length) {
         // Swap to correct position if valid
-        if (nums[i] > 0 && nums[i] <= nums.length && nums[nums[i] - 1] != nums[i]) {
+        if (nums[i] > 0 && nums[i] <= nums.Length && nums[nums[i] - 1] != nums[i]) {
             int temp = nums[nums[i] - 1];
             nums[nums[i] - 1] = nums[i];
             nums[i] = temp;
@@ -656,14 +638,13 @@ public int firstMissingPositive(int[] nums) {
             i++;
         }
     }
-    for (i = 0; i < nums.length; i++) {
+    for (i = 0; i < nums.Length; i++) {
         if (nums[i] != i + 1) return i + 1; // Missing
     }
-    return nums.length + 1;
+    return nums.Length + 1;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **21. Minimum Size Subarray Sum**
@@ -674,21 +655,20 @@ public int firstMissingPositive(int[] nums) {
 **Pattern:** Dynamic Window with Target Sum
 
 **Explanation:** Keep expanding until sum >= target, then shrink to find minimum.
-```java
-public int minSubArrayLen(int target, int[] nums) {
-    int left = 0, sum = 0, min = Integer.MAX_VALUE;
-    for (int right = 0; right < nums.length; right++) {
+```csharp
+public int MinSubArrayLen(int target, int[] nums) {
+    int left = 0, sum = 0, min = int.MaxValue;
+    for (int right = 0; right < nums.Length; right++) {
         sum += nums[right];
         while (sum >= target) {
-            min = Math.min(min, right - left + 1);
+            min = Math.Min(min, right - left + 1);
             sum -= nums[left++];
         }
     }
-    return min == Integer.MAX_VALUE ? 0 : min;
+    return min == int.MaxValue ? 0 : min;
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **22. Substring with Concatenation of All Words**
@@ -699,32 +679,31 @@ public int minSubArrayLen(int target, int[] nums) {
 **Pattern:** Fixed-Size Window with Inner HashMap
 
 **Explanation:** Use a map for word counts. Slide a window of length `words.length * wordLen` and verify word counts inside.
-```java
-public List<Integer> findSubstring(String s, String[] words) {
-    List<Integer> res = new ArrayList<>();
-    if (s.isEmpty() || words.length == 0) return res;
-    int wordLen = words[0].length(), totalLen = wordLen * words.length;
-    Map<String, Integer> counts = new HashMap<>();
-    for (String w : words) counts.put(w, counts.getOrDefault(w, 0) + 1);
+```csharp
+public IList<int> FindSubstring(string s, string[] words) {
+    List<int> res = new List<int>();
+    if (s.Length == 0 || words.Length == 0) return res;
+    int wordLen = words[0].Length, totalLen = wordLen * words.Length;
+    Dictionary<string, int> counts = new Dictionary<string, int>();
+    foreach (string w in words) counts[w] = counts.GetValueOrDefault(w, 0) + 1;
     
-    for (int i = 0; i <= s.length() - totalLen; i++) {
-        Map<String, Integer> seen = new HashMap<>();
+    for (int i = 0; i <= s.Length - totalLen; i++) {
+        Dictionary<string, int> seen = new Dictionary<string, int>();
         int j = 0;
-        while (j < words.length) {
-            String w = s.substring(i + j * wordLen, i + (j + 1) * wordLen);
-            if (counts.containsKey(w)) {
-                seen.put(w, seen.getOrDefault(w, 0) + 1);
-                if (seen.get(w) > counts.get(w)) break;
+        while (j < words.Length) {
+            string w = s.Substring(i + j * wordLen, wordLen);
+            if (counts.ContainsKey(w)) {
+                seen[w] = seen.GetValueOrDefault(w, 0) + 1;
+                if (seen[w] > counts[w]) break;
             } else break;
             j++;
         }
-        if (j == words.length) res.add(i);
+        if (j == words.Length) res.Add(i);
     }
     return res;
 }
 // Time Complexity: O(N * M * L) | Space Complexity: O(M)
 ```
-
 * * *
 
 **23. Contains Duplicate II**
@@ -735,18 +714,17 @@ public List<Integer> findSubstring(String s, String[] words) {
 **Pattern:** Sliding Window Set
 
 **Explanation:** Keep a sliding set of size k. If add fails, duplicate found.
-```java
-public boolean containsNearbyDuplicate(int[] nums, int k) {
-    Set<Integer> set = new HashSet<>();
-    for (int i = 0; i < nums.length; i++) {
-        if (i > k) set.remove(nums[i - k - 1]);
-        if (!set.add(nums[i])) return true;
+```csharp
+public bool ContainsNearbyDuplicate(int[] nums, int k) {
+    HashSet<int> set = new HashSet<int>();
+    for (int i = 0; i < nums.Length; i++) {
+        if (i > k) set.Remove(nums[i - k - 1]);
+        if (!set.Add(nums[i])) return true;
     }
     return false;
 }
 // Time Complexity: O(N) | Space Complexity: O(K)
 ```
-
 * * *
 
 **24. Count Number of Nice Subarrays**
@@ -757,21 +735,20 @@ public boolean containsNearbyDuplicate(int[] nums, int k) {
 **Pattern:** Prefix Sum of Odds
 
 **Explanation:** Treat odds as 1s, evens as 0s. Same as subarray sum equals K.
-```java
-public int numberOfSubarrays(int[] nums, int k) {
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, 1);
+```csharp
+public int NumberOfSubarrays(int[] nums, int k) {
+    Dictionary<int, int> map = new Dictionary<int, int>();
+    map[0] = 1;
     int sum = 0, count = 0;
-    for (int num : nums) {
+    foreach (int num in nums) {
         sum += num % 2;
-        count += map.getOrDefault(sum - k, 0);
-        map.put(sum, map.getOrDefault(sum, 0) + 1);
+        count += map.GetValueOrDefault(sum - k, 0);
+        map[sum] = map.GetValueOrDefault(sum, 0) + 1;
     }
     return count;
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **25. Frequency of Most Frequent Element**
@@ -782,22 +759,21 @@ public int numberOfSubarrays(int[] nums, int k) {
 **Pattern:** Sort + Sliding Window
 
 **Explanation:** Sort first. To make all elements in window equal to `nums[right]`, we need `nums[right] * window_length - window_sum <= k`.
-```java
-public int maxFrequency(int[] nums, int k) {
-    Arrays.sort(nums);
+```csharp
+public int MaxFrequency(int[] nums, int k) {
+    Array.Sort(nums);
     int left = 0;
     long sum = 0;
-    for (int right = 0; right < nums.length; right++) {
+    for (int right = 0; right < nums.Length; right++) {
         sum += nums[right];
         if ((long)nums[right] * (right - left + 1) - sum > k) {
             sum -= nums[left++];
         }
     }
-    return nums.length - left;
+    return nums.Length - left;
 }
 // Time Complexity: O(N log N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **26. Subarrays with K Different Integers**
@@ -808,14 +784,14 @@ public int maxFrequency(int[] nums, int k) {
 **Pattern:** At-Most-K Trick
 
 **Explanation:** Exactly(K) = AtMost(K) - AtMost(K-1).
-```java
-public int subarraysWithKDistinct(int[] nums, int k) {
-    return atMostK(nums, k) - atMostK(nums, k - 1);
+```csharp
+public int SubarraysWithKDistinct(int[] nums, int k) {
+    return AtMostK(nums, k) - AtMostK(nums, k - 1);
 }
-private int atMostK(int[] nums, int k) {
-    int[] count = new int[nums.length + 1];
+private int AtMostK(int[] nums, int k) {
+    int[] count = new int[nums.Length + 1];
     int left = 0, res = 0, distinct = 0;
-    for (int right = 0; right < nums.length; right++) {
+    for (int right = 0; right < nums.Length; right++) {
         if (count[nums[right]]++ == 0) distinct++;
         while (distinct > k) {
             if (--count[nums[left++]] == 0) distinct--;
@@ -826,7 +802,6 @@ private int atMostK(int[] nums, int k) {
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **27. Longest Palindromic Substring**
@@ -837,27 +812,26 @@ private int atMostK(int[] nums, int k) {
 **Pattern:** Expand Around Center
 
 **Explanation:** Treat each character and between-character as a center and expand outwards to check for palindrome.
-```java
-public String longestPalindrome(String s) {
+```csharp
+public string LongestPalindrome(string s) {
     int start = 0, end = 0;
-    for (int i = 0; i < s.length(); i++) {
-        int len1 = expand(s, i, i);
-        int len2 = expand(s, i, i + 1);
-        int len = Math.max(len1, len2);
+    for (int i = 0; i < s.Length; i++) {
+        int len1 = Expand(s, i, i);
+        int len2 = Expand(s, i, i + 1);
+        int len = Math.Max(len1, len2);
         if (len > end - start) {
             start = i - (len - 1) / 2;
             end = i + len / 2;
         }
     }
-    return s.substring(start, end + 1);
+    return s.Substring(start, end - start + 1);
 }
-private int expand(String s, int L, int R) {
-    while (L >= 0 && R < s.length() && s.charAt(L) == s.charAt(R)) { L--; R++; }
+private int Expand(string s, int L, int R) {
+    while (L >= 0 && R < s.Length && s[L] == s[R]) { L--; R++; }
     return R - L - 1;
 }
 // Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
-
 * * *
 
 **28. 3Sum**
@@ -868,17 +842,17 @@ private int expand(String s, int L, int R) {
 **Pattern:** Sort + Two Pointer
 
 **Explanation:** Sort array. Iterate `i`, and use two pointers `L` and `R` to find pairs summing to `-nums[i]`. Skip duplicates.
-```java
-public List<List<Integer>> threeSum(int[] nums) {
-    Arrays.sort(nums);
-    List<List<Integer>> res = new ArrayList<>();
-    for (int i = 0; i < nums.length - 2; i++) {
+```csharp
+public IList<IList<int>> ThreeSum(int[] nums) {
+    Array.Sort(nums);
+    IList<IList<int>> res = new List<IList<int>>();
+    for (int i = 0; i < nums.Length - 2; i++) {
         if (i > 0 && nums[i] == nums[i-1]) continue;
-        int L = i + 1, R = nums.length - 1;
+        int L = i + 1, R = nums.Length - 1;
         while (L < R) {
             int sum = nums[i] + nums[L] + nums[R];
             if (sum == 0) {
-                res.add(Arrays.asList(nums[i], nums[L], nums[R]));
+                res.Add(new List<int>{nums[i], nums[L], nums[R]});
                 while (L < R && nums[L] == nums[L+1]) L++;
                 while (L < R && nums[R] == nums[R-1]) R--;
                 L++; R--;
@@ -891,7 +865,6 @@ public List<List<Integer>> threeSum(int[] nums) {
 }
 // Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
-
 * * *
 
 **29. 4Sum**
@@ -902,19 +875,19 @@ public List<List<Integer>> threeSum(int[] nums) {
 **Pattern:** Sort + Nested Two Pointer
 
 **Explanation:** Extend 3Sum by adding one more outer loop.
-```java
-public List<List<Integer>> fourSum(int[] nums, int target) {
-    Arrays.sort(nums);
-    List<List<Integer>> res = new ArrayList<>();
-    for (int i = 0; i < nums.length - 3; i++) {
+```csharp
+public IList<IList<int>> FourSum(int[] nums, int target) {
+    Array.Sort(nums);
+    IList<IList<int>> res = new List<IList<int>>();
+    for (int i = 0; i < nums.Length - 3; i++) {
         if (i > 0 && nums[i] == nums[i-1]) continue;
-        for (int j = i + 1; j < nums.length - 2; j++) {
+        for (int j = i + 1; j < nums.Length - 2; j++) {
             if (j > i + 1 && nums[j] == nums[j-1]) continue;
-            int L = j + 1, R = nums.length - 1;
+            int L = j + 1, R = nums.Length - 1;
             while (L < R) {
                 long sum = (long)nums[i] + nums[j] + nums[L] + nums[R];
                 if (sum == target) {
-                    res.add(Arrays.asList(nums[i], nums[j], nums[L], nums[R]));
+                    res.Add(new List<int>{nums[i], nums[j], nums[L], nums[R]});
                     while (L < R && nums[L] == nums[L+1]) L++;
                     while (L < R && nums[R] == nums[R-1]) R--;
                     L++; R--;
@@ -928,7 +901,6 @@ public List<List<Integer>> fourSum(int[] nums, int target) {
 }
 // Time Complexity: O(N^3) | Space Complexity: O(1)
 ```
-
 * * *
 
 **30. Number of Distinct Islands**
@@ -939,33 +911,32 @@ public List<List<Integer>> fourSum(int[] nums, int target) {
 **Pattern:** DFS + Path Signature Hashing
 
 **Explanation:** Record the direction moved (U, D, L, R) during DFS traversal. Store path strings in a HashSet to deduplicate identical shapes.
-```java
-public int numDistinctIslands(int[][] grid) {
-    Set<String> set = new HashSet<>();
-    for (int i = 0; i < grid.length; i++) {
-        for (int j = 0; j < grid[0].length; j++) {
+```csharp
+public int NumDistinctIslands(int[][] grid) {
+    HashSet<string> set = new HashSet<string>();
+    for (int i = 0; i < grid.Length; i++) {
+        for (int j = 0; j < grid[0].Length; j++) {
             if (grid[i][j] == 1) {
                 StringBuilder sb = new StringBuilder();
-                dfs(grid, i, j, "S", sb); // Start with 'S'
-                set.add(sb.toString());
+                Dfs(grid, i, j, "S", sb); // Start with 'S'
+                set.Add(sb.ToString());
             }
         }
     }
-    return set.size();
+    return set.Count;
 }
-private void dfs(int[][] grid, int r, int c, String dir, StringBuilder sb) {
-    if (r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == 0) return;
+private void Dfs(int[][] grid, int r, int c, string dir, StringBuilder sb) {
+    if (r < 0 || c < 0 || r >= grid.Length || c >= grid[0].Length || grid[r][c] == 0) return;
     grid[r][c] = 0; // mark visited
-    sb.append(dir);
-    dfs(grid, r + 1, c, "D", sb);
-    dfs(grid, r - 1, c, "U", sb);
-    dfs(grid, r, c + 1, "R", sb);
-    dfs(grid, r, c - 1, "L", sb);
-    sb.append("B"); // Backtrack to distinguish paths
+    sb.Append(dir);
+    Dfs(grid, r + 1, c, "D", sb);
+    Dfs(grid, r - 1, c, "U", sb);
+    Dfs(grid, r, c + 1, "R", sb);
+    Dfs(grid, r, c - 1, "L", sb);
+    sb.Append("B"); // Backtrack to distinguish paths
 }
 // Time Complexity: O(R * C) | Space Complexity: O(R * C)
 ```
-
 * * *
 
 ## Practice Problem Bank

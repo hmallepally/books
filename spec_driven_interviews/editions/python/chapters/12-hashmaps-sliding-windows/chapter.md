@@ -78,57 +78,47 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 ## Reusable Code Templates
 
 ### Template A: Dynamic Sliding Window
-```java
-int left = 0, maxLen = 0;
-for (int right = 0; right < arr.length; right++) {
-    // 1. Add arr[right] to window state
-    while (/* window state violates invariant */) {
-        // 2. Remove arr[left] from window state
-        left++;
-    }
-    // 3. Update maxLen or minLen
-    maxLen = Math.max(maxLen, right - left + 1);
-}
+```python
+left = max_len = 0
+for right in range(len(arr)):
+    # 1. Add arr[right] to window state
+    while False: # window state violates invariant
+        # 2. Remove arr[left] from window state
+        left += 1
+    # 3. Update maxLen or minLen
+    max_len = max(max_len, right - left + 1)
 ```
-
 ### Template B: Fixed-Size Sliding Window
-```java
-int k = 3, sum = 0, max = 0;
-for (int i = 0; i < arr.length; i++) {
-    sum += arr[i]; // Add current element
-    if (i >= k - 1) {
-        max = Math.max(max, sum); // Update result
-        sum -= arr[i - (k - 1)];  // Remove leftmost element for next iteration
-    }
-}
+```python
+k, total_sum, max_val = 3, 0, 0
+for i in range(len(arr)):
+    total_sum += arr[i] # Add current element
+    if i >= k - 1:
+        max_val = max(max_val, total_sum) # Update result
+        total_sum -= arr[i - (k - 1)]     # Remove leftmost element for next iteration
 ```
-
 ### Template C: Prefix Sum + HashMap Counter
-```java
-Map<Integer, Integer> map = new HashMap<>();
-map.put(0, 1); // Base case for subarrays starting at index 0
-int sum = 0, count = 0;
-for (int num : nums) {
-    sum += num;
-    if (map.containsKey(sum - k)) {
-        count += map.get(sum - k);
-    }
-    map.put(sum, map.getOrDefault(sum, 0) + 1);
-}
+```python
+from collections import defaultdict
+hash_map = defaultdict(int)
+hash_map[0] = 1 # Base case for subarrays starting at index 0
+total_sum = count = 0
+for num in nums:
+    total_sum += num
+    if (total_sum - k) in hash_map:
+        count += hash_map[total_sum - k]
+    hash_map[total_sum] += 1
 ```
-
 ### Template D: HashMap Frequency Grouping
-```java
-Map<String, List<String>> map = new HashMap<>();
-for (String s : strs) {
-    int[] count = new int[26];
-    for (char c : s.toCharArray()) count[c - 'a']++;
-    String key = Arrays.toString(count);
-    map.putIfAbsent(key, new ArrayList<>());
-    map.get(key).add(s);
-}
+```python
+from collections import defaultdict
+hash_map = defaultdict(list)
+for s in strs:
+    count = [0] * 26
+    for c in s: count[ord(c) - ord('a')] += 1
+    key = str(count)
+    hash_map[key].append(s)
 ```
-
 * * *
 
 ## Solved Exemplar Problems
@@ -141,23 +131,20 @@ for (String s : strs) {
 **Pattern:** Dynamic Sliding Window + HashMap
 
 **Explanation:** We expand the right pointer. If the character is in the set, we contract the left pointer until the duplicate is removed, ensuring the window always contains unique characters.
-```java
-public int lengthOfLongestSubstring(String s) {
-    Set<Character> set = new HashSet<>();
-    int left = 0, max = 0;
-    for (int right = 0; right < s.length(); right++) {
-        // Contract if duplicate found
-        while (set.contains(s.charAt(right))) {
-            set.remove(s.charAt(left++));
-        }
-        set.add(s.charAt(right)); // Add current char
-        max = Math.max(max, right - left + 1);
-    }
-    return max;
-}
-// Time Complexity: O(N) | Space Complexity: O(min(N, M))
+```python
+def length_of_longest_substring(self, s: str) -> int:
+    char_set = set()
+    left = max_val = 0
+    for right in range(len(s)):
+        # Contract if duplicate found
+        while s[right] in char_set:
+            char_set.remove(s[left])
+            left += 1
+        char_set.add(s[right]) # Add current char
+        max_val = max(max_val, right - left + 1)
+    return max_val
+# Time Complexity: O(N) | Space Complexity: O(min(N, M))
 ```
-
 * * *
 
 **2. Subarray Sum Equals K**
@@ -168,22 +155,20 @@ public int lengthOfLongestSubstring(String s) {
 **Pattern:** Prefix Sum + HashMap
 
 **Explanation:** We maintain a running sum. If `sum - k` exists in our frequency map, it means there is a subarray ending at the current index that sums to K.
-```java
-public int subarraySum(int[] nums, int k) {
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, 1); // Base case
-    int sum = 0, count = 0;
-    for (int num : nums) {
-        sum += num;
-        // Check if required prefix exists
-        if (map.containsKey(sum - k)) count += map.get(sum - k);
-        map.put(sum, map.getOrDefault(sum, 0) + 1);
-    }
-    return count;
-}
-// Time Complexity: O(N) | Space Complexity: O(N)
+```python
+def subarray_sum(self, nums: list[int], k: int) -> int:
+    from collections import defaultdict
+    hash_map = defaultdict(int)
+    hash_map[0] = 1 # Base case
+    total_sum = count = 0
+    for num in nums:
+        total_sum += num
+        # Check if required prefix exists
+        if (total_sum - k) in hash_map: count += hash_map[total_sum - k]
+        hash_map[total_sum] += 1
+    return count
+# Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **3. Group Anagrams**
@@ -194,20 +179,18 @@ public int subarraySum(int[] nums, int k) {
 **Pattern:** HashMap Frequency Signature
 
 **Explanation:** Generate a 26-element character count array for each string, convert it to a string key, and use it in a HashMap to group anagrams together.
-```java
-public List<List<String>> groupAnagrams(String[] strs) {
-    Map<String, List<String>> map = new HashMap<>();
-    for (String s : strs) {
-        int[] count = new int[26];
-        for (char c : s.toCharArray()) count[c - 'a']++; // Build signature
-        String key = Arrays.toString(count);
-        map.computeIfAbsent(key, k -> new ArrayList<>()).add(s);
-    }
-    return new ArrayList<>(map.values());
-}
-// Time Complexity: O(N * L) | Space Complexity: O(N * L)
+```python
+def group_anagrams(self, strs: list[str]) -> list[list[str]]:
+    from collections import defaultdict
+    hash_map = defaultdict(list)
+    for s in strs:
+        count = [0] * 26
+        for c in s: count[ord(c) - ord('a')] += 1 # Build signature
+        key = tuple(count)
+        hash_map[key].append(s)
+    return list(hash_map.values())
+# Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
-
 * * *
 
 **4. Find All Anagram Start Indices**
@@ -218,22 +201,19 @@ public List<List<String>> groupAnagrams(String[] strs) {
 **Pattern:** Fixed-Size Sliding Window + Frequency Array
 
 **Explanation:** Use a window of size `p.length()`. Keep arrays of character frequencies for `p` and the current window in `s`. If they match, add the index.
-```java
-public List<Integer> findAnagrams(String s, String p) {
-    List<Integer> res = new ArrayList<>();
-    if (s.length() < p.length()) return res;
-    int[] pCount = new int[26], sCount = new int[26];
-    for (char c : p.toCharArray()) pCount[c - 'a']++;
-    for (int i = 0; i < s.length(); i++) {
-        sCount[s.charAt(i) - 'a']++;
-        if (i >= p.length()) sCount[s.charAt(i - p.length()) - 'a']--; // Contract
-        if (Arrays.equals(pCount, sCount)) res.add(i - p.length() + 1); // Match
-    }
-    return res;
-}
-// Time Complexity: O(N) | Space Complexity: O(1)
+```python
+def find_anagrams(self, s: str, p: str) -> list[int]:
+    res = []
+    if len(s) < len(p): return res
+    p_count, s_count = [0] * 26, [0] * 26
+    for c in p: p_count[ord(c) - ord('a')] += 1
+    for i in range(len(s)):
+        s_count[ord(s[i]) - ord('a')] += 1
+        if i >= len(p): s_count[ord(s[i - len(p)]) - ord('a')] -= 1 # Contract
+        if p_count == s_count: res.append(i - len(p) + 1) # Match
+    return res
+# Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **5. Longest Substring with At Most K Distinct Characters**
@@ -244,25 +224,23 @@ public List<Integer> findAnagrams(String s, String p) {
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Use a HashMap to track character frequencies. When map size exceeds K, shrink window from left until size is K again.
-```java
-public int lengthOfLongestSubstringKDistinct(String s, int k) {
-    Map<Character, Integer> map = new HashMap<>();
-    int left = 0, max = 0;
-    for (int right = 0; right < s.length(); right++) {
-        char c = s.charAt(right);
-        map.put(c, map.getOrDefault(c, 0) + 1);
-        while (map.size() > k) { // Invariant broken
-            char leftChar = s.charAt(left++);
-            map.put(leftChar, map.get(leftChar) - 1);
-            if (map.get(leftChar) == 0) map.remove(leftChar);
-        }
-        max = Math.max(max, right - left + 1);
-    }
-    return max;
-}
-// Time Complexity: O(N) | Space Complexity: O(K)
+```python
+def length_of_longest_substring_k_distinct(self, s: str, k: int) -> int:
+    from collections import defaultdict
+    hash_map = defaultdict(int)
+    left = max_val = 0
+    for right in range(len(s)):
+        c = s[right]
+        hash_map[c] += 1
+        while len(hash_map) > k: # Invariant broken
+            left_char = s[left]
+            left += 1
+            hash_map[left_char] -= 1
+            if hash_map[left_char] == 0: del hash_map[left_char]
+        max_val = max(max_val, right - left + 1)
+    return max_val
+# Time Complexity: O(N) | Space Complexity: O(K)
 ```
-
 * * *
 
 **6. Minimum Window Substring (Hard)**
@@ -274,26 +252,28 @@ public int lengthOfLongestSubstringKDistinct(String s, int k) {
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Track required characters in a map. Expand right until all required characters are in the window, then contract left to minimize the window.
-```java
-public String minWindow(String s, String t) {
-    int[] map = new int[128];
-    for (char c : t.toCharArray()) map[c]++;
-    int left = 0, count = t.length(), minLen = Integer.MAX_VALUE, minStart = 0;
-    for (int right = 0; right < s.length(); right++) {
-        if (map[s.charAt(right)]-- > 0) count--; // Found required char
-        while (count == 0) { // All chars found
-            if (right - left + 1 < minLen) {
-                minLen = right - left + 1;
-                minStart = left;
-            }
-            if (++map[s.charAt(left++)] > 0) count++; // Removed required char
-        }
-    }
-    return minLen == Integer.MAX_VALUE ? "" : s.substring(minStart, minStart + minLen);
-}
-// Time Complexity: O(N) | Space Complexity: O(1)
+```python
+def min_window(self, s: str, t: str) -> str:
+    char_map = [0] * 128
+    for c in t: char_map[ord(c)] += 1
+    left, count = 0, len(t)
+    min_len, min_start = float('inf'), 0
+    
+    for right in range(len(s)):
+        if char_map[ord(s[right])] > 0: count -= 1 # Found required char
+        char_map[ord(s[right])] -= 1
+        
+        while count == 0: # All chars found
+            if right - left + 1 < min_len:
+                min_len = right - left + 1
+                min_start = left
+            char_map[ord(s[left])] += 1
+            if char_map[ord(s[left])] > 0: count += 1 # Removed required char
+            left += 1
+            
+    return "" if min_len == float('inf') else s[min_start:min_start + min_len]
+# Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **7. Group Shifted Strings**
@@ -304,22 +284,19 @@ public String minWindow(String s, String t) {
 **Pattern:** Difference-Based Signature
 
 **Explanation:** Calculate the relative distance between adjacent characters. Use this sequence of differences as the HashMap key.
-```java
-public List<List<String>> groupStrings(String[] strings) {
-    Map<String, List<String>> map = new HashMap<>();
-    for (String s : strings) {
-        StringBuilder key = new StringBuilder();
-        for (int i = 1; i < s.length(); i++) {
-            int diff = (s.charAt(i) - s.charAt(i-1) + 26) % 26; // Circular difference
-            key.append(diff).append(",");
-        }
-        map.computeIfAbsent(key.toString(), k -> new ArrayList<>()).add(s);
-    }
-    return new ArrayList<>(map.values());
-}
-// Time Complexity: O(N * L) | Space Complexity: O(N * L)
+```python
+def group_strings(self, strings: list[str]) -> list[list[str]]:
+    from collections import defaultdict
+    hash_map = defaultdict(list)
+    for s in strings:
+        key = []
+        for i in range(1, len(s)):
+            diff = (ord(s[i]) - ord(s[i-1]) + 26) % 26 # Circular difference
+            key.append(str(diff))
+        hash_map[','.join(key)].append(s)
+    return list(hash_map.values())
+# Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
-
 * * *
 
 **8. Contiguous Array Equal 0s and 1s**
@@ -330,24 +307,19 @@ public List<List<String>> groupStrings(String[] strings) {
 **Pattern:** Prefix Sum (+1/-1 trick)
 
 **Explanation:** Treat 0s as -1. If the running sum is seen again, it means the subarray between those two indices sums to 0, implying equal 0s and 1s.
-```java
-public int findMaxLength(int[] nums) {
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, -1);
-    int sum = 0, max = 0;
-    for (int i = 0; i < nums.length; i++) {
-        sum += nums[i] == 0 ? -1 : 1; // Map 0 to -1
-        if (map.containsKey(sum)) {
-            max = Math.max(max, i - map.get(sum));
-        } else {
-            map.put(sum, i); // Store first occurrence
-        }
-    }
-    return max;
-}
-// Time Complexity: O(N) | Space Complexity: O(N)
+```python
+def find_max_length(self, nums: list[int]) -> int:
+    hash_map = {0: -1}
+    total_sum = max_val = 0
+    for i, num in enumerate(nums):
+        total_sum += -1 if num == 0 else 1 # Map 0 to -1
+        if total_sum in hash_map:
+            max_val = max(max_val, i - hash_map[total_sum])
+        else:
+            hash_map[total_sum] = i # Store first occurrence
+    return max_val
+# Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **9. Subarray Product Less Than K**
@@ -358,20 +330,19 @@ public int findMaxLength(int[] nums) {
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Maintain a running product. If product >= k, shrink from left. Number of valid subarrays ending at `right` is `right - left + 1`.
-```java
-public int numSubarrayProductLessThanK(int[] nums, int k) {
-    if (k <= 1) return 0;
-    int prod = 1, left = 0, count = 0;
-    for (int right = 0; right < nums.length; right++) {
-        prod *= nums[right];
-        while (prod >= k) prod /= nums[left++]; // Shrink
-        count += right - left + 1; // Add valid subarrays
-    }
-    return count;
-}
-// Time Complexity: O(N) | Space Complexity: O(1)
+```python
+def num_subarray_product_less_than_k(self, nums: list[int], k: int) -> int:
+    if k <= 1: return 0
+    prod, left, count = 1, 0, 0
+    for right in range(len(nums)):
+        prod *= nums[right]
+        while prod >= k:
+            prod //= nums[left]
+            left += 1 # Shrink
+        count += right - left + 1 # Add valid subarrays
+    return count
+# Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **10. Permutation in String**
@@ -382,21 +353,18 @@ public int numSubarrayProductLessThanK(int[] nums, int k) {
 **Pattern:** Fixed-Size Window Frequency Match
 
 **Explanation:** Same logic as Anagram Start Indices. Maintain a window of size `s1.length()` and compare character counts.
-```java
-public boolean checkInclusion(String s1, String s2) {
-    if (s1.length() > s2.length()) return false;
-    int[] s1map = new int[26], s2map = new int[26];
-    for (char c : s1.toCharArray()) s1map[c - 'a']++;
-    for (int i = 0; i < s2.length(); i++) {
-        s2map[s2.charAt(i) - 'a']++;
-        if (i >= s1.length()) s2map[s2.charAt(i - s1.length()) - 'a']--;
-        if (Arrays.equals(s1map, s2map)) return true;
-    }
-    return false;
-}
-// Time Complexity: O(N) | Space Complexity: O(1)
+```python
+def check_inclusion(self, s1: str, s2: str) -> bool:
+    if len(s1) > len(s2): return False
+    s1_map, s2_map = [0] * 26, [0] * 26
+    for c in s1: s1_map[ord(c) - ord('a')] += 1
+    for i in range(len(s2)):
+        s2_map[ord(s2[i]) - ord('a')] += 1
+        if i >= len(s1): s2_map[ord(s2[i - len(s1)]) - ord('a')] -= 1
+        if s1_map == s2_map: return True
+    return False
+# Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **11. Maximum Erasure Value**
@@ -407,24 +375,21 @@ public boolean checkInclusion(String s1, String s2) {
 **Pattern:** Dynamic Sliding Window + HashSet
 
 **Explanation:** Use a set to track uniqueness. Expand right, add to sum. If duplicate found, shrink from left, subtracting from sum until unique.
-```java
-public int maximumUniqueSubarray(int[] nums) {
-    Set<Integer> set = new HashSet<>();
-    int sum = 0, max = 0, left = 0;
-    for (int right = 0; right < nums.length; right++) {
-        while (set.contains(nums[right])) {
-            set.remove(nums[left]);
-            sum -= nums[left++]; // Remove duplicate
-        }
-        set.add(nums[right]);
-        sum += nums[right];
-        max = Math.max(max, sum);
-    }
-    return max;
-}
-// Time Complexity: O(N) | Space Complexity: O(N)
+```python
+def maximum_unique_subarray(self, nums: list[int]) -> int:
+    char_set = set()
+    total_sum = max_val = left = 0
+    for right in range(len(nums)):
+        while nums[right] in char_set:
+            char_set.remove(nums[left])
+            total_sum -= nums[left] # Remove duplicate
+            left += 1
+        char_set.add(nums[right])
+        total_sum += nums[right]
+        max_val = max(max_val, total_sum)
+    return max_val
+# Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **12. Longest Repeating Character Replacement**
@@ -435,22 +400,21 @@ public int maximumUniqueSubarray(int[] nums) {
 **Pattern:** Window with Max Frequency Tracking
 
 **Explanation:** If `window size - max_freq_char_count > k`, we have too many differing chars, so we shrink the window.
-```java
-public int characterReplacement(String s, int k) {
-    int[] count = new int[26];
-    int maxCount = 0, left = 0, maxLen = 0;
-    for (int right = 0; right < s.length(); right++) {
-        maxCount = Math.max(maxCount, ++count[s.charAt(right) - 'A']);
-        if (right - left + 1 - maxCount > k) { // Invalid window
-            count[s.charAt(left++) - 'A']--;
-        }
-        maxLen = Math.max(maxLen, right - left + 1);
-    }
-    return maxLen;
-}
-// Time Complexity: O(N) | Space Complexity: O(1)
+```python
+def character_replacement(self, s: str, k: int) -> int:
+    count = [0] * 26
+    max_count = left = max_len = 0
+    for right in range(len(s)):
+        idx = ord(s[right]) - ord('A')
+        count[idx] += 1
+        max_count = max(max_count, count[idx])
+        if right - left + 1 - max_count > k: # Invalid window
+            count[ord(s[left]) - ord('A')] -= 1
+            left += 1
+        max_len = max(max_len, right - left + 1)
+    return max_len
+# Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **13. Fruit Into Baskets**
@@ -461,24 +425,22 @@ public int characterReplacement(String s, int k) {
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Keep a frequency map. When distinct fruit types exceed 2, increment left pointer to shrink.
-```java
-public int totalFruit(int[] fruits) {
-    Map<Integer, Integer> count = new HashMap<>();
-    int left = 0, max = 0;
-    for (int right = 0; right < fruits.length; right++) {
-        count.put(fruits[right], count.getOrDefault(fruits[right], 0) + 1);
-        while (count.size() > 2) {
-            count.put(fruits[left], count.get(fruits[left]) - 1);
-            if (count.get(fruits[left]) == 0) count.remove(fruits[left]);
-            left++;
-        }
-        max = Math.max(max, right - left + 1);
-    }
-    return max;
-}
-// Time Complexity: O(N) | Space Complexity: O(1)
+```python
+def total_fruit(self, fruits: list[int]) -> int:
+    from collections import defaultdict
+    count = defaultdict(int)
+    left = max_val = 0
+    for right in range(len(fruits)):
+        count[fruits[right]] += 1
+        while len(count) > 2:
+            count[fruits[left]] -= 1
+            if count[fruits[left]] == 0:
+                del count[fruits[left]]
+            left += 1
+        max_val = max(max_val, right - left + 1)
+    return max_val
+# Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **14. Continuous Subarray Sum Multiple of K**
@@ -489,25 +451,20 @@ public int totalFruit(int[] fruits) {
 **Pattern:** Prefix Sum Modular Math
 
 **Explanation:** If `pref[i] % k == pref[j] % k`, the sum between $i$ and $j$ is a multiple of $K$. Store remainder and its first seen index.
-```java
-public boolean checkSubarraySum(int[] nums, int k) {
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, -1);
-    int sum = 0;
-    for (int i = 0; i < nums.length; i++) {
-        sum += nums[i];
-        int mod = k == 0 ? sum : ((sum % k) + k) % k;
-        if (map.containsKey(mod)) {
-            if (i - map.get(mod) > 1) return true; // Length >= 2
-        } else {
-            map.put(mod, i);
-        }
-    }
-    return false;
-}
-// Time Complexity: O(N) | Space Complexity: O(min(N, K))
+```python
+def check_subarray_sum(self, nums: list[int], k: int) -> bool:
+    hash_map = {0: -1}
+    total_sum = 0
+    for i, num in enumerate(nums):
+        total_sum += num
+        mod = total_sum if k == 0 else total_sum % k
+        if mod in hash_map:
+            if i - hash_map[mod] > 1: return True # Length >= 2
+        else:
+            hash_map[mod] = i
+    return False
+# Time Complexity: O(N) | Space Complexity: O(min(N, K))
 ```
-
 * * *
 
 **15. Max Consecutive Ones III**
@@ -518,20 +475,17 @@ public boolean checkSubarraySum(int[] nums, int k) {
 **Pattern:** Window with Zero-Flip Budget
 
 **Explanation:** Expand window. If 0 encountered, decrease K. If K < 0, shrink window until a 0 is excluded.
-```java
-public int longestOnes(int[] nums, int k) {
-    int left = 0;
-    for (int right = 0; right < nums.length; right++) {
-        if (nums[right] == 0) k--;
-        if (k < 0) { // Over budget
-            if (nums[left++] == 0) k++;
-        }
-    }
-    return nums.length - left; // Trick to return max valid length seen
-}
-// Time Complexity: O(N) | Space Complexity: O(1)
+```python
+def longest_ones(self, nums: list[int], k: int) -> int:
+    left = 0
+    for right in range(len(nums)):
+        if nums[right] == 0: k -= 1
+        if k < 0: # Over budget
+            if nums[left] == 0: k += 1
+            left += 1
+    return len(nums) - left # Trick to return max valid length seen
+# Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **16. Find All Duplicates in Array**
@@ -542,19 +496,16 @@ public int longestOnes(int[] nums, int k) {
 **Pattern:** Index Negation Trick
 
 **Explanation:** Use the array itself as a hash table. Mark the number at index `abs(num) - 1` negative. If it's already negative, it's a duplicate.
-```java
-public List<Integer> findDuplicates(int[] nums) {
-    List<Integer> res = new ArrayList<>();
-    for (int num : nums) {
-        int idx = Math.abs(num) - 1;
-        if (nums[idx] < 0) res.add(Math.abs(num)); // Found duplicate
-        else nums[idx] = -nums[idx]; // Mark seen
-    }
-    return res;
-}
-// Time Complexity: O(N) | Space Complexity: O(1)
+```python
+def find_duplicates(self, nums: list[int]) -> list[int]:
+    res = []
+    for num in nums:
+        idx = abs(num) - 1
+        if nums[idx] < 0: res.append(abs(num)) # Found duplicate
+        else: nums[idx] = -nums[idx] # Mark seen
+    return res
+# Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **17. Task Scheduler CPU Units**
@@ -565,23 +516,25 @@ public List<Integer> findDuplicates(int[] nums) {
 **Pattern:** Frequency Math
 
 **Explanation:** Calculate idle slots based on the most frequent task. `maxIdle = (maxFreq - 1) * n`. Fill slots with other tasks.
-```java
-public int leastInterval(char[] tasks, int n) {
-    int[] count = new int[26];
-    int max = 0, maxCount = 0;
-    for (char c : tasks) {
-        count[c - 'A']++;
-        if (count[c - 'A'] == max) maxCount++;
-        else if (count[c - 'A'] > max) { max = count[c - 'A']; maxCount = 1; }
-    }
-    int emptySlots = (max - 1) * (n - (maxCount - 1));
-    int availableTasks = tasks.length - max * maxCount;
-    int idles = Math.max(0, emptySlots - availableTasks);
-    return tasks.length + idles;
-}
-// Time Complexity: O(N) | Space Complexity: O(1)
+```python
+def least_interval(self, tasks: list[str], n: int) -> int:
+    count = [0] * 26
+    max_val = max_count = 0
+    for c in tasks:
+        idx = ord(c) - ord('A')
+        count[idx] += 1
+        if count[idx] == max_val:
+            max_count += 1
+        elif count[idx] > max_val:
+            max_val = count[idx]
+            max_count = 1
+            
+    empty_slots = (max_val - 1) * (n - (max_count - 1))
+    available_tasks = len(tasks) - max_val * max_count
+    idles = max(0, empty_slots - available_tasks)
+    return len(tasks) + idles
+# Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **18. Insert & Merge Overlapping Intervals**
@@ -592,23 +545,24 @@ public int leastInterval(char[] tasks, int n) {
 **Pattern:** Interval Merging
 
 **Explanation:** Three phases: Add all before new, merge overlapping with new, add all after new.
-```java
-public int[][] insert(int[][] intervals, int[] newInterval) {
-    List<int[]> res = new ArrayList<>();
-    int i = 0, n = intervals.length;
-    while (i < n && intervals[i][1] < newInterval[0]) res.add(intervals[i++]); // Before
-    while (i < n && intervals[i][0] <= newInterval[1]) { // Merge
-        newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
-        newInterval[1] = Math.max(newInterval[1], intervals[i][1]);
-        i++;
-    }
-    res.add(newInterval);
-    while (i < n) res.add(intervals[i++]); // After
-    return res.toArray(new int[res.size()][]);
-}
-// Time Complexity: O(N) | Space Complexity: O(N)
+```python
+def insert(self, intervals: list[list[int]], new_interval: list[int]) -> list[list[int]]:
+    res = []
+    i, n = 0, len(intervals)
+    while i < n and intervals[i][1] < new_interval[0]:
+        res.append(intervals[i]) # Before
+        i += 1
+    while i < n and intervals[i][0] <= new_interval[1]: # Merge
+        new_interval[0] = min(new_interval[0], intervals[i][0])
+        new_interval[1] = max(new_interval[1], intervals[i][1])
+        i += 1
+    res.append(new_interval)
+    while i < n:
+        res.append(intervals[i]) # After
+        i += 1
+    return res
+# Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **19. Top K Frequent Elements**
@@ -619,20 +573,15 @@ public int[][] insert(int[][] intervals, int[] newInterval) {
 **Pattern:** HashMap + Min-Heap
 
 **Explanation:** Count frequencies in a map, then keep a min-heap of size K based on frequencies.
-```java
-public int[] topKFrequent(int[] nums, int k) {
-    Map<Integer, Integer> count = new HashMap<>();
-    for (int n : nums) count.put(n, count.getOrDefault(n, 0) + 1);
-    PriorityQueue<Integer> heap = new PriorityQueue<>((a, b) -> count.get(a) - count.get(b));
-    for (int n : count.keySet()) {
-        heap.add(n);
-        if (heap.size() > k) heap.poll(); // Keep size K
-    }
-    return heap.stream().mapToInt(i -> i).toArray();
-}
-// Time Complexity: O(N log K) | Space Complexity: O(N)
+```python
+def top_k_frequent(self, nums: list[int], k: int) -> list[int]:
+    from collections import Counter
+    import heapq
+    
+    count = Counter(nums)
+    return heapq.nlargest(k, count.keys(), key=count.get)
+# Time Complexity: O(N log K) | Space Complexity: O(N)
 ```
-
 * * *
 
 **20. First Missing Positive Integer**
@@ -643,27 +592,22 @@ public int[] topKFrequent(int[] nums, int k) {
 **Pattern:** Cyclic Sort (Index placement)
 
 **Explanation:** Place number `x` at index `x-1`. Then scan to find the first index that doesn't have `i+1`.
-```java
-public int firstMissingPositive(int[] nums) {
-    int i = 0;
-    while (i < nums.length) {
-        // Swap to correct position if valid
-        if (nums[i] > 0 && nums[i] <= nums.length && nums[nums[i] - 1] != nums[i]) {
-            int temp = nums[nums[i] - 1];
-            nums[nums[i] - 1] = nums[i];
-            nums[i] = temp;
-        } else {
-            i++;
-        }
-    }
-    for (i = 0; i < nums.length; i++) {
-        if (nums[i] != i + 1) return i + 1; // Missing
-    }
-    return nums.length + 1;
-}
-// Time Complexity: O(N) | Space Complexity: O(1)
+```python
+def first_missing_positive(self, nums: list[int]) -> int:
+    i = 0
+    while i < len(nums):
+        # Swap to correct position if valid
+        if 0 < nums[i] <= len(nums) and nums[nums[i] - 1] != nums[i]:
+            nums[nums[i] - 1], nums[i] = nums[i], nums[nums[i] - 1]
+        else:
+            i += 1
+            
+    for i in range(len(nums)):
+        if nums[i] != i + 1: return i + 1 # Missing
+        
+    return len(nums) + 1
+# Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **21. Minimum Size Subarray Sum**
@@ -674,21 +618,19 @@ public int firstMissingPositive(int[] nums) {
 **Pattern:** Dynamic Window with Target Sum
 
 **Explanation:** Keep expanding until sum >= target, then shrink to find minimum.
-```java
-public int minSubArrayLen(int target, int[] nums) {
-    int left = 0, sum = 0, min = Integer.MAX_VALUE;
-    for (int right = 0; right < nums.length; right++) {
-        sum += nums[right];
-        while (sum >= target) {
-            min = Math.min(min, right - left + 1);
-            sum -= nums[left++];
-        }
-    }
-    return min == Integer.MAX_VALUE ? 0 : min;
-}
-// Time Complexity: O(N) | Space Complexity: O(1)
+```python
+def min_sub_array_len(self, target: int, nums: list[int]) -> int:
+    left = total_sum = 0
+    min_val = float('inf')
+    for right in range(len(nums)):
+        total_sum += nums[right]
+        while total_sum >= target:
+            min_val = min(min_val, right - left + 1)
+            total_sum -= nums[left]
+            left += 1
+    return 0 if min_val == float('inf') else min_val
+# Time Complexity: O(N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **22. Substring with Concatenation of All Words**
@@ -699,32 +641,31 @@ public int minSubArrayLen(int target, int[] nums) {
 **Pattern:** Fixed-Size Window with Inner HashMap
 
 **Explanation:** Use a map for word counts. Slide a window of length `words.length * wordLen` and verify word counts inside.
-```java
-public List<Integer> findSubstring(String s, String[] words) {
-    List<Integer> res = new ArrayList<>();
-    if (s.isEmpty() || words.length == 0) return res;
-    int wordLen = words[0].length(), totalLen = wordLen * words.length;
-    Map<String, Integer> counts = new HashMap<>();
-    for (String w : words) counts.put(w, counts.getOrDefault(w, 0) + 1);
+```python
+def find_substring(self, s: str, words: list[str]) -> list[int]:
+    res = []
+    if not s or not words: return res
+    word_len = len(words[0])
+    total_len = word_len * len(words)
     
-    for (int i = 0; i <= s.length() - totalLen; i++) {
-        Map<String, Integer> seen = new HashMap<>();
-        int j = 0;
-        while (j < words.length) {
-            String w = s.substring(i + j * wordLen, i + (j + 1) * wordLen);
-            if (counts.containsKey(w)) {
-                seen.put(w, seen.getOrDefault(w, 0) + 1);
-                if (seen.get(w) > counts.get(w)) break;
-            } else break;
-            j++;
-        }
-        if (j == words.length) res.add(i);
-    }
-    return res;
-}
-// Time Complexity: O(N * M * L) | Space Complexity: O(M)
+    from collections import Counter
+    counts = Counter(words)
+    
+    for i in range(len(s) - total_len + 1):
+        seen = {}
+        j = 0
+        while j < len(words):
+            w = s[i + j * word_len : i + (j + 1) * word_len]
+            if w in counts:
+                seen[w] = seen.get(w, 0) + 1
+                if seen[w] > counts[w]: break
+            else:
+                break
+            j += 1
+        if j == len(words): res.append(i)
+    return res
+# Time Complexity: O(N * M * L) | Space Complexity: O(M)
 ```
-
 * * *
 
 **23. Contains Duplicate II**
@@ -735,18 +676,16 @@ public List<Integer> findSubstring(String s, String[] words) {
 **Pattern:** Sliding Window Set
 
 **Explanation:** Keep a sliding set of size k. If add fails, duplicate found.
-```java
-public boolean containsNearbyDuplicate(int[] nums, int k) {
-    Set<Integer> set = new HashSet<>();
-    for (int i = 0; i < nums.length; i++) {
-        if (i > k) set.remove(nums[i - k - 1]);
-        if (!set.add(nums[i])) return true;
-    }
-    return false;
-}
-// Time Complexity: O(N) | Space Complexity: O(K)
+```python
+def contains_nearby_duplicate(self, nums: list[int], k: int) -> bool:
+    hash_set = set()
+    for i in range(len(nums)):
+        if i > k: hash_set.remove(nums[i - k - 1])
+        if nums[i] in hash_set: return True
+        hash_set.add(nums[i])
+    return False
+# Time Complexity: O(N) | Space Complexity: O(K)
 ```
-
 * * *
 
 **24. Count Number of Nice Subarrays**
@@ -757,21 +696,19 @@ public boolean containsNearbyDuplicate(int[] nums, int k) {
 **Pattern:** Prefix Sum of Odds
 
 **Explanation:** Treat odds as 1s, evens as 0s. Same as subarray sum equals K.
-```java
-public int numberOfSubarrays(int[] nums, int k) {
-    Map<Integer, Integer> map = new HashMap<>();
-    map.put(0, 1);
-    int sum = 0, count = 0;
-    for (int num : nums) {
-        sum += num % 2;
-        count += map.getOrDefault(sum - k, 0);
-        map.put(sum, map.getOrDefault(sum, 0) + 1);
-    }
-    return count;
-}
-// Time Complexity: O(N) | Space Complexity: O(N)
+```python
+def number_of_subarrays(self, nums: list[int], k: int) -> int:
+    from collections import defaultdict
+    hash_map = defaultdict(int)
+    hash_map[0] = 1
+    total_sum = count = 0
+    for num in nums:
+        total_sum += num % 2
+        count += hash_map[total_sum - k]
+        hash_map[total_sum] += 1
+    return count
+# Time Complexity: O(N) | Space Complexity: O(N)
 ```
-
 * * *
 
 **25. Frequency of Most Frequent Element**
@@ -782,22 +719,18 @@ public int numberOfSubarrays(int[] nums, int k) {
 **Pattern:** Sort + Sliding Window
 
 **Explanation:** Sort first. To make all elements in window equal to `nums[right]`, we need `nums[right] * window_length - window_sum <= k`.
-```java
-public int maxFrequency(int[] nums, int k) {
-    Arrays.sort(nums);
-    int left = 0;
-    long sum = 0;
-    for (int right = 0; right < nums.length; right++) {
-        sum += nums[right];
-        if ((long)nums[right] * (right - left + 1) - sum > k) {
-            sum -= nums[left++];
-        }
-    }
-    return nums.length - left;
-}
-// Time Complexity: O(N log N) | Space Complexity: O(1)
+```python
+def max_frequency(self, nums: list[int], k: int) -> int:
+    nums.sort()
+    left = total_sum = 0
+    for right in range(len(nums)):
+        total_sum += nums[right]
+        if nums[right] * (right - left + 1) - total_sum > k:
+            total_sum -= nums[left]
+            left += 1
+    return len(nums) - left
+# Time Complexity: O(N log N) | Space Complexity: O(1)
 ```
-
 * * *
 
 **26. Subarrays with K Different Integers**
@@ -808,25 +741,24 @@ public int maxFrequency(int[] nums, int k) {
 **Pattern:** At-Most-K Trick
 
 **Explanation:** Exactly(K) = AtMost(K) - AtMost(K-1).
-```java
-public int subarraysWithKDistinct(int[] nums, int k) {
-    return atMostK(nums, k) - atMostK(nums, k - 1);
-}
-private int atMostK(int[] nums, int k) {
-    int[] count = new int[nums.length + 1];
-    int left = 0, res = 0, distinct = 0;
-    for (int right = 0; right < nums.length; right++) {
-        if (count[nums[right]]++ == 0) distinct++;
-        while (distinct > k) {
-            if (--count[nums[left++]] == 0) distinct--;
-        }
-        res += right - left + 1;
-    }
-    return res;
-}
-// Time Complexity: O(N) | Space Complexity: O(N)
-```
+```python
+def subarrays_with_k_distinct(self, nums: list[int], k: int) -> int:
+    return self._at_most_k(nums, k) - self._at_most_k(nums, k - 1)
 
+def _at_most_k(self, nums: list[int], k: int) -> int:
+    count = [0] * (len(nums) + 1)
+    left = res = distinct = 0
+    for right in range(len(nums)):
+        if count[nums[right]] == 0: distinct += 1
+        count[nums[right]] += 1
+        while distinct > k:
+            count[nums[left]] -= 1
+            if count[nums[left]] == 0: distinct -= 1
+            left += 1
+        res += right - left + 1
+    return res
+# Time Complexity: O(N) | Space Complexity: O(N)
+```
 * * *
 
 **27. Longest Palindromic Substring**
@@ -837,27 +769,24 @@ private int atMostK(int[] nums, int k) {
 **Pattern:** Expand Around Center
 
 **Explanation:** Treat each character and between-character as a center and expand outwards to check for palindrome.
-```java
-public String longestPalindrome(String s) {
-    int start = 0, end = 0;
-    for (int i = 0; i < s.length(); i++) {
-        int len1 = expand(s, i, i);
-        int len2 = expand(s, i, i + 1);
-        int len = Math.max(len1, len2);
-        if (len > end - start) {
-            start = i - (len - 1) / 2;
-            end = i + len / 2;
-        }
-    }
-    return s.substring(start, end + 1);
-}
-private int expand(String s, int L, int R) {
-    while (L >= 0 && R < s.length() && s.charAt(L) == s.charAt(R)) { L--; R++; }
-    return R - L - 1;
-}
-// Time Complexity: O(N^2) | Space Complexity: O(1)
-```
+```python
+def longest_palindrome(self, s: str) -> str:
+    start = end = 0
+    for i in range(len(s)):
+        len1 = self._expand(s, i, i)
+        len2 = self._expand(s, i, i + 1)
+        length = max(len1, len2)
+        if length > end - start:
+            start = i - (length - 1) // 2
+            end = i + length // 2
+    return s[start:end + 1]
 
+def _expand(self, s: str, l: int, r: int) -> int:
+    while l >= 0 and r < len(s) and s[l] == s[r]:
+        l -= 1; r += 1
+    return r - l - 1
+# Time Complexity: O(N^2) | Space Complexity: O(1)
+```
 * * *
 
 **28. 3Sum**
@@ -868,30 +797,25 @@ private int expand(String s, int L, int R) {
 **Pattern:** Sort + Two Pointer
 
 **Explanation:** Sort array. Iterate `i`, and use two pointers `L` and `R` to find pairs summing to `-nums[i]`. Skip duplicates.
-```java
-public List<List<Integer>> threeSum(int[] nums) {
-    Arrays.sort(nums);
-    List<List<Integer>> res = new ArrayList<>();
-    for (int i = 0; i < nums.length - 2; i++) {
-        if (i > 0 && nums[i] == nums[i-1]) continue;
-        int L = i + 1, R = nums.length - 1;
-        while (L < R) {
-            int sum = nums[i] + nums[L] + nums[R];
-            if (sum == 0) {
-                res.add(Arrays.asList(nums[i], nums[L], nums[R]));
-                while (L < R && nums[L] == nums[L+1]) L++;
-                while (L < R && nums[R] == nums[R-1]) R--;
-                L++; R--;
-            }
-            else if (sum < 0) L++;
-            else R--;
-        }
-    }
-    return res;
-}
-// Time Complexity: O(N^2) | Space Complexity: O(1)
+```python
+def three_sum(self, nums: list[int]) -> list[list[int]]:
+    nums.sort()
+    res = []
+    for i in range(len(nums) - 2):
+        if i > 0 and nums[i] == nums[i-1]: continue
+        l, r = i + 1, len(nums) - 1
+        while l < r:
+            total = nums[i] + nums[l] + nums[r]
+            if total == 0:
+                res.append([nums[i], nums[l], nums[r]])
+                while l < r and nums[l] == nums[l+1]: l += 1
+                while l < r and nums[r] == nums[r-1]: r -= 1
+                l += 1; r -= 1
+            elif total < 0: l += 1
+            else: r -= 1
+    return res
+# Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
-
 * * *
 
 **29. 4Sum**
@@ -902,33 +826,27 @@ public List<List<Integer>> threeSum(int[] nums) {
 **Pattern:** Sort + Nested Two Pointer
 
 **Explanation:** Extend 3Sum by adding one more outer loop.
-```java
-public List<List<Integer>> fourSum(int[] nums, int target) {
-    Arrays.sort(nums);
-    List<List<Integer>> res = new ArrayList<>();
-    for (int i = 0; i < nums.length - 3; i++) {
-        if (i > 0 && nums[i] == nums[i-1]) continue;
-        for (int j = i + 1; j < nums.length - 2; j++) {
-            if (j > i + 1 && nums[j] == nums[j-1]) continue;
-            int L = j + 1, R = nums.length - 1;
-            while (L < R) {
-                long sum = (long)nums[i] + nums[j] + nums[L] + nums[R];
-                if (sum == target) {
-                    res.add(Arrays.asList(nums[i], nums[j], nums[L], nums[R]));
-                    while (L < R && nums[L] == nums[L+1]) L++;
-                    while (L < R && nums[R] == nums[R-1]) R--;
-                    L++; R--;
-                }
-                else if (sum < target) L++;
-                else R--;
-            }
-        }
-    }
-    return res;
-}
-// Time Complexity: O(N^3) | Space Complexity: O(1)
+```python
+def four_sum(self, nums: list[int], target: int) -> list[list[int]]:
+    nums.sort()
+    res = []
+    for i in range(len(nums) - 3):
+        if i > 0 and nums[i] == nums[i-1]: continue
+        for j in range(i + 1, len(nums) - 2):
+            if j > i + 1 and nums[j] == nums[j-1]: continue
+            l, r = j + 1, len(nums) - 1
+            while l < r:
+                total = nums[i] + nums[j] + nums[l] + nums[r]
+                if total == target:
+                    res.append([nums[i], nums[j], nums[l], nums[r]])
+                    while l < r and nums[l] == nums[l+1]: l += 1
+                    while l < r and nums[r] == nums[r-1]: r -= 1
+                    l += 1; r -= 1
+                elif total < target: l += 1
+                else: r -= 1
+    return res
+# Time Complexity: O(N^3) | Space Complexity: O(1)
 ```
-
 * * *
 
 **30. Number of Distinct Islands**
@@ -939,33 +857,28 @@ public List<List<Integer>> fourSum(int[] nums, int target) {
 **Pattern:** DFS + Path Signature Hashing
 
 **Explanation:** Record the direction moved (U, D, L, R) during DFS traversal. Store path strings in a HashSet to deduplicate identical shapes.
-```java
-public int numDistinctIslands(int[][] grid) {
-    Set<String> set = new HashSet<>();
-    for (int i = 0; i < grid.length; i++) {
-        for (int j = 0; j < grid[0].length; j++) {
-            if (grid[i][j] == 1) {
-                StringBuilder sb = new StringBuilder();
-                dfs(grid, i, j, "S", sb); // Start with 'S'
-                set.add(sb.toString());
-            }
-        }
-    }
-    return set.size();
-}
-private void dfs(int[][] grid, int r, int c, String dir, StringBuilder sb) {
-    if (r < 0 || c < 0 || r >= grid.length || c >= grid[0].length || grid[r][c] == 0) return;
-    grid[r][c] = 0; // mark visited
-    sb.append(dir);
-    dfs(grid, r + 1, c, "D", sb);
-    dfs(grid, r - 1, c, "U", sb);
-    dfs(grid, r, c + 1, "R", sb);
-    dfs(grid, r, c - 1, "L", sb);
-    sb.append("B"); // Backtrack to distinguish paths
-}
-// Time Complexity: O(R * C) | Space Complexity: O(R * C)
-```
+```python
+def num_distinct_islands(self, grid: list[list[int]]) -> int:
+    hash_set = set()
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            if grid[i][j] == 1:
+                path = []
+                self._dfs(grid, i, j, "S", path) # Start with 'S'
+                hash_set.add("".join(path))
+    return len(hash_set)
 
+def _dfs(self, grid: list[list[int]], r: int, c: int, dir_str: str, path: list[str]) -> None:
+    if r < 0 or c < 0 or r >= len(grid) or c >= len(grid[0]) or grid[r][c] == 0: return
+    grid[r][c] = 0 # mark visited
+    path.append(dir_str)
+    self._dfs(grid, r + 1, c, "D", path)
+    self._dfs(grid, r - 1, c, "U", path)
+    self._dfs(grid, r, c + 1, "R", path)
+    self._dfs(grid, r, c - 1, "L", path)
+    path.append("B") # Backtrack to distinguish paths
+# Time Complexity: O(R * C) | Space Complexity: O(R * C)
+```
 * * *
 
 ## Practice Problem Bank

@@ -43,6 +43,24 @@ Standardized online coding assessments (e.g., General Coding Assessments, Hacker
 
 ---
 
+### Complexity Foundations: A Quick Reference
+
+Before diving into the 25 canonical patterns, ensure you have instant recall of these complexity classes:
+
+| Complexity | Name | Example | Max N for 1s |
+|-----------|------|---------|-------------|
+| O(1) | Constant | HashMap lookup | ∞ |
+| O(log N) | Logarithmic | Binary search | 10^18 |
+| O(N) | Linear | Single pass scan | 10^8 |
+| O(N log N) | Linearithmic | Merge sort | 10^6 |
+| O(N²) | Quadratic | Nested loops | 10^4 |
+| O(2^N) | Exponential | Subset generation | 20-25 |
+| O(N!) | Factorial | Permutations | 10-12 |
+
+**The Constraint-to-Complexity Rule:** Read the problem constraints FIRST. If N ≤ 10^4, O(N²) is acceptable. If N ≤ 10^5, you need O(N log N) or better. If N ≤ 10^6, you need O(N). This single rule eliminates 50% of wrong algorithm choices before you write a line of code.
+
+---
+
 # The 24 Canonical Programming Patterns
 
 The following catalog defines the 24 fundamental patterns of computational problem-solving. Each pattern represents a proven, invariant structure for solving a specific class of problems.

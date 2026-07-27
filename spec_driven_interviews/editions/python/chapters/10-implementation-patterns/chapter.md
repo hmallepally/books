@@ -108,32 +108,27 @@ These are the two most important templates to have memorized before the exam.
 
 ### Template A: Read/Write In-Place Filter
 
-```java
-// Retains elements satisfying a condition, overwrites array in-place
-int write = 0;
-for (int read = 0; read < arr.length; read++) {
-    if (keepCondition(arr[read])) {
-        arr[write] = arr[read];
-        write++;
-    }
-}
-// Result is arr[0..write-1], return write as the new length
+```python
+# Retains elements satisfying a condition, overwrites list in-place
+write = 0
+for read in range(len(arr)):
+    if keep_condition(arr[read]):
+        arr[write] = arr[read]
+        write += 1
+# Result is arr[0..write-1], return write as the new length
 ```
-
 **Used by:** Remove Element, Move Zeros, Remove Duplicates, Squeeze Spaces.
 
 ### Template B: Symmetric Converging Pointers
 
-```java
-int left = 0, right = arr.length - 1;
-while (left < right) {
-    // Process or compare arr[left] and arr[right]
-    // Optionally skip invalid elements
-    left++;
-    right--;
-}
+```python
+left, right = 0, len(arr) - 1
+while left < right:
+    # Process or compare arr[left] and arr[right]
+    # Optionally skip invalid elements
+    left += 1
+    right -= 1
 ```
-
 **Used by:** Palindrome Check, Reverse Array, Two Sum (sorted), Sort Colors.
 
 * * *
@@ -148,26 +143,24 @@ while (left < right) {
 **Pattern:** Two-pass frequency array. First pass counts; second pass finds the first count of 1.
 **Why two passes?** A single pass cannot determine uniqueness because later characters might duplicate earlier ones. The frequency array decouples counting from searching.
 
-```java
-public int firstUniqChar(String s) {
-    if (s == null || s.isEmpty()) return -1;
+```python
+def first_uniq_char(self, s: str) -> int:
+    if not s:
+        return -1
 
-    // Pass 1: Count frequency of each character
-    int[] counts = new int[256];
-    for (int i = 0; i < s.length(); i++) {
-        counts[s.charAt(i)]++;
-    }
+    # Pass 1: Count frequency of each character
+    counts = [0] * 256
+    for char in s:
+        counts[ord(char)] += 1
 
-    // Pass 2: Find first character with frequency exactly 1
-    for (int i = 0; i < s.length(); i++) {
-        if (counts[s.charAt(i)] == 1) return i;
-    }
+    # Pass 2: Find first character with frequency exactly 1
+    for i, char in enumerate(s):
+        if counts[ord(char)] == 1:
+            return i
 
-    return -1; // All characters repeat
-}
-// Time: O(N), Space: O(1) — the int[256] is constant size
+    return -1 # All characters repeat
+# Time: O(N), Space: O(1) — the counts list is constant size
 ```
-
 * * *
 
 **2. In-Place String Compression (Run-Length Encoding)**
@@ -179,40 +172,37 @@ public int firstUniqChar(String s) {
 
 **Critical edge case:** When count exceeds 9 (e.g., count = 12), you must write `'1'` then `'2'` as separate characters.
 
-```java
-public int compress(char[] chars) {
-    if (chars == null || chars.length == 0) return 0;
+```python
+def compress(self, chars: list[str]) -> int:
+    if not chars:
+        return 0
 
-    int write = 0; // Write pointer for compressed output
-    int read = 0;  // Read pointer scanning input
+    write = 0 # Write pointer for compressed output
+    read = 0  # Read pointer scanning input
 
-    while (read < chars.length) {
-        char current = chars[read];
-        int count = 0;
+    while read < len(chars):
+        current = chars[read]
+        count = 0
 
-        // Count consecutive occurrences of current character
-        while (read < chars.length && chars[read] == current) {
-            read++;
-            count++;
-        }
+        # Count consecutive occurrences of current character
+        while read < len(chars) and chars[read] == current:
+            read += 1
+            count += 1
 
-        // Write the character itself
-        chars[write++] = current;
+        # Write the character itself
+        chars[write] = current
+        write += 1
 
-        // Write the count digits (only if count > 1)
-        if (count > 1) {
-            // Convert count to individual digit characters
-            for (char digit : Integer.toString(count).toCharArray()) {
-                chars[write++] = digit;
-            }
-        }
-    }
+        # Write the count digits (only if count > 1)
+        if count > 1:
+            # Convert count to individual digit characters
+            for digit in str(count):
+                chars[write] = digit
+                write += 1
 
-    return write;
-}
-// Time: O(N), Space: O(1) auxiliary
+    return write
+# Time: O(N), Space: O(1) auxiliary
 ```
-
 * * *
 
 **3. Valid Palindrome with Non-Alphanumeric Skipping**
@@ -224,36 +214,31 @@ public int compress(char[] chars) {
 
 **Common mistake:** Forgetting to check `left < right` inside the skip-while loops, causing `ArrayIndexOutOfBoundsException` on strings like `".,,"`.
 
-```java
-public boolean isPalindrome(String s) {
-    if (s == null) return false;
+```python
+def is_palindrome(self, s: str) -> bool:
+    if s is None:
+        return False
 
-    int left = 0, right = s.length() - 1;
+    left, right = 0, len(s) - 1
 
-    while (left < right) {
-        // Skip non-alphanumeric from the left
-        while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
-            left++;
-        }
-        // Skip non-alphanumeric from the right
-        while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
-            right--;
-        }
+    while left < right:
+        # Skip non-alphanumeric from the left
+        while left < right and not s[left].isalnum():
+            left += 1
+        # Skip non-alphanumeric from the right
+        while left < right and not s[right].isalnum():
+            right -= 1
 
-        // Compare characters (case-insensitive)
-        if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {
-            return false;
-        }
+        # Compare characters (case-insensitive)
+        if s[left].lower() != s[right].lower():
+            return False
 
-        left++;
-        right--;
-    }
+        left += 1
+        right -= 1
 
-    return true;
-}
-// Time: O(N), Space: O(1)
+    return True
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **4. Move Zeros to End**
@@ -265,26 +250,24 @@ public boolean isPalindrome(String s) {
 
 **Why not swap?** Swapping works too, but the two-pass approach (copy then fill) is cleaner and less error-prone under time pressure.
 
-```java
-public void moveZeroes(int[] nums) {
-    if (nums == null || nums.length == 0) return;
+```python
+def move_zeroes(self, nums: list[int]) -> None:
+    if not nums:
+        return
 
-    // Pass 1: Copy all non-zero elements to the front
-    int write = 0;
-    for (int read = 0; read < nums.length; read++) {
-        if (nums[read] != 0) {
-            nums[write++] = nums[read];
-        }
-    }
+    # Pass 1: Copy all non-zero elements to the front
+    write = 0
+    for read in range(len(nums)):
+        if nums[read] != 0:
+            nums[write] = nums[read]
+            write += 1
 
-    // Pass 2: Fill remaining positions with zeros
-    while (write < nums.length) {
-        nums[write++] = 0;
-    }
-}
-// Time: O(N), Space: O(1)
+    # Pass 2: Fill remaining positions with zeros
+    while write < len(nums):
+        nums[write] = 0
+        write += 1
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **5. Remove Duplicates from Sorted Array**
@@ -294,22 +277,20 @@ public void moveZeroes(int[] nums) {
 
 **Pattern:** Read/Write pointer. Since the array is sorted, duplicates are always adjacent. The write pointer advances only when `nums[read] != nums[write - 1]`.
 
-```java
-public int removeDuplicates(int[] nums) {
-    if (nums == null || nums.length == 0) return 0;
+```python
+def remove_duplicates(self, nums: list[int]) -> int:
+    if not nums:
+        return 0
 
-    int write = 1; // First element is always unique
-    for (int read = 1; read < nums.length; read++) {
-        if (nums[read] != nums[write - 1]) {
-            nums[write++] = nums[read];
-        }
-    }
+    write = 1 # First element is always unique
+    for read in range(1, len(nums)):
+        if nums[read] != nums[write - 1]:
+            nums[write] = nums[read]
+            write += 1
 
-    return write;
-}
-// Time: O(N), Space: O(1)
+    return write
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **6. Single Number (XOR Uniqueness)**
@@ -319,17 +300,14 @@ public int removeDuplicates(int[] nums) {
 
 **Pattern:** XOR accumulation. `a ^ a = 0` cancels pairs; `a ^ 0 = a` preserves the unique element.
 
-```java
-public int singleNumber(int[] nums) {
-    int result = 0;
-    for (int num : nums) {
-        result ^= num; // Pairs cancel, unique value survives
-    }
-    return result;
-}
-// Time: O(N), Space: O(1)
+```python
+def single_number(self, nums: list[int]) -> int:
+    result = 0
+    for num in nums:
+        result ^= num # Pairs cancel, unique value survives
+    return result
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **7. Valid Parentheses**
@@ -340,27 +318,24 @@ public int singleNumber(int[] nums) {
 **Pattern:** Stack-based matching. On open bracket, push the expected closing bracket. On close bracket, pop and compare.
 **Optimization:** Use a `char[]` as a manual stack to avoid `java.util.Stack` overhead.
 
-```java
-public boolean isValid(String s) {
-    if (s == null || s.length() % 2 != 0) return false;
+```python
+def is_valid(self, s: str) -> bool:
+    if not s or len(s) % 2 != 0:
+        return False
 
-    char[] stack = new char[s.length()];
-    int top = -1;
+    stack = []
 
-    for (char c : s.toCharArray()) {
-        if (c == '(') stack[++top] = ')';
-        else if (c == '{') stack[++top] = '}';
-        else if (c == '[') stack[++top] = ']';
-        else {
-            if (top == -1 || stack[top--] != c) return false;
-        }
-    }
+    for c in s:
+        if c == '(': stack.append(')')
+        elif c == '{': stack.append('}')
+        elif c == '[': stack.append(']')
+        else:
+            if not stack or stack.pop() != c:
+                return False
 
-    return top == -1; // Stack must be empty
-}
-// Time: O(N), Space: O(N) worst case for the stack
+    return len(stack) == 0 # Stack must be empty
+# Time: O(N), Space: O(N) worst case for the stack
 ```
-
 * * *
 
 **8. Reverse String In-Place**
@@ -370,22 +345,18 @@ public boolean isValid(String s) {
 
 **Pattern:** Symmetric converging pointers with swap.
 
-```java
-public void reverseString(char[] s) {
-    if (s == null || s.length <= 1) return;
+```python
+def reverse_string(self, s: list[str]) -> None:
+    if not s or len(s) <= 1:
+        return
 
-    int left = 0, right = s.length - 1;
-    while (left < right) {
-        char temp = s[left];
-        s[left] = s[right];
-        s[right] = temp;
-        left++;
-        right--;
-    }
-}
-// Time: O(N), Space: O(1)
+    left, right = 0, len(s) - 1
+    while left < right:
+        s[left], s[right] = s[right], s[left]
+        left += 1
+        right -= 1
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **9. Pivot Index (Balance Point)**
@@ -395,25 +366,23 @@ public void reverseString(char[] s) {
 
 **Pattern:** Prefix sum. Compute total sum first, then scan left-to-right maintaining a running left sum. At each index: `rightSum = totalSum - leftSum - nums[i]`.
 
-```java
-public int pivotIndex(int[] nums) {
-    if (nums == null) return -1;
+```python
+def pivot_index(self, nums: list[int]) -> int:
+    if not nums:
+        return -1
 
-    int totalSum = 0;
-    for (int num : nums) totalSum += num;
+    total_sum = sum(nums)
+    left_sum = 0
+    
+    for i, num in enumerate(nums):
+        # right_sum = total_sum - left_sum - num
+        if left_sum == total_sum - left_sum - num:
+            return i
+        left_sum += num
 
-    int leftSum = 0;
-    for (int i = 0; i < nums.length; i++) {
-        // rightSum = totalSum - leftSum - nums[i]
-        if (leftSum == totalSum - leftSum - nums[i]) return i;
-        leftSum += nums[i];
-    }
-
-    return -1;
-}
-// Time: O(N), Space: O(1)
+    return -1
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **10. Check Array Monotonicity**
@@ -423,23 +392,21 @@ public int pivotIndex(int[] nums) {
 
 **Pattern:** Dual boolean flags. Track both `isIncreasing` and `isDecreasing`. If an adjacent pair violates one direction, set its flag to false. Return true if either flag survives.
 
-```java
-public boolean isMonotonic(int[] nums) {
-    if (nums == null || nums.length <= 2) return true;
+```python
+def is_monotonic(self, nums: list[int]) -> bool:
+    if not nums or len(nums) <= 2:
+        return True
 
-    boolean increasing = true;
-    boolean decreasing = true;
+    increasing = True
+    decreasing = True
 
-    for (int i = 0; i < nums.length - 1; i++) {
-        if (nums[i] > nums[i + 1]) increasing = false;
-        if (nums[i] < nums[i + 1]) decreasing = false;
-    }
+    for i in range(len(nums) - 1):
+        if nums[i] > nums[i + 1]: increasing = False
+        if nums[i] < nums[i + 1]: decreasing = False
 
-    return increasing || decreasing;
-}
-// Time: O(N), Space: O(1)
+    return increasing or decreasing
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **11. Neighbor Sum Transformation**
@@ -450,23 +417,21 @@ public boolean isMonotonic(int[] nums) {
 **Pattern:** Boundary-safe neighbor access with ternary guards.
 **Why a new array?** Modifying `A` in-place would corrupt values needed for subsequent index calculations.
 
-```java
-public int[] neighborSum(int[] a) {
-    if (a == null) return new int[0];
-    int n = a.length;
-    int[] b = new int[n];
+```python
+def neighbor_sum(self, a: list[int]) -> list[int]:
+    if not a:
+        return []
+    n = len(a)
+    b = [0] * n
 
-    for (int i = 0; i < n; i++) {
-        int leftVal  = (i > 0) ? a[i - 1] : 0;
-        int rightVal = (i < n - 1) ? a[i + 1] : 0;
-        b[i] = leftVal + a[i] + rightVal;
-    }
+    for i in range(n):
+        left_val = a[i - 1] if i > 0 else 0
+        right_val = a[i + 1] if i < n - 1 else 0
+        b[i] = left_val + a[i] + right_val
 
-    return b;
-}
-// Time: O(N), Space: O(N) for output array
+    return b
+# Time: O(N), Space: O(N) for output array
 ```
-
 * * *
 
 **12. Maximum Subarray Sum of Fixed Window K**
@@ -476,27 +441,23 @@ public int[] neighborSum(int[] a) {
 
 **Pattern:** Fixed-size sliding window. Initialize window sum with first `k` elements, then slide by adding the entering element and subtracting the leaving element.
 
-```java
-public int maxSumSubarray(int[] nums, int k) {
-    if (nums == null || nums.length < k || k <= 0) return 0;
+```python
+def max_sum_subarray(self, nums: list[int], k: int) -> int:
+    if not nums or len(nums) < k or k <= 0:
+        return 0
 
-    // Initialize sum of first window
-    int windowSum = 0;
-    for (int i = 0; i < k; i++) windowSum += nums[i];
+    # Initialize sum of first window
+    window_sum = sum(nums[:k])
+    max_sum = window_sum
 
-    int maxSum = windowSum;
+    # Slide the window: add right element, remove left element
+    for i in range(k, len(nums)):
+        window_sum += nums[i] - nums[i - k]
+        max_sum = max(max_sum, window_sum)
 
-    // Slide the window: add right element, remove left element
-    for (int i = k; i < nums.length; i++) {
-        windowSum += nums[i] - nums[i - k];
-        maxSum = Math.max(maxSum, windowSum);
-    }
-
-    return maxSum;
-}
-// Time: O(N), Space: O(1)
+    return max_sum
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **13. Find the Added Character**
@@ -506,16 +467,14 @@ public int maxSumSubarray(int[] nums, int k) {
 
 **Pattern:** XOR accumulation. XOR every character in both strings together. Paired characters cancel to zero; the extra character remains.
 
-```java
-public char findTheDifference(String s, String t) {
-    char result = 0;
-    for (char c : s.toCharArray()) result ^= c;
-    for (char c : t.toCharArray()) result ^= c;
-    return result; // Only the unpaired character survives
-}
-// Time: O(N), Space: O(1)
+```python
+def find_the_difference(self, s: str, t: str) -> str:
+    result = 0
+    for c in s: result ^= ord(c)
+    for c in t: result ^= ord(c)
+    return chr(result) # Only the unpaired character survives
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **14. Capitalize or Reverse by Word Length Parity**
@@ -525,24 +484,21 @@ public char findTheDifference(String s, String t) {
 
 **Pattern:** Per-element transformation with parity branching.
 
-```java
-public String[] transformWords(String[] words) {
-    if (words == null) return new String[0];
-    String[] result = new String[words.length];
+```python
+def transform_words(self, words: list[str]) -> list[str]:
+    if not words:
+        return []
+    result = [""] * len(words)
 
-    for (int i = 0; i < words.length; i++) {
-        if (words[i].length() % 2 != 0) {
-            result[i] = words[i].toUpperCase();
-        } else {
-            result[i] = new StringBuilder(words[i]).reverse().toString();
-        }
-    }
+    for i in range(len(words)):
+        if len(words[i]) % 2 != 0:
+            result[i] = words[i].upper()
+        else:
+            result[i] = words[i][::-1]
 
-    return result;
-}
-// Time: O(N * K) where K is average word length, Space: O(N * K) for output
+    return result
+# Time: O(N * K) where K is average word length, Space: O(N * K) for output
 ```
-
 * * *
 
 **15. Check Equal Character Frequencies**
@@ -552,26 +508,23 @@ public String[] transformWords(String[] words) {
 
 **Pattern:** Frequency array + validation scan. Count all characters (using a size 128 array to handle the full ASCII range), then verify every non-zero count matches.
 
-```java
-public boolean areOccurrencesEqual(String s) {
-    if (s == null || s.isEmpty()) return true;
+```python
+def are_occurrences_equal(self, s: str) -> bool:
+    if not s:
+        return True
 
-    int[] counts = new int[128];
-    for (char c : s.toCharArray()) counts[(int) c]++;
+    from collections import Counter
+    counts = Counter(s)
+    
+    expected = 0
+    for count in counts.values():
+        if count > 0:
+            if expected == 0: expected = count
+            elif count != expected: return False
 
-    int expected = 0;
-    for (int count : counts) {
-        if (count > 0) {
-            if (expected == 0) expected = count;
-            else if (count != expected) return false;
-        }
-    }
-
-    return true;
-}
-// Time: O(N), Space: O(1)
+    return True
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **16. Remove Element In-Place**
@@ -581,22 +534,20 @@ public boolean areOccurrencesEqual(String s) {
 
 **Pattern:** Read/Write pointer — identical structure to Move Zeros.
 
-```java
-public int removeElement(int[] nums, int val) {
-    if (nums == null) return 0;
+```python
+def remove_element(self, nums: list[int], val: int) -> int:
+    if nums is None:
+        return 0
 
-    int write = 0;
-    for (int read = 0; read < nums.length; read++) {
-        if (nums[read] != val) {
-            nums[write++] = nums[read];
-        }
-    }
+    write = 0
+    for read in range(len(nums)):
+        if nums[read] != val:
+            nums[write] = nums[read]
+            write += 1
 
-    return write;
-}
-// Time: O(N), Space: O(1)
+    return write
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **17. Parity Alternation Validation**
@@ -607,22 +558,18 @@ public int removeElement(int[] nums, int val) {
 **Pattern:** Linear scan comparing `nums[i] % 2` with `nums[i+1] % 2`.
 **Edge case with negatives:** `(-3) % 2` in Java returns `-1`, not `1`. Use `Math.abs(nums[i] % 2)` for safe parity checks.
 
-```java
-public boolean isAlternatingParity(int[] nums) {
-    if (nums == null || nums.length <= 1) return true;
+```python
+def is_alternating_parity(self, nums: list[int]) -> bool:
+    if not nums or len(nums) <= 1:
+        return True
 
-    for (int i = 0; i < nums.length - 1; i++) {
-        // Use Math.abs for safety with negative numbers
-        if (Math.abs(nums[i] % 2) == Math.abs(nums[i + 1] % 2)) {
-            return false;
-        }
-    }
+    for i in range(len(nums) - 1):
+        if (abs(nums[i]) % 2) == (abs(nums[i + 1]) % 2):
+            return False
 
-    return true;
-}
-// Time: O(N), Space: O(1)
+    return True
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **18. Two Sum (Unsorted Array)**
@@ -632,23 +579,19 @@ public boolean isAlternatingParity(int[] nums) {
 
 **Pattern:** HashMap complement lookup. For each element, check if `target - nums[i]` has been seen. If yes, return both indices. If no, store `nums[i] → i` in the map.
 
-```java
-public int[] twoSum(int[] nums, int target) {
-    Map<Integer, Integer> seen = new HashMap<>();
+```python
+def two_sum(self, nums: list[int], target: int) -> list[int]:
+    seen = {}
 
-    for (int i = 0; i < nums.length; i++) {
-        int complement = target - nums[i];
-        if (seen.containsKey(complement)) {
-            return new int[]{seen.get(complement), i};
-        }
-        seen.put(nums[i], i);
-    }
+    for i, num in enumerate(nums):
+        complement = target - num
+        if complement in seen:
+            return [seen[complement], i]
+        seen[num] = i
 
-    return new int[]{}; // Should not reach here per problem guarantee
-}
-// Time: O(N), Space: O(N)
+    return [] # Should not reach here per problem guarantee
+# Time: O(N), Space: O(N)
 ```
-
 * * *
 
 **19. Majority Element**
@@ -658,27 +601,23 @@ public int[] twoSum(int[] nums, int target) {
 
 **Pattern:** Boyer–Moore Voting Algorithm. Maintain a candidate and a count. When count drops to zero, switch candidates. The majority element will always survive because it appears more than half the time.
 
-```java
-public int majorityElement(int[] nums) {
-    int candidate = nums[0];
-    int count = 1;
+```python
+def majority_element(self, nums: list[int]) -> int:
+    candidate = nums[0]
+    count = 1
 
-    for (int i = 1; i < nums.length; i++) {
-        if (count == 0) {
-            candidate = nums[i];
-            count = 1;
-        } else if (nums[i] == candidate) {
-            count++;
-        } else {
-            count--;
-        }
-    }
+    for i in range(1, len(nums)):
+        if count == 0:
+            candidate = nums[i]
+            count = 1
+        elif nums[i] == candidate:
+            count += 1
+        else:
+            count -= 1
 
-    return candidate;
-}
-// Time: O(N), Space: O(1)
+    return candidate
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **20. Plus One (Large Number as Array)**
@@ -689,24 +628,18 @@ public int majorityElement(int[] nums) {
 **Pattern:** Right-to-left carry propagation. Process digits from the least significant end. If a digit becomes 10, set it to 0 and carry. If no carry remains, return immediately.
 **Edge case:** All 9s (`[9, 9, 9]`) require a new array of length `n + 1` with a leading 1.
 
-```java
-public int[] plusOne(int[] digits) {
-    for (int i = digits.length - 1; i >= 0; i--) {
-        digits[i]++;
-        if (digits[i] < 10) {
-            return digits; // No further carry needed
-        }
-        digits[i] = 0; // Carry to next position
-    }
+```python
+def plus_one(self, digits: list[int]) -> list[int]:
+    for i in range(len(digits) - 1, -1, -1):
+        digits[i] += 1
+        if digits[i] < 10:
+            return digits # No further carry needed
+        digits[i] = 0 # Carry to next position
 
-    // All digits were 9 — need a new array [1, 0, 0, ..., 0]
-    int[] result = new int[digits.length + 1];
-    result[0] = 1;
-    return result;
-}
-// Time: O(N), Space: O(1) amortized (O(N) only for all-9s edge case)
+    # All digits were 9 — need a new array [1, 0, 0, ..., 0]
+    return [1] + [0] * len(digits)
+# Time: O(N), Space: O(1) amortized (O(N) only for all-9s edge case)
 ```
-
 * * *
 
 
@@ -723,24 +656,21 @@ The following problems are drawn directly from the automated testing platforms A
 
 **Common mistake:** Forgetting that two large negative numbers produce a large positive product (e.g., `[-5, -4]` → `20`).
 
-```java
-public int adjacentElementsProduct(int[] inputArray) {
-    if (inputArray == null || inputArray.length < 2) return 0;
+```python
+def adjacent_elements_product(self, input_array: list[int]) -> int:
+    if not input_array or len(input_array) < 2:
+        return 0
 
-    int maxProd = inputArray[0] * inputArray[1];
+    max_prod = input_array[0] * input_array[1]
 
-    for (int i = 1; i < inputArray.length - 1; i++) {
-        int prod = inputArray[i] * inputArray[i + 1];
-        if (prod > maxProd) {
-            maxProd = prod;
-        }
-    }
+    for i in range(1, len(input_array) - 1):
+        prod = input_array[i] * input_array[i + 1]
+        if prod > max_prod:
+            max_prod = prod
 
-    return maxProd;
-}
-// Time: O(N), Space: O(1)
+    return max_prod
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **22. Century From Year**
@@ -750,13 +680,11 @@ public int adjacentElementsProduct(int[] inputArray) {
 
 **Pattern:** Integer ceiling division. The formula `(year + 99) / 100` computes the ceiling of `year / 100` using only integer arithmetic, avoiding floating-point rounding errors.
 
-```java
-public int centuryFromYear(int year) {
-    return (year + 99) / 100;
-}
-// Time: O(1), Space: O(1)
+```python
+def century_from_year(self, year: int) -> int:
+    return (year + 99) // 100
+# Time: O(1), Space: O(1)
 ```
-
 * * *
 
 **23. All Longest Strings**
@@ -767,29 +695,23 @@ public int centuryFromYear(int year) {
 **Pattern:** Two-pass filter. Pass 1 finds the maximum string length. Pass 2 collects all strings matching that length.
 **Why two passes?** A single pass would require backtracking to remove shorter strings discovered before the true maximum is known.
 
-```java
-public String[] allLongestStrings(String[] inputArray) {
-    // Pass 1: Find the maximum length
-    int maxLength = 0;
-    for (String s : inputArray) {
-        if (s.length() > maxLength) {
-            maxLength = s.length();
-        }
-    }
+```python
+def all_longest_strings(self, input_array: list[str]) -> list[str]:
+    # Pass 1: Find the maximum length
+    max_length = 0
+    for s in input_array:
+        if len(s) > max_length:
+            max_length = len(s)
 
-    // Pass 2: Collect strings matching the max length
-    List<String> result = new ArrayList<>();
-    for (String s : inputArray) {
-        if (s.length() == maxLength) {
-            result.add(s);
-        }
-    }
+    # Pass 2: Collect strings matching the max length
+    result = []
+    for s in input_array:
+        if len(s) == max_length:
+            result.append(s)
 
-    return result.toArray(new String[0]);
-}
-// Time: O(N), Space: O(N) for output
+    return result
+# Time: O(N), Space: O(N) for output
 ```
-
 * * *
 
 **24. Common Character Count**
@@ -799,24 +721,21 @@ public String[] allLongestStrings(String[] inputArray) {
 
 **Pattern:** Dual frequency arrays with element-wise minimum. Build `int[26]` for each string. The number of shared instances of character `c` is `Math.min(count1[c], count2[c])`.
 
-```java
-public int commonCharacterCount(String s1, String s2) {
-    int[] count1 = new int[26];
-    int[] count2 = new int[26];
+```python
+def common_character_count(self, s1: str, s2: str) -> int:
+    count1 = [0] * 26
+    count2 = [0] * 26
 
-    for (char c : s1.toCharArray()) count1[c - 'a']++;
-    for (char c : s2.toCharArray()) count2[c - 'a']++;
+    for c in s1: count1[ord(c) - ord('a')] += 1
+    for c in s2: count2[ord(c) - ord('a')] += 1
 
-    int common = 0;
-    for (int i = 0; i < 26; i++) {
-        common += Math.min(count1[i], count2[i]);
-    }
+    common = 0
+    for i in range(26):
+        common += min(count1[i], count2[i])
 
-    return common;
-}
-// Time: O(N + M), Space: O(1) — fixed 26-element arrays
+    return common
+# Time: O(N + M), Space: O(1) — fixed 26-element lists
 ```
-
 * * *
 
 **25. Lucky Ticket (Digit Sum Halves)**
@@ -826,22 +745,20 @@ public int commonCharacterCount(String s1, String s2) {
 
 **Pattern:** Convert to string for digit access. Split at midpoint. Sum each half independently.
 
-```java
-public boolean isLucky(int n) {
-    String s = String.valueOf(n);
-    int mid = s.length() / 2;
-    int sum1 = 0, sum2 = 0;
+```python
+def is_lucky(self, n: int) -> bool:
+    s = str(n)
+    mid = len(s) // 2
+    sum1 = 0
+    sum2 = 0
 
-    for (int i = 0; i < mid; i++) {
-        sum1 += s.charAt(i) - '0';       // First half digit
-        sum2 += s.charAt(i + mid) - '0'; // Second half digit
-    }
+    for i in range(mid):
+        sum1 += int(s[i])       # First half digit
+        sum2 += int(s[i + mid]) # Second half digit
 
-    return sum1 == sum2;
-}
-// Time: O(D) where D is digit count, Space: O(D) for string conversion
+    return sum1 == sum2
+# Time: O(D) where D is digit count, Space: O(D) for string conversion
 ```
-
 * * *
 
 **26. Sort By Height (Obstacles in Place)**
@@ -853,30 +770,24 @@ public boolean isLucky(int n) {
 
 **Invariant:** Tree positions (`-1`) are never touched. Only human positions are modified.
 
-```java
-public int[] sortByHeight(int[] a) {
-    // Step 1: Extract all non-tree heights
-    List<Integer> heights = new ArrayList<>();
-    for (int h : a) {
-        if (h != -1) heights.add(h);
-    }
+```python
+def sort_by_height(self, a: list[int]) -> list[int]:
+    # Step 1: Extract all non-tree heights
+    heights = [h for h in a if h != -1]
 
-    // Step 2: Sort the extracted heights
-    Collections.sort(heights);
+    # Step 2: Sort the extracted heights
+    heights.sort()
 
-    // Step 3: Reinsert sorted heights at non-tree positions
-    int index = 0;
-    for (int i = 0; i < a.length; i++) {
-        if (a[i] != -1) {
-            a[i] = heights.get(index++);
-        }
-    }
+    # Step 3: Reinsert sorted heights at non-tree positions
+    index = 0
+    for i in range(len(a)):
+        if a[i] != -1:
+            a[i] = heights[index]
+            index += 1
 
-    return a;
-}
-// Time: O(N log N) for sorting, Space: O(N) for extracted list
+    return a
+# Time: O(N log N) for sorting, Space: O(N) for extracted list
 ```
-
 * * *
 
 **27. Alternating Team Sums**
@@ -886,23 +797,20 @@ public int[] sortByHeight(int[] a) {
 
 **Pattern:** Index parity accumulation. `i % 2 == 0` accumulates into Team 1, `i % 2 == 1` into Team 2.
 
-```java
-public int[] alternatingSums(int[] a) {
-    int team1 = 0, team2 = 0;
+```python
+def alternating_sums(self, a: list[int]) -> list[int]:
+    team1 = 0
+    team2 = 0
 
-    for (int i = 0; i < a.length; i++) {
-        if (i % 2 == 0) {
-            team1 += a[i];
-        } else {
-            team2 += a[i];
-        }
-    }
+    for i in range(len(a)):
+        if i % 2 == 0:
+            team1 += a[i]
+        else:
+            team2 += a[i]
 
-    return new int[]{team1, team2};
-}
-// Time: O(N), Space: O(1)
+    return [team1, team2]
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **28. Add Border to Character Matrix**
@@ -912,32 +820,27 @@ public int[] alternatingSums(int[] a) {
 
 **Pattern:** String construction with dimensional arithmetic. New width = original width + 2. New height = original height + 2. First and last rows are full asterisk strings. Middle rows are wrapped with `*` on each side.
 
-```java
-public String[] addBorder(String[] picture) {
-    int newWidth = picture[0].length() + 2;
-    String[] result = new String[picture.length + 2];
+```python
+def add_border(self, picture: list[str]) -> list[str]:
+    new_width = len(picture[0]) + 2
+    result = [""] * (len(picture) + 2)
 
-    // Build the border row
-    StringBuilder borderRow = new StringBuilder();
-    for (int i = 0; i < newWidth; i++) borderRow.append('*');
-    String border = borderRow.toString();
+    # Build the border row
+    border = '*' * new_width
 
-    // Top border
-    result[0] = border;
+    # Top border
+    result[0] = border
 
-    // Wrap each interior row with side asterisks
-    for (int i = 0; i < picture.length; i++) {
-        result[i + 1] = "*" + picture[i] + "*";
-    }
+    # Wrap each interior row with side asterisks
+    for i in range(len(picture)):
+        result[i + 1] = f"*{picture[i]}*"
 
-    // Bottom border
-    result[result.length - 1] = border;
+    # Bottom border
+    result[-1] = border
 
-    return result;
-}
-// Time: O(rows * cols), Space: O(rows * cols) for output
+    return result
+# Time: O(rows * cols), Space: O(rows * cols) for output
 ```
-
 * * *
 
 **29. Array Change (Minimum Moves for Strict Increase)**
@@ -949,24 +852,20 @@ public String[] addBorder(String[] picture) {
 
 **Invariant:** After processing index `i`, the constraint `arr[i] > arr[i-1]` is guaranteed. The greedy minimum at each step is globally optimal because increasing `arr[i]` to `arr[i-1] + 1` (the smallest valid value) minimizes cascading costs downstream.
 
-```java
-public int arrayChange(int[] inputArray) {
-    int moves = 0;
+```python
+def array_change(self, input_array: list[int]) -> int:
+    moves = 0
 
-    for (int i = 1; i < inputArray.length; i++) {
-        if (inputArray[i] <= inputArray[i - 1]) {
-            // Calculate the minimum increment needed
-            int deficit = inputArray[i - 1] - inputArray[i] + 1;
-            inputArray[i] += deficit;
-            moves += deficit;
-        }
-    }
+    for i in range(1, len(input_array)):
+        if input_array[i] <= input_array[i - 1]:
+            # Calculate the minimum increment needed
+            deficit = input_array[i - 1] - input_array[i] + 1
+            input_array[i] += deficit
+            moves += deficit
 
-    return moves;
-}
-// Time: O(N), Space: O(1)
+    return moves
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **30. Matrix Elements Sum (Haunted Rooms)**
@@ -976,26 +875,21 @@ public int arrayChange(int[] inputArray) {
 
 **Pattern:** Column-wise top-down scan with a boolean "poisoned" flag per column. Once a `0` is encountered in a column, all values below it in that column are skipped.
 
-```java
-public int matrixElementsSum(int[][] matrix) {
-    int rows = matrix.length;
-    int cols = matrix[0].length;
-    int total = 0;
+```python
+def matrix_elements_sum(self, matrix: list[list[int]]) -> int:
+    rows = len(matrix)
+    cols = len(matrix[0])
+    total = 0
 
-    for (int c = 0; c < cols; c++) {
-        for (int r = 0; r < rows; r++) {
-            if (matrix[r][c] == 0) {
-                break; // All rooms below are haunted — skip rest of column
-            }
-            total += matrix[r][c];
-        }
-    }
+    for c in range(cols):
+        for r in range(rows):
+            if matrix[r][c] == 0:
+                break # All rooms below are haunted — skip rest of column
+            total += matrix[r][c]
 
-    return total;
-}
-// Time: O(rows * cols), Space: O(1)
+    return total
+# Time: O(rows * cols), Space: O(1)
 ```
-
 * * *
 
 **31. Almost Increasing Sequence**
@@ -1006,36 +900,30 @@ public int matrixElementsSum(int[][] matrix) {
 **Pattern:** Count violations (positions where `arr[i] >= arr[i+1]`). If zero violations, it is already increasing. If exactly one violation at position `i`, check two removal candidates: removing `arr[i]` or removing `arr[i+1]`. If either removal produces a valid increasing sequence around the gap, return `true`. If more than one violation, return `false`.
 **This is one of the trickiest Easy-tier problems.** The naive approach of "just remove one element and re-check" is $\mathcal{O}(N^2)$. The optimal approach is $\mathcal{O}(N)$.
 
-```java
-public boolean almostIncreasingSequence(int[] sequence) {
-    int count = 0;   // Number of violations
-    int badIdx = -1;  // Index of first violation
+```python
+def almost_increasing_sequence(self, sequence: list[int]) -> bool:
+    count = 0   # Number of violations
+    bad_idx = -1  # Index of first violation
 
-    for (int i = 0; i < sequence.length - 1; i++) {
-        if (sequence[i] >= sequence[i + 1]) {
-            count++;
-            badIdx = i;
-            if (count > 1) return false; // More than one violation
-        }
-    }
+    for i in range(len(sequence) - 1):
+        if sequence[i] >= sequence[i + 1]:
+            count += 1
+            bad_idx = i
+            if count > 1: return False # More than one violation
 
-    if (count == 0) return true; // Already strictly increasing
+    if count == 0: return True # Already strictly increasing
 
-    // Try removing element at badIdx
-    if (badIdx == 0 || sequence[badIdx - 1] < sequence[badIdx + 1]) {
-        return true;
-    }
+    # Try removing element at bad_idx
+    if bad_idx == 0 or sequence[bad_idx - 1] < sequence[bad_idx + 1]:
+        return True
 
-    // Try removing element at badIdx + 1
-    if (badIdx + 2 >= sequence.length || sequence[badIdx] < sequence[badIdx + 2]) {
-        return true;
-    }
+    # Try removing element at bad_idx + 1
+    if bad_idx + 2 >= len(sequence) or sequence[bad_idx] < sequence[bad_idx + 2]:
+        return True
 
-    return false;
-}
-// Time: O(N), Space: O(1)
+    return False
+# Time: O(N), Space: O(1)
 ```
-
 * * *
 
 **32. Reverse Parentheses (Nested String Reversal)**
@@ -1045,28 +933,23 @@ public boolean almostIncreasingSequence(int[] sequence) {
 
 **Pattern:** Stack-based simulation. Use a stack of `StringBuilder`s. When `(` is encountered, push a new builder. When `)` is encountered, pop the top builder, reverse it, and append its contents to the new top of the stack.
 
-```java
-public String reverseInParentheses(String s) {
-    Deque<StringBuilder> stack = new ArrayDeque<>();
-    stack.push(new StringBuilder());
+```python
+def reverse_in_parentheses(self, s: str) -> str:
+    stack = [[]]
 
-    for (char c : s.toCharArray()) {
-        if (c == '(') {
-            stack.push(new StringBuilder()); // Start new nested context
-        } else if (c == ')') {
-            StringBuilder inner = stack.pop();  // Pop innermost context
-            inner.reverse();                     // Reverse it
-            stack.peek().append(inner);          // Append to enclosing context
-        } else {
-            stack.peek().append(c);              // Accumulate character
-        }
-    }
+    for c in s:
+        if c == '(':
+            stack.append([]) # Start new nested context
+        elif c == ')':
+            inner = stack.pop()  # Pop innermost context
+            inner.reverse()       # Reverse it
+            stack[-1].extend(inner) # Append to enclosing context
+        else:
+            stack[-1].append(c)  # Accumulate character
 
-    return stack.peek().toString();
-}
-// Time: O(N^2) worst case for nested reversals, Space: O(N)
+    return "".join(stack[0])
+# Time: O(N^2) worst case for nested reversals, Space: O(N)
 ```
-
 * * *
 
 ## Practice Problem Bank

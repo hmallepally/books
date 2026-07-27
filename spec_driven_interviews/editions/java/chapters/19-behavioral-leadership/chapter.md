@@ -75,6 +75,26 @@ Frame technical debt as a financial risk to the business. Show that you can spea
 > *The team successfully executed the refactor, removing setters and enclosing the invariants inside the domain objects. In hindsight, I would have involved QA earlier in the refactor planning, but the outcome was still solid. This reduced our regression bug rate to less than 2% and actually accelerated the development of the final two integrations, allowing us to launch the features a week ahead of the original deadline."*
 
 
+### Scenario 4: Managing Underperformance
+**Interviewer:** Tell me about a time you had to manage an underperforming team member.
+
+**Candidate:** Six months into my role as engineering lead, one of our senior developers—let's call him Alex—had missed three consecutive sprint commitments. Rather than jumping to a PIP, I scheduled a private 1:1 to understand the root cause. It turned out Alex was struggling with our migration from monolith to microservices and felt embarrassed to ask for help after 8 years at the company.
+
+I paired him with our most patient architect for bi-weekly knowledge transfer sessions and adjusted his sprint load to 70% for six weeks. I was transparent with the team that Alex was ramping on the new architecture without singling him out. Within two months, Alex was not only back to full velocity but had become our go-to person for the data migration layer because he understood both the old and new systems intimately.
+
+The lesson I took away: underperformance is usually a symptom, not a character flaw. Diagnosing the root cause before applying a remedy saved us from losing an incredibly valuable engineer.
+
+
+### Scenario 5: Leading a Project Pivot
+**Interviewer:** Describe a time when you had to pivot a project mid-execution.
+
+**Candidate:** Our team had spent five weeks building a custom real-time analytics dashboard when our VP of Product shared early results from a customer advisory board: customers wanted pre-built compliance reports, not custom dashboards. My first reaction was frustration—we'd invested significant effort. But after sleeping on it, I realized the data pipeline we'd built was reusable.
+
+I called a team retrospective and was honest: "The analytics engine we built is solid, but the UI layer needs to pivot to templated reports." One engineer pushed back hard, feeling her frontend work was wasted. I acknowledged that directly and proposed we salvage her component library for the new report designer.
+
+We re-scoped to a 3-week sprint, reusing 60% of the backend. The compliance reports shipped on time and became our highest-adopted feature that quarter. What I learned: pivot announcements need to honor the work already done, not just dictate the new direction.
+
+
 ## Checklist for Video (Teams) & In-Person Technical Interviews
 
 To project executive presence and clear technical rounds on live video calls or in-person sessions, adhere to these guidelines:

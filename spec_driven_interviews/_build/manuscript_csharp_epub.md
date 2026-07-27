@@ -1,8 +1,5 @@
 
 
-\part{The Spec-Driven Paradigm}
-
-
 # Prologue: The Syntax Trap {.unnumbered}
 
 > *"The greatest threat to software craftsmanship is not the speed of the typist, but the direction of their design."*
@@ -50,7 +47,7 @@ The spec-driven paradigm shifts the focus of the technical interview from coding
 
 An invariant is a condition that must always remain true during the execution of a program. By defining these boundaries first, you build an "Invariant Wall" that constrains your implementation, making errors mathematically impossible. When you write code, you are simply translating these formal boundaries into clean, structured prose in your programming language of choice.
 
-![The Spec-Driven Path vs The Syntax Trap](editions/python/chapters/00-prologue/visuals/spec_vs_syntax.png){width=70%}
+![The Spec-Driven Path vs The Syntax Trap](editions/csharp/chapters/00-prologue/visuals/spec_vs_syntax.png){width=70%}
 
 
 ## What This Book Covers
@@ -255,7 +252,7 @@ When you apply this to coding assessments, you construct an "Invariant Wall" com
 2.  **Post-conditions:** Guarantees that the method promises to satisfy upon successful execution. This defines what "correctness" means for the operation.
 3.  **Class/Data Invariants:** State rules that must always hold true for a domain object throughout its entire lifecycle.
 
-![The Invariant Wall](editions/python/chapters/01-invariant-first/visuals/invariant_wall.png){width=70%}
+![The Invariant Wall](editions/csharp/chapters/01-invariant-first/visuals/invariant_wall.png){width=70%}
 
 By declaring these boundaries upfront, you decouple *what* the system must do from *how* it will do it. You establish a contract. Once the contract is clear, writing the code is simply a matter of executing that contract.
 
@@ -506,97 +503,131 @@ To demonstrate the spec-driven approach, we begin by defining the core domain ob
 
 Here is the immutable, self-validating transaction representation:
 
-```python
-from dataclasses import dataclass
-from decimal import Decimal
-from datetime import datetime
-from uuid import UUID
+```csharp
+using System;
 
-@dataclass(frozen=True)
-class TransactionRecord:
-    """
-    Represents an immutable, validated financial transaction record in AuraPay.
-    Enforces pre-conditions on initialization.
-    """
-    transaction_id: UUID
-    source_account_id: UUID
-    destination_account_id: UUID
-    amount: Decimal
-    currency: str
-    timestamp: datetime
+namespace AuraPay.Domain
+{
+    /// <summary>
+    /// Represents an immutable, validated financial transaction record in AuraPay.
+    /// Enforces pre-conditions on initialization.
+    /// </summary>
+    public record TransactionRecord
+    {
+        public Guid TransactionId { get; init; }
+        public Guid SourceAccountId { get; init; }
+        public Guid DestinationAccountId { get; init; }
+        public decimal Amount { get; init; }
+        public string Currency { get; init; }
+        public DateTime Timestamp { get; init; }
 
-    def __post_init__(self):
-        if not self.transaction_id or not self.source_account_id or not self.destination_account_id:
-            raise ValueError("Account IDs and Transaction ID cannot be null")
-        if not self.amount or not self.currency or not self.timestamp:
-            raise ValueError("Amount, currency, and timestamp cannot be null")
-        if self.source_account_id == self.destination_account_id:
-            raise ValueError("Source and destination accounts must be distinct")
-        if self.amount <= 0:
-            raise ValueError("Transaction amount must be strictly positive")
-        if not self.currency.strip():
-            raise ValueError("Currency code cannot be empty")
+        public TransactionRecord(
+            Guid transactionId,
+            Guid sourceAccountId,
+            Guid destinationAccountId,
+            decimal amount,
+            string currency,
+            DateTime timestamp)
+        {
+            if (transactionId == Guid.Empty) throw new ArgumentException("Transaction ID cannot be empty", nameof(transactionId));
+            if (sourceAccountId == Guid.Empty) throw new ArgumentException("Source Account ID cannot be empty", nameof(sourceAccountId));
+            if (destinationAccountId == Guid.Empty) throw new ArgumentException("Destination Account ID cannot be empty", nameof(destinationAccountId));
+            if (string.IsNullOrWhiteSpace(currency)) throw new ArgumentException("Currency code cannot be empty", nameof(currency));
+            if (amount <= 0) throw new ArgumentException("Transaction amount must be strictly positive", nameof(amount));
+            if (sourceAccountId == destinationAccountId) throw new ArgumentException("Source and destination accounts must be distinct");
+
+            TransactionId = transactionId;
+            SourceAccountId = sourceAccountId;
+            DestinationAccountId = destinationAccountId;
+            Amount = amount;
+            Currency = currency;
+            Timestamp = timestamp;
+        }
+    }
+}
 ```
 
 
 Next, we define the stateful `LedgerAccount` that enforces balance boundaries and thread-safe operations during fund transfers:
 
-```python
-from decimal import Decimal
-from uuid import UUID
-import threading
+```csharp
+using System;
 
-class LedgerAccount:
-    """
-    Represents a stateful Ledger Account in AuraPay, enforcing business invariants
-    during state transitions.
-    """
-    def __init__(self, account_id: UUID, currency: str, initial_balance: Decimal, overdraft_limit: Decimal):
-        if not account_id or not currency:
-            raise ValueError("Account ID and Currency cannot be null")
-        if initial_balance is None or overdraft_limit is None:
-            raise ValueError("Initial balance and overdraft limit cannot be null")
-        if overdraft_limit < 0:
-            raise ValueError("Overdraft limit cannot be negative")
-        if initial_balance + overdraft_limit < 0:
-            raise ValueError("Initial balance violates the overdraft limit")
+namespace AuraPay.Domain
+{
+    /// <summary>
+    /// Represents a stateful Ledger Account in AuraPay, enforcing business invariants
+    /// during state transitions.
+    /// </summary>
+    public class LedgerAccount
+    {
+        private readonly object _lock = new object();
+        public Guid AccountId { get; }
+        public string Currency { get; }
+        private decimal _balance;
+        public decimal OverdraftLimit { get; }
 
-        self.account_id = account_id
-        self.currency = currency
-        self._balance = initial_balance
-        self.overdraft_limit = overdraft_limit
-        self._lock = threading.Lock()
+        public decimal Balance
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    return _balance;
+                }
+            }
+        }
 
-    @property
-    def balance(self) -> Decimal:
-        with self._lock:
-            return self._balance
+        public LedgerAccount(Guid accountId, string currency, decimal initialBalance, decimal overdraftLimit)
+        {
+            if (accountId == Guid.Empty) throw new ArgumentException("Account ID cannot be empty", nameof(accountId));
+            if (string.IsNullOrWhiteSpace(currency)) throw new ArgumentException("Currency code cannot be empty", nameof(currency));
+            if (overdraftLimit < 0) throw new ArgumentException("Overdraft limit cannot be negative", nameof(overdraftLimit));
+            if (initialBalance + overdraftLimit < 0) throw new ArgumentException("Initial balance violates the overdraft limit");
 
-    def credit(self, amount: Decimal):
-        """Credits the account. Enforces positive credit amount."""
-        if amount is None or amount <= 0:
-            raise ValueError("Credit amount must be positive")
-        with self._lock:
-            self._balance += amount
+            AccountId = accountId;
+            Currency = currency;
+            _balance = initialBalance;
+            OverdraftLimit = overdraftLimit;
+        }
 
-    def debit(self, amount: Decimal):
-        """Debits the account. Enforces balance invariants and overdraft limits."""
-        if amount is None or amount <= 0:
-            raise ValueError("Debit amount must be positive")
-        
-        with self._lock:
-            new_balance = self._balance - amount
-            # INVARIANT ENFORCEMENT
-            if new_balance + self.overdraft_limit < 0:
-                raise ValueError(
-                    f"Debit of {amount} exceeds account overdraft boundary. "
-                    f"Balance: {self._balance}, Limit: -{self.overdraft_limit}"
-                )
-            self._balance = new_balance
+        /// <summary>
+        /// Credits the account. Enforces positive credit amount.
+        /// </summary>
+        public void Credit(decimal amount)
+        {
+            if (amount <= 0) throw new ArgumentException("Credit amount must be positive", nameof(amount));
+            lock (_lock)
+            {
+                _balance += amount;
+            }
+        }
+
+        /// <summary>
+        /// Debits the account. Enforces balance invariants and overdraft limits.
+        /// </summary>
+        public void Debit(decimal amount)
+        {
+            if (amount <= 0) throw new ArgumentException("Debit amount must be positive", nameof(amount));
+            lock (_lock)
+            {
+                decimal newBalance = _balance - amount;
+                // INVARIANT ENFORCEMENT
+                if (newBalance + OverdraftLimit < 0)
+                {
+                    throw new InvalidOperationException(
+                        $"Debit of {amount} exceeds account overdraft boundary. " +
+                        $"Balance: {_balance}, Limit: -{OverdraftLimit}");
+                }
+                _balance = newBalance;
+            }
+        }
+    }
+}
 ```
 
 
-![AuraPay System Architecture](editions/python/chapters/03-case-studies/visuals/aurapay_architecture.png){width=80%}
+![AuraPay System Architecture](editions/csharp/chapters/03-case-studies/visuals/aurapay_architecture.png){width=80%}
 
 In the following chapters, we will use these domain classes to demonstrate OOP design, SOLID boundary enforcement, Java Streams collection processing, and database concurrency controls.
 
@@ -614,24 +645,27 @@ ZenithTrade is a high-frequency, low-latency order matching engine. It is design
 ### Reference Architecture Starter Scaffolding
 To begin implementing the ZenithTrade engine, use the following `Order` entity as your starting point. It establishes the basic structure of a limit order, enforcing invariants like positive price and quantity:
 
-```python
-from enum import Enum
+```csharp
+public class Order 
+{
+    public enum OrderSide { Buy, Sell }
+    public string Id { get; }
+    public string InstrumentId { get; }
+    public OrderSide Side { get; }
+    public long Price { get; } // Fixed-point integer
+    public long Quantity { get; }
 
-class Side(Enum):
-    BUY = 0
-    SELL = 1
-
-class Order:
-    def __init__(self, id: str, instrument_id: str, side: Side, price: int, quantity: int):
-        if price <= 0:
-            raise ValueError("Price must be positive")
-        if quantity <= 0:
-            raise ValueError("Quantity must be positive")
-        self.id = id
-        self.instrument_id = instrument_id
-        self.side = side
-        self.price = price # Fixed-point integer
-        self.quantity = quantity
+    public Order(string id, string instrumentId, OrderSide side, long price, long quantity) 
+    {
+        if (price <= 0) throw new ArgumentException("Price must be positive");
+        if (quantity <= 0) throw new ArgumentException("Quantity must be positive");
+        Id = id;
+        InstrumentId = instrumentId;
+        Side = side;
+        Price = price;
+        Quantity = quantity;
+    }
+}
 ```
 
 These architectures serve as running case studies throughout the book. You will implement components of each system as you learn the patterns in Parts II, III, and IV. Do not attempt to design these systems now — let the patterns guide you.
@@ -667,19 +701,32 @@ By the properties of polynomial interpolation:
 
 To implement the ChiramTrust wallet, use the following `DidConsentRecord` aggregate root as your starting point. It handles W3C identifier validation and thread-safe consent scope modifications:
 
-```python
-class DidConsentRecord:
-    def __init__(self, did: str, consent_scopes: dict[str, bool]):
-        if not did or not did.startswith("did:"):
-            raise ValueError("Invalid W3C DID format")
-        self.did = did
-        self._consent_scopes = dict(consent_scopes)
+```csharp
+public class DidConsentRecord 
+{
+    public string Did { get; }
+    private readonly ConcurrentDictionary<string, bool> _consentScopes;
 
-    def has_consent(self, scope: str) -> bool:
-        return self._consent_scopes.get(scope, False)
+    public DidConsentRecord(string did, Dictionary<string, bool> consentScopes) 
+    {
+        if (string.IsNullOrEmpty(did) || !did.StartsWith("did:")) 
+        {
+            throw new ArgumentException("Invalid W3C DID format");
+        }
+        Did = did;
+        _consentScopes = new ConcurrentDictionary<string, bool>(consentScopes);
+    }
 
-    def revoke_consent(self, scope: str) -> None:
-        self._consent_scopes[scope] = False
+    public bool HasConsent(string scope) 
+    {
+        return _consentScopes.TryGetValue(scope, out bool consent) && consent;
+    }
+
+    public void RevokeConsent(string scope) 
+    {
+        _consentScopes[scope] = false;
+    }
+}
 ```
 
 ### Interview Drill: Applying Bounded Context Isolation
@@ -699,9 +746,6 @@ If the Ledger database slows down or halts, the matching engine continues to pro
 > During system design interviews, explain that microservice division should mirror DDD Bounded Contexts. Say: *"We will isolate the ZenithTrade Matching Engine from the AuraPay Ledger. If the ledger experiences a database write lag, our matching engine can continue to accept and queue orders in memory, preventing system-wide downtime."* This shows you design for fault isolation.
 
 
-\part{Code Design and Craftsmanship}
-
-
 # Principles of Object-Oriented Design
 
 > *"Do not expose your state to the world. Encapsulate your data, expose your contracts, and let polymorphism handle the variance."*
@@ -715,23 +759,32 @@ When your domain models are anemic, the business logic shifts into stateless ser
 
 The following code illustrates this fragile, anemic design:
 
-```python
-# Anemic Account Model (Fragile Data Holder)
-class Account:
-    def __init__(self, id: str, balance: float, currency: str):
-        self.id = id
-        self.balance = balance
-        self.currency = currency
+```csharp
+// Anemic Account Model (Fragile Data Holder)
+public class Account 
+{
+    public string Id { get; set; }
+    public decimal Balance { get; set; }
+    public string Currency { get; set; }
+}
 
-# Stateless Service containing business invariants (Anti-pattern)
-class LedgerService:
-    def transfer(self, from_acc: Account, to_acc: Account, amount: float) -> None:
-        if from_acc.balance < amount:
-            raise ValueError("Insufficient funds")
-        if from_acc.currency != to_acc.currency:
-            raise ValueError("Currency mismatch")
-        from_acc.balance -= amount
-        to_acc.balance += amount
+// Stateless Service containing business invariants (Anti-pattern)
+public class LedgerService 
+{
+    public void Transfer(Account from, Account to, decimal amount) 
+    {
+        if (from.Balance < amount) 
+        {
+            throw new ArgumentException("Insufficient funds");
+        }
+        if (from.Currency != to.Currency) 
+        {
+            throw new ArgumentException("Currency mismatch");
+        }
+        from.Balance -= amount;
+        to.Balance += amount;
+    }
+}
 ```
 
 ### Why the Anemic Model Fails in Production
@@ -742,7 +795,7 @@ class LedgerService:
 
 In a senior coding or architecture interview, presenting an anemic model is a missed opportunity. To demonstrate true software craftsmanship, you must show how to design **rich domain models** that encapsulate state and enforce invariants.
 
-![Anemic vs Rich Domain Model Comparison](editions/python/chapters/04-oop-principles/visuals/anemic_vs_rich.png){width=85%}
+![Anemic vs Rich Domain Model Comparison](editions/csharp/chapters/04-oop-principles/visuals/anemic_vs_rich.png){width=85%}
 
 
 ## Refactoring Walkthrough: From Anemic to Rich
@@ -767,67 +820,101 @@ In AuraPay, our `LedgerAccount` domain model is rich. It contains its own `debit
 
 The following code illustrates this rich encapsulation:
 
-```python
-from decimal import Decimal
-import threading
+```csharp
+using System;
 
-class LedgerAccount:
-    """
-    Demonstrates a rich domain model encapsulating transfer logic and enforcing 
-    cross-entity invariants.
-    """
-    def __init__(self, account_id: str, currency: str, initial_balance: Decimal, overdraft_limit: Decimal):
-        self.account_id = account_id
-        self.currency = currency
-        self._balance = initial_balance
-        self.overdraft_limit = overdraft_limit
-        self._lock = threading.Lock()
+namespace AuraPay.Domain
+{
+    /// <summary>
+    /// Demonstrates a rich domain model encapsulating transfer logic and enforcing 
+    /// cross-entity invariants.
+    /// </summary>
+    public class LedgerAccount
+    {
+        private readonly object _lock = new object();
+        public string AccountId { get; }
+        public string Currency { get; }
+        private decimal _balance;
+        public decimal OverdraftLimit { get; }
 
-    @property
-    def balance(self) -> Decimal:
-        with self._lock:
-            return self._balance
+        public decimal Balance
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    return _balance;
+                }
+            }
+        }
 
-    def debit(self, amount: Decimal):
-        if amount <= 0:
-            raise ValueError("Debit amount must be positive")
-        with self._lock:
-            new_balance = self._balance - amount
-            if new_balance + self.overdraft_limit < 0:
-                raise ValueError("Overdraft limit exceeded")
-            self._balance = new_balance
+        public LedgerAccount(string accountId, string currency, decimal initialBalance, decimal overdraftLimit)
+        {
+            AccountId = accountId ?? throw new ArgumentNullException(nameof(accountId));
+            Currency = currency ?? throw new ArgumentNullException(nameof(currency));
+            _balance = initialBalance;
+            OverdraftLimit = overdraftLimit;
+        }
 
-    def credit(self, amount: Decimal):
-        if amount <= 0:
-            raise ValueError("Credit amount must be positive")
-        with self._lock:
-            self._balance += amount
+        public void Debit(decimal amount)
+        {
+            if (amount <= 0) throw new ArgumentException("Debit amount must be positive", nameof(amount));
+            lock (_lock)
+            {
+                decimal newBalance = _balance - amount;
+                if (newBalance + OverdraftLimit < 0)
+                {
+                    throw new InvalidOperationException("Overdraft limit exceeded");
+                }
+                _balance = newBalance;
+            }
+        }
 
-    def transfer_to(self, target: 'LedgerAccount', amount: Decimal):
-        """
-        Executes a thread-safe transfer to a target account, enforcing business invariants.
-        Prevents mismatched currencies and double-debiting.
-        """
-        if not target or amount is None:
-            raise ValueError("Target and amount cannot be null")
-        
-        # PRE-CONDITION ENFORCEMENT: Currency matching
-        if self.currency != target.currency:
-            raise ValueError(f"Cannot transfer between mismatched currencies: {self.currency} and {target.currency}")
+        public void Credit(decimal amount)
+        {
+            if (amount <= 0) throw new ArgumentException("Credit amount must be positive", nameof(amount));
+            lock (_lock)
+            {
+                _balance += amount;
+            }
+        }
 
-        # PRE-CONDITION ENFORCEMENT: Self-transfer check
-        if self.account_id == target.account_id:
-            raise ValueError("Cannot transfer to the same account")
+        /// <summary>
+        /// Executes a thread-safe transfer to a target account, enforcing business invariants.
+        /// Prevents mismatched currencies and double-debiting.
+        /// </summary>
+        public void TransferTo(LedgerAccount target, decimal amount)
+        {
+            if (target == null) throw new ArgumentNullException(nameof(target));
 
-        # To prevent deadlocks, lock accounts in a stable global order
-        locks = [self, target]
-        locks.sort(key=lambda acc: acc.account_id)
+            // PRE-CONDITION ENFORCEMENT: Currency matching
+            if (Currency != target.Currency)
+            {
+                throw new InvalidOperationException($"Cannot transfer between mismatched currencies: {Currency} and {target.Currency}");
+            }
 
-        with locks[0]._lock:
-            with locks[1]._lock:
-                # Execute atomic debit-credit sequence
-                self.debit(amount)
-                target.credit(amount)
+            // PRE-CONDITION ENFORCEMENT: Self-transfer check
+            if (AccountId == target.AccountId)
+            {
+                throw new ArgumentException("Cannot transfer to the same account");
+            }
+
+            // To prevent deadlocks, lock accounts in a stable global order
+            var firstLock = string.Compare(AccountId, target.AccountId, StringComparison.Ordinal) < 0 ? this : target;
+            var secondLock = firstLock == this ? target : this;
+
+            lock (firstLock._lock)
+            {
+                lock (secondLock._lock)
+                {
+                    // Execute atomic debit-credit sequence
+                    this.Debit(amount);
+                    target.Credit(amount);
+                }
+            }
+        }
+    }
+}
 ```
 
 
@@ -857,19 +944,20 @@ This creates tight coupling. If you need to change how fees are calculated, or a
 
 Instead of sub-classing, we compose our routing engine by injecting a collection of independent strategy routes. The core engine is decoupled from the network-specific details.
 
-![Composition over Inheritance](editions/python/chapters/04-oop-principles/visuals/composition_vs_inheritance.png){width=85%}
+![Composition over Inheritance](editions/csharp/chapters/04-oop-principles/visuals/composition_vs_inheritance.png){width=85%}
 
 
 ## Polymorphism over Conditional Logic
 
 One of the easiest ways to spot a junior candidate's code is looking for large `if-else` or `switch` blocks that inspect the type of an object to determine behavior. For example:
 
-```python
-# Anti-pattern: Inspecting properties to determine routing
-if tx.amount > LIMIT:
-    fed_wire_route.process(tx)
-else:
-    ach_route.process(tx)
+```csharp
+// Anti-pattern: Inspecting properties to determine routing
+if (tx.Amount > LIMIT) {
+    fedWireRoute.Process(tx);
+} else {
+    achRoute.Process(tx);
+}
 ```
 
 
@@ -879,75 +967,91 @@ Polymorphism allows you to clean this up. By defining a generic `SettlementRoute
 
 The following code defines this polymorphic settlement design:
 
-```python
-from abc import ABC, abstractmethod
-from decimal import Decimal
-from uuid import UUID
+```csharp
+using System;
 
-class SettlementRoute(ABC):
-    """
-    Interface/Abstract Base Class defining the polymorphic contract for payment settlement networks.
-    """
-    @abstractmethod
-    def supports(self, transaction) -> bool:
-        pass
+namespace AuraPay.Settlement
+{
+    /// <summary>
+    /// Interface defining the polymorphic contract for payment settlement networks.
+    /// </summary>
+    public interface ISettlementRoute
+    {
+        bool Supports(TransactionRecord transaction);
+        void Process(TransactionRecord transaction);
+        decimal CalculateFees(TransactionRecord transaction);
+    }
 
-    @abstractmethod
-    def process(self, transaction):
-        pass
+    /// <summary>
+    /// Concrete implementation for the ACH network (low cost, delayed).
+    /// </summary>
+    public class AchRoute : ISettlementRoute
+    {
+        private static readonly decimal AchFlatFee = 0.50m;
 
-    @abstractmethod
-    def calculate_fees(self, transaction) -> Decimal:
-        pass
+        public bool Supports(TransactionRecord transaction)
+        {
+            return transaction.Amount <= 100000.00m;
+        }
 
-class AchRoute(SettlementRoute):
-    """
-    Concrete implementation for the ACH network (low cost, delayed).
-    """
-    ACH_FLAT_FEE = Decimal("0.50")
+        public void Process(TransactionRecord transaction)
+        {
+            Console.WriteLine($"Routing transaction {transaction.TransactionId} via ACH network.");
+        }
 
-    def supports(self, transaction) -> bool:
-        return transaction.amount <= Decimal("100000.00")
+        public decimal CalculateFees(TransactionRecord transaction)
+        {
+            return AchFlatFee;
+        }
+    }
 
-    def process(self, transaction):
-        print(f"Routing transaction {transaction.transaction_id} via ACH network.")
+    /// <summary>
+    /// Concrete implementation for the FedWire network (instant, high cost).
+    /// </summary>
+    public class FedWireRoute : ISettlementRoute
+    {
+        private static readonly decimal WireFlatFee = 15.00m;
 
-    def calculate_fees(self, transaction) -> Decimal:
-        return self.ACH_FLAT_FEE
+        public bool Supports(TransactionRecord transaction)
+        {
+            return transaction.Amount > 10000.00m;
+        }
 
-class FedWireRoute(SettlementRoute):
-    """
-    Concrete implementation for the FedWire network (instant, high cost).
-    """
-    WIRE_FLAT_FEE = Decimal("15.00")
+        public void Process(TransactionRecord transaction)
+        {
+            Console.WriteLine($"Routing transaction {transaction.TransactionId} via FedWire network.");
+        }
 
-    def supports(self, transaction) -> bool:
-        return transaction.amount > Decimal("10000.00")
-
-    def process(self, transaction):
-        print(f"Routing transaction {transaction.transaction_id} via FedWire network.")
-
-    def calculate_fees(self, transaction) -> Decimal:
-        return self.WIRE_FLAT_FEE
+        public decimal CalculateFees(TransactionRecord transaction)
+        {
+            return WireFlatFee;
+        }
+    }
+}
 ```
 
 
 By utilizing this interface, the main transaction processor can execute settlements using a clean polymorphic loop, completely decoupled from specific network implementations:
 
-```python
-class SettlementProcessor:
-    def __init__(self, routes: list[SettlementRoute]):
-        self._routes = routes
+```csharp
+public class SettlementProcessor 
+{
+    private readonly List<ISettlementRoute> _routes;
 
-    def execute(self, transaction: TransactionRecord) -> None:
-        active_route = next(
-            (route for route in self._routes if route.supports(transaction)), 
-            None
-        )
-        if not active_route:
-            raise NoRouteFoundException("No supported route found")
+    public SettlementProcessor(List<ISettlementRoute> routes) 
+    {
+        _routes = routes;
+    }
+
+    public void Execute(TransactionRecord transaction) 
+    {
+        var activeRoute = _routes
+            .FirstOrDefault(route => route.Supports(transaction))
+            ?? throw new NoRouteFoundException("No supported route found");
             
-        active_route.process(transaction)
+        activeRoute.Process(transaction);
+    }
+}
 ```
 
 
@@ -970,7 +1074,7 @@ If you stop there, you fail to show architectural maturity. An interviewer wants
 
 In this chapter, we will implement the core processing pipeline of AuraPay using a design that strictly conforms to all five SOLID principles.
 
-![The Five SOLID Principles — Quick Reference](editions/python/chapters/05-solid-boundaries/visuals/solid_summary.png){width=70%}
+![The Five SOLID Principles — Quick Reference](editions/csharp/chapters/05-solid-boundaries/visuals/solid_summary.png){width=70%}
 
 ## The SOLID Transaction Pipeline
 
@@ -978,73 +1082,85 @@ To illustrate SOLID, we will examine the `TransactionProcessor` in AuraPay. This
 
 Here is the decoupled, SOLID-compliant transaction execution flow:
 
-```python
-from abc import ABC, abstractmethod
-from decimal import Decimal
-from uuid import UUID
+```csharp
+using System;
 
-class LedgerRepository(ABC):
-    """
-    Abstraction for database operations (Dependency Inversion Principle).
-    """
-    @abstractmethod
-    def find_by_id(self, account_id: UUID):
-        pass
+namespace AuraPay.Processing
+{
+    /// <summary>
+    /// Abstraction for database operations (Dependency Inversion Principle).
+    /// </summary>
+    public interface ILedgerRepository
+    {
+        LedgerAccount FindById(Guid accountId);
+        void Save(LedgerAccount account);
+    }
 
-    @abstractmethod
-    def save(self, account):
-        pass
+    /// <summary>
+    /// Abstraction for fee calculations (Open/Closed Principle).
+    /// </summary>
+    public interface IFeeCalculator
+    {
+        decimal Calculate(TransactionRecord transaction);
+    }
 
-class FeeCalculator(ABC):
-    """
-    Abstraction for fee calculations (Open/Closed Principle).
-    """
-    @abstractmethod
-    def calculate(self, transaction) -> Decimal:
-        pass
+    /// <summary>
+    /// Interface Segregation Principle: Focused notification dispatch interface.
+    /// </summary>
+    public interface ITransactionNotificationSender
+    {
+        void SendNotification(TransactionRecord transaction, string status);
+    }
 
-class TransactionNotificationSender(ABC):
-    """
-    Interface Segregation Principle: Focused notification dispatch interface.
-    """
-    @abstractmethod
-    def send_notification(self, transaction, status: str):
-        pass
+    /// <summary>
+    /// Core transaction processor showing SOLID compliance.
+    /// </summary>
+    public class TransactionProcessor
+    {
+        private readonly ILedgerRepository _repository;
+        private readonly IFeeCalculator _feeCalculator;
+        private readonly ITransactionNotificationSender _notificationSender;
 
-class TransactionProcessor:
-    """
-    Core transaction processor showing SOLID compliance.
-    """
-    def __init__(self, repository: LedgerRepository, fee_calculator: FeeCalculator, notification_sender: TransactionNotificationSender):
-        self.repository = repository
-        self.fee_calculator = fee_calculator
-        self.notification_sender = notification_sender
+        public TransactionProcessor(
+            ILedgerRepository repository,
+            IFeeCalculator feeCalculator,
+            ITransactionNotificationSender notificationSender)
+        {
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _feeCalculator = feeCalculator ?? throw new ArgumentNullException(nameof(feeCalculator));
+            _notificationSender = notificationSender ?? throw new ArgumentNullException(nameof(notificationSender));
+        }
 
-    def process(self, transaction):
-        if not transaction:
-            raise ValueError("Transaction cannot be null")
+        public void Process(TransactionRecord transaction)
+        {
+            if (transaction == null) throw new ArgumentNullException(nameof(transaction));
 
-        # 1. Retrieve accounts from abstraction (DIP)
-        source = self.repository.find_by_id(transaction.source_account_id)
-        destination = self.repository.find_by_id(transaction.destination_account_id)
+            // 1. Retrieve accounts from abstraction (DIP)
+            var source = _repository.FindById(transaction.SourceAccountId);
+            var destination = _repository.FindById(transaction.DestinationAccountId);
 
-        if not source or not destination:
-            raise ValueError("Source or destination account not found")
+            if (source == null || destination == null)
+            {
+                throw new ArgumentException("Source or destination account not found");
+            }
 
-        # 2. Calculate fee dynamically (OCP)
-        fee = self.fee_calculator.calculate(transaction)
-        total_debit = transaction.amount + fee
+            // 2. Calculate fee dynamically (OCP)
+            var fee = _feeCalculator.Calculate(transaction);
+            var totalDebit = transaction.Amount + fee;
 
-        # 3. Coordinate state transitions on rich domain objects (SRP / LSP)
-        source.debit(total_debit)
-        destination.credit(transaction.amount)
+            // 3. Coordinate state transitions on rich domain objects (SRP / LSP)
+            source.Debit(totalDebit);
+            destination.Credit(transaction.Amount);
 
-        # 4. Persist updated states (DIP)
-        self.repository.save(source)
-        self.repository.save(destination)
+            // 4. Persist updated states (DIP)
+            _repository.Save(source);
+            _repository.Save(destination);
 
-        # 5. Notify via segregated interface (ISP)
-        self.notification_sender.send_notification(transaction, "SUCCESS")
+            // 5. Notify via segregated interface (ISP)
+            _notificationSender.SendNotification(transaction, "SUCCESS");
+        }
+    }
+}
 ```
 
 
@@ -1099,7 +1215,7 @@ This is the most critical principle for decoupling business logic from infrastru
 
 In our implementation, the `TransactionProcessor` does not import a concrete SQL database connector or Hibernate manager. It depends entirely on the `LedgerRepository` interface. The business logic is at the top of the dependency tree, and database adapters are plugged in at the bottom. This allows you to run unit tests using a mock repository in memory, completely decoupled from a database connection.
 
-![SOLID Dependency Inversion Principle — Before and After](editions/python/chapters/05-solid-boundaries/visuals/solid_dip.png){width=85%}
+![SOLID Dependency Inversion Principle — Before and After](editions/csharp/chapters/05-solid-boundaries/visuals/solid_dip.png){width=85%}
 
 
 ## SOLID Violation Detector & Remedies
@@ -1172,13 +1288,18 @@ SOLID principles are design heuristics, not commandments. Over-application creat
 
 A classic interview task is to process a collection of records—filtering out invalid data, transforming the items, and aggregating the result. Historically, developers solved this using imperative structures: `for` loops, nested `if` statements, and mutable local variables.
 
-```python
-# Imperative anti-pattern: Hard to read, mutable state, difficult to parallelize
-volumes = {}
-for tx in transactions:
-    if tx.amount >= threshold:
-        merchant_id = tx.destination_account_id
-        volumes[merchant_id] = volumes.get(merchant_id, 0) + tx.amount
+```csharp
+// Imperative anti-pattern: Hard to read, mutable state, difficult to parallelize
+var volumes = new Dictionary<Guid, decimal>();
+foreach (var tx in transactions) {
+    if (tx.Amount >= threshold) {
+        var merchantId = tx.DestinationAccountId;
+        if (!volumes.TryGetValue(merchantId, out decimal currentSum)) {
+            currentSum = 0;
+        }
+        volumes[merchantId] = currentSum + tx.Amount;
+    }
+}
 ```
 
 
@@ -1196,46 +1317,54 @@ In AuraPay, we aggregate merchant transaction volumes using functional streams. 
 
 The following code illustrates this functional pipeline:
 
-```python
-from decimal import Decimal
-from typing import List, Dict
-from uuid import UUID
-from collections import defaultdict
-from functools import reduce
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-class TransactionAnalytics:
-    """
-    Demonstrates high-performance batch transaction analytics in Python.
-    """
-    def aggregate_merchant_volumes(
-        self, 
-        transactions: List, 
-        min_amount_threshold: Decimal
-    ) -> Dict[UUID, Decimal]:
-        if transactions is None or min_amount_threshold is None:
-            raise ValueError("Transactions and threshold cannot be null")
+namespace AuraPay.Analytics
+{
+    /// <summary>
+    /// Demonstrates high-performance batch transaction analytics using C# LINQ.
+    /// </summary>
+    public class TransactionAnalytics
+    {
+        /// <summary>
+        /// Processes a list of transactions to aggregate total volume per merchant,
+        /// filtering out low-value records.
+        /// </summary>
+        public Dictionary<Guid, decimal> AggregateMerchantVolumes(
+            List<TransactionRecord> transactions, 
+            decimal minAmountThreshold)
+        {
+            if (transactions == null) throw new ArgumentNullException(nameof(transactions));
 
-        # 1. Filter: Retain transactions meeting the value criteria
-        filtered_txs = filter(lambda t: t.amount >= min_amount_threshold, transactions)
+            // Declarative LINQ query syntax
+            return transactions
+                .Where(t => t.Amount >= minAmountThreshold)
+                .GroupBy(t => t.DestinationAccountId)
+                .ToDictionary(
+                    group => group.Key,
+                    group => group.Sum(t => t.Amount)
+                );
+        }
 
-        # 2. Collect/Reduce: Group by merchant and sum the transaction volume
-        merchant_volumes = defaultdict(Decimal)
-        for tx in filtered_txs:
-            merchant_volumes[tx.destination_account_id] += tx.amount
-
-        return dict(merchant_volumes)
-
-    def get_high_value_transaction_ids(self, transactions: List, limit: Decimal) -> List[UUID]:
-        # Declarative list comprehension matching functional map/filter
-        return [
-            t.transaction_id 
-            for t in transactions 
-            if t.amount > limit
-        ]
+        /// <summary>
+        /// Finds the transaction IDs of all transfers exceeding a safety limit.
+        /// </summary>
+        public List<Guid> GetHighValueTransactionIds(List<TransactionRecord> transactions, decimal limit)
+        {
+            return transactions
+                .Where(t => t.Amount > limit)
+                .Select(t => t.TransactionId)
+                .ToList();
+        }
+    }
+}
 ```
 
 
-![Stream Pipeline Visualization](editions/python/chapters/06-functional-streams/visuals/stream_pipeline.png){width=90%}
+![Stream Pipeline Visualization](editions/csharp/chapters/06-functional-streams/visuals/stream_pipeline.png){width=90%}
 
 By declaring the operations as a stream pipeline, the code becomes a readable translation of the business spec:
 
@@ -1291,16 +1420,16 @@ Creational patterns abstract the instantiation process, decoupling your applicat
 ### The Builder Pattern
 When constructing complex domain objects like AuraPay's `TransactionRecord`, constructors with ten parameters lead to unreadable code. The **Builder Pattern** solves this, allowing you to build objects step-by-step while maintaining immutability:
 
-```python
-# Example of a fluent, type-safe builder for transactions
-tx = (TransactionRecordBuilder()
-    .with_id(uuid.uuid4())
-    .from_account(source_id)
-    .to_account(dest_id)
-    .with_amount(Decimal("100.00"))
-    .in_currency("USD")
-    .at_timestamp(datetime.now(timezone.utc))
-    .build()) # Immutability and invariants are validated in build()
+```csharp
+// Example of a fluent, type-safe builder for transactions
+TransactionRecord tx = new TransactionRecordBuilder()
+    .WithId(Guid.NewGuid())
+    .FromAccount(sourceId)
+    .ToAccount(destId)
+    .WithAmount(100.00m)
+    .InCurrency("USD")
+    .AtTimestamp(DateTimeOffset.UtcNow)
+    .Build(); // Immutability and invariants are validated in Build()
 ```
 
 
@@ -1310,19 +1439,32 @@ When the core ledger processor needs to route a payment, it uses a **Factory Pat
 ### The Singleton Pattern (Creational Deep-Dive)
 The Singleton pattern guarantees that a class has only one instance and provides a global point of access to it. In multi-threaded enterprise engines (such as a shared connection pool managed by HikariCP), writing a thread-safe Singleton requires **Double-Checked Locking**:
 
-```python
-import threading
-
-class LedgerConnectionPool:
-    _instance = None
-    _lock = threading.Lock()
-
-    def __new__(cls):
-        if cls._instance is None: # First check (no lock)
-            with cls._lock:
-                if cls._instance is None: # Second check (with lock)
-                    cls._instance = super(LedgerConnectionPool, cls).__new__(cls)
-        return cls._instance
+```csharp
+public class LedgerConnectionPool 
+{
+    private static volatile LedgerConnectionPool _instance;
+    private static readonly object _lock = new object();
+    
+    private LedgerConnectionPool() {}
+    
+    public static LedgerConnectionPool Instance 
+    {
+        get 
+        {
+            if (_instance == null) // First check (no lock)
+            {
+                lock (_lock)
+                {
+                    if (_instance == null) // Second check (with lock)
+                    {
+                        _instance = new LedgerConnectionPool();
+                    }
+                }
+            }
+            return _instance;
+        }
+    }
+}
 ```
 
 > **Warning for Senior Candidates:** In cloud-native systems, classical Singletons are often considered an anti-pattern:
@@ -1342,11 +1484,11 @@ The **Adapter Pattern** wraps the legacy API with a clean interface that complie
 ### The Decorator Pattern
 If you need to add auditing, metrics, or retry behaviors to transaction execution, do not pollute the core processing code. Use a **Decorator Pattern** to wrap the transaction processor, adding the cross-cutting concerns dynamically:
 
-```python
-# Wrapping the core processor with an audit logging decorator
-decorated_processor = AuditingTransactionProcessorDecorator(
-    CoreTransactionProcessor(repository, calculator, sender)
-)
+```csharp
+// Wrapping the core processor with an audit logging decorator
+ITransactionProcessor decoratedProcessor = new AuditingTransactionProcessorDecorator(
+    new CoreTransactionProcessor(repository, calculator, sender)
+);
 ```
 
 
@@ -1365,57 +1507,95 @@ We solve this using the **Observer Pattern**. The `TransactionEventPublisher` ma
 
 Here is the implementation:
 
-```python
-from abc import ABC, abstractmethod
+```csharp
+using System;
+using System.Collections.Generic;
 
-class TransactionObserver(ABC):
-    """
-    Interface defining the Observer contract for transaction events.
-    """
-    @abstractmethod
-    def on_transaction_success(self, transaction):
-        pass
+namespace AuraPay.Events
+{
+    /// <summary>
+    /// Interface defining the Observer contract for transaction events.
+    /// </summary>
+    public interface ITransactionObserver
+    {
+        void OnTransactionSuccess(TransactionRecord transaction);
+        void OnTransactionFailed(TransactionRecord transaction, Exception error);
+    }
 
-    @abstractmethod
-    def on_transaction_failed(self, transaction, error: Exception):
-        pass
+    /// <summary>
+    /// Concrete Observer that writes a persistent audit trail for security compliance.
+    /// </summary>
+    public class AuditTrailObserver : ITransactionObserver
+    {
+        public void OnTransactionSuccess(TransactionRecord transaction)
+        {
+            Console.WriteLine($"AUDIT SUCCESS: Transaction {transaction.TransactionId} of {transaction.Amount} " +
+                              $"{transaction.Currency} from {transaction.SourceAccountId} to {transaction.DestinationAccountId} " +
+                              $"registered in immutable log.");
+        }
 
-class AuditTrailObserver(TransactionObserver):
-    """
-    Concrete Observer that writes a persistent audit trail for security compliance.
-    """
-    def on_transaction_success(self, transaction):
-        print(f"AUDIT SUCCESS: Transaction {transaction.transaction_id} of {transaction.amount} "
-              f"{transaction.currency} from {transaction.source_account_id} to {transaction.destination_account_id} "
-              f"registered in immutable log.")
+        public void OnTransactionFailed(TransactionRecord transaction, Exception error)
+        {
+            Console.Error.WriteLine($"AUDIT FAILURE: Transaction {transaction.TransactionId} failed. Error: {error.Message}");
+        }
+    }
 
-    def on_transaction_failed(self, transaction, error: Exception):
-        print(f"AUDIT FAILURE: Transaction {transaction.transaction_id} failed. Error: {str(error)}")
+    /// <summary>
+    /// Subject class managing observers and publishing transaction status updates.
+    /// </summary>
+    public class TransactionEventPublisher
+    {
+        private readonly List<ITransactionObserver> _observers = new List<ITransactionObserver>();
+        private readonly object _lock = new object();
 
-class TransactionEventPublisher:
-    """
-    Subject class managing observers and publishing transaction status updates.
-    """
-    def __init__(self):
-        self._observers = []
+        public void RegisterObserver(ITransactionObserver observer)
+        {
+            if (observer == null) throw new ArgumentNullException(nameof(observer));
+            lock (_lock)
+            {
+                _observers.Add(observer);
+            }
+        }
 
-    def register_observer(self, observer: TransactionObserver):
-        self._observers.append(observer)
+        public void DeregisterObserver(ITransactionObserver observer)
+        {
+            lock (_lock)
+            {
+                _observers.Remove(observer);
+            }
+        }
 
-    def deregister_observer(self, observer: TransactionObserver):
-        self._observers.remove(observer)
+        public void NotifySuccess(TransactionRecord transaction)
+        {
+            List<ITransactionObserver> targets;
+            lock (_lock)
+            {
+                targets = new List<ITransactionObserver>(_observers);
+            }
+            foreach (var observer in targets)
+            {
+                observer.OnTransactionSuccess(transaction);
+            }
+        }
 
-    def notify_success(self, transaction):
-        for observer in self._observers:
-            observer.on_transaction_success(transaction)
-
-    def notify_failure(self, transaction, error: Exception):
-        for observer in self._observers:
-            observer.on_transaction_failed(transaction, error)
+        public void NotifyFailure(TransactionRecord transaction, Exception error)
+        {
+            List<ITransactionObserver> targets;
+            lock (_lock)
+            {
+                targets = new List<ITransactionObserver>(_observers);
+            }
+            foreach (var observer in targets)
+            {
+                observer.OnTransactionFailed(transaction, error);
+            }
+        }
+    }
+}
 ```
 
 
-![Observer Pattern Class Diagram](editions/python/chapters/07-design-patterns/visuals/observer_pattern.png){width=90%}
+![Observer Pattern Class Diagram](editions/csharp/chapters/07-design-patterns/visuals/observer_pattern.png){width=90%}
 
 ### The State Pattern (Behavioral Deep-Dive)
 In payment platforms, transactions transition through a strict sequence of states: `CREATED` $\to$ `PENDING` $\to$ `SETTLED` or `FAILED` $\to$ `REFUNDED`.
@@ -1500,7 +1680,7 @@ Virtual threads are lightweight threads managed by the JVM rather than the OS. T
 
 *   **Impact:** You can run millions of virtual threads concurrently while writing standard, synchronous, block-on-write code that is easy to read, debug, and trace.
 
-![Virtual Threads vs Platform Threads](editions/python/chapters/08-concurrency-performance/visuals/virtual_threads.png){width=85%}
+![Virtual Threads vs Platform Threads](editions/csharp/chapters/08-concurrency-performance/visuals/virtual_threads.png){width=85%}
 
 
 ## Database Locking: Optimistic vs. Pessimistic
@@ -1521,57 +1701,82 @@ SELECT * FROM accounts WHERE id = ? FOR UPDATE;
 ### Optimistic Concurrency Control (OCC)
 Optimistic locking assumes conflicts are rare. It allows concurrent threads to read and edit records without blocking. When saving the entity, the engine verifies that the record has not been modified by checking a `version` field.
 
-![Optimistic vs Pessimistic Concurrency Control](editions/python/chapters/08-concurrency-performance/visuals/occ_vs_pcc.png){width=70%}
+![Optimistic vs Pessimistic Concurrency Control](editions/csharp/chapters/08-concurrency-performance/visuals/occ_vs_pcc.png){width=70%}
 
 The following code illustrates this version-checking implementation:
 
-```python
-from decimal import Decimal
-from uuid import UUID
+```csharp
+using System;
 
-class AccountEntity:
-    """
-    Represents a database-mapped Ledger Account Entity with versioning for
-    Optimistic Concurrency Control (OCC).
-    """
-    def __init__(self, account_id: UUID, balance: Decimal, currency: str, version: int):
-        self.id = account_id
-        self.balance = balance
-        self.currency = currency
-        self.version = version
+namespace AuraPay.Persistence
+{
+    /// <summary>
+    /// Represents a database-mapped Ledger Account Entity with versioning for
+    /// Optimistic Concurrency Control (OCC).
+    /// </summary>
+    public class AccountEntity
+    {
+        public Guid Id { get; }
+        public decimal Balance { get; private set; }
+        public string Currency { get; }
+        public long Version { get; private set; }
 
-    def update_balance(self, new_balance: Decimal):
-        self.balance = new_balance
+        public AccountEntity(Guid id, decimal balance, string currency, long version)
+        {
+            Id = id;
+            Balance = balance;
+            Currency = currency ?? throw new ArgumentNullException(nameof(currency));
+            Version = version;
+        }
 
-    def increment_version(self):
-        self.version += 1
+        public void UpdateBalance(decimal newBalance)
+        {
+            Balance = newBalance;
+        }
 
-class DatabaseLedgerRepository:
-    """
-    Repository implementation executing the version check update query.
-    """
-    def save(self, account: AccountEntity):
-        # Simulates SQL execution:
-        # UPDATE accounts SET balance = ?, version = version + 1 WHERE id = ? AND version = ?;
-        sql_query = (
-            "UPDATE accounts SET balance = :balance, version = :version + 1 "
-            "WHERE id = :id AND version = :version"
-        )
-        
-        rows_updated = self._mock_execute_query(sql_query, account)
+        public void IncrementVersion()
+        {
+            Version++;
+        }
+    }
 
-        # OCC FAILURE CHECK: No rows updated implies a version conflict
-        if rows_updated == 0:
-            raise RuntimeError(
-                f"Optimistic lock conflict on account {account.id}. "
-                f"Outdated version: {account.version}"
-            )
-            
-        account.increment_version()
+    /// <summary>
+    /// Repository implementation executing the version check update query.
+    /// </summary>
+    public class DatabaseLedgerRepository
+    {
+        /// <summary>
+        /// Updates the account in the database using a strict version-matching query.
+        /// Throws an exception if another thread modified the record concurrently.
+        /// </summary>
+        public void Save(AccountEntity account)
+        {
+            if (account == null) throw new ArgumentNullException(nameof(account));
 
-    def _mock_execute_query(self, query: str, account: AccountEntity) -> int:
-        # Simulates the database driver execution
-        return 1  # 1 indicates success; 0 indicates a version mismatch conflict
+            // Simulates SQL database update query:
+            // UPDATE accounts SET balance = @balance, version = version + 1 WHERE id = @id AND version = @version;
+            string query = "UPDATE accounts SET balance = @Balance, version = @Version + 1 WHERE id = @Id AND version = @Version";
+
+            int rowsUpdated = MockExecuteUpdateQuery(query, account);
+
+            // OCC FAILURE CHECK: If rowsUpdated is 0, a concurrent thread modified this record first.
+            if (rowsUpdated == 0)
+            {
+                throw new InvalidOperationException(
+                    $"Optimistic lock conflict on account {account.Id}. Outdated version: {account.Version}"
+                );
+            }
+
+            account.IncrementVersion();
+        }
+
+        private int MockExecuteUpdateQuery(string query, AccountEntity account)
+        {
+            // Simulates database execution
+            return 1; // 1 means success; 0 means no record matched (concurrency mismatch)
+        }
+    }
+}
 ```
 
 
@@ -1622,96 +1827,81 @@ When updating the database, the application must invalidate the cache key.
 - **Transactional Safety:** Ensure the cache key deletion occurs inside the database transaction's post-commit hook. If the database transaction rolls back, the cache key must not be deleted.
 
 
-## Memory Architecture: PyMalloc, Reference Counting, Generational Cyclic GC, and GIL
+## Memory Architecture: Stack, Managed Heap, LOH, POH, and CLR GC Generations
 
-In high-performance Python 3.11+ applications (such as FastAPI microservices and telemetry aggregation pipelines), understanding CPython's internal memory manager is critical for preventing memory leaks, reducing GC overhead, and designing low-latency systems.
+In enterprise .NET 8 systems (such as high-frequency trading platforms and distributed ledger gateways), mastering Common Language Runtime (CLR) memory management is vital for controlling GC latency and throughput.
 
-### The CPython Layered Memory Architecture
+### The CLR Memory Regions
 
-Unlike languages that rely solely on a tracing garbage collector, CPython employs a multi-tiered memory architecture to handle object allocation efficiently.
+The .NET CLR divides application memory into thread-private stacks and several specialized managed heap segments.
 
-#### 1. Small Object Allocator (`PyMalloc`)
-- **Scope:** Handles all Python object allocations **$\le$ 512 bytes** (e.g., integers, floats, small strings, tuples, dictionaries).
-- **Structure:** `PyMalloc` avoids expensive operating system `malloc()` calls by organizing memory into a 3-tier hierarchy:
-  - **Arenas (256 KB):** Memory blocks requested directly from the OS page allocator.
-  - **Pools (4 KB):** Each Arena is divided into 64 Pools of 4 KB each. Each Pool handles objects of a single fixed size-class (e.g., 16-byte pool, 32-byte pool).
-  - **Blocks (8 to 512 bytes):** Subdivisions inside a Pool where actual Python objects reside.
-- **Benefit:** Fast $O(1)$ allocation and zero external fragmentation for small objects.
+#### 1. The Thread Stack
+- **Scope:** Thread-private. Every OS thread has a dedicated stack (typically 1MB in 64-bit Windows/Linux).
+- **Contents:** Local value types (`struct`, `enum`, primitive types `int`, `bool`, `double`), method parameters, pointer references to managed objects, and `ref struct` instances (e.g., `Span<T>`).
+- **Behavior:** LIFO stack frame push/pop semantics. Stack allocations require zero Garbage Collection overhead.
 
-#### 2. System Allocator (`malloc` / `free`)
-- **Scope:** Objects **larger than 512 bytes** (e.g., large lists, NumPy arrays, byte buffers) bypass `PyMalloc` and are allocated directly via system `malloc()`.
+#### 2. The Small Object Heap (SOH)
+- **Scope:** Shared across all threads.
+- **Contents:** Reference type instances (`class`, `delegate`, `interface`, `string`, `object`) whose size is **smaller than 85,000 bytes**.
+- **Garbage Collection:** Managed by the CLR Generational Garbage Collector via compacting generational sweeps.
 
----
+#### 3. The Large Object Heap (LOH)
+- **Scope:** Shared across all threads.
+- **Contents:** Objects and byte/array buffers whose size is **85,000 bytes or larger**.
+- **Garbage Collection:** Swept during Generation 2 collections. Because copying large memory blocks is expensive, the LOH is **not compacted by default**, which can lead to memory fragmentation unless explicitly compacted via `GCSettings.LargeObjectHeapCompactionMode`.
 
-### Dual Garbage Collection Mechanisms
-
-CPython uses a **dual-engine garbage collection architecture**:
-
-#### 1. Primary Engine: Reference Counting ($O(1)$ Instant Reclamation)
-Every CPython object structure contains a `ob_refcnt` header field (defined in `PyObject`).
-
-- **Increment:** `ob_refcnt` increases when an object is assigned to a variable, passed to a function, or added to a list/dictionary.
-- **Decrement:** `ob_refcnt` decreases when a variable goes out of scope, is reassigned, or is explicitly deleted via `del obj`.
-- **Instant Deallocation:** As soon as `ob_refcnt == 0`, the memory is **deallocated instantly** on the current execution thread. No STW pause required!
-
-```python
-import sys
-
-x = [1, 2, 3]
-print(sys.getrefcount(x))  # Output: 2 (variable 'x' + temporary reference in getrefcount)
-y = x
-print(sys.getrefcount(x))  # Output: 3
-del y
-print(sys.getrefcount(x))  # Output: 2
-```
-
-#### 2. Secondary Engine: Generational Cyclic Garbage Collector
-Reference counting has one fatal flaw: **it cannot detect reference cycles** (e.g., Object A points to Object B, and Object B points to Object A; both variables are deleted, but `ob_refcnt` remains `1` for both).
-
-CPython includes a **Generational Cyclic GC** to detect and break isolated reference cycles.
+#### 4. The Pinned Object Heap (POH)
+- **Scope:** Introduced in .NET 5+ to eliminate LOH/SOH fragmentation caused by pinned memory pointers.
+- **Contents:** Arrays and objects pinned for interop with native C/C++ libraries or socket I/O operations via `GCHandleType.Pinned` or `GC.AllocateArray<T>(..., pinned: true)`.
 
 ---
 
-### The CPython Cyclic GC Generations & Cycle Detection
+### Value Types vs. Reference Types: Storage Rules
 
-The Cyclic GC only tracks **container objects** (objects capable of holding references to other objects, such as `dict`, `list`, `tuple`, `set`, and custom class instances).
+In C#, the fundamental distinction between `struct` (Value Type) and `class` (Reference Type) dictates memory layout:
 
-#### 1. The 3 GC Generations
-- **Generation 0 (Gen 0):** Every newly created container object is assigned to Gen 0. Checked frequently when allocations exceed `-XX` threshold (`gc.get_threshold()`).
-- **Generation 1 (Gen 1):** Containers that survive a Gen 0 collection are promoted to Gen 1.
-- **Generation 2 (Gen 2):** Long-lived containers surviving Gen 1 are promoted to Gen 2. Gen 2 collections occur infrequently.
-
-#### 2. Cycle Detection Algorithm
-To find cycles, the CPython GC:
-1. Creates a candidate list of container objects.
-2. Trial-decrements reference counts (`gc_refs`) for all references between tracked containers.
-3. Any container whose effective `gc_refs` drops to `0` is part of an isolated reference cycle and is scheduled for destruction.
+| Type Category | Memory Location | GC Overhead | Example Types |
+|---|---|---|---|
+| **Local Value Type** (`struct Point { int X, Y; }`) | **Thread Stack Frame** | **Zero GC** (freed when frame pops) | `int`, `long`, `bool`, custom `struct`, `readonly struct` |
+| **Inline Value Type Field** (`struct` inside a `class`) | **Managed Heap** (inside outer class instance) | Included in outer object lifecycle | `struct` declared as a member field of a `class` |
+| **Reference Type** (`class LedgerAccount`) | **Managed Heap** (SOH or LOH) | **Managed by CLR GC** | `class`, `interface`, `delegate`, `string`, arrays |
+| **Stack-Only Type** (`ref struct`) | **Thread Stack ONLY** | **Zero GC** (Cannot be boxed or moved to Heap) | `Span<T>`, `ReadOnlySpan<T>`, `Utf8JsonReader` |
 
 ---
 
-### The Global Interpreter Lock (GIL) & Memory Safety
+### The .NET CLR Generational GC & Promotion Lifecycle
 
-- **Thread Safety of `ob_refcnt`:** Because reference counts are mutated continuously on every assignment, multi-threaded access without synchronization would cause data races on `ob_refcnt`.
-- **The Role of the GIL:** The Global Interpreter Lock ensures that only one native OS thread executes CPython bytecode at a time, protecting `ob_refcnt` mutations from race conditions.
-- **Free-Threading in Python 3.13+ (PEP 703):** Modern Python versions introduce experimental build flags (`--disable-gil`) using atomic reference counting (`Py_atomic_int`) to enable true multi-core parallel execution.
+The .NET Garbage Collector utilizes a 3-generation model to maximize throughput based on object survival patterns.
+
+#### 1. Generation 0 (Gen 0)
+- **Role:** The entry point for all newly allocated small objects.
+- **GC Frequency:** Collected very frequently (sub-millisecond). Most temporary objects (e.g., short-lived DTOs, string concatenations) die here.
+
+#### 2. Generation 1 (Gen 1)
+- **Role:** Serves as a buffer/survivor zone between short-lived objects (Gen 0) and long-lived objects (Gen 2).
+- **GC Frequency:** Collected moderately often. Objects surviving Gen 0 are promoted to Gen 1.
+
+#### 3. Generation 2 (Gen 2 + LOH + POH)
+- **Role:** Stores long-lived objects (e.g., ASP.NET Core singletons, database connection pools, static caches).
+- **GC Frequency:** Collected infrequently (Full GC). Full Gen 2 collections inspect the entire managed memory footprint and can cause noticeable latency pauses under high memory pressure.
 
 ---
 
-### Python Memory Optimization Best Practices
+### The .NET Object Promotion Lifecycle
 
-- **`__slots__` for Memory Efficiency:** By default, every class instance uses a `__dict__` dictionary to store instance attributes, incurring high `PyMalloc` overhead. Defining `__slots__` eliminates `__dict__`, storing attributes in a fixed flat array and reducing per-instance memory consumption by up to 60%.
+1. **Allocation:** `var tx = new Transaction()` allocates the instance in **Gen 0** on the Small Object Heap.
+2. **Gen 0 Sweep:** A Gen 0 collection triggers. Unreferenced objects are reclaimed instantly. Live surviving objects are **promoted to Generation 1**.
+3. **Gen 1 Sweep:** On subsequent GC cycles, surviving Gen 1 objects are **promoted to Generation 2**.
+4. **Tenured State:** Once in Gen 2, objects remain there until a Full Gen 2 collection identifies them as unreachable.
+5. **LOH Promotion Bypass:** Objects $\ge$ 85,000 bytes are allocated directly in **Gen 2 / LOH**, skipping Gen 0 and Gen 1 completely.
 
-```python
-class FastTransaction:
-    __slots__ = ('id', 'amount', 'timestamp') # Zero __dict__ memory overhead!
+---
 
-    def __init__(self, tx_id, amount, timestamp):
-        self.id = tx_id
-        self.amount = amount
-        self.timestamp = timestamp
-```
+### High-Performance .NET Optimization Techniques
 
-- **`weakref` Module:** Use `weakref.ref` or `weakref.WeakKeyDictionary` to reference objects without incrementing `ob_refcnt`, preventing reference cycles in caching and observer patterns.
+- **`Span<T>` and `Memory<T>`:** `Span<T>` is a `ref struct` that provides contiguous memory views over stack memory, managed heap arrays, or native unmanaged memory without allocating new objects or invoking GC.
+- **`ArrayPool<T>`:** Reusable array rental pools (`ArrayPool<T>.Shared.Rent(size)`) prevent frequent LOH allocations, avoiding LOH fragmentation and eliminating Gen 2 GC pressure in high-throughput pipelines.
+- **Struct vs. Class Trade-offs:** Use `readonly struct` for small, immutable data structures ($\le$ 16 bytes) to achieve zero-allocation stack semantics.
 
 
 
@@ -1741,7 +1931,7 @@ Setting the pool size to 17 will yield *higher* overall throughput than setting 
 
 **Important Context:** This formula was derived empirically by the PostgreSQL community for spinning disk (HDD) workloads where 'Effective Spindle Count' represents physical disk heads. For modern NVMe SSDs and cloud-managed databases (e.g., Aurora, Cloud SQL), this formula is a starting point, not a universal law. Cloud databases often recommend pool sizes of 2-5× CPU cores. Always benchmark with your specific database engine and storage backend.
 
-![HikariCP Connection Pool Sizing](editions/python/chapters/08-concurrency-performance/visuals/hikaricp_formula.png){width=85%}
+![HikariCP Connection Pool Sizing](editions/csharp/chapters/08-concurrency-performance/visuals/hikaricp_formula.png){width=85%}
 
 
 
@@ -1749,9 +1939,6 @@ Setting the pool size to 17 will yield *higher* overall throughput than setting 
 > ⭐ **STAR Moment: The Cache Invalidation Design**
 > 
 > When discussing performance during an interview, never say *"We will add a cache."* Say: *"We will implement a Cache-Aside pattern using Redis. To prevent stale reads in our double-entry ledger, we will use a transactional write-through strategy, invalidating cache keys atomically inside the database commit boundary to ensure absolute consistency."* This shows you understand caching boundaries in financial transaction systems.
-
-
-\part{Algorithmic Mastery}
 
 
 # Core Algorithms & Assessment Tactical Guide
@@ -2616,7 +2803,7 @@ A two-pointer technique where:
 
 After the loop, `arr[0..write-1]` contains the filtered result. This pattern solves: *Remove Element*, *Move Zeros*, *Remove Duplicates from Sorted Array*, and *String Compression*.
 
-![Read/Write Pointer — In-Place Array Compaction](editions/python/chapters/10-implementation-patterns/visuals/read_write_pointer.png){width=85%}
+![Read/Write Pointer — In-Place Array Compaction](editions/csharp/chapters/10-implementation-patterns/visuals/read_write_pointer.png){width=85%}
 
 ### Character Frequency Array (`int[256]` or `int[26]`)
 A fixed-size integer array indexed by character ASCII value. `counts['a']++` increments the counter at index 97. This provides:
@@ -2639,7 +2826,7 @@ Use `int[26]` when input is guaranteed lowercase English letters only (`c - 'a'`
 ### Symmetrical Two-Pointer Convergence
 Two pointers start at opposite ends (`left = 0`, `right = len - 1`) and move toward each other. The loop condition is `while (left < right)`. This pattern solves: *Palindrome Check*, *Reverse String*, *Two Sum in Sorted Array*, and *Container With Most Water*.
 
-![Two-Pointer Convergence — Palindrome Verification](editions/python/chapters/10-implementation-patterns/visuals/two_pointer_convergence.png){width=85%}
+![Two-Pointer Convergence — Palindrome Verification](editions/csharp/chapters/10-implementation-patterns/visuals/two_pointer_convergence.png){width=85%}
 
 ### Run-Length Encoding (RLE)
 Compress consecutive identical elements into `(element, count)` pairs. `"aaabbc"` becomes `"a3b2c1"`. The read pointer tracks the current run; the write pointer emits compressed output. This is a classic Easy-tier problem that combines the Read/Write pattern with counting.
@@ -2701,26 +2888,29 @@ These are the two most important templates to have memorized before the exam.
 
 ### Template A: Read/Write In-Place Filter
 
-```python
-# Retains elements satisfying a condition, overwrites list in-place
-write = 0
-for read in range(len(arr)):
-    if keep_condition(arr[read]):
-        arr[write] = arr[read]
-        write += 1
-# Result is arr[0..write-1], return write as the new length
+```csharp
+// Retains elements satisfying a condition, overwrites array in-place
+int write = 0;
+for (int read = 0; read < arr.Length; read++) {
+    if (KeepCondition(arr[read])) {
+        arr[write] = arr[read];
+        write++;
+    }
+}
+// Result is arr[0..write-1], return write as the new length
 ```
 **Used by:** Remove Element, Move Zeros, Remove Duplicates, Squeeze Spaces.
 
 ### Template B: Symmetric Converging Pointers
 
-```python
-left, right = 0, len(arr) - 1
-while left < right:
-    # Process or compare arr[left] and arr[right]
-    # Optionally skip invalid elements
-    left += 1
-    right -= 1
+```csharp
+int left = 0, right = arr.Length - 1;
+while (left < right) {
+    // Process or compare arr[left] and arr[right]
+    // Optionally skip invalid elements
+    left++;
+    right--;
+}
 ```
 **Used by:** Palindrome Check, Reverse Array, Two Sum (sorted), Sort Colors.
 
@@ -2736,23 +2926,24 @@ while left < right:
 **Pattern:** Two-pass frequency array. First pass counts; second pass finds the first count of 1.
 **Why two passes?** A single pass cannot determine uniqueness because later characters might duplicate earlier ones. The frequency array decouples counting from searching.
 
-```python
-def first_uniq_char(self, s: str) -> int:
-    if not s:
-        return -1
+```csharp
+public int FirstUniqChar(string s) {
+    if (string.IsNullOrEmpty(s)) return -1;
 
-    # Pass 1: Count frequency of each character
-    counts = [0] * 256
-    for char in s:
-        counts[ord(char)] += 1
+    // Pass 1: Count frequency of each character
+    int[] counts = new int[256];
+    foreach (char c in s) {
+        counts[c]++;
+    }
 
-    # Pass 2: Find first character with frequency exactly 1
-    for i, char in enumerate(s):
-        if counts[ord(char)] == 1:
-            return i
+    // Pass 2: Find first character with frequency exactly 1
+    for (int i = 0; i < s.Length; i++) {
+        if (counts[s[i]] == 1) return i;
+    }
 
-    return -1 # All characters repeat
-# Time: O(N), Space: O(1) — the counts list is constant size
+    return -1; // All characters repeat
+}
+// Time: O(N), Space: O(1) — the int[256] is constant size
 ```
 * * *
 
@@ -2765,36 +2956,38 @@ def first_uniq_char(self, s: str) -> int:
 
 **Critical edge case:** When count exceeds 9 (e.g., count = 12), you must write `'1'` then `'2'` as separate characters.
 
-```python
-def compress(self, chars: list[str]) -> int:
-    if not chars:
-        return 0
+```csharp
+public int Compress(char[] chars) {
+    if (chars == null || chars.Length == 0) return 0;
 
-    write = 0 # Write pointer for compressed output
-    read = 0  # Read pointer scanning input
+    int write = 0; // Write pointer for compressed output
+    int read = 0;  // Read pointer scanning input
 
-    while read < len(chars):
-        current = chars[read]
-        count = 0
+    while (read < chars.Length) {
+        char current = chars[read];
+        int count = 0;
 
-        # Count consecutive occurrences of current character
-        while read < len(chars) and chars[read] == current:
-            read += 1
-            count += 1
+        // Count consecutive occurrences of current character
+        while (read < chars.Length && chars[read] == current) {
+            read++;
+            count++;
+        }
 
-        # Write the character itself
-        chars[write] = current
-        write += 1
+        // Write the character itself
+        chars[write++] = current;
 
-        # Write the count digits (only if count > 1)
-        if count > 1:
-            # Convert count to individual digit characters
-            for digit in str(count):
-                chars[write] = digit
-                write += 1
+        // Write the count digits (only if count > 1)
+        if (count > 1) {
+            // Convert count to individual digit characters
+            foreach (char digit in count.ToString()) {
+                chars[write++] = digit;
+            }
+        }
+    }
 
-    return write
-# Time: O(N), Space: O(1) auxiliary
+    return write;
+}
+// Time: O(N), Space: O(1) auxiliary
 ```
 * * *
 
@@ -2807,30 +3000,34 @@ def compress(self, chars: list[str]) -> int:
 
 **Common mistake:** Forgetting to check `left < right` inside the skip-while loops, causing `ArrayIndexOutOfBoundsException` on strings like `".,,"`.
 
-```python
-def is_palindrome(self, s: str) -> bool:
-    if s is None:
-        return False
+```csharp
+public bool IsPalindrome(string s) {
+    if (s == null) return false;
 
-    left, right = 0, len(s) - 1
+    int left = 0, right = s.Length - 1;
 
-    while left < right:
-        # Skip non-alphanumeric from the left
-        while left < right and not s[left].isalnum():
-            left += 1
-        # Skip non-alphanumeric from the right
-        while left < right and not s[right].isalnum():
-            right -= 1
+    while (left < right) {
+        // Skip non-alphanumeric from the left
+        while (left < right && !char.IsLetterOrDigit(s[left])) {
+            left++;
+        }
+        // Skip non-alphanumeric from the right
+        while (left < right && !char.IsLetterOrDigit(s[right])) {
+            right--;
+        }
 
-        # Compare characters (case-insensitive)
-        if s[left].lower() != s[right].lower():
-            return False
+        // Compare characters (case-insensitive)
+        if (char.ToLower(s[left]) != char.ToLower(s[right])) {
+            return false;
+        }
 
-        left += 1
-        right -= 1
+        left++;
+        right--;
+    }
 
-    return True
-# Time: O(N), Space: O(1)
+    return true;
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -2843,23 +3040,24 @@ def is_palindrome(self, s: str) -> bool:
 
 **Why not swap?** Swapping works too, but the two-pass approach (copy then fill) is cleaner and less error-prone under time pressure.
 
-```python
-def move_zeroes(self, nums: list[int]) -> None:
-    if not nums:
-        return
+```csharp
+public void MoveZeroes(int[] nums) {
+    if (nums == null || nums.Length == 0) return;
 
-    # Pass 1: Copy all non-zero elements to the front
-    write = 0
-    for read in range(len(nums)):
-        if nums[read] != 0:
-            nums[write] = nums[read]
-            write += 1
+    // Pass 1: Copy all non-zero elements to the front
+    int write = 0;
+    for (int read = 0; read < nums.Length; read++) {
+        if (nums[read] != 0) {
+            nums[write++] = nums[read];
+        }
+    }
 
-    # Pass 2: Fill remaining positions with zeros
-    while write < len(nums):
-        nums[write] = 0
-        write += 1
-# Time: O(N), Space: O(1)
+    // Pass 2: Fill remaining positions with zeros
+    while (write < nums.Length) {
+        nums[write++] = 0;
+    }
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -2870,19 +3068,20 @@ def move_zeroes(self, nums: list[int]) -> None:
 
 **Pattern:** Read/Write pointer. Since the array is sorted, duplicates are always adjacent. The write pointer advances only when `nums[read] != nums[write - 1]`.
 
-```python
-def remove_duplicates(self, nums: list[int]) -> int:
-    if not nums:
-        return 0
+```csharp
+public int RemoveDuplicates(int[] nums) {
+    if (nums == null || nums.Length == 0) return 0;
 
-    write = 1 # First element is always unique
-    for read in range(1, len(nums)):
-        if nums[read] != nums[write - 1]:
-            nums[write] = nums[read]
-            write += 1
+    int write = 1; // First element is always unique
+    for (int read = 1; read < nums.Length; read++) {
+        if (nums[read] != nums[write - 1]) {
+            nums[write++] = nums[read];
+        }
+    }
 
-    return write
-# Time: O(N), Space: O(1)
+    return write;
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -2893,13 +3092,15 @@ def remove_duplicates(self, nums: list[int]) -> int:
 
 **Pattern:** XOR accumulation. `a ^ a = 0` cancels pairs; `a ^ 0 = a` preserves the unique element.
 
-```python
-def single_number(self, nums: list[int]) -> int:
-    result = 0
-    for num in nums:
-        result ^= num # Pairs cancel, unique value survives
-    return result
-# Time: O(N), Space: O(1)
+```csharp
+public int SingleNumber(int[] nums) {
+    int result = 0;
+    foreach (int num in nums) {
+        result ^= num; // Pairs cancel, unique value survives
+    }
+    return result;
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -2911,23 +3112,25 @@ def single_number(self, nums: list[int]) -> int:
 **Pattern:** Stack-based matching. On open bracket, push the expected closing bracket. On close bracket, pop and compare.
 **Optimization:** Use a `char[]` as a manual stack to avoid `java.util.Stack` overhead.
 
-```python
-def is_valid(self, s: str) -> bool:
-    if not s or len(s) % 2 != 0:
-        return False
+```csharp
+public bool IsValid(string s) {
+    if (s == null || s.Length % 2 != 0) return false;
 
-    stack = []
+    char[] stack = new char[s.Length];
+    int top = -1;
 
-    for c in s:
-        if c == '(': stack.append(')')
-        elif c == '{': stack.append('}')
-        elif c == '[': stack.append(']')
-        else:
-            if not stack or stack.pop() != c:
-                return False
+    foreach (char c in s) {
+        if (c == '(') stack[++top] = ')';
+        else if (c == '{') stack[++top] = '}';
+        else if (c == '[') stack[++top] = ']';
+        else {
+            if (top == -1 || stack[top--] != c) return false;
+        }
+    }
 
-    return len(stack) == 0 # Stack must be empty
-# Time: O(N), Space: O(N) worst case for the stack
+    return top == -1; // Stack must be empty
+}
+// Time: O(N), Space: O(N) worst case for the stack
 ```
 * * *
 
@@ -2938,17 +3141,20 @@ def is_valid(self, s: str) -> bool:
 
 **Pattern:** Symmetric converging pointers with swap.
 
-```python
-def reverse_string(self, s: list[str]) -> None:
-    if not s or len(s) <= 1:
-        return
+```csharp
+public void ReverseString(char[] s) {
+    if (s == null || s.Length <= 1) return;
 
-    left, right = 0, len(s) - 1
-    while left < right:
-        s[left], s[right] = s[right], s[left]
-        left += 1
-        right -= 1
-# Time: O(N), Space: O(1)
+    int left = 0, right = s.Length - 1;
+    while (left < right) {
+        char temp = s[left];
+        s[left] = s[right];
+        s[right] = temp;
+        left++;
+        right--;
+    }
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -2959,22 +3165,23 @@ def reverse_string(self, s: list[str]) -> None:
 
 **Pattern:** Prefix sum. Compute total sum first, then scan left-to-right maintaining a running left sum. At each index: `rightSum = totalSum - leftSum - nums[i]`.
 
-```python
-def pivot_index(self, nums: list[int]) -> int:
-    if not nums:
-        return -1
+```csharp
+public int PivotIndex(int[] nums) {
+    if (nums == null) return -1;
 
-    total_sum = sum(nums)
-    left_sum = 0
-    
-    for i, num in enumerate(nums):
-        # right_sum = total_sum - left_sum - num
-        if left_sum == total_sum - left_sum - num:
-            return i
-        left_sum += num
+    int totalSum = 0;
+    foreach (int num in nums) totalSum += num;
 
-    return -1
-# Time: O(N), Space: O(1)
+    int leftSum = 0;
+    for (int i = 0; i < nums.Length; i++) {
+        // rightSum = totalSum - leftSum - nums[i]
+        if (leftSum == totalSum - leftSum - nums[i]) return i;
+        leftSum += nums[i];
+    }
+
+    return -1;
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -2985,20 +3192,21 @@ def pivot_index(self, nums: list[int]) -> int:
 
 **Pattern:** Dual boolean flags. Track both `isIncreasing` and `isDecreasing`. If an adjacent pair violates one direction, set its flag to false. Return true if either flag survives.
 
-```python
-def is_monotonic(self, nums: list[int]) -> bool:
-    if not nums or len(nums) <= 2:
-        return True
+```csharp
+public bool IsMonotonic(int[] nums) {
+    if (nums == null || nums.Length <= 2) return true;
 
-    increasing = True
-    decreasing = True
+    bool increasing = true;
+    bool decreasing = true;
 
-    for i in range(len(nums) - 1):
-        if nums[i] > nums[i + 1]: increasing = False
-        if nums[i] < nums[i + 1]: decreasing = False
+    for (int i = 0; i < nums.Length - 1; i++) {
+        if (nums[i] > nums[i + 1]) increasing = false;
+        if (nums[i] < nums[i + 1]) decreasing = false;
+    }
 
-    return increasing or decreasing
-# Time: O(N), Space: O(1)
+    return increasing || decreasing;
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -3010,20 +3218,21 @@ def is_monotonic(self, nums: list[int]) -> bool:
 **Pattern:** Boundary-safe neighbor access with ternary guards.
 **Why a new array?** Modifying `A` in-place would corrupt values needed for subsequent index calculations.
 
-```python
-def neighbor_sum(self, a: list[int]) -> list[int]:
-    if not a:
-        return []
-    n = len(a)
-    b = [0] * n
+```csharp
+public int[] NeighborSum(int[] a) {
+    if (a == null) return new int[0];
+    int n = a.Length;
+    int[] b = new int[n];
 
-    for i in range(n):
-        left_val = a[i - 1] if i > 0 else 0
-        right_val = a[i + 1] if i < n - 1 else 0
-        b[i] = left_val + a[i] + right_val
+    for (int i = 0; i < n; i++) {
+        int leftVal  = (i > 0) ? a[i - 1] : 0;
+        int rightVal = (i < n - 1) ? a[i + 1] : 0;
+        b[i] = leftVal + a[i] + rightVal;
+    }
 
-    return b
-# Time: O(N), Space: O(N) for output array
+    return b;
+}
+// Time: O(N), Space: O(N) for output array
 ```
 * * *
 
@@ -3034,22 +3243,25 @@ def neighbor_sum(self, a: list[int]) -> list[int]:
 
 **Pattern:** Fixed-size sliding window. Initialize window sum with first `k` elements, then slide by adding the entering element and subtracting the leaving element.
 
-```python
-def max_sum_subarray(self, nums: list[int], k: int) -> int:
-    if not nums or len(nums) < k or k <= 0:
-        return 0
+```csharp
+public int MaxSumSubarray(int[] nums, int k) {
+    if (nums == null || nums.Length < k || k <= 0) return 0;
 
-    # Initialize sum of first window
-    window_sum = sum(nums[:k])
-    max_sum = window_sum
+    // Initialize sum of first window
+    int windowSum = 0;
+    for (int i = 0; i < k; i++) windowSum += nums[i];
 
-    # Slide the window: add right element, remove left element
-    for i in range(k, len(nums)):
-        window_sum += nums[i] - nums[i - k]
-        max_sum = max(max_sum, window_sum)
+    int maxSum = windowSum;
 
-    return max_sum
-# Time: O(N), Space: O(1)
+    // Slide the window: add right element, remove left element
+    for (int i = k; i < nums.Length; i++) {
+        windowSum += nums[i] - nums[i - k];
+        maxSum = Math.Max(maxSum, windowSum);
+    }
+
+    return maxSum;
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -3060,13 +3272,14 @@ def max_sum_subarray(self, nums: list[int], k: int) -> int:
 
 **Pattern:** XOR accumulation. XOR every character in both strings together. Paired characters cancel to zero; the extra character remains.
 
-```python
-def find_the_difference(self, s: str, t: str) -> str:
-    result = 0
-    for c in s: result ^= ord(c)
-    for c in t: result ^= ord(c)
-    return chr(result) # Only the unpaired character survives
-# Time: O(N), Space: O(1)
+```csharp
+public char FindTheDifference(string s, string t) {
+    char result = (char)0;
+    foreach (char c in s) result ^= c;
+    foreach (char c in t) result ^= c;
+    return result; // Only the unpaired character survives
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -3077,20 +3290,24 @@ def find_the_difference(self, s: str, t: str) -> str:
 
 **Pattern:** Per-element transformation with parity branching.
 
-```python
-def transform_words(self, words: list[str]) -> list[str]:
-    if not words:
-        return []
-    result = [""] * len(words)
+```csharp
+public string[] TransformWords(string[] words) {
+    if (words == null) return new string[0];
+    string[] result = new string[words.Length];
 
-    for i in range(len(words)):
-        if len(words[i]) % 2 != 0:
-            result[i] = words[i].upper()
-        else:
-            result[i] = words[i][::-1]
+    for (int i = 0; i < words.Length; i++) {
+        if (words[i].Length % 2 != 0) {
+            result[i] = words[i].ToUpper();
+        } else {
+            char[] arr = words[i].ToCharArray();
+            Array.Reverse(arr);
+            result[i] = new string(arr);
+        }
+    }
 
-    return result
-# Time: O(N * K) where K is average word length, Space: O(N * K) for output
+    return result;
+}
+// Time: O(N * K) where K is average word length, Space: O(N * K) for output
 ```
 * * *
 
@@ -3101,22 +3318,24 @@ def transform_words(self, words: list[str]) -> list[str]:
 
 **Pattern:** Frequency array + validation scan. Count all characters (using a size 128 array to handle the full ASCII range), then verify every non-zero count matches.
 
-```python
-def are_occurrences_equal(self, s: str) -> bool:
-    if not s:
-        return True
+```csharp
+public bool AreOccurrencesEqual(string s) {
+    if (string.IsNullOrEmpty(s)) return true;
 
-    from collections import Counter
-    counts = Counter(s)
-    
-    expected = 0
-    for count in counts.values():
-        if count > 0:
-            if expected == 0: expected = count
-            elif count != expected: return False
+    int[] counts = new int[128];
+    foreach (char c in s) counts[c]++;
 
-    return True
-# Time: O(N), Space: O(1)
+    int expected = 0;
+    foreach (int count in counts) {
+        if (count > 0) {
+            if (expected == 0) expected = count;
+            else if (count != expected) return false;
+        }
+    }
+
+    return true;
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -3127,19 +3346,20 @@ def are_occurrences_equal(self, s: str) -> bool:
 
 **Pattern:** Read/Write pointer — identical structure to Move Zeros.
 
-```python
-def remove_element(self, nums: list[int], val: int) -> int:
-    if nums is None:
-        return 0
+```csharp
+public int RemoveElement(int[] nums, int val) {
+    if (nums == null) return 0;
 
-    write = 0
-    for read in range(len(nums)):
-        if nums[read] != val:
-            nums[write] = nums[read]
-            write += 1
+    int write = 0;
+    for (int read = 0; read < nums.Length; read++) {
+        if (nums[read] != val) {
+            nums[write++] = nums[read];
+        }
+    }
 
-    return write
-# Time: O(N), Space: O(1)
+    return write;
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -3151,17 +3371,20 @@ def remove_element(self, nums: list[int], val: int) -> int:
 **Pattern:** Linear scan comparing `nums[i] % 2` with `nums[i+1] % 2`.
 **Edge case with negatives:** `(-3) % 2` in Java returns `-1`, not `1`. Use `Math.abs(nums[i] % 2)` for safe parity checks.
 
-```python
-def is_alternating_parity(self, nums: list[int]) -> bool:
-    if not nums or len(nums) <= 1:
-        return True
+```csharp
+public bool IsAlternatingParity(int[] nums) {
+    if (nums == null || nums.Length <= 1) return true;
 
-    for i in range(len(nums) - 1):
-        if (abs(nums[i]) % 2) == (abs(nums[i + 1]) % 2):
-            return False
+    for (int i = 0; i < nums.Length - 1; i++) {
+        // Use Math.Abs for safety with negative numbers
+        if (Math.Abs(nums[i] % 2) == Math.Abs(nums[i + 1] % 2)) {
+            return false;
+        }
+    }
 
-    return True
-# Time: O(N), Space: O(1)
+    return true;
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -3172,18 +3395,21 @@ def is_alternating_parity(self, nums: list[int]) -> bool:
 
 **Pattern:** HashMap complement lookup. For each element, check if `target - nums[i]` has been seen. If yes, return both indices. If no, store `nums[i] → i` in the map.
 
-```python
-def two_sum(self, nums: list[int], target: int) -> list[int]:
-    seen = {}
+```csharp
+public int[] TwoSum(int[] nums, int target) {
+    Dictionary<int, int> seen = new Dictionary<int, int>();
 
-    for i, num in enumerate(nums):
-        complement = target - num
-        if complement in seen:
-            return [seen[complement], i]
-        seen[num] = i
+    for (int i = 0; i < nums.Length; i++) {
+        int complement = target - nums[i];
+        if (seen.ContainsKey(complement)) {
+            return new int[]{seen[complement], i};
+        }
+        seen[nums[i]] = i;
+    }
 
-    return [] # Should not reach here per problem guarantee
-# Time: O(N), Space: O(N)
+    return new int[]{}; // Should not reach here per problem guarantee
+}
+// Time: O(N), Space: O(N)
 ```
 * * *
 
@@ -3194,22 +3420,25 @@ def two_sum(self, nums: list[int], target: int) -> list[int]:
 
 **Pattern:** Boyer–Moore Voting Algorithm. Maintain a candidate and a count. When count drops to zero, switch candidates. The majority element will always survive because it appears more than half the time.
 
-```python
-def majority_element(self, nums: list[int]) -> int:
-    candidate = nums[0]
-    count = 1
+```csharp
+public int MajorityElement(int[] nums) {
+    int candidate = nums[0];
+    int count = 1;
 
-    for i in range(1, len(nums)):
-        if count == 0:
-            candidate = nums[i]
-            count = 1
-        elif nums[i] == candidate:
-            count += 1
-        else:
-            count -= 1
+    for (int i = 1; i < nums.Length; i++) {
+        if (count == 0) {
+            candidate = nums[i];
+            count = 1;
+        } else if (nums[i] == candidate) {
+            count++;
+        } else {
+            count--;
+        }
+    }
 
-    return candidate
-# Time: O(N), Space: O(1)
+    return candidate;
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -3221,17 +3450,22 @@ def majority_element(self, nums: list[int]) -> int:
 **Pattern:** Right-to-left carry propagation. Process digits from the least significant end. If a digit becomes 10, set it to 0 and carry. If no carry remains, return immediately.
 **Edge case:** All 9s (`[9, 9, 9]`) require a new array of length `n + 1` with a leading 1.
 
-```python
-def plus_one(self, digits: list[int]) -> list[int]:
-    for i in range(len(digits) - 1, -1, -1):
-        digits[i] += 1
-        if digits[i] < 10:
-            return digits # No further carry needed
-        digits[i] = 0 # Carry to next position
+```csharp
+public int[] PlusOne(int[] digits) {
+    for (int i = digits.Length - 1; i >= 0; i--) {
+        digits[i]++;
+        if (digits[i] < 10) {
+            return digits; // No further carry needed
+        }
+        digits[i] = 0; // Carry to next position
+    }
 
-    # All digits were 9 — need a new array [1, 0, 0, ..., 0]
-    return [1] + [0] * len(digits)
-# Time: O(N), Space: O(1) amortized (O(N) only for all-9s edge case)
+    // All digits were 9 — need a new array [1, 0, 0, ..., 0]
+    int[] result = new int[digits.Length + 1];
+    result[0] = 1;
+    return result;
+}
+// Time: O(N), Space: O(1) amortized (O(N) only for all-9s edge case)
 ```
 * * *
 
@@ -3249,20 +3483,22 @@ The following problems are drawn directly from the automated testing platforms A
 
 **Common mistake:** Forgetting that two large negative numbers produce a large positive product (e.g., `[-5, -4]` → `20`).
 
-```python
-def adjacent_elements_product(self, input_array: list[int]) -> int:
-    if not input_array or len(input_array) < 2:
-        return 0
+```csharp
+public int AdjacentElementsProduct(int[] inputArray) {
+    if (inputArray == null || inputArray.Length < 2) return 0;
 
-    max_prod = input_array[0] * input_array[1]
+    int maxProd = inputArray[0] * inputArray[1];
 
-    for i in range(1, len(input_array) - 1):
-        prod = input_array[i] * input_array[i + 1]
-        if prod > max_prod:
-            max_prod = prod
+    for (int i = 1; i < inputArray.Length - 1; i++) {
+        int prod = inputArray[i] * inputArray[i + 1];
+        if (prod > maxProd) {
+            maxProd = prod;
+        }
+    }
 
-    return max_prod
-# Time: O(N), Space: O(1)
+    return maxProd;
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -3273,10 +3509,11 @@ def adjacent_elements_product(self, input_array: list[int]) -> int:
 
 **Pattern:** Integer ceiling division. The formula `(year + 99) / 100` computes the ceiling of `year / 100` using only integer arithmetic, avoiding floating-point rounding errors.
 
-```python
-def century_from_year(self, year: int) -> int:
-    return (year + 99) // 100
-# Time: O(1), Space: O(1)
+```csharp
+public int CenturyFromYear(int year) {
+    return (year + 99) / 100;
+}
+// Time: O(1), Space: O(1)
 ```
 * * *
 
@@ -3288,22 +3525,27 @@ def century_from_year(self, year: int) -> int:
 **Pattern:** Two-pass filter. Pass 1 finds the maximum string length. Pass 2 collects all strings matching that length.
 **Why two passes?** A single pass would require backtracking to remove shorter strings discovered before the true maximum is known.
 
-```python
-def all_longest_strings(self, input_array: list[str]) -> list[str]:
-    # Pass 1: Find the maximum length
-    max_length = 0
-    for s in input_array:
-        if len(s) > max_length:
-            max_length = len(s)
+```csharp
+public string[] AllLongestStrings(string[] inputArray) {
+    // Pass 1: Find the maximum length
+    int maxLength = 0;
+    foreach (string s in inputArray) {
+        if (s.Length > maxLength) {
+            maxLength = s.Length;
+        }
+    }
 
-    # Pass 2: Collect strings matching the max length
-    result = []
-    for s in input_array:
-        if len(s) == max_length:
-            result.append(s)
+    // Pass 2: Collect strings matching the max length
+    List<string> result = new List<string>();
+    foreach (string s in inputArray) {
+        if (s.Length == maxLength) {
+            result.Add(s);
+        }
+    }
 
-    return result
-# Time: O(N), Space: O(N) for output
+    return result.ToArray();
+}
+// Time: O(N), Space: O(N) for output
 ```
 * * *
 
@@ -3314,20 +3556,22 @@ def all_longest_strings(self, input_array: list[str]) -> list[str]:
 
 **Pattern:** Dual frequency arrays with element-wise minimum. Build `int[26]` for each string. The number of shared instances of character `c` is `Math.min(count1[c], count2[c])`.
 
-```python
-def common_character_count(self, s1: str, s2: str) -> int:
-    count1 = [0] * 26
-    count2 = [0] * 26
+```csharp
+public int CommonCharacterCount(string s1, string s2) {
+    int[] count1 = new int[26];
+    int[] count2 = new int[26];
 
-    for c in s1: count1[ord(c) - ord('a')] += 1
-    for c in s2: count2[ord(c) - ord('a')] += 1
+    foreach (char c in s1) count1[c - 'a']++;
+    foreach (char c in s2) count2[c - 'a']++;
 
-    common = 0
-    for i in range(26):
-        common += min(count1[i], count2[i])
+    int common = 0;
+    for (int i = 0; i < 26; i++) {
+        common += Math.Min(count1[i], count2[i]);
+    }
 
-    return common
-# Time: O(N + M), Space: O(1) — fixed 26-element lists
+    return common;
+}
+// Time: O(N + M), Space: O(1) — fixed 26-element arrays
 ```
 * * *
 
@@ -3338,19 +3582,20 @@ def common_character_count(self, s1: str, s2: str) -> int:
 
 **Pattern:** Convert to string for digit access. Split at midpoint. Sum each half independently.
 
-```python
-def is_lucky(self, n: int) -> bool:
-    s = str(n)
-    mid = len(s) // 2
-    sum1 = 0
-    sum2 = 0
+```csharp
+public bool IsLucky(int n) {
+    string s = n.ToString();
+    int mid = s.Length / 2;
+    int sum1 = 0, sum2 = 0;
 
-    for i in range(mid):
-        sum1 += int(s[i])       # First half digit
-        sum2 += int(s[i + mid]) # Second half digit
+    for (int i = 0; i < mid; i++) {
+        sum1 += s[i] - '0';       // First half digit
+        sum2 += s[i + mid] - '0'; // Second half digit
+    }
 
-    return sum1 == sum2
-# Time: O(D) where D is digit count, Space: O(D) for string conversion
+    return sum1 == sum2;
+}
+// Time: O(D) where D is digit count, Space: O(D) for string conversion
 ```
 * * *
 
@@ -3363,23 +3608,28 @@ def is_lucky(self, n: int) -> bool:
 
 **Invariant:** Tree positions (`-1`) are never touched. Only human positions are modified.
 
-```python
-def sort_by_height(self, a: list[int]) -> list[int]:
-    # Step 1: Extract all non-tree heights
-    heights = [h for h in a if h != -1]
+```csharp
+public int[] SortByHeight(int[] a) {
+    // Step 1: Extract all non-tree heights
+    List<int> heights = new List<int>();
+    foreach (int h in a) {
+        if (h != -1) heights.Add(h);
+    }
 
-    # Step 2: Sort the extracted heights
-    heights.sort()
+    // Step 2: Sort the extracted heights
+    heights.Sort();
 
-    # Step 3: Reinsert sorted heights at non-tree positions
-    index = 0
-    for i in range(len(a)):
-        if a[i] != -1:
-            a[i] = heights[index]
-            index += 1
+    // Step 3: Reinsert sorted heights at non-tree positions
+    int index = 0;
+    for (int i = 0; i < a.Length; i++) {
+        if (a[i] != -1) {
+            a[i] = heights[index++];
+        }
+    }
 
-    return a
-# Time: O(N log N) for sorting, Space: O(N) for extracted list
+    return a;
+}
+// Time: O(N log N) for sorting, Space: O(N) for extracted list
 ```
 * * *
 
@@ -3390,19 +3640,21 @@ def sort_by_height(self, a: list[int]) -> list[int]:
 
 **Pattern:** Index parity accumulation. `i % 2 == 0` accumulates into Team 1, `i % 2 == 1` into Team 2.
 
-```python
-def alternating_sums(self, a: list[int]) -> list[int]:
-    team1 = 0
-    team2 = 0
+```csharp
+public int[] AlternatingSums(int[] a) {
+    int team1 = 0, team2 = 0;
 
-    for i in range(len(a)):
-        if i % 2 == 0:
-            team1 += a[i]
-        else:
-            team2 += a[i]
+    for (int i = 0; i < a.Length; i++) {
+        if (i % 2 == 0) {
+            team1 += a[i];
+        } else {
+            team2 += a[i];
+        }
+    }
 
-    return [team1, team2]
-# Time: O(N), Space: O(1)
+    return new int[]{team1, team2};
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -3413,26 +3665,28 @@ def alternating_sums(self, a: list[int]) -> list[int]:
 
 **Pattern:** String construction with dimensional arithmetic. New width = original width + 2. New height = original height + 2. First and last rows are full asterisk strings. Middle rows are wrapped with `*` on each side.
 
-```python
-def add_border(self, picture: list[str]) -> list[str]:
-    new_width = len(picture[0]) + 2
-    result = [""] * (len(picture) + 2)
+```csharp
+public string[] AddBorder(string[] picture) {
+    int newWidth = picture[0].Length + 2;
+    string[] result = new string[picture.Length + 2];
 
-    # Build the border row
-    border = '*' * new_width
+    // Build the border row
+    string border = new string('*', newWidth);
 
-    # Top border
-    result[0] = border
+    // Top border
+    result[0] = border;
 
-    # Wrap each interior row with side asterisks
-    for i in range(len(picture)):
-        result[i + 1] = f"*{picture[i]}*"
+    // Wrap each interior row with side asterisks
+    for (int i = 0; i < picture.Length; i++) {
+        result[i + 1] = "*" + picture[i] + "*";
+    }
 
-    # Bottom border
-    result[-1] = border
+    // Bottom border
+    result[result.Length - 1] = border;
 
-    return result
-# Time: O(rows * cols), Space: O(rows * cols) for output
+    return result;
+}
+// Time: O(rows * cols), Space: O(rows * cols) for output
 ```
 * * *
 
@@ -3445,19 +3699,22 @@ def add_border(self, picture: list[str]) -> list[str]:
 
 **Invariant:** After processing index `i`, the constraint `arr[i] > arr[i-1]` is guaranteed. The greedy minimum at each step is globally optimal because increasing `arr[i]` to `arr[i-1] + 1` (the smallest valid value) minimizes cascading costs downstream.
 
-```python
-def array_change(self, input_array: list[int]) -> int:
-    moves = 0
+```csharp
+public int ArrayChange(int[] inputArray) {
+    int moves = 0;
 
-    for i in range(1, len(input_array)):
-        if input_array[i] <= input_array[i - 1]:
-            # Calculate the minimum increment needed
-            deficit = input_array[i - 1] - input_array[i] + 1
-            input_array[i] += deficit
-            moves += deficit
+    for (int i = 1; i < inputArray.Length; i++) {
+        if (inputArray[i] <= inputArray[i - 1]) {
+            // Calculate the minimum increment needed
+            int deficit = inputArray[i - 1] - inputArray[i] + 1;
+            inputArray[i] += deficit;
+            moves += deficit;
+        }
+    }
 
-    return moves
-# Time: O(N), Space: O(1)
+    return moves;
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -3468,20 +3725,24 @@ def array_change(self, input_array: list[int]) -> int:
 
 **Pattern:** Column-wise top-down scan with a boolean "poisoned" flag per column. Once a `0` is encountered in a column, all values below it in that column are skipped.
 
-```python
-def matrix_elements_sum(self, matrix: list[list[int]]) -> int:
-    rows = len(matrix)
-    cols = len(matrix[0])
-    total = 0
+```csharp
+public int MatrixElementsSum(int[][] matrix) {
+    int rows = matrix.Length;
+    int cols = matrix[0].Length;
+    int total = 0;
 
-    for c in range(cols):
-        for r in range(rows):
-            if matrix[r][c] == 0:
-                break # All rooms below are haunted — skip rest of column
-            total += matrix[r][c]
+    for (int c = 0; c < cols; c++) {
+        for (int r = 0; r < rows; r++) {
+            if (matrix[r][c] == 0) {
+                break; // All rooms below are haunted — skip rest of column
+            }
+            total += matrix[r][c];
+        }
+    }
 
-    return total
-# Time: O(rows * cols), Space: O(1)
+    return total;
+}
+// Time: O(rows * cols), Space: O(1)
 ```
 * * *
 
@@ -3493,29 +3754,34 @@ def matrix_elements_sum(self, matrix: list[list[int]]) -> int:
 **Pattern:** Count violations (positions where `arr[i] >= arr[i+1]`). If zero violations, it is already increasing. If exactly one violation at position `i`, check two removal candidates: removing `arr[i]` or removing `arr[i+1]`. If either removal produces a valid increasing sequence around the gap, return `true`. If more than one violation, return `false`.
 **This is one of the trickiest Easy-tier problems.** The naive approach of "just remove one element and re-check" is $\mathcal{O}(N^2)$. The optimal approach is $\mathcal{O}(N)$.
 
-```python
-def almost_increasing_sequence(self, sequence: list[int]) -> bool:
-    count = 0   # Number of violations
-    bad_idx = -1  # Index of first violation
+```csharp
+public bool AlmostIncreasingSequence(int[] sequence) {
+    int count = 0;   // Number of violations
+    int badIdx = -1;  // Index of first violation
 
-    for i in range(len(sequence) - 1):
-        if sequence[i] >= sequence[i + 1]:
-            count += 1
-            bad_idx = i
-            if count > 1: return False # More than one violation
+    for (int i = 0; i < sequence.Length - 1; i++) {
+        if (sequence[i] >= sequence[i + 1]) {
+            count++;
+            badIdx = i;
+            if (count > 1) return false; // More than one violation
+        }
+    }
 
-    if count == 0: return True # Already strictly increasing
+    if (count == 0) return true; // Already strictly increasing
 
-    # Try removing element at bad_idx
-    if bad_idx == 0 or sequence[bad_idx - 1] < sequence[bad_idx + 1]:
-        return True
+    // Try removing element at badIdx
+    if (badIdx == 0 || sequence[badIdx - 1] < sequence[badIdx + 1]) {
+        return true;
+    }
 
-    # Try removing element at bad_idx + 1
-    if bad_idx + 2 >= len(sequence) or sequence[bad_idx] < sequence[bad_idx + 2]:
-        return True
+    // Try removing element at badIdx + 1
+    if (badIdx + 2 >= sequence.Length || sequence[badIdx] < sequence[badIdx + 2]) {
+        return true;
+    }
 
-    return False
-# Time: O(N), Space: O(1)
+    return false;
+}
+// Time: O(N), Space: O(1)
 ```
 * * *
 
@@ -3526,22 +3792,30 @@ def almost_increasing_sequence(self, sequence: list[int]) -> bool:
 
 **Pattern:** Stack-based simulation. Use a stack of `StringBuilder`s. When `(` is encountered, push a new builder. When `)` is encountered, pop the top builder, reverse it, and append its contents to the new top of the stack.
 
-```python
-def reverse_in_parentheses(self, s: str) -> str:
-    stack = [[]]
+```csharp
+public string ReverseInParentheses(string s) {
+    Stack<StringBuilder> stack = new Stack<StringBuilder>();
+    stack.Push(new StringBuilder());
 
-    for c in s:
-        if c == '(':
-            stack.append([]) # Start new nested context
-        elif c == ')':
-            inner = stack.pop()  # Pop innermost context
-            inner.reverse()       # Reverse it
-            stack[-1].extend(inner) # Append to enclosing context
-        else:
-            stack[-1].append(c)  # Accumulate character
+    foreach (char c in s) {
+        if (c == '(') {
+            stack.Push(new StringBuilder()); // Start new nested context
+        } else if (c == ')') {
+            StringBuilder inner = stack.Pop();  // Pop innermost context
+            
+            // Reverse the inner StringBuilder
+            char[] innerChars = inner.ToString().ToCharArray();
+            Array.Reverse(innerChars);
+            
+            stack.Peek().Append(innerChars); // Append to enclosing context
+        } else {
+            stack.Peek().Append(c);          // Accumulate character
+        }
+    }
 
-    return "".join(stack[0])
-# Time: O(N^2) worst case for nested reversals, Space: O(N)
+    return stack.Peek().ToString();
+}
+// Time: O(N^2) worst case for nested reversals, Space: O(N)
 ```
 * * *
 
@@ -3922,50 +4196,57 @@ Why it matters: It eliminates repetitive boundary checks and significantly reduc
 Instead of running BFS individually from each source, this technique seeds the initial queue with ALL starting positions simultaneously. The search then expands outwards concurrently from multiple origins.
 Why it matters: It solves rotting oranges and walls-and-gates problems in a single, highly efficient BFS pass.
 
-![Multi-Source BFS — Rotting Oranges Wavefront](editions/python/chapters/11-matrix-grid-patterns/visuals/bfs_grid_levels.png){width=85%}
+![Multi-Source BFS — Rotting Oranges Wavefront](editions/csharp/chapters/11-matrix-grid-patterns/visuals/bfs_grid_levels.png){width=85%}
 
 ## Reusable Code Templates
 
 ### Template A: Spiral Boundary Traversal
-```python
-top, bottom = 0, len(matrix) - 1
-left, right = 0, len(matrix[0]) - 1
-while top <= bottom and left <= right:
-    for j in range(left, right + 1): pass # process matrix[top][j]
-    top += 1
-    for i in range(top, bottom + 1): pass # process matrix[i][right]
-    right -= 1
-    if top <= bottom:
-        for j in range(right, left - 1, -1): pass # process matrix[bottom][j]
-        bottom -= 1
-    if left <= right:
-        for i in range(bottom, top - 1, -1): pass # process matrix[i][left]
-        left += 1
+```csharp
+int top = 0, bottom = matrix.Length - 1;
+int left = 0, right = matrix[0].Length - 1;
+while (top <= bottom && left <= right) {
+  for (int j = left; j <= right; j++) { /* process matrix[top][j] */ }
+  top++;
+  for (int i = top; i <= bottom; i++) { /* process matrix[i][right] */ }
+  right--;
+  if (top <= bottom) {
+    for (int j = right; j >= left; j--) { /* process matrix[bottom][j] */ }
+    bottom--;
+  }
+  if (left <= right) {
+    for (int i = bottom; i >= top; i--) { /* process matrix[i][left] */ }
+    left++;
+  }
+}
 ```
-![Spiral Boundary Traversal — Layer-by-Layer Contraction](editions/python/chapters/11-matrix-grid-patterns/visuals/spiral_traversal.png){width=85%}
+![Spiral Boundary Traversal — Layer-by-Layer Contraction](editions/csharp/chapters/11-matrix-grid-patterns/visuals/spiral_traversal.png){width=85%}
 
 ### Template B: 4-Directional BFS/DFS Grid Walk
-```python
-dr = [-1, 1, 0, 0]
-dc = [0, 0, -1, 1]
+```csharp
+int[] dr = {-1, 1, 0, 0};
+int[] dc = {0, 0, -1, 1};
 
-def dfs(grid: list[list[int]], r: int, c: int) -> None:
-    if r < 0 or r >= len(grid) or c < 0 or c >= len(grid[0]) or grid[r][c] == -1: return
-    grid[r][c] = -1 # mark visited
-    for i in range(4):
-        dfs(grid, r + dr[i], c + dc[i])
+void Dfs(int[][] grid, int r, int c) {
+  if (r < 0 || r >= grid.Length || c < 0 || c >= grid[0].Length || grid[r][c] == -1) return;
+  grid[r][c] = -1; // mark visited
+  for (int i = 0; i < 4; i++) {
+    Dfs(grid, r + dr[i], c + dc[i]);
+  }
+}
 ```
 ### Template C: 2D Prefix Sum Construction + Query
-```python
-# Construction
-sum_grid = [[0] * (C + 1) for _ in range(R + 1)]
-for r in range(1, R + 1):
-    for c in range(1, C + 1):
-        sum_grid[r][c] = matrix[r-1][c-1] + sum_grid[r-1][c] + sum_grid[r][c-1] - sum_grid[r-1][c-1]
-
-# Query from (r1, c1) to (r2, c2)
-def query(r1: int, c1: int, r2: int, c2: int) -> int:
-    return sum_grid[r2+1][c2+1] - sum_grid[r1][c2+1] - sum_grid[r2+1][c1] + sum_grid[r1][c1]
+```csharp
+// Construction
+int[,] sum = new int[R + 1, C + 1];
+for (int r = 1; r <= R; r++) {
+  for (int c = 1; c <= C; c++) {
+    sum[r, c] = matrix[r-1][c-1] + sum[r-1, c] + sum[r, c-1] - sum[r-1, c-1];
+  }
+}
+// Query from (r1, c1) to (r2, c2)
+int Query(int r1, int c1, int r2, int c2) {
+  return sum[r2+1, c2+1] - sum[r1, c2+1] - sum[r2+1, c1] + sum[r1, c1];
+}
 ```
 **Understanding the Construction — Worked Example.** Given a 3×3 matrix, we build a 4×4 prefix sum array `S` padded with a zero row and zero column. Each cell `S[r][c]` stores the sum of all original elements from `(0,0)` to `(r-1, c-1)`.
 
@@ -3996,7 +4277,7 @@ The two 5s come from different sources: `A[1][1] = 5` is the center cell of the 
 
 **Sanity check**: `S[3][3] = 45` equals `1+2+3+4+5+6+7+8+9 = 45`. ✓
 
-![2D Prefix Sum — Construction via Inclusion-Exclusion (Trace)](editions/python/chapters/11-matrix-grid-patterns/visuals/prefix_sum_construction.png){width=85%}
+![2D Prefix Sum — Construction via Inclusion-Exclusion (Trace)](editions/csharp/chapters/11-matrix-grid-patterns/visuals/prefix_sum_construction.png){width=85%}
 
 **Understanding the Query — Inclusion-Exclusion.** To find the sum of a sub-rectangle from `(r1, c1)` to `(r2, c2)`, we carve it out of the full prefix sum using four overlapping rectangles:
 
@@ -4015,7 +4296,7 @@ $$\text{query}(r_1, c_1, r_2, c_2) = S[r_2\text{+}1][c_2\text{+}1] - S[r_1][c_2\
 
 $$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
 
-![2D Prefix Sum — Query via Inclusion-Exclusion](editions/python/chapters/11-matrix-grid-patterns/visuals/prefix_sum_2d_query.png){width=85%}
+![2D Prefix Sum — Query via Inclusion-Exclusion](editions/csharp/chapters/11-matrix-grid-patterns/visuals/prefix_sum_2d_query.png){width=85%}
 
 ## Solved Exemplar Problems
 
@@ -4029,17 +4310,26 @@ $$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
 
 **Explanation:** Rotating 90 degrees clockwise is mathematically equivalent to transposing the matrix (swapping $i,j$ with $j,i$) and then reversing the elements of each row. This avoids needing complex 4-way coordinate swaps.
 
-```python
-def rotate(self, matrix: list[list[int]]) -> None:
-    n = len(matrix)
-    # Transpose
-    for i in range(n):
-        for j in range(i + 1, n):
-            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
-    # Reverse each row
-    for i in range(n):
-        for j in range(n // 2):
-            matrix[i][j], matrix[i][n - 1 - j] = matrix[i][n - 1 - j], matrix[i][j]
+```csharp
+public void Rotate(int[][] matrix) {
+  int n = matrix.Length;
+  // Transpose
+  for (int i = 0; i < n; i++) {
+    for (int j = i + 1; j < n; j++) {
+      int temp = matrix[i][j];
+      matrix[i][j] = matrix[j][i];
+      matrix[j][i] = temp;
+    }
+  }
+  // Reverse each row
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n / 2; j++) {
+      int temp = matrix[i][j];
+      matrix[i][j] = matrix[i][n - 1 - j];
+      matrix[i][n - 1 - j] = temp;
+    }
+  }
+}
 ```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
@@ -4052,22 +4342,26 @@ def rotate(self, matrix: list[list[int]]) -> None:
 
 **Explanation:** Maintain `top`, `bottom`, `left`, `right` pointers. Traverse the top row, increment `top`. Traverse right col, decrement `right`. Traverse bottom row (if `top <= bottom`), decrement `bottom`. Traverse left col (if `left <= right`), increment `left`.
 
-```python
-def spiral_order(self, matrix: list[list[int]]) -> list[int]:
-    res = []
-    t, b, l, r = 0, len(matrix) - 1, 0, len(matrix[0]) - 1
-    while t <= b and l <= r:
-        for j in range(l, r + 1): res.append(matrix[t][j]) # Top
-        t += 1
-        for i in range(t, b + 1): res.append(matrix[i][r]) # Right
-        r -= 1
-        if t <= b:
-            for j in range(r, l - 1, -1): res.append(matrix[b][j]) # Bottom
-            b -= 1
-        if l <= r:
-            for i in range(b, t - 1, -1): res.append(matrix[i][l]) # Left
-            l += 1
-    return res
+```csharp
+public IList<int> SpiralOrder(int[][] matrix) {
+  List<int> res = new List<int>();
+  int t = 0, b = matrix.Length - 1, l = 0, r = matrix[0].Length - 1;
+  while (t <= b && l <= r) {
+    for (int j = l; j <= r; j++) res.Add(matrix[t][j]); // Top
+    t++;
+    for (int i = t; i <= b; i++) res.Add(matrix[i][r]); // Right
+    r--;
+    if (t <= b) {
+      for (int j = r; j >= l; j--) res.Add(matrix[b][j]); // Bottom
+      b--;
+    }
+    if (l <= r) {
+      for (int i = b; i >= t; i--) res.Add(matrix[i][l]); // Left
+      l++;
+    }
+  }
+  return res;
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
@@ -4080,30 +4374,34 @@ def spiral_order(self, matrix: list[list[int]]) -> list[int]:
 
 **Explanation:** We use the first row and first column to store information about whether that row or column should be zeroed out. We need a separate variable for the first column to avoid overlapping state.
 
-```python
-def set_zeroes(self, matrix: list[list[int]]) -> None:
-    m, n = len(matrix), len(matrix[0])
-    first_col_zero = False
-    
-    # Mark zeros on first row/col
-    for i in range(m):
-        if matrix[i][0] == 0: first_col_zero = True
-        for j in range(1, n):
-            if matrix[i][j] == 0:
-                matrix[i][0] = 0
-                matrix[0][j] = 0
-                
-    # Zero out based on marks
-    for i in range(1, m):
-        for j in range(1, n):
-            if matrix[i][0] == 0 or matrix[0][j] == 0:
-                matrix[i][j] = 0
-                
-    # Handle first row/col specifically
-    if matrix[0][0] == 0:
-        for j in range(n): matrix[0][j] = 0
-    if first_col_zero:
-        for i in range(m): matrix[i][0] = 0
+```csharp
+public void SetZeroes(int[][] matrix) {
+  int m = matrix.Length, n = matrix[0].Length;
+  bool firstColZero = false;
+  // Mark zeros on first row/col
+  for (int i = 0; i < m; i++) {
+    if (matrix[i][0] == 0) firstColZero = true;
+    for (int j = 1; j < n; j++) {
+      if (matrix[i][j] == 0) {
+        matrix[i][0] = 0;
+        matrix[0][j] = 0;
+      }
+    }
+  }
+  // Zero out based on marks
+  for (int i = 1; i < m; i++) {
+    for (int j = 1; j < n; j++) {
+      if (matrix[i][0] == 0 || matrix[0][j] == 0) matrix[i][j] = 0;
+    }
+  }
+  // Handle first row/col specifically
+  if (matrix[0][0] == 0) {
+    for (int j = 0; j < n; j++) matrix[0][j] = 0;
+  }
+  if (firstColZero) {
+    for (int i = 0; i < m; i++) matrix[i][0] = 0;
+  }
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
@@ -4116,22 +4414,25 @@ def set_zeroes(self, matrix: list[list[int]]) -> None:
 
 **Explanation:** In a diagonal traversal, the sum of indices `(i+j)` is constant for each diagonal. For even sums, we move Up-Right. For odd sums, we move Down-Left. Boundary conditions handle when we hit the edges.
 
-```python
-def find_diagonal_order(self, mat: list[list[int]]) -> list[int]:
-    m, n = len(mat), len(mat[0])
-    res = [0] * (m * n)
-    r, c = 0, 0
-    for i in range(m * n):
-        res[i] = mat[r][c]
-        if (r + c) % 2 == 0: # Moving Up-Right
-            if c == n - 1: r += 1
-            elif r == 0: c += 1
-            else: r -= 1; c += 1
-        else: # Moving Down-Left
-            if r == m - 1: c += 1
-            elif c == 0: r += 1
-            else: r += 1; c -= 1
-    return res
+```csharp
+public int[] FindDiagonalOrder(int[][] mat) {
+  int m = mat.Length, n = mat[0].Length;
+  int[] res = new int[m * n];
+  int r = 0, c = 0;
+  for (int i = 0; i < m * n; i++) {
+    res[i] = mat[r][c];
+    if ((r + c) % 2 == 0) { // Moving Up-Right
+      if (c == n - 1) r++;
+      else if (r == 0) c++;
+      else { r--; c++; }
+    } else { // Moving Down-Left
+      if (r == m - 1) c++;
+      else if (c == 0) r++;
+      else { r++; c--; }
+    }
+  }
+  return res;
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
@@ -4144,15 +4445,19 @@ def find_diagonal_order(self, mat: list[list[int]]) -> list[int]:
 
 **Explanation:** A 2D matrix can be flattened logically. The 1D index `k` maps to 2D coordinates `(k / cols, k % cols)`. We map the original matrix into the new shape using a single counter `k`.
 
-```python
-def matrix_reshape(self, mat: list[list[int]], r: int, c: int) -> list[list[int]]:
-    m, n = len(mat), len(mat[0])
-    if m * n != r * c: return mat # Invalid shape
-    
-    res = [[0] * c for _ in range(r)]
-    for i in range(m * n):
-        res[i // c][i % c] = mat[i // n][i % n]
-    return res
+```csharp
+public int[][] MatrixReshape(int[][] mat, int r, int c) {
+  int m = mat.Length, n = mat[0].Length;
+  if (m * n != r * c) return mat; // Invalid shape
+  
+  int[][] res = new int[r][];
+  for (int i=0; i<r; i++) res[i] = new int[c];
+  
+  for (int i = 0; i < m * n; i++) {
+    res[i / c][i % c] = mat[i / n][i % n];
+  }
+  return res;
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
 
 * * *
@@ -4165,17 +4470,26 @@ def matrix_reshape(self, mat: list[list[int]], r: int, c: int) -> list[list[int]
 
 **Explanation:** Counter-clockwise rotation is similar to clockwise. We transpose first, then reverse the columns (top to bottom swap) instead of rows.
 
-```python
-def rotate_counter(self, matrix: list[list[int]]) -> None:
-    n = len(matrix)
-    # Transpose
-    for i in range(n):
-        for j in range(i + 1, n):
-            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
-    # Reverse each column
-    for j in range(n):
-        for i in range(n // 2):
-            matrix[i][j], matrix[n - 1 - i][j] = matrix[n - 1 - i][j], matrix[i][j]
+```csharp
+public void RotateCounter(int[][] matrix) {
+  int n = matrix.Length;
+  // Transpose
+  for (int i = 0; i < n; i++) {
+    for (int j = i + 1; j < n; j++) {
+      int temp = matrix[i][j];
+      matrix[i][j] = matrix[j][i];
+      matrix[j][i] = temp;
+    }
+  }
+  // Reverse each column
+  for (int j = 0; j < n; j++) {
+    for (int i = 0; i < n / 2; i++) {
+      int temp = matrix[i][j];
+      matrix[i][j] = matrix[n - 1 - i][j];
+      matrix[n - 1 - i][j] = temp;
+    }
+  }
+}
 ```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
@@ -4188,14 +4502,16 @@ def rotate_counter(self, matrix: list[list[int]]) -> None:
 
 **Explanation:** Start at the top-right corner. If target is smaller than the current value, it can't be in this column (move left). If target is larger, it can't be in this row (move down).
 
-```python
-def search_matrix(self, matrix: list[list[int]], target: int) -> bool:
-    r, c = 0, len(matrix[0]) - 1
-    while r < len(matrix) and c >= 0:
-        if matrix[r][c] == target: return True
-        elif matrix[r][c] > target: c -= 1
-        else: r += 1
-    return False
+```csharp
+public bool SearchMatrix(int[][] matrix, int target) {
+  int r = 0, c = matrix[0].Length - 1;
+  while (r < matrix.Length && c >= 0) {
+    if (matrix[r][c] == target) return true;
+    else if (matrix[r][c] > target) c--;
+    else r++;
+  }
+  return false;
+}
 ```Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
 
 * * *
@@ -4208,24 +4524,30 @@ def search_matrix(self, matrix: list[list[int]], target: int) -> bool:
 
 **Explanation:** To update in-place without a copy, encode transitions. Let 2 mean "was dead, now live", and -1 mean "was live, now dead". When counting neighbors, check if `abs(val) == 1`. After updating all, decode the states.
 
-```python
-def game_of_life(self, board: list[list[int]]) -> None:
-    m, n = len(board), len(board[0])
-    for r in range(m):
-        for c in range(n):
-            live = 0
-            for i in range(-1, 2):
-                for j in range(-1, 2):
-                    if i == 0 and j == 0: continue
-                    nr, nc = r + i, c + j
-                    if 0 <= nr < m and 0 <= nc < n and abs(board[nr][nc]) == 1: live += 1
-            if board[r][c] == 1 and (live < 2 or live > 3): board[r][c] = -1
-            if board[r][c] == 0 and live == 3: board[r][c] = 2
-            
-    for r in range(m):
-        for c in range(n):
-            if board[r][c] > 0: board[r][c] = 1
-            else: board[r][c] = 0
+```csharp
+public void GameOfLife(int[][] board) {
+  int m = board.Length, n = board[0].Length;
+  for (int r = 0; r < m; r++) {
+    for (int c = 0; c < n; c++) {
+      int live = 0;
+      for (int i = -1; i <= 1; i++) {
+        for (int j = -1; j <= 1; j++) {
+          if (i == 0 && j == 0) continue;
+          int nr = r + i, nc = c + j;
+          if (nr >= 0 && nr < m && nc >= 0 && nc < n && Math.Abs(board[nr][nc]) == 1) live++;
+        }
+      }
+      if (board[r][c] == 1 && (live < 2 || live > 3)) board[r][c] = -1;
+      if (board[r][c] == 0 && live == 3) board[r][c] = 2;
+    }
+  }
+  for (int r = 0; r < m; r++) {
+    for (int c = 0; c < n; c++) {
+      if (board[r][c] > 0) board[r][c] = 1;
+      else board[r][c] = 0;
+    }
+  }
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
@@ -4238,13 +4560,17 @@ def game_of_life(self, board: list[list[int]]) -> None:
 
 **Explanation:** Simply check every cell `matrix[i][j]` against its top-left neighbor `matrix[i-1][j-1]`. If they mismatch, return false.
 
-```python
-def is_toeplitz_matrix(self, matrix: list[list[int]]) -> bool:
-    for i in range(1, len(matrix)):
-        for j in range(1, len(matrix[0])):
-            if matrix[i][j] != matrix[i-1][j-1]:
-                return False
-    return True
+```csharp
+public bool IsToeplitzMatrix(int[][] matrix) {
+  for (int i = 1; i < matrix.Length; i++) {
+    for (int j = 1; j < matrix[0].Length; j++) {
+      if (matrix[i][j] != matrix[i-1][j-1]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
@@ -4257,31 +4583,29 @@ def is_toeplitz_matrix(self, matrix: list[list[int]]) -> bool:
 
 **Explanation:** Similar to spiral traversal, but instead of reading, we write an incrementing counter `val++` into the boundaries, contracting inwards until we fill $n^2$ elements.
 
-```python
-def generate_matrix(self, n: int) -> list[list[int]]:
-    mat = [[0] * n for _ in range(n)]
-    t, b, l, r = 0, n - 1, 0, n - 1
-    val = 1
-    while t <= b and l <= r:
-        for j in range(l, r + 1):
-            mat[t][j] = val
-            val += 1
-        t += 1
-        for i in range(t, b + 1):
-            mat[i][r] = val
-            val += 1
-        r -= 1
-        if t <= b:
-            for j in range(r, l - 1, -1):
-                mat[b][j] = val
-                val += 1
-            b -= 1
-        if l <= r:
-            for i in range(b, t - 1, -1):
-                mat[i][l] = val
-                val += 1
-            l += 1
-    return mat
+```csharp
+public int[][] GenerateMatrix(int n) {
+  int[][] mat = new int[n][];
+  for(int i=0; i<n; i++) mat[i] = new int[n];
+  
+  int t = 0, b = n - 1, l = 0, r = n - 1;
+  int val = 1;
+  while (t <= b && l <= r) {
+    for (int j = l; j <= r; j++) mat[t][j] = val++;
+    t++;
+    for (int i = t; i <= b; i++) mat[i][r] = val++;
+    r--;
+    if (t <= b) {
+      for (int j = r; j >= l; j--) mat[b][j] = val++;
+      b--;
+    }
+    if (l <= r) {
+      for (int i = b; i >= t; i--) mat[i][l] = val++;
+      l++;
+    }
+  }
+  return mat;
+}
 ```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
 
 * * *
@@ -4294,19 +4618,21 @@ def generate_matrix(self, n: int) -> list[list[int]]:
 
 **Explanation:** We check if the starting pixel is already the target color. If not, we recursively replace all adjacent cells of the original color with the new color using DFS.
 
-```python
-def flood_fill(self, image: list[list[int]], sr: int, sc: int, color: int) -> list[list[int]]:
-    if image[sr][sc] != color:
-        self._dfs(image, sr, sc, image[sr][sc], color)
-    return image
-
-def _dfs(self, img: list[list[int]], r: int, c: int, old_c: int, new_c: int) -> None:
-    if r < 0 or r >= len(img) or c < 0 or c >= len(img[0]) or img[r][c] != old_c: return
-    img[r][c] = new_c # mark and fill
-    self._dfs(img, r-1, c, old_c, new_c)
-    self._dfs(img, r+1, c, old_c, new_c)
-    self._dfs(img, r, c-1, old_c, new_c)
-    self._dfs(img, r, c+1, old_c, new_c)
+```csharp
+public int[][] FloodFill(int[][] image, int sr, int sc, int color) {
+  if (image[sr][sc] != color) {
+    Dfs(image, sr, sc, image[sr][sc], color);
+  }
+  return image;
+}
+private void Dfs(int[][] img, int r, int c, int oldC, int newC) {
+  if (r < 0 || r >= img.Length || c < 0 || c >= img[0].Length || img[r][c] != oldC) return;
+  img[r][c] = newC; // mark and fill
+  Dfs(img, r-1, c, oldC, newC);
+  Dfs(img, r+1, c, oldC, newC);
+  Dfs(img, r, c-1, oldC, newC);
+  Dfs(img, r, c+1, oldC, newC);
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
@@ -4319,15 +4645,20 @@ def _dfs(self, img: list[list[int]], r: int, c: int, old_c: int, new_c: int) -> 
 
 **Explanation:** Since the matrix isn't square, we cannot transpose in place. We allocate a new matrix of size $C \times R$, and assign `ans[j][i] = matrix[i][j]`.
 
-```python
-def transpose(self, matrix: list[list[int]]) -> list[list[int]]:
-    r = len(matrix)
-    c = len(matrix[0])
-    ans = [[0] * r for _ in range(c)]
-    for i in range(r):
-        for j in range(c):
-            ans[j][i] = matrix[i][j]
-    return ans
+```csharp
+public int[][] Transpose(int[][] matrix) {
+  int r = matrix.Length;
+  int c = matrix[0].Length;
+  int[][] ans = new int[c][];
+  for (int i=0; i<c; i++) ans[i] = new int[r];
+  
+  for (int i = 0; i < r; i++) {
+    for (int j = 0; j < c; j++) {
+      ans[j][i] = matrix[i][j];
+    }
+  }
+  return ans;
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
@@ -4340,23 +4671,23 @@ def transpose(self, matrix: list[list[int]]) -> list[list[int]]:
 
 **Explanation:** We iterate through the grid. For each cell, we encode its presence in its row, column, and block as unique integers to avoid slow string concatenations. If `HashSet.add()` returns false, a duplicate exists.
 
-```python
-def is_valid_sudoku(self, board: list[list[str]]) -> bool:
-    seen = set()
-    for i in range(9):
-        for j in range(9):
-            number = board[i][j]
-            if number != '.':
-                box_idx = (i // 3) * 3 + j // 3
-                row_key = f"{number} in row {i}"
-                col_key = f"{number} in col {j}"
-                box_key = f"{number} in box {box_idx}"
-                if row_key in seen or col_key in seen or box_key in seen:
-                    return False
-                seen.add(row_key)
-                seen.add(col_key)
-                seen.add(box_key)
-    return True
+```csharp
+public bool IsValidSudoku(char[][] board) {
+  HashSet<string> seen = new HashSet<string>();
+  for (int i = 0; i < 9; ++i) {
+    for (int j = 0; j < 9; ++j) {
+      char number = board[i][j];
+      if (number != '.') {
+        int boxIdx = (i / 3) * 3 + j / 3;
+        if (!seen.Add(number + " in row " + i) ||
+            !seen.Add(number + " in col " + j) ||
+            !seen.Add(number + " in box " + boxIdx))
+          return false;
+      }
+    }
+  }
+  return true;
+}
 ```Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
 
 * * *
@@ -4369,16 +4700,20 @@ def is_valid_sudoku(self, board: list[list[str]]) -> bool:
 
 **Explanation:** Each land cell adds 4 to the perimeter. For each land cell, we check its left and top neighbors. If they are also land, they share an edge, meaning we subtract 2 from the total perimeter (1 for each cell).
 
-```python
-def island_perimeter(self, grid: list[list[int]]) -> int:
-    perimeter = 0
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] == 1:
-                perimeter += 4
-                if i > 0 and grid[i - 1][j] == 1: perimeter -= 2
-                if j > 0 and grid[i][j - 1] == 1: perimeter -= 2
-    return perimeter
+```csharp
+public int IslandPerimeter(int[][] grid) {
+  int perimeter = 0;
+  for (int i = 0; i < grid.Length; i++) {
+    for (int j = 0; j < grid[0].Length; j++) {
+      if (grid[i][j] == 1) {
+        perimeter += 4;
+        if (i > 0 && grid[i - 1][j] == 1) perimeter -= 2;
+        if (j > 0 && grid[i][j - 1] == 1) perimeter -= 2;
+      }
+    }
+  }
+  return perimeter;
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
@@ -4391,20 +4726,26 @@ def island_perimeter(self, grid: list[list[int]]) -> int:
 
 **Explanation:** Construct a 2D prefix sum array. Then iterate through all possible bottom-right corners `(i,j)` of size $K \times K$, extracting the sum in $\mathcal{O}(1)$ time.
 
-```python
-def max_sum(self, mat: list[list[int]], k: int) -> int:
-    m, n = len(mat), len(mat[0])
-    pre = [[0] * (n + 1) for _ in range(m + 1)]
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            pre[i][j] = mat[i-1][j-1] + pre[i-1][j] + pre[i][j-1] - pre[i-1][j-1]
-            
-    max_val = float('-inf')
-    for i in range(k, m + 1):
-        for j in range(k, n + 1):
-            s = pre[i][j] - pre[i-k][j] - pre[i][j-k] + pre[i-k][j-k]
-            max_val = max(max_val, s)
-    return max_val
+```csharp
+public int MaxSum(int[][] mat, int k) {
+  int m = mat.Length, n = mat[0].Length;
+  int[][] pre = new int[m + 1][];
+  for (int i=0; i<=m; i++) pre[i] = new int[n + 1];
+  
+  for (int i = 1; i <= m; i++) {
+    for (int j = 1; j <= n; j++) {
+      pre[i][j] = mat[i-1][j-1] + pre[i-1][j] + pre[i][j-1] - pre[i-1][j-1];
+    }
+  }
+  int max = int.MinValue;
+  for (int i = k; i <= m; i++) {
+    for (int j = k; j <= n; j++) {
+      int sum = pre[i][j] - pre[i-k][j] - pre[i][j-k] + pre[i-k][j-k];
+      max = Math.Max(max, sum);
+    }
+  }
+  return max;
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
@@ -4417,21 +4758,25 @@ def max_sum(self, mat: list[list[int]], k: int) -> int:
 
 **Explanation:** Iterate over every cell. When a '1' is found, increment the island count, and launch a DFS/BFS to mark all connected '1's as '0' to avoid recounting.
 
-```python
-def num_islands(self, grid: list[list[str]]) -> int:
-    count = 0
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] == '1':
-                count += 1
-                self._dfs(grid, i, j)
-    return count
-
-def _dfs(self, grid: list[list[str]], r: int, c: int) -> None:
-    if r < 0 or c < 0 or r >= len(grid) or c >= len(grid[0]) or grid[r][c] == '0': return
-    grid[r][c] = '0'
-    self._dfs(grid, r+1, c); self._dfs(grid, r-1, c)
-    self._dfs(grid, r, c+1); self._dfs(grid, r, c-1)
+```csharp
+public int NumIslands(char[][] grid) {
+  int count = 0;
+  for (int i = 0; i < grid.Length; i++) {
+    for (int j = 0; j < grid[0].Length; j++) {
+      if (grid[i][j] == '1') {
+        count++;
+        Dfs(grid, i, j);
+      }
+    }
+  }
+  return count;
+}
+private void Dfs(char[][] grid, int r, int c) {
+  if (r < 0 || c < 0 || r >= grid.Length || c >= grid[0].Length || grid[r][c] == '0') return;
+  grid[r][c] = '0';
+  Dfs(grid, r+1, c); Dfs(grid, r-1, c);
+  Dfs(grid, r, c+1); Dfs(grid, r, c-1);
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
@@ -4444,14 +4789,19 @@ def _dfs(self, grid: list[list[str]], r: int, c: int) -> None:
 
 **Explanation:** In a single pass per row, we can use two pointers `i` and `j`. We assign `row[i] = row[j] ^ 1` and `row[j] = temp ^ 1`. Note the middle element when length is odd.
 
-```python
-def flip_and_invert_image(self, image: list[list[int]]) -> list[list[int]]:
-    for row in image:
-        left, right = 0, len(row) - 1
-        while left <= right:
-            row[left], row[right] = row[right] ^ 1, row[left] ^ 1
-            left += 1; right -= 1
-    return image
+```csharp
+public int[][] FlipAndInvertImage(int[][] image) {
+  foreach (int[] row in image) {
+    int left = 0, right = row.Length - 1;
+    while (left <= right) {
+      int temp = row[left] ^ 1;
+      row[left] = row[right] ^ 1;
+      row[right] = temp;
+      left++; right--;
+    }
+  }
+  return image;
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
@@ -4464,18 +4814,23 @@ def flip_and_invert_image(self, image: list[list[int]]) -> list[list[int]]:
 
 **Explanation:** Map the grid to a 1D array conceptually of size $M \times N$. The new position of an element at index `i` is `(i + k) % (M * N)`. We can construct a new result grid based on this mapping.
 
-```python
-def shift_grid(self, grid: list[list[int]], k: int) -> list[list[int]]:
-    m, n = len(grid), len(grid[0])
-    total = m * n
-    k %= total
-    res = [[0] * n for _ in range(m)]
-    
-    for r in range(m):
-        for c in range(n):
-            new_1d = (r * n + c + k) % total
-            res[new_1d // n][new_1d % n] = grid[r][c]
-    return res
+```csharp
+public IList<IList<int>> ShiftGrid(int[][] grid, int k) {
+  int m = grid.Length, n = grid[0].Length;
+  int total = m * n;
+  k %= total;
+  var res = new List<IList<int>>();
+  for (int i = 0; i < m; i++) {
+    res.Add(new List<int>(new int[n]));
+  }
+  for (int r = 0; r < m; r++) {
+    for (int c = 0; c < n; c++) {
+      int new1D = (r * n + c + k) % total;
+      res[new1D / n][new1D % n] = grid[r][c];
+    }
+  }
+  return res;
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
@@ -4488,23 +4843,25 @@ def shift_grid(self, grid: list[list[int]], k: int) -> list[list[int]]:
 
 **Explanation:** Iterate over all cells. If the first character matches, launch DFS. Temporarily mark cells (e.g., `#`) during recursion to prevent reuse, and restore them after the recursive call returns.
 
-```python
-def exist(self, board: list[list[str]], word: str) -> bool:
-    for i in range(len(board)):
-        for j in range(len(board[0])):
-            if self._dfs(board, i, j, word, 0): return True
-    return False
-
-def _dfs(self, b: list[list[str]], r: int, c: int, word: str, idx: int) -> bool:
-    if idx == len(word): return True
-    if r < 0 or c < 0 or r >= len(b) or c >= len(b[0]) or b[r][c] != word[idx]: return False
-    
-    temp = b[r][c]
-    b[r][c] = '#'
-    found = (self._dfs(b, r+1, c, word, idx+1) or self._dfs(b, r-1, c, word, idx+1) or
-             self._dfs(b, r, c+1, word, idx+1) or self._dfs(b, r, c-1, word, idx+1))
-    b[r][c] = temp
-    return found
+```csharp
+public bool Exist(char[][] board, string word) {
+  for (int i = 0; i < board.Length; i++) {
+    for (int j = 0; j < board[0].Length; j++) {
+      if (Dfs(board, i, j, word, 0)) return true;
+    }
+  }
+  return false;
+}
+private bool Dfs(char[][] b, int r, int c, string word, int idx) {
+  if (idx == word.Length) return true;
+  if (r < 0 || c < 0 || r >= b.Length || c >= b[0].Length || b[r][c] != word[idx]) return false;
+  char temp = b[r][c];
+  b[r][c] = '#';
+  bool found = Dfs(b, r+1, c, word, idx+1) || Dfs(b, r-1, c, word, idx+1) ||
+               Dfs(b, r, c+1, word, idx+1) || Dfs(b, r, c-1, word, idx+1);
+  b[r][c] = temp;
+  return found;
+}
 ```Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
 
 * * *
@@ -4517,21 +4874,33 @@ def _dfs(self, b: list[list[str]], r: int, c: int, word: str, idx: int) -> bool:
 
 **Explanation:** A matrix can be rotated at most 3 times (90, 180, 270 degrees). We compare `mat` to `target` up to 4 times, rotating `mat` by 90 degrees each time.
 
-```python
-def find_rotation(self, mat: list[list[int]], target: list[list[int]]) -> bool:
-    for k in range(4):
-        if mat == target: return True
-        self.rotate(mat)
-    return False
-
-def rotate(self, mat: list[list[int]]) -> None:
-    n = len(mat)
-    for i in range(n):
-        for j in range(i + 1, n):
-            mat[i][j], mat[j][i] = mat[j][i], mat[i][j]
-    for i in range(n):
-        for j in range(n // 2):
-            mat[i][j], mat[i][n-1-j] = mat[i][n-1-j], mat[i][j]
+```csharp
+public bool FindRotation(int[][] mat, int[][] target) {
+  for (int k = 0; k < 4; k++) {
+    if (AreEqual(mat, target)) return true;
+    Rotate(mat); 
+  }
+  return false;
+}
+private bool AreEqual(int[][] mat, int[][] target) {
+  for(int i=0; i<mat.Length; i++)
+    for(int j=0; j<mat[i].Length; j++)
+      if (mat[i][j] != target[i][j]) return false;
+  return true;
+}
+private void Rotate(int[][] mat) {
+  int n = mat.Length;
+  for (int i = 0; i < n; i++) {
+    for (int j = i + 1; j < n; j++) {
+      int t = mat[i][j]; mat[i][j] = mat[j][i]; mat[j][i] = t;
+    }
+  }
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n/2; j++) {
+      int t = mat[i][j]; mat[i][j] = mat[i][n-1-j]; mat[i][n-1-j] = t;
+    }
+  }
+}
 ```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
@@ -4544,11 +4913,12 @@ def rotate(self, mat: list[list[int]]) -> None:
 
 **Explanation:** Convert the column letter and row number to integers. The color of a cell `(x, y)` is uniquely determined by `(x + y) % 2`. Compare the parity.
 
-```python
-def solution(self, cell1: str, cell2: str) -> bool:
-    sum1 = (ord(cell1[0]) - ord('A')) + (ord(cell1[1]) - ord('1'))
-    sum2 = (ord(cell2[0]) - ord('A')) + (ord(cell2[1]) - ord('1'))
-    return (sum1 % 2) == (sum2 % 2)
+```csharp
+public bool Solution(string cell1, string cell2) {
+  int sum1 = (cell1[0] - 'A') + (cell1[1] - '1');
+  int sum2 = (cell2[0] - 'A') + (cell2[1] - '1');
+  return (sum1 % 2) == (sum2 % 2);
+}
 ```Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
 
 * * *
@@ -4561,31 +4931,34 @@ def solution(self, cell1: str, cell2: str) -> bool:
 
 **Explanation:** Count adjacent mines (8 directions). If > 0, set to digit. If == 0, set to 'B' and DFS to 8 adjacent 'E' neighbors.
 
-```python
-def update_board(self, board: list[list[str]], click: list[int]) -> list[list[str]]:
-    r, c = click[0], click[1]
-    if board[r][c] == 'M':
-        board[r][c] = 'X'
-        return board
-    self._dfs(board, r, c)
-    return board
-
-def _dfs(self, b: list[list[str]], r: int, c: int) -> None:
-    if r < 0 or c < 0 or r >= len(b) or c >= len(b[0]) or b[r][c] != 'E': return
-    mines = 0
-    for i in range(-1, 2):
-        for j in range(-1, 2):
-            nr, nc = r + i, c + j
-            if 0 <= nr < len(b) and 0 <= nc < len(b[0]) and b[nr][nc] == 'M':
-                mines += 1
-                
-    if mines > 0:
-        b[r][c] = str(mines)
-    else:
-        b[r][c] = 'B'
-        for i in range(-1, 2):
-            for j in range(-1, 2):
-                self._dfs(b, r+i, c+j)
+```csharp
+public char[][] UpdateBoard(char[][] board, int[] click) {
+  int r = click[0], c = click[1];
+  if (board[r][c] == 'M') {
+    board[r][c] = 'X';
+    return board;
+  }
+  Dfs(board, r, c);
+  return board;
+}
+private void Dfs(char[][] b, int r, int c) {
+  if (r < 0 || c < 0 || r >= b.Length || c >= b[0].Length || b[r][c] != 'E') return;
+  int mines = 0;
+  for (int i = -1; i <= 1; i++) {
+    for (int j = -1; j <= 1; j++) {
+      int nr = r + i, nc = c + j;
+      if (nr >= 0 && nr < b.Length && nc >= 0 && nc < b[0].Length && b[nr][nc] == 'M') mines++;
+    }
+  }
+  if (mines > 0) {
+    b[r][c] = (char)(mines + '0');
+  } else {
+    b[r][c] = 'B';
+    for (int i = -1; i <= 1; i++) {
+      for (int j = -1; j <= 1; j++) Dfs(b, r+i, c+j);
+    }
+  }
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
@@ -4598,16 +4971,20 @@ def _dfs(self, b: list[list[str]], r: int, c: int) -> None:
 
 **Explanation:** Instead of a full DFS, just count the "top-left" cell of every battleship. A cell is a top-left if it is 'X' and has no 'X' above or to the left of it.
 
-```python
-def count_battleships(self, board: list[list[str]]) -> int:
-    count = 0
-    for i in range(len(board)):
-        for j in range(len(board[0])):
-            if board[i][j] == 'X':
-                if i > 0 and board[i-1][j] == 'X': continue
-                if j > 0 and board[i][j-1] == 'X': continue
-                count += 1
-    return count
+```csharp
+public int CountBattleships(char[][] board) {
+  int count = 0;
+  for (int i = 0; i < board.Length; i++) {
+    for (int j = 0; j < board[0].Length; j++) {
+      if (board[i][j] == 'X') {
+        if (i > 0 && board[i-1][j] == 'X') continue;
+        if (j > 0 && board[i][j-1] == 'X') continue;
+        count++;
+      }
+    }
+  }
+  return count;
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
@@ -4620,16 +4997,25 @@ def count_battleships(self, board: list[list[str]]) -> int:
 
 **Explanation:** The output matrix size is $(M-2) \times (N-2)$. We iterate over these valid centers and compute the sum of the $3 \times 3$ area.
 
-```python
-def box_blur(self, image: list[list[int]]) -> list[list[int]]:
-    m, n = len(image), len(image[0])
-    res = [[0] * (n - 2) for _ in range(m - 2)]
-    
-    for i in range(1, m - 1):
-        for j in range(1, n - 1):
-            s = sum(image[i + di][j + dj] for di in range(-1, 2) for dj in range(-1, 2))
-            res[i-1][j-1] = s // 9
-    return res
+```csharp
+public int[][] BoxBlur(int[][] image) {
+  int m = image.Length, n = image[0].Length;
+  int[][] res = new int[m-2][];
+  for (int i=0; i<m-2; i++) res[i] = new int[n-2];
+  
+  for (int i = 1; i < m - 1; i++) {
+    for (int j = 1; j < n - 1; j++) {
+      int sum = 0;
+      for (int di = -1; di <= 1; di++) {
+        for (int dj = -1; dj <= 1; dj++) {
+          sum += image[i + di][j + dj];
+        }
+      }
+      res[i-1][j-1] = sum / 9;
+    }
+  }
+  return res;
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
@@ -4642,21 +5028,24 @@ def box_blur(self, image: list[list[int]]) -> list[list[int]]:
 
 **Explanation:** Maintain a `row` index and a `direction`. Add characters to `StringBuilder[]` corresponding to each row. When hitting top or bottom row, reverse direction.
 
-```python
-def convert(self, s: str, num_rows: int) -> str:
-    if num_rows == 1: return s
-    rows = ["" for _ in range(min(num_rows, len(s)))]
-    
-    cur_row = 0
-    going_down = False
-    
-    for c in s:
-        rows[cur_row] += c
-        if cur_row == 0 or cur_row == num_rows - 1:
-            going_down = not going_down
-        cur_row += 1 if going_down else -1
-        
-    return "".join(rows)
+```csharp
+public string Convert(string s, int numRows) {
+  if (numRows == 1) return s;
+  StringBuilder[] rows = new StringBuilder[Math.Min(numRows, s.Length)];
+  for (int i = 0; i < rows.Length; i++) rows[i] = new StringBuilder();
+  
+  int curRow = 0;
+  bool goingDown = false;
+  foreach (char c in s.ToCharArray()) {
+    rows[curRow].Append(c);
+    if (curRow == 0 || curRow == numRows - 1) goingDown = !goingDown;
+    curRow += goingDown ? 1 : -1;
+  }
+  
+  StringBuilder ret = new StringBuilder();
+  foreach (StringBuilder row in rows) ret.Append(row);
+  return ret.ToString();
+}
 ```Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
 
 * * *
@@ -4669,22 +5058,27 @@ def convert(self, s: str, num_rows: int) -> str:
 
 **Explanation:** Encode North, East, South, West using `dx` and `dy`. Turn right is `dir = (dir + 1) % 4`. Move step by step checking against an obstacle `HashSet`.
 
-```python
-def robot_sim(self, commands: list[int], obstacles: list[list[int]]) -> int:
-    dx, dy = [0, 1, 0, -1], [1, 0, -1, 0]
-    obs = set((o[0], o[1]) for o in obstacles)
-    
-    x = y = dir_idx = max_dist = 0
-    for cmd in commands:
-        if cmd == -2: dir_idx = (dir_idx + 3) % 4
-        elif cmd == -1: dir_idx = (dir_idx + 1) % 4
-        else:
-            for k in range(cmd):
-                nx, ny = x + dx[dir_idx], y + dy[dir_idx]
-                if (nx, ny) in obs: break
-                x, y = nx, ny
-                max_dist = max(max_dist, x*x + y*y)
-    return max_dist
+```csharp
+public int RobotSim(int[] commands, int[][] obstacles) {
+  int[] dx = {0, 1, 0, -1}, dy = {1, 0, -1, 0};
+  HashSet<string> obs = new HashSet<string>();
+  foreach (int[] o in obstacles) obs.Add(o[0] + "," + o[1]);
+  
+  int x = 0, y = 0, dir = 0, maxDist = 0;
+  foreach (int cmd in commands) {
+    if (cmd == -2) dir = (dir + 3) % 4;
+    else if (cmd == -1) dir = (dir + 1) % 4;
+    else {
+      for (int k = 0; k < cmd; k++) {
+        int nx = x + dx[dir], ny = y + dy[dir];
+        if (obs.Contains(nx + "," + ny)) break;
+        x = nx; y = ny;
+        maxDist = Math.Max(maxDist, x*x + y*y);
+      }
+    }
+  }
+  return maxDist;
+}
 ```Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
 
 * * *
@@ -4697,31 +5091,32 @@ def robot_sim(self, commands: list[int], obstacles: list[list[int]]) -> int:
 
 **Explanation:** Instead of going downhill from every cell, go UPHILL from the ocean borders to mark reachable cells. Intersection of Pacific-reachable and Atlantic-reachable is the answer.
 
-```python
-def pacific_atlantic(self, heights: list[list[int]]) -> list[list[int]]:
-    m, n = len(heights), len(heights[0])
-    pac, atl = [[False] * n for _ in range(m)], [[False] * n for _ in range(m)]
-    
-    for i in range(m):
-        self._dfs_pa(heights, pac, i, 0)
-        self._dfs_pa(heights, atl, i, n-1)
-    for j in range(n):
-        self._dfs_pa(heights, pac, 0, j)
-        self._dfs_pa(heights, atl, m-1, j)
-        
-    res = []
-    for i in range(m):
-        for j in range(n):
-            if pac[i][j] and atl[i][j]:
-                res.append([i, j])
-    return res
-
-def _dfs_pa(self, h, v, r, c):
-    v[r][c] = True
-    for dr, dc in [(1,0), (-1,0), (0,1), (0,-1)]:
-        nr, nc = r + dr, c + dc
-        if 0 <= nr < len(h) and 0 <= nc < len(h[0]) and not v[nr][nc] and h[nr][nc] >= h[r][c]:
-            self._dfs_pa(h, v, nr, nc)
+```csharp
+public IList<IList<int>> PacificAtlantic(int[][] heights) {
+  int m = heights.Length, n = heights[0].Length;
+  bool[][] pac = new bool[m][], atl = new bool[m][];
+  for(int i=0; i<m; i++) { pac[i]=new bool[n]; atl[i]=new bool[n]; }
+  
+  for (int i = 0; i < m; i++) { Dfs(heights, pac, i, 0); Dfs(heights, atl, i, n-1); }
+  for (int j = 0; j < n; j++) { Dfs(heights, pac, 0, j); Dfs(heights, atl, m-1, j); }
+  
+  IList<IList<int>> res = new List<IList<int>>();
+  for (int i = 0; i < m; i++) {
+    for (int j = 0; j < n; j++) {
+      if (pac[i][j] && atl[i][j]) res.Add(new List<int>{i, j});
+    }
+  }
+  return res;
+}
+private void Dfs(int[][] h, bool[][] v, int r, int c) {
+  v[r][c] = true;
+  int[][] dirs = {new int[]{1,0},new int[]{-1,0},new int[]{0,1},new int[]{0,-1}};
+  foreach (int[] d in dirs) {
+    int nr = r + d[0], nc = c + d[1];
+    if (nr>=0 && nr<h.Length && nc>=0 && nc<h[0].Length && !v[nr][nc] && h[nr][nc] >= h[r][c])
+      Dfs(h, v, nr, nc);
+  }
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
@@ -4734,35 +5129,37 @@ def _dfs_pa(self, h, v, r, c):
 
 **Explanation:** Add all initially rotten oranges to a queue. Use BFS level-by-level to rot adjacent oranges. Track minutes. Finally, check if any fresh oranges remain.
 
-```python
-def oranges_rotting(self, grid: list[list[int]]) -> int:
-    from collections import deque
-    q = deque()
-    fresh = 0
-    m, n = len(grid), len(grid[0])
-    
-    for i in range(m):
-        for j in range(n):
-            if grid[i][j] == 2: q.append((i, j))
-            elif grid[i][j] == 1: fresh += 1
-            
-    if fresh == 0: return 0
-    mins = 0
-    
-    while q:
-        rotted = False
-        for _ in range(len(q)):
-            r, c = q.popleft()
-            for dr, dc in [(1,0), (-1,0), (0,1), (0,-1)]:
-                nr, nc = r + dr, c + dc
-                if 0 <= nr < m and 0 <= nc < n and grid[nr][nc] == 1:
-                    grid[nr][nc] = 2
-                    fresh -= 1
-                    q.append((nr, nc))
-                    rotted = True
-        if rotted: mins += 1
-        
-    return mins if fresh == 0 else -1
+```csharp
+public int OrangesRotting(int[][] grid) {
+  Queue<int[]> q = new Queue<int[]>();
+  int fresh = 0, m = grid.Length, n = grid[0].Length;
+  for (int i = 0; i < m; i++) {
+    for (int j = 0; j < n; j++) {
+      if (grid[i][j] == 2) q.Enqueue(new int[]{i, j});
+      else if (grid[i][j] == 1) fresh++;
+    }
+  }
+  if (fresh == 0) return 0;
+  int mins = 0;
+  int[][] dirs = {new int[]{1,0},new int[]{-1,0},new int[]{0,1},new int[]{0,-1}};
+  while (q.Count > 0) {
+    int size = q.Count;
+    bool rotted = false;
+    for (int k = 0; k < size; k++) {
+      int[] curr = q.Dequeue();
+      foreach (int[] d in dirs) {
+        int r = curr[0] + d[0], c = curr[1] + d[1];
+        if (r>=0 && r<m && c>=0 && c<n && grid[r][c] == 1) {
+          grid[r][c] = 2; fresh--;
+          q.Enqueue(new int[]{r, c});
+          rotted = true;
+        }
+      }
+    }
+    if (rotted) mins++;
+  }
+  return fresh == 0 ? mins : -1;
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
@@ -4775,26 +5172,24 @@ def oranges_rotting(self, grid: list[list[int]]) -> int:
 
 **Explanation:** Any 'O' connected to a border 'O' cannot be captured. DFS from all border 'O's and mark them as safe ('#'). Flip all remaining 'O' to 'X', then revert '#' to 'O'.
 
-```python
-def solve(self, board: list[list[str]]) -> None:
-    m, n = len(board), len(board[0])
-    for i in range(m):
-        self._dfs_s(board, i, 0)
-        self._dfs_s(board, i, n-1)
-    for j in range(n):
-        self._dfs_s(board, 0, j)
-        self._dfs_s(board, m-1, j)
-        
-    for i in range(m):
-        for j in range(n):
-            if board[i][j] == 'O': board[i][j] = 'X'
-            elif board[i][j] == '#': board[i][j] = 'O'
-
-def _dfs_s(self, b: list[list[str]], r: int, c: int) -> None:
-    if r < 0 or r >= len(b) or c < 0 or c >= len(b[0]) or b[r][c] != 'O': return
-    b[r][c] = '#'
-    self._dfs_s(b, r+1, c); self._dfs_s(b, r-1, c)
-    self._dfs_s(b, r, c+1); self._dfs_s(b, r, c-1)
+```csharp
+public void Solve(char[][] board) {
+  int m = board.Length, n = board[0].Length;
+  for (int i = 0; i < m; i++) { Dfs(board, i, 0); Dfs(board, i, n-1); }
+  for (int j = 0; j < n; j++) { Dfs(board, 0, j); Dfs(board, m-1, j); }
+  
+  for (int i = 0; i < m; i++) {
+    for (int j = 0; j < n; j++) {
+      if (board[i][j] == 'O') board[i][j] = 'X';
+      else if (board[i][j] == '#') board[i][j] = 'O';
+    }
+  }
+}
+private void Dfs(char[][] b, int r, int c) {
+  if (r<0 || r>=b.Length || c<0 || c>=b[0].Length || b[r][c] != 'O') return;
+  b[r][c] = '#';
+  Dfs(b, r+1, c); Dfs(b, r-1, c); Dfs(b, r, c+1); Dfs(b, r, c-1);
+}
 ```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
@@ -4807,35 +5202,43 @@ def _dfs_s(self, b: list[list[str]], r: int, c: int) -> None:
 
 **Explanation:** We can binary search the answer range [0, 10^6]. For a chosen effort limit `K`, use BFS. If BFS reaches the end using only edges $\le K$, then `K` is possible, so search lower. Else, search higher.
 
-```python
-def minimum_effort_path(self, heights: list[list[int]]) -> int:
-    left, right, ans = 0, 1000000, 1000000
-    while left <= right:
-        mid = (left + right) // 2
-        if self._can_reach(heights, mid):
-            ans = mid
-            right = mid - 1
-        else:
-            left = mid + 1
-    return ans
-
-def _can_reach(self, h: list[list[int]], limit: int) -> bool:
-    from collections import deque
-    m, n = len(h), len(h[0])
-    vis = [[False] * n for _ in range(m)]
-    q = deque([(0, 0)])
-    vis[0][0] = True
-    
-    while q:
-        r, c = q.popleft()
-        if r == m - 1 and c == n - 1: return True
-        for dr, dc in [(1,0), (-1,0), (0,1), (0,-1)]:
-            nr, nc = r + dr, c + dc
-            if 0 <= nr < m and 0 <= nc < n and not vis[nr][nc]:
-                if abs(h[nr][nc] - h[r][c]) <= limit:
-                    vis[nr][nc] = True
-                    q.append((nr, nc))
-    return False
+```csharp
+public int MinimumEffortPath(int[][] heights) {
+  int left = 0, right = 1000000, ans = right;
+  while (left <= right) {
+    int mid = left + (right - left) / 2;
+    if (CanReach(heights, mid)) {
+      ans = mid; right = mid - 1;
+    } else {
+      left = mid + 1;
+    }
+  }
+  return ans;
+}
+private bool CanReach(int[][] h, int limit) {
+  int m = h.Length, n = h[0].Length;
+  bool[][] vis = new bool[m][];
+  for(int i=0; i<m; i++) vis[i] = new bool[n];
+  
+  Queue<int[]> q = new Queue<int[]>();
+  q.Enqueue(new int[]{0, 0}); vis[0][0] = true;
+  int[][] dirs = {new int[]{1,0},new int[]{-1,0},new int[]{0,1},new int[]{0,-1}};
+  
+  while (q.Count > 0) {
+    int[] curr = q.Dequeue();
+    if (curr[0] == m-1 && curr[1] == n-1) return true;
+    foreach (int[] d in dirs) {
+      int r = curr[0]+d[0], c = curr[1]+d[1];
+      if (r>=0 && r<m && c>=0 && c<n && !vis[r][c]) {
+        if (Math.Abs(h[r][c] - h[curr[0]][curr[1]]) <= limit) {
+          vis[r][c] = true;
+          q.Enqueue(new int[]{r, c});
+        }
+      }
+    }
+  }
+  return false;
+}
 ```Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M \times N)$
 
 ## Practice Problem Bank
@@ -5058,7 +5461,7 @@ def _can_reach(self, h: list[list[int]], limit: int) -> bool:
 **Dynamic Sliding Window**
 A technique where a window expands to the right to include elements and contracts from the left when a specific invariant or constraint is violated. It matters because it optimizes $\mathcal{O}(N^2)$ brute-force subarray checks into $\mathcal{O}(N)$ operations by avoiding redundant recalculations. Use when searching for the longest/shortest contiguous subarray satisfying a condition.
 
-![Dynamic Sliding Window — Longest Substring Without Repeating Characters](editions/python/chapters/12-hashmaps-sliding-windows/visuals/sliding_window.png){width=85%}
+![Dynamic Sliding Window — Longest Substring Without Repeating Characters](editions/csharp/chapters/12-hashmaps-sliding-windows/visuals/sliding_window.png){width=85%}
 
 **Fixed-Size Sliding Window vs Dynamic Sliding Window**
 
@@ -5071,7 +5474,7 @@ A technique where a window expands to the right to include elements and contract
 **HashMap Frequency Signature**
 Creating a unique key for a group of items (like anagrams) based on their character frequencies rather than sorting. Usually represented as a mapped string of an `int[26]` array. This avoids the $\mathcal{O}(N \log N)$ sorting cost, providing an $\mathcal{O}(N)$ way to group items.
 
-![HashMap Frequency Signature — Anagram Detection](editions/python/chapters/12-hashmaps-sliding-windows/visuals/hashmap_frequency.png){width=85%}
+![HashMap Frequency Signature — Anagram Detection](editions/csharp/chapters/12-hashmaps-sliding-windows/visuals/hashmap_frequency.png){width=85%}
 
 **Prefix Sum Array & Cumulative Matching**
 An array where `pref[i]` stores the sum of elements from index $0$ to $i$. The trick `pref[j] - pref[i] = K` allows finding a subarray sum $K$ in $\mathcal{O}(1)$ time by rearranging to `pref[i] = pref[j] - K` and looking up previously seen prefix sums.
@@ -5131,46 +5534,52 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 ## Reusable Code Templates
 
 ### Template A: Dynamic Sliding Window
-```python
-left = max_len = 0
-for right in range(len(arr)):
-    # 1. Add arr[right] to window state
-    while False: # window state violates invariant
-        # 2. Remove arr[left] from window state
-        left += 1
-    # 3. Update maxLen or minLen
-    max_len = max(max_len, right - left + 1)
+```csharp
+int left = 0, maxLen = 0;
+for (int right = 0; right < arr.Length; right++) {
+    // 1. Add arr[right] to window state
+    while (false /* window state violates invariant */) {
+        // 2. Remove arr[left] from window state
+        left++;
+    }
+    // 3. Update maxLen or minLen
+    maxLen = Math.Max(maxLen, right - left + 1);
+}
 ```
 ### Template B: Fixed-Size Sliding Window
-```python
-k, total_sum, max_val = 3, 0, 0
-for i in range(len(arr)):
-    total_sum += arr[i] # Add current element
-    if i >= k - 1:
-        max_val = max(max_val, total_sum) # Update result
-        total_sum -= arr[i - (k - 1)]     # Remove leftmost element for next iteration
+```csharp
+int k = 3, sum = 0, max = 0;
+for (int i = 0; i < arr.Length; i++) {
+    sum += arr[i]; // Add current element
+    if (i >= k - 1) {
+        max = Math.Max(max, sum); // Update result
+        sum -= arr[i - (k - 1)];  // Remove leftmost element for next iteration
+    }
+}
 ```
 ### Template C: Prefix Sum + HashMap Counter
-```python
-from collections import defaultdict
-hash_map = defaultdict(int)
-hash_map[0] = 1 # Base case for subarrays starting at index 0
-total_sum = count = 0
-for num in nums:
-    total_sum += num
-    if (total_sum - k) in hash_map:
-        count += hash_map[total_sum - k]
-    hash_map[total_sum] += 1
+```csharp
+Dictionary<int, int> map = new Dictionary<int, int>();
+map[0] = 1; // Base case for subarrays starting at index 0
+int sum = 0, count = 0;
+foreach (int num in nums) {
+    sum += num;
+    if (map.ContainsKey(sum - k)) {
+        count += map[sum - k];
+    }
+    map[sum] = map.GetValueOrDefault(sum, 0) + 1;
+}
 ```
 ### Template D: HashMap Frequency Grouping
-```python
-from collections import defaultdict
-hash_map = defaultdict(list)
-for s in strs:
-    count = [0] * 26
-    for c in s: count[ord(c) - ord('a')] += 1
-    key = str(count)
-    hash_map[key].append(s)
+```csharp
+Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+foreach (string s in strs) {
+    int[] count = new int[26];
+    foreach (char c in s.ToCharArray()) count[c - 'a']++;
+    string key = string.Join(",", count);
+    if (!map.ContainsKey(key)) map[key] = new List<string>();
+    map[key].Add(s);
+}
 ```
 * * *
 
@@ -5184,19 +5593,21 @@ for s in strs:
 **Pattern:** Dynamic Sliding Window + HashMap
 
 **Explanation:** We expand the right pointer. If the character is in the set, we contract the left pointer until the duplicate is removed, ensuring the window always contains unique characters.
-```python
-def length_of_longest_substring(self, s: str) -> int:
-    char_set = set()
-    left = max_val = 0
-    for right in range(len(s)):
-        # Contract if duplicate found
-        while s[right] in char_set:
-            char_set.remove(s[left])
-            left += 1
-        char_set.add(s[right]) # Add current char
-        max_val = max(max_val, right - left + 1)
-    return max_val
-# Time Complexity: O(N) | Space Complexity: O(min(N, M))
+```csharp
+public int LengthOfLongestSubstring(string s) {
+    HashSet<char> set = new HashSet<char>();
+    int left = 0, max = 0;
+    for (int right = 0; right < s.Length; right++) {
+        // Contract if duplicate found
+        while (set.Contains(s[right])) {
+            set.Remove(s[left++]);
+        }
+        set.Add(s[right]); // Add current char
+        max = Math.Max(max, right - left + 1);
+    }
+    return max;
+}
+// Time Complexity: O(N) | Space Complexity: O(min(N, M))
 ```
 * * *
 
@@ -5208,19 +5619,20 @@ def length_of_longest_substring(self, s: str) -> int:
 **Pattern:** Prefix Sum + HashMap
 
 **Explanation:** We maintain a running sum. If `sum - k` exists in our frequency map, it means there is a subarray ending at the current index that sums to K.
-```python
-def subarray_sum(self, nums: list[int], k: int) -> int:
-    from collections import defaultdict
-    hash_map = defaultdict(int)
-    hash_map[0] = 1 # Base case
-    total_sum = count = 0
-    for num in nums:
-        total_sum += num
-        # Check if required prefix exists
-        if (total_sum - k) in hash_map: count += hash_map[total_sum - k]
-        hash_map[total_sum] += 1
-    return count
-# Time Complexity: O(N) | Space Complexity: O(N)
+```csharp
+public int SubarraySum(int[] nums, int k) {
+    Dictionary<int, int> map = new Dictionary<int, int>();
+    map[0] = 1; // Base case
+    int sum = 0, count = 0;
+    foreach (int num in nums) {
+        sum += num;
+        // Check if required prefix exists
+        if (map.ContainsKey(sum - k)) count += map[sum - k];
+        map[sum] = map.GetValueOrDefault(sum, 0) + 1;
+    }
+    return count;
+}
+// Time Complexity: O(N) | Space Complexity: O(N)
 ```
 * * *
 
@@ -5232,17 +5644,19 @@ def subarray_sum(self, nums: list[int], k: int) -> int:
 **Pattern:** HashMap Frequency Signature
 
 **Explanation:** Generate a 26-element character count array for each string, convert it to a string key, and use it in a HashMap to group anagrams together.
-```python
-def group_anagrams(self, strs: list[str]) -> list[list[str]]:
-    from collections import defaultdict
-    hash_map = defaultdict(list)
-    for s in strs:
-        count = [0] * 26
-        for c in s: count[ord(c) - ord('a')] += 1 # Build signature
-        key = tuple(count)
-        hash_map[key].append(s)
-    return list(hash_map.values())
-# Time Complexity: O(N * L) | Space Complexity: O(N * L)
+```csharp
+public IList<IList<string>> GroupAnagrams(string[] strs) {
+    Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+    foreach (string s in strs) {
+        int[] count = new int[26];
+        foreach (char c in s) count[c - 'a']++; // Build signature
+        string key = string.Join(",", count);
+        if (!map.ContainsKey(key)) map[key] = new List<string>();
+        map[key].Add(s);
+    }
+    return new List<IList<string>>(map.Values);
+}
+// Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
 * * *
 
@@ -5254,18 +5668,20 @@ def group_anagrams(self, strs: list[str]) -> list[list[str]]:
 **Pattern:** Fixed-Size Sliding Window + Frequency Array
 
 **Explanation:** Use a window of size `p.length()`. Keep arrays of character frequencies for `p` and the current window in `s`. If they match, add the index.
-```python
-def find_anagrams(self, s: str, p: str) -> list[int]:
-    res = []
-    if len(s) < len(p): return res
-    p_count, s_count = [0] * 26, [0] * 26
-    for c in p: p_count[ord(c) - ord('a')] += 1
-    for i in range(len(s)):
-        s_count[ord(s[i]) - ord('a')] += 1
-        if i >= len(p): s_count[ord(s[i - len(p)]) - ord('a')] -= 1 # Contract
-        if p_count == s_count: res.append(i - len(p) + 1) # Match
-    return res
-# Time Complexity: O(N) | Space Complexity: O(1)
+```csharp
+public IList<int> FindAnagrams(string s, string p) {
+    List<int> res = new List<int>();
+    if (s.Length < p.Length) return res;
+    int[] pCount = new int[26], sCount = new int[26];
+    foreach (char c in p) pCount[c - 'a']++;
+    for (int i = 0; i < s.Length; i++) {
+        sCount[s[i] - 'a']++;
+        if (i >= p.Length) sCount[s[i - p.Length] - 'a']--; // Contract
+        if (pCount.SequenceEqual(sCount)) res.Add(i - p.Length + 1); // Match
+    }
+    return res;
+}
+// Time Complexity: O(N) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5277,22 +5693,23 @@ def find_anagrams(self, s: str, p: str) -> list[int]:
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Use a HashMap to track character frequencies. When map size exceeds K, shrink window from left until size is K again.
-```python
-def length_of_longest_substring_k_distinct(self, s: str, k: int) -> int:
-    from collections import defaultdict
-    hash_map = defaultdict(int)
-    left = max_val = 0
-    for right in range(len(s)):
-        c = s[right]
-        hash_map[c] += 1
-        while len(hash_map) > k: # Invariant broken
-            left_char = s[left]
-            left += 1
-            hash_map[left_char] -= 1
-            if hash_map[left_char] == 0: del hash_map[left_char]
-        max_val = max(max_val, right - left + 1)
-    return max_val
-# Time Complexity: O(N) | Space Complexity: O(K)
+```csharp
+public int LengthOfLongestSubstringKDistinct(string s, int k) {
+    Dictionary<char, int> map = new Dictionary<char, int>();
+    int left = 0, max = 0;
+    for (int right = 0; right < s.Length; right++) {
+        char c = s[right];
+        map[c] = map.GetValueOrDefault(c, 0) + 1;
+        while (map.Count > k) { // Invariant broken
+            char leftChar = s[left++];
+            map[leftChar]--;
+            if (map[leftChar] == 0) map.Remove(leftChar);
+        }
+        max = Math.Max(max, right - left + 1);
+    }
+    return max;
+}
+// Time Complexity: O(N) | Space Complexity: O(K)
 ```
 * * *
 
@@ -5305,27 +5722,24 @@ def length_of_longest_substring_k_distinct(self, s: str, k: int) -> int:
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Track required characters in a map. Expand right until all required characters are in the window, then contract left to minimize the window.
-```python
-def min_window(self, s: str, t: str) -> str:
-    char_map = [0] * 128
-    for c in t: char_map[ord(c)] += 1
-    left, count = 0, len(t)
-    min_len, min_start = float('inf'), 0
-    
-    for right in range(len(s)):
-        if char_map[ord(s[right])] > 0: count -= 1 # Found required char
-        char_map[ord(s[right])] -= 1
-        
-        while count == 0: # All chars found
-            if right - left + 1 < min_len:
-                min_len = right - left + 1
-                min_start = left
-            char_map[ord(s[left])] += 1
-            if char_map[ord(s[left])] > 0: count += 1 # Removed required char
-            left += 1
-            
-    return "" if min_len == float('inf') else s[min_start:min_start + min_len]
-# Time Complexity: O(N) | Space Complexity: O(1)
+```csharp
+public string MinWindow(string s, string t) {
+    int[] map = new int[128];
+    foreach (char c in t) map[c]++;
+    int left = 0, count = t.Length, minLen = int.MaxValue, minStart = 0;
+    for (int right = 0; right < s.Length; right++) {
+        if (map[s[right]]-- > 0) count--; // Found required char
+        while (count == 0) { // All chars found
+            if (right - left + 1 < minLen) {
+                minLen = right - left + 1;
+                minStart = left;
+            }
+            if (++map[s[left++]] > 0) count++; // Removed required char
+        }
+    }
+    return minLen == int.MaxValue ? "" : s.Substring(minStart, minLen);
+}
+// Time Complexity: O(N) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5337,18 +5751,22 @@ def min_window(self, s: str, t: str) -> str:
 **Pattern:** Difference-Based Signature
 
 **Explanation:** Calculate the relative distance between adjacent characters. Use this sequence of differences as the HashMap key.
-```python
-def group_strings(self, strings: list[str]) -> list[list[str]]:
-    from collections import defaultdict
-    hash_map = defaultdict(list)
-    for s in strings:
-        key = []
-        for i in range(1, len(s)):
-            diff = (ord(s[i]) - ord(s[i-1]) + 26) % 26 # Circular difference
-            key.append(str(diff))
-        hash_map[','.join(key)].append(s)
-    return list(hash_map.values())
-# Time Complexity: O(N * L) | Space Complexity: O(N * L)
+```csharp
+public IList<IList<string>> GroupStrings(string[] strings) {
+    Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+    foreach (string s in strings) {
+        StringBuilder key = new StringBuilder();
+        for (int i = 1; i < s.Length; i++) {
+            int diff = (s[i] - s[i-1] + 26) % 26; // Circular difference
+            key.Append(diff).Append(",");
+        }
+        string k = key.ToString();
+        if (!map.ContainsKey(k)) map[k] = new List<string>();
+        map[k].Add(s);
+    }
+    return new List<IList<string>>(map.Values);
+}
+// Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
 * * *
 
@@ -5360,18 +5778,22 @@ def group_strings(self, strings: list[str]) -> list[list[str]]:
 **Pattern:** Prefix Sum (+1/-1 trick)
 
 **Explanation:** Treat 0s as -1. If the running sum is seen again, it means the subarray between those two indices sums to 0, implying equal 0s and 1s.
-```python
-def find_max_length(self, nums: list[int]) -> int:
-    hash_map = {0: -1}
-    total_sum = max_val = 0
-    for i, num in enumerate(nums):
-        total_sum += -1 if num == 0 else 1 # Map 0 to -1
-        if total_sum in hash_map:
-            max_val = max(max_val, i - hash_map[total_sum])
-        else:
-            hash_map[total_sum] = i # Store first occurrence
-    return max_val
-# Time Complexity: O(N) | Space Complexity: O(N)
+```csharp
+public int FindMaxLength(int[] nums) {
+    Dictionary<int, int> map = new Dictionary<int, int>();
+    map[0] = -1;
+    int sum = 0, max = 0;
+    for (int i = 0; i < nums.Length; i++) {
+        sum += nums[i] == 0 ? -1 : 1; // Map 0 to -1
+        if (map.ContainsKey(sum)) {
+            max = Math.Max(max, i - map[sum]);
+        } else {
+            map[sum] = i; // Store first occurrence
+        }
+    }
+    return max;
+}
+// Time Complexity: O(N) | Space Complexity: O(N)
 ```
 * * *
 
@@ -5383,18 +5805,18 @@ def find_max_length(self, nums: list[int]) -> int:
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Maintain a running product. If product >= k, shrink from left. Number of valid subarrays ending at `right` is `right - left + 1`.
-```python
-def num_subarray_product_less_than_k(self, nums: list[int], k: int) -> int:
-    if k <= 1: return 0
-    prod, left, count = 1, 0, 0
-    for right in range(len(nums)):
-        prod *= nums[right]
-        while prod >= k:
-            prod //= nums[left]
-            left += 1 # Shrink
-        count += right - left + 1 # Add valid subarrays
-    return count
-# Time Complexity: O(N) | Space Complexity: O(1)
+```csharp
+public int NumSubarrayProductLessThanK(int[] nums, int k) {
+    if (k <= 1) return 0;
+    int prod = 1, left = 0, count = 0;
+    for (int right = 0; right < nums.Length; right++) {
+        prod *= nums[right];
+        while (prod >= k) prod /= nums[left++]; // Shrink
+        count += right - left + 1; // Add valid subarrays
+    }
+    return count;
+}
+// Time Complexity: O(N) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5406,17 +5828,19 @@ def num_subarray_product_less_than_k(self, nums: list[int], k: int) -> int:
 **Pattern:** Fixed-Size Window Frequency Match
 
 **Explanation:** Same logic as Anagram Start Indices. Maintain a window of size `s1.length()` and compare character counts.
-```python
-def check_inclusion(self, s1: str, s2: str) -> bool:
-    if len(s1) > len(s2): return False
-    s1_map, s2_map = [0] * 26, [0] * 26
-    for c in s1: s1_map[ord(c) - ord('a')] += 1
-    for i in range(len(s2)):
-        s2_map[ord(s2[i]) - ord('a')] += 1
-        if i >= len(s1): s2_map[ord(s2[i - len(s1)]) - ord('a')] -= 1
-        if s1_map == s2_map: return True
-    return False
-# Time Complexity: O(N) | Space Complexity: O(1)
+```csharp
+public bool CheckInclusion(string s1, string s2) {
+    if (s1.Length > s2.Length) return false;
+    int[] s1map = new int[26], s2map = new int[26];
+    foreach (char c in s1) s1map[c - 'a']++;
+    for (int i = 0; i < s2.Length; i++) {
+        s2map[s2[i] - 'a']++;
+        if (i >= s1.Length) s2map[s2[i - s1.Length] - 'a']--;
+        if (s1map.SequenceEqual(s2map)) return true;
+    }
+    return false;
+}
+// Time Complexity: O(N) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5428,20 +5852,22 @@ def check_inclusion(self, s1: str, s2: str) -> bool:
 **Pattern:** Dynamic Sliding Window + HashSet
 
 **Explanation:** Use a set to track uniqueness. Expand right, add to sum. If duplicate found, shrink from left, subtracting from sum until unique.
-```python
-def maximum_unique_subarray(self, nums: list[int]) -> int:
-    char_set = set()
-    total_sum = max_val = left = 0
-    for right in range(len(nums)):
-        while nums[right] in char_set:
-            char_set.remove(nums[left])
-            total_sum -= nums[left] # Remove duplicate
-            left += 1
-        char_set.add(nums[right])
-        total_sum += nums[right]
-        max_val = max(max_val, total_sum)
-    return max_val
-# Time Complexity: O(N) | Space Complexity: O(N)
+```csharp
+public int MaximumUniqueSubarray(int[] nums) {
+    HashSet<int> set = new HashSet<int>();
+    int sum = 0, max = 0, left = 0;
+    for (int right = 0; right < nums.Length; right++) {
+        while (set.Contains(nums[right])) {
+            set.Remove(nums[left]);
+            sum -= nums[left++]; // Remove duplicate
+        }
+        set.Add(nums[right]);
+        sum += nums[right];
+        max = Math.Max(max, sum);
+    }
+    return max;
+}
+// Time Complexity: O(N) | Space Complexity: O(N)
 ```
 * * *
 
@@ -5453,20 +5879,20 @@ def maximum_unique_subarray(self, nums: list[int]) -> int:
 **Pattern:** Window with Max Frequency Tracking
 
 **Explanation:** If `window size - max_freq_char_count > k`, we have too many differing chars, so we shrink the window.
-```python
-def character_replacement(self, s: str, k: int) -> int:
-    count = [0] * 26
-    max_count = left = max_len = 0
-    for right in range(len(s)):
-        idx = ord(s[right]) - ord('A')
-        count[idx] += 1
-        max_count = max(max_count, count[idx])
-        if right - left + 1 - max_count > k: # Invalid window
-            count[ord(s[left]) - ord('A')] -= 1
-            left += 1
-        max_len = max(max_len, right - left + 1)
-    return max_len
-# Time Complexity: O(N) | Space Complexity: O(1)
+```csharp
+public int CharacterReplacement(string s, int k) {
+    int[] count = new int[26];
+    int maxCount = 0, left = 0, maxLen = 0;
+    for (int right = 0; right < s.Length; right++) {
+        maxCount = Math.Max(maxCount, ++count[s[right] - 'A']);
+        if (right - left + 1 - maxCount > k) { // Invalid window
+            count[s[left++] - 'A']--;
+        }
+        maxLen = Math.Max(maxLen, right - left + 1);
+    }
+    return maxLen;
+}
+// Time Complexity: O(N) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5478,21 +5904,22 @@ def character_replacement(self, s: str, k: int) -> int:
 **Pattern:** Dynamic Sliding Window
 
 **Explanation:** Keep a frequency map. When distinct fruit types exceed 2, increment left pointer to shrink.
-```python
-def total_fruit(self, fruits: list[int]) -> int:
-    from collections import defaultdict
-    count = defaultdict(int)
-    left = max_val = 0
-    for right in range(len(fruits)):
-        count[fruits[right]] += 1
-        while len(count) > 2:
-            count[fruits[left]] -= 1
-            if count[fruits[left]] == 0:
-                del count[fruits[left]]
-            left += 1
-        max_val = max(max_val, right - left + 1)
-    return max_val
-# Time Complexity: O(N) | Space Complexity: O(1)
+```csharp
+public int TotalFruit(int[] fruits) {
+    Dictionary<int, int> count = new Dictionary<int, int>();
+    int left = 0, max = 0;
+    for (int right = 0; right < fruits.Length; right++) {
+        count[fruits[right]] = count.GetValueOrDefault(fruits[right], 0) + 1;
+        while (count.Count > 2) {
+            count[fruits[left]]--;
+            if (count[fruits[left]] == 0) count.Remove(fruits[left]);
+            left++;
+        }
+        max = Math.Max(max, right - left + 1);
+    }
+    return max;
+}
+// Time Complexity: O(N) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5504,19 +5931,23 @@ def total_fruit(self, fruits: list[int]) -> int:
 **Pattern:** Prefix Sum Modular Math
 
 **Explanation:** If `pref[i] % k == pref[j] % k`, the sum between $i$ and $j$ is a multiple of $K$. Store remainder and its first seen index.
-```python
-def check_subarray_sum(self, nums: list[int], k: int) -> bool:
-    hash_map = {0: -1}
-    total_sum = 0
-    for i, num in enumerate(nums):
-        total_sum += num
-        mod = total_sum if k == 0 else total_sum % k
-        if mod in hash_map:
-            if i - hash_map[mod] > 1: return True # Length >= 2
-        else:
-            hash_map[mod] = i
-    return False
-# Time Complexity: O(N) | Space Complexity: O(min(N, K))
+```csharp
+public bool CheckSubarraySum(int[] nums, int k) {
+    Dictionary<int, int> map = new Dictionary<int, int>();
+    map[0] = -1;
+    int sum = 0;
+    for (int i = 0; i < nums.Length; i++) {
+        sum += nums[i];
+        int mod = k == 0 ? sum : ((sum % k) + k) % k;
+        if (map.ContainsKey(mod)) {
+            if (i - map[mod] > 1) return true; // Length >= 2
+        } else {
+            map[mod] = i;
+        }
+    }
+    return false;
+}
+// Time Complexity: O(N) | Space Complexity: O(min(N, K))
 ```
 * * *
 
@@ -5528,16 +5959,18 @@ def check_subarray_sum(self, nums: list[int], k: int) -> bool:
 **Pattern:** Window with Zero-Flip Budget
 
 **Explanation:** Expand window. If 0 encountered, decrease K. If K < 0, shrink window until a 0 is excluded.
-```python
-def longest_ones(self, nums: list[int], k: int) -> int:
-    left = 0
-    for right in range(len(nums)):
-        if nums[right] == 0: k -= 1
-        if k < 0: # Over budget
-            if nums[left] == 0: k += 1
-            left += 1
-    return len(nums) - left # Trick to return max valid length seen
-# Time Complexity: O(N) | Space Complexity: O(1)
+```csharp
+public int LongestOnes(int[] nums, int k) {
+    int left = 0;
+    for (int right = 0; right < nums.Length; right++) {
+        if (nums[right] == 0) k--;
+        if (k < 0) { // Over budget
+            if (nums[left++] == 0) k++;
+        }
+    }
+    return nums.Length - left; // Trick to return max valid length seen
+}
+// Time Complexity: O(N) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5549,15 +5982,17 @@ def longest_ones(self, nums: list[int], k: int) -> int:
 **Pattern:** Index Negation Trick
 
 **Explanation:** Use the array itself as a hash table. Mark the number at index `abs(num) - 1` negative. If it's already negative, it's a duplicate.
-```python
-def find_duplicates(self, nums: list[int]) -> list[int]:
-    res = []
-    for num in nums:
-        idx = abs(num) - 1
-        if nums[idx] < 0: res.append(abs(num)) # Found duplicate
-        else: nums[idx] = -nums[idx] # Mark seen
-    return res
-# Time Complexity: O(N) | Space Complexity: O(1)
+```csharp
+public IList<int> FindDuplicates(int[] nums) {
+    List<int> res = new List<int>();
+    foreach (int num in nums) {
+        int idx = Math.Abs(num) - 1;
+        if (nums[idx] < 0) res.Add(Math.Abs(num)); // Found duplicate
+        else nums[idx] = -nums[idx]; // Mark seen
+    }
+    return res;
+}
+// Time Complexity: O(N) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5569,24 +6004,21 @@ def find_duplicates(self, nums: list[int]) -> list[int]:
 **Pattern:** Frequency Math
 
 **Explanation:** Calculate idle slots based on the most frequent task. `maxIdle = (maxFreq - 1) * n`. Fill slots with other tasks.
-```python
-def least_interval(self, tasks: list[str], n: int) -> int:
-    count = [0] * 26
-    max_val = max_count = 0
-    for c in tasks:
-        idx = ord(c) - ord('A')
-        count[idx] += 1
-        if count[idx] == max_val:
-            max_count += 1
-        elif count[idx] > max_val:
-            max_val = count[idx]
-            max_count = 1
-            
-    empty_slots = (max_val - 1) * (n - (max_count - 1))
-    available_tasks = len(tasks) - max_val * max_count
-    idles = max(0, empty_slots - available_tasks)
-    return len(tasks) + idles
-# Time Complexity: O(N) | Space Complexity: O(1)
+```csharp
+public int LeastInterval(char[] tasks, int n) {
+    int[] count = new int[26];
+    int max = 0, maxCount = 0;
+    foreach (char c in tasks) {
+        count[c - 'A']++;
+        if (count[c - 'A'] == max) maxCount++;
+        else if (count[c - 'A'] > max) { max = count[c - 'A']; maxCount = 1; }
+    }
+    int emptySlots = (max - 1) * (n - (maxCount - 1));
+    int availableTasks = tasks.Length - max * maxCount;
+    int idles = Math.Max(0, emptySlots - availableTasks);
+    return tasks.Length + idles;
+}
+// Time Complexity: O(N) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5598,23 +6030,21 @@ def least_interval(self, tasks: list[str], n: int) -> int:
 **Pattern:** Interval Merging
 
 **Explanation:** Three phases: Add all before new, merge overlapping with new, add all after new.
-```python
-def insert(self, intervals: list[list[int]], new_interval: list[int]) -> list[list[int]]:
-    res = []
-    i, n = 0, len(intervals)
-    while i < n and intervals[i][1] < new_interval[0]:
-        res.append(intervals[i]) # Before
-        i += 1
-    while i < n and intervals[i][0] <= new_interval[1]: # Merge
-        new_interval[0] = min(new_interval[0], intervals[i][0])
-        new_interval[1] = max(new_interval[1], intervals[i][1])
-        i += 1
-    res.append(new_interval)
-    while i < n:
-        res.append(intervals[i]) # After
-        i += 1
-    return res
-# Time Complexity: O(N) | Space Complexity: O(N)
+```csharp
+public int[][] Insert(int[][] intervals, int[] newInterval) {
+    List<int[]> res = new List<int[]>();
+    int i = 0, n = intervals.Length;
+    while (i < n && intervals[i][1] < newInterval[0]) res.Add(intervals[i++]); // Before
+    while (i < n && intervals[i][0] <= newInterval[1]) { // Merge
+        newInterval[0] = Math.Min(newInterval[0], intervals[i][0]);
+        newInterval[1] = Math.Max(newInterval[1], intervals[i][1]);
+        i++;
+    }
+    res.Add(newInterval);
+    while (i < n) res.Add(intervals[i++]); // After
+    return res.ToArray();
+}
+// Time Complexity: O(N) | Space Complexity: O(N)
 ```
 * * *
 
@@ -5626,14 +6056,20 @@ def insert(self, intervals: list[list[int]], new_interval: list[int]) -> list[li
 **Pattern:** HashMap + Min-Heap
 
 **Explanation:** Count frequencies in a map, then keep a min-heap of size K based on frequencies.
-```python
-def top_k_frequent(self, nums: list[int], k: int) -> list[int]:
-    from collections import Counter
-    import heapq
-    
-    count = Counter(nums)
-    return heapq.nlargest(k, count.keys(), key=count.get)
-# Time Complexity: O(N log K) | Space Complexity: O(N)
+```csharp
+public int[] TopKFrequent(int[] nums, int k) {
+    Dictionary<int, int> count = new Dictionary<int, int>();
+    foreach (int n in nums) count[n] = count.GetValueOrDefault(n, 0) + 1;
+    PriorityQueue<int, int> heap = new PriorityQueue<int, int>();
+    foreach (int n in count.Keys) {
+        heap.Enqueue(n, count[n]);
+        if (heap.Count > k) heap.Dequeue(); // Keep size K
+    }
+    int[] res = new int[k];
+    for (int i = k - 1; i >= 0; i--) res[i] = heap.Dequeue();
+    return res;
+}
+// Time Complexity: O(N log K) | Space Complexity: O(N)
 ```
 * * *
 
@@ -5645,21 +6081,25 @@ def top_k_frequent(self, nums: list[int], k: int) -> list[int]:
 **Pattern:** Cyclic Sort (Index placement)
 
 **Explanation:** Place number `x` at index `x-1`. Then scan to find the first index that doesn't have `i+1`.
-```python
-def first_missing_positive(self, nums: list[int]) -> int:
-    i = 0
-    while i < len(nums):
-        # Swap to correct position if valid
-        if 0 < nums[i] <= len(nums) and nums[nums[i] - 1] != nums[i]:
-            nums[nums[i] - 1], nums[i] = nums[i], nums[nums[i] - 1]
-        else:
-            i += 1
-            
-    for i in range(len(nums)):
-        if nums[i] != i + 1: return i + 1 # Missing
-        
-    return len(nums) + 1
-# Time Complexity: O(N) | Space Complexity: O(1)
+```csharp
+public int FirstMissingPositive(int[] nums) {
+    int i = 0;
+    while (i < nums.Length) {
+        // Swap to correct position if valid
+        if (nums[i] > 0 && nums[i] <= nums.Length && nums[nums[i] - 1] != nums[i]) {
+            int temp = nums[nums[i] - 1];
+            nums[nums[i] - 1] = nums[i];
+            nums[i] = temp;
+        } else {
+            i++;
+        }
+    }
+    for (i = 0; i < nums.Length; i++) {
+        if (nums[i] != i + 1) return i + 1; // Missing
+    }
+    return nums.Length + 1;
+}
+// Time Complexity: O(N) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5671,18 +6111,19 @@ def first_missing_positive(self, nums: list[int]) -> int:
 **Pattern:** Dynamic Window with Target Sum
 
 **Explanation:** Keep expanding until sum >= target, then shrink to find minimum.
-```python
-def min_sub_array_len(self, target: int, nums: list[int]) -> int:
-    left = total_sum = 0
-    min_val = float('inf')
-    for right in range(len(nums)):
-        total_sum += nums[right]
-        while total_sum >= target:
-            min_val = min(min_val, right - left + 1)
-            total_sum -= nums[left]
-            left += 1
-    return 0 if min_val == float('inf') else min_val
-# Time Complexity: O(N) | Space Complexity: O(1)
+```csharp
+public int MinSubArrayLen(int target, int[] nums) {
+    int left = 0, sum = 0, min = int.MaxValue;
+    for (int right = 0; right < nums.Length; right++) {
+        sum += nums[right];
+        while (sum >= target) {
+            min = Math.Min(min, right - left + 1);
+            sum -= nums[left++];
+        }
+    }
+    return min == int.MaxValue ? 0 : min;
+}
+// Time Complexity: O(N) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5694,30 +6135,30 @@ def min_sub_array_len(self, target: int, nums: list[int]) -> int:
 **Pattern:** Fixed-Size Window with Inner HashMap
 
 **Explanation:** Use a map for word counts. Slide a window of length `words.length * wordLen` and verify word counts inside.
-```python
-def find_substring(self, s: str, words: list[str]) -> list[int]:
-    res = []
-    if not s or not words: return res
-    word_len = len(words[0])
-    total_len = word_len * len(words)
+```csharp
+public IList<int> FindSubstring(string s, string[] words) {
+    List<int> res = new List<int>();
+    if (s.Length == 0 || words.Length == 0) return res;
+    int wordLen = words[0].Length, totalLen = wordLen * words.Length;
+    Dictionary<string, int> counts = new Dictionary<string, int>();
+    foreach (string w in words) counts[w] = counts.GetValueOrDefault(w, 0) + 1;
     
-    from collections import Counter
-    counts = Counter(words)
-    
-    for i in range(len(s) - total_len + 1):
-        seen = {}
-        j = 0
-        while j < len(words):
-            w = s[i + j * word_len : i + (j + 1) * word_len]
-            if w in counts:
-                seen[w] = seen.get(w, 0) + 1
-                if seen[w] > counts[w]: break
-            else:
-                break
-            j += 1
-        if j == len(words): res.append(i)
-    return res
-# Time Complexity: O(N * M * L) | Space Complexity: O(M)
+    for (int i = 0; i <= s.Length - totalLen; i++) {
+        Dictionary<string, int> seen = new Dictionary<string, int>();
+        int j = 0;
+        while (j < words.Length) {
+            string w = s.Substring(i + j * wordLen, wordLen);
+            if (counts.ContainsKey(w)) {
+                seen[w] = seen.GetValueOrDefault(w, 0) + 1;
+                if (seen[w] > counts[w]) break;
+            } else break;
+            j++;
+        }
+        if (j == words.Length) res.Add(i);
+    }
+    return res;
+}
+// Time Complexity: O(N * M * L) | Space Complexity: O(M)
 ```
 * * *
 
@@ -5729,15 +6170,16 @@ def find_substring(self, s: str, words: list[str]) -> list[int]:
 **Pattern:** Sliding Window Set
 
 **Explanation:** Keep a sliding set of size k. If add fails, duplicate found.
-```python
-def contains_nearby_duplicate(self, nums: list[int], k: int) -> bool:
-    hash_set = set()
-    for i in range(len(nums)):
-        if i > k: hash_set.remove(nums[i - k - 1])
-        if nums[i] in hash_set: return True
-        hash_set.add(nums[i])
-    return False
-# Time Complexity: O(N) | Space Complexity: O(K)
+```csharp
+public bool ContainsNearbyDuplicate(int[] nums, int k) {
+    HashSet<int> set = new HashSet<int>();
+    for (int i = 0; i < nums.Length; i++) {
+        if (i > k) set.Remove(nums[i - k - 1]);
+        if (!set.Add(nums[i])) return true;
+    }
+    return false;
+}
+// Time Complexity: O(N) | Space Complexity: O(K)
 ```
 * * *
 
@@ -5749,18 +6191,19 @@ def contains_nearby_duplicate(self, nums: list[int], k: int) -> bool:
 **Pattern:** Prefix Sum of Odds
 
 **Explanation:** Treat odds as 1s, evens as 0s. Same as subarray sum equals K.
-```python
-def number_of_subarrays(self, nums: list[int], k: int) -> int:
-    from collections import defaultdict
-    hash_map = defaultdict(int)
-    hash_map[0] = 1
-    total_sum = count = 0
-    for num in nums:
-        total_sum += num % 2
-        count += hash_map[total_sum - k]
-        hash_map[total_sum] += 1
-    return count
-# Time Complexity: O(N) | Space Complexity: O(N)
+```csharp
+public int NumberOfSubarrays(int[] nums, int k) {
+    Dictionary<int, int> map = new Dictionary<int, int>();
+    map[0] = 1;
+    int sum = 0, count = 0;
+    foreach (int num in nums) {
+        sum += num % 2;
+        count += map.GetValueOrDefault(sum - k, 0);
+        map[sum] = map.GetValueOrDefault(sum, 0) + 1;
+    }
+    return count;
+}
+// Time Complexity: O(N) | Space Complexity: O(N)
 ```
 * * *
 
@@ -5772,17 +6215,20 @@ def number_of_subarrays(self, nums: list[int], k: int) -> int:
 **Pattern:** Sort + Sliding Window
 
 **Explanation:** Sort first. To make all elements in window equal to `nums[right]`, we need `nums[right] * window_length - window_sum <= k`.
-```python
-def max_frequency(self, nums: list[int], k: int) -> int:
-    nums.sort()
-    left = total_sum = 0
-    for right in range(len(nums)):
-        total_sum += nums[right]
-        if nums[right] * (right - left + 1) - total_sum > k:
-            total_sum -= nums[left]
-            left += 1
-    return len(nums) - left
-# Time Complexity: O(N log N) | Space Complexity: O(1)
+```csharp
+public int MaxFrequency(int[] nums, int k) {
+    Array.Sort(nums);
+    int left = 0;
+    long sum = 0;
+    for (int right = 0; right < nums.Length; right++) {
+        sum += nums[right];
+        if ((long)nums[right] * (right - left + 1) - sum > k) {
+            sum -= nums[left++];
+        }
+    }
+    return nums.Length - left;
+}
+// Time Complexity: O(N log N) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5794,23 +6240,23 @@ def max_frequency(self, nums: list[int], k: int) -> int:
 **Pattern:** At-Most-K Trick
 
 **Explanation:** Exactly(K) = AtMost(K) - AtMost(K-1).
-```python
-def subarrays_with_k_distinct(self, nums: list[int], k: int) -> int:
-    return self._at_most_k(nums, k) - self._at_most_k(nums, k - 1)
-
-def _at_most_k(self, nums: list[int], k: int) -> int:
-    count = [0] * (len(nums) + 1)
-    left = res = distinct = 0
-    for right in range(len(nums)):
-        if count[nums[right]] == 0: distinct += 1
-        count[nums[right]] += 1
-        while distinct > k:
-            count[nums[left]] -= 1
-            if count[nums[left]] == 0: distinct -= 1
-            left += 1
-        res += right - left + 1
-    return res
-# Time Complexity: O(N) | Space Complexity: O(N)
+```csharp
+public int SubarraysWithKDistinct(int[] nums, int k) {
+    return AtMostK(nums, k) - AtMostK(nums, k - 1);
+}
+private int AtMostK(int[] nums, int k) {
+    int[] count = new int[nums.Length + 1];
+    int left = 0, res = 0, distinct = 0;
+    for (int right = 0; right < nums.Length; right++) {
+        if (count[nums[right]]++ == 0) distinct++;
+        while (distinct > k) {
+            if (--count[nums[left++]] == 0) distinct--;
+        }
+        res += right - left + 1;
+    }
+    return res;
+}
+// Time Complexity: O(N) | Space Complexity: O(N)
 ```
 * * *
 
@@ -5822,23 +6268,25 @@ def _at_most_k(self, nums: list[int], k: int) -> int:
 **Pattern:** Expand Around Center
 
 **Explanation:** Treat each character and between-character as a center and expand outwards to check for palindrome.
-```python
-def longest_palindrome(self, s: str) -> str:
-    start = end = 0
-    for i in range(len(s)):
-        len1 = self._expand(s, i, i)
-        len2 = self._expand(s, i, i + 1)
-        length = max(len1, len2)
-        if length > end - start:
-            start = i - (length - 1) // 2
-            end = i + length // 2
-    return s[start:end + 1]
-
-def _expand(self, s: str, l: int, r: int) -> int:
-    while l >= 0 and r < len(s) and s[l] == s[r]:
-        l -= 1; r += 1
-    return r - l - 1
-# Time Complexity: O(N^2) | Space Complexity: O(1)
+```csharp
+public string LongestPalindrome(string s) {
+    int start = 0, end = 0;
+    for (int i = 0; i < s.Length; i++) {
+        int len1 = Expand(s, i, i);
+        int len2 = Expand(s, i, i + 1);
+        int len = Math.Max(len1, len2);
+        if (len > end - start) {
+            start = i - (len - 1) / 2;
+            end = i + len / 2;
+        }
+    }
+    return s.Substring(start, end - start + 1);
+}
+private int Expand(string s, int L, int R) {
+    while (L >= 0 && R < s.Length && s[L] == s[R]) { L--; R++; }
+    return R - L - 1;
+}
+// Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5850,24 +6298,28 @@ def _expand(self, s: str, l: int, r: int) -> int:
 **Pattern:** Sort + Two Pointer
 
 **Explanation:** Sort array. Iterate `i`, and use two pointers `L` and `R` to find pairs summing to `-nums[i]`. Skip duplicates.
-```python
-def three_sum(self, nums: list[int]) -> list[list[int]]:
-    nums.sort()
-    res = []
-    for i in range(len(nums) - 2):
-        if i > 0 and nums[i] == nums[i-1]: continue
-        l, r = i + 1, len(nums) - 1
-        while l < r:
-            total = nums[i] + nums[l] + nums[r]
-            if total == 0:
-                res.append([nums[i], nums[l], nums[r]])
-                while l < r and nums[l] == nums[l+1]: l += 1
-                while l < r and nums[r] == nums[r-1]: r -= 1
-                l += 1; r -= 1
-            elif total < 0: l += 1
-            else: r -= 1
-    return res
-# Time Complexity: O(N^2) | Space Complexity: O(1)
+```csharp
+public IList<IList<int>> ThreeSum(int[] nums) {
+    Array.Sort(nums);
+    IList<IList<int>> res = new List<IList<int>>();
+    for (int i = 0; i < nums.Length - 2; i++) {
+        if (i > 0 && nums[i] == nums[i-1]) continue;
+        int L = i + 1, R = nums.Length - 1;
+        while (L < R) {
+            int sum = nums[i] + nums[L] + nums[R];
+            if (sum == 0) {
+                res.Add(new List<int>{nums[i], nums[L], nums[R]});
+                while (L < R && nums[L] == nums[L+1]) L++;
+                while (L < R && nums[R] == nums[R-1]) R--;
+                L++; R--;
+            }
+            else if (sum < 0) L++;
+            else R--;
+        }
+    }
+    return res;
+}
+// Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5879,26 +6331,31 @@ def three_sum(self, nums: list[int]) -> list[list[int]]:
 **Pattern:** Sort + Nested Two Pointer
 
 **Explanation:** Extend 3Sum by adding one more outer loop.
-```python
-def four_sum(self, nums: list[int], target: int) -> list[list[int]]:
-    nums.sort()
-    res = []
-    for i in range(len(nums) - 3):
-        if i > 0 and nums[i] == nums[i-1]: continue
-        for j in range(i + 1, len(nums) - 2):
-            if j > i + 1 and nums[j] == nums[j-1]: continue
-            l, r = j + 1, len(nums) - 1
-            while l < r:
-                total = nums[i] + nums[j] + nums[l] + nums[r]
-                if total == target:
-                    res.append([nums[i], nums[j], nums[l], nums[r]])
-                    while l < r and nums[l] == nums[l+1]: l += 1
-                    while l < r and nums[r] == nums[r-1]: r -= 1
-                    l += 1; r -= 1
-                elif total < target: l += 1
-                else: r -= 1
-    return res
-# Time Complexity: O(N^3) | Space Complexity: O(1)
+```csharp
+public IList<IList<int>> FourSum(int[] nums, int target) {
+    Array.Sort(nums);
+    IList<IList<int>> res = new List<IList<int>>();
+    for (int i = 0; i < nums.Length - 3; i++) {
+        if (i > 0 && nums[i] == nums[i-1]) continue;
+        for (int j = i + 1; j < nums.Length - 2; j++) {
+            if (j > i + 1 && nums[j] == nums[j-1]) continue;
+            int L = j + 1, R = nums.Length - 1;
+            while (L < R) {
+                long sum = (long)nums[i] + nums[j] + nums[L] + nums[R];
+                if (sum == target) {
+                    res.Add(new List<int>{nums[i], nums[j], nums[L], nums[R]});
+                    while (L < R && nums[L] == nums[L+1]) L++;
+                    while (L < R && nums[R] == nums[R-1]) R--;
+                    L++; R--;
+                }
+                else if (sum < target) L++;
+                else R--;
+            }
+        }
+    }
+    return res;
+}
+// Time Complexity: O(N^3) | Space Complexity: O(1)
 ```
 * * *
 
@@ -5910,27 +6367,31 @@ def four_sum(self, nums: list[int], target: int) -> list[list[int]]:
 **Pattern:** DFS + Path Signature Hashing
 
 **Explanation:** Record the direction moved (U, D, L, R) during DFS traversal. Store path strings in a HashSet to deduplicate identical shapes.
-```python
-def num_distinct_islands(self, grid: list[list[int]]) -> int:
-    hash_set = set()
-    for i in range(len(grid)):
-        for j in range(len(grid[0])):
-            if grid[i][j] == 1:
-                path = []
-                self._dfs(grid, i, j, "S", path) # Start with 'S'
-                hash_set.add("".join(path))
-    return len(hash_set)
-
-def _dfs(self, grid: list[list[int]], r: int, c: int, dir_str: str, path: list[str]) -> None:
-    if r < 0 or c < 0 or r >= len(grid) or c >= len(grid[0]) or grid[r][c] == 0: return
-    grid[r][c] = 0 # mark visited
-    path.append(dir_str)
-    self._dfs(grid, r + 1, c, "D", path)
-    self._dfs(grid, r - 1, c, "U", path)
-    self._dfs(grid, r, c + 1, "R", path)
-    self._dfs(grid, r, c - 1, "L", path)
-    path.append("B") # Backtrack to distinguish paths
-# Time Complexity: O(R * C) | Space Complexity: O(R * C)
+```csharp
+public int NumDistinctIslands(int[][] grid) {
+    HashSet<string> set = new HashSet<string>();
+    for (int i = 0; i < grid.Length; i++) {
+        for (int j = 0; j < grid[0].Length; j++) {
+            if (grid[i][j] == 1) {
+                StringBuilder sb = new StringBuilder();
+                Dfs(grid, i, j, "S", sb); // Start with 'S'
+                set.Add(sb.ToString());
+            }
+        }
+    }
+    return set.Count;
+}
+private void Dfs(int[][] grid, int r, int c, string dir, StringBuilder sb) {
+    if (r < 0 || c < 0 || r >= grid.Length || c >= grid[0].Length || grid[r][c] == 0) return;
+    grid[r][c] = 0; // mark visited
+    sb.Append(dir);
+    Dfs(grid, r + 1, c, "D", sb);
+    Dfs(grid, r - 1, c, "U", sb);
+    Dfs(grid, r, c + 1, "R", sb);
+    Dfs(grid, r, c - 1, "L", sb);
+    sb.Append("B"); // Backtrack to distinguish paths
+}
+// Time Complexity: O(R * C) | Space Complexity: O(R * C)
 ```
 * * *
 
@@ -6229,7 +6690,7 @@ Notice what happened:
 - The single monotonically increasing sequence is split into **two sorted sub-arrays**: $[4, 5, 6, 7]$ (the left segment) and $[0, 1, 2]$ (the right segment).
 - The array is no longer sorted overall, so standard Binary Search (which assumes `nums[left] <= nums[right]`) fails if implemented naively.
 
-![Binary Search on Rotated Sorted Array — Two Sorted Halves](editions/python/chapters/13-optimization-dp/visuals/rotated_sorted_array.png){width=85%}
+![Binary Search on Rotated Sorted Array — Two Sorted Halves](editions/csharp/chapters/13-optimization-dp/visuals/rotated_sorted_array.png){width=85%}
 
 * * *
 
@@ -6384,107 +6845,130 @@ Why it matters: It allows O(1) get and put operations by seamlessly combining ha
 This refers to identifying when a problem's state perfectly maps to the linear recurrence `dp[i] = dp[i-1] + dp[i-2]`. The entire array state can be compressed into two variables.
 Why it matters: Problems like climbing stairs, decode ways, and tiling can be instantly recognized and compressed to O(1) space.
 
-![DP State Transition — Climbing Stairs with Space Optimization](editions/python/chapters/13-optimization-dp/visuals/dp_climbing_stairs.png){width=85%}
+![DP State Transition — Climbing Stairs with Space Optimization](editions/csharp/chapters/13-optimization-dp/visuals/dp_climbing_stairs.png){width=85%}
 
 * * *
 
 ## Reusable Code Templates
 
 ### Template A: Binary Search
-```python
-# Standard Binary Search
-def binary_search(nums: list[int], target: int) -> int:
-    left, right = 0, len(nums) - 1
-    while left <= right:
-        mid = left + (right - left) // 2
-        if nums[mid] == target: return mid
-        elif nums[mid] < target: left = mid + 1
-        else: right = mid - 1
-    return -1
+```csharp
+// Standard Binary Search
+int BinarySearch(int[] nums, int target) {
+    int left = 0, right = nums.Length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) return mid;
+        else if (nums[mid] < target) left = mid + 1;
+        else right = mid - 1;
+    }
+    return -1;
+}
 
-# Binary Search on Answer Space (Leftmost valid)
-def binary_search_answer_space(min_val: int, max_val: int) -> int:
-    left, right = min_val, max_val
-    best = -1
-    while left <= right:
-        mid = left + (right - left) // 2
-        if is_valid(mid):
-            best = mid
-            right = mid - 1 # Try to find a smaller valid answer
-        else:
-            left = mid + 1
-    return best
+// Binary Search on Answer Space (Leftmost valid)
+int BinarySearchAnswerSpace(int min, int max) {
+    int left = min, right = max;
+    int best = -1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (IsValid(mid)) {
+            best = mid;
+            right = mid - 1; // Try to find a smaller valid answer
+        } else {
+            left = mid + 1;
+        }
+    }
+    return best;
+}
 ```
 ### Template B: Monotonic Stack
-```python
-def next_greater_element(self, nums: list[int]) -> list[int]:
-    n = len(nums)
-    result = [-1] * n
-    stack = [] # stores indices
-    for i in range(n):
-        # Maintain strictly decreasing stack
-        while stack and nums[i] > nums[stack[-1]]:
-            prev_index = stack.pop()
-            result[prev_index] = nums[i] # Found next greater!
-        stack.append(i)
-    return result
+```csharp
+public int[] NextGreaterElement(int[] nums) {
+    int n = nums.Length;
+    int[] result = new int[n];
+    Array.Fill(result, -1);
+    Stack<int> stack = new Stack<int>(); // stores indices
+    for (int i = 0; i < n; i++) {
+        // Maintain strictly decreasing stack
+        while (stack.Count > 0 && nums[i] > nums[stack.Peek()]) {
+            int prevIndex = stack.Pop();
+            result[prevIndex] = nums[i]; // Found next greater!
+        }
+        stack.Push(i);
+    }
+    return result;
+}
 ```
 ### Template C: 1D DP with State Compression
-```python
-def dp_state_compression(self, nums: list[int]) -> int:
-    if not nums: return 0
-    prev2 = 0 # dp[i-2]
-    prev1 = nums[0] # dp[i-1]
-    for i in range(1, len(nums)):
-        curr = max(prev1, prev2 + nums[i])
-        prev2 = prev1
-        prev1 = curr
-    return prev1
+```csharp
+public int DpStateCompression(int[] nums) {
+    if (nums.Length == 0) return 0;
+    int prev2 = 0; // dp[i-2]
+    int prev1 = nums[0]; // dp[i-1]
+    for (int i = 1; i < nums.Length; i++) {
+        int curr = Math.Max(prev1, prev2 + nums[i]);
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    return prev1;
+}
 ```
 ### Template D: BFS with Level Tracking
-```python
-def bfs_level(self, start: 'Node', target: 'Node') -> int:
-    from collections import deque
-    queue = deque([start])
-    visited = {start}
+```csharp
+public int BfsLevel(Node start, Node target) {
+    Queue<Node> queue = new Queue<Node>();
+    HashSet<Node> visited = new HashSet<Node>();
+    queue.Enqueue(start);
+    visited.Add(start);
     
-    level = 0
-    while queue:
-        size = len(queue)
-        for _ in range(size):
-            curr = queue.popleft()
-            if curr == target: return level
+    int level = 0;
+    while (queue.Count > 0) {
+        int size = queue.Count;
+        for (int i = 0; i < size; i++) {
+            Node curr = queue.Dequeue();
+            if (curr.Equals(target)) return level;
             
-            for neighbor in curr.neighbors:
-                if neighbor not in visited:
-                    visited.add(neighbor)
-                    queue.append(neighbor)
-        level += 1 # Increment level after exploring all nodes at current depth
-    return -1
+            foreach (Node neighbor in curr.neighbors) {
+                if (!visited.Contains(neighbor)) {
+                    visited.Add(neighbor);
+                    queue.Enqueue(neighbor);
+                }
+            }
+        }
+        level++; // Increment level after exploring all nodes at current depth
+    }
+    return -1;
+}
 ```
 ### Template E: Topological Sort (Kahn's Algorithm)
-```python
-def topological_sort(self, num_nodes: int, edges: list[list[int]]) -> list[int]:
-    from collections import deque
-    adj = [[] for _ in range(num_nodes)]
-    in_degree = [0] * num_nodes
+```csharp
+public IList<int> TopologicalSort(int numNodes, int[][] edges) {
+    var adj = new List<List<int>>();
+    int[] inDegree = new int[numNodes];
+    for (int i = 0; i < numNodes; i++) adj.Add(new List<int>());
     
-    for u, v in edges:
-        adj[v].append(u) # v -> u
-        in_degree[u] += 1
-        
-    queue = deque(i for i in range(num_nodes) if in_degree[i] == 0)
+    foreach (int[] edge in edges) {
+        adj[edge[1]].Add(edge[0]); // edge[1] -> edge[0]
+        inDegree[edge[0]]++;
+    }
     
-    order = []
-    while queue:
-        curr = queue.popleft()
-        order.append(curr)
-        for neighbor in adj[curr]:
-            in_degree[neighbor] -= 1
-            if in_degree[neighbor] == 0:
-                queue.append(neighbor)
-                
-    return order if len(order) == num_nodes else [] # Empty if cycle exists
+    var queue = new Queue<int>();
+    for (int i = 0; i < numNodes; i++) {
+        if (inDegree[i] == 0) queue.Enqueue(i);
+    }
+    
+    List<int> order = new List<int>();
+    while (queue.Count > 0) {
+        int curr = queue.Dequeue();
+        order.Add(curr);
+        foreach (int neighbor in adj[curr]) {
+            if (--inDegree[neighbor] == 0) {
+                queue.Enqueue(neighbor);
+            }
+        }
+    }
+    return order.Count == numNodes ? order : new List<int>(); // Empty if cycle exists
+}
 ```
 * * *
 
@@ -6500,30 +6984,36 @@ def topological_sort(self, num_nodes: int, edges: list[list[int]]) -> list[int]:
 
 **Explanation:** We use the monotonic partition invariant. At any midpoint, at least one half of the array is strictly sorted. We identify the sorted half and check if the target falls within its range.
 
-```python
-def search(self, nums: list[int], target: int) -> int:
-    if not nums: return -1
-    left, right = 0, len(nums) - 1
+```csharp
+public int Search(int[] nums, int target) {
+    if (nums == null || nums.Length == 0) return -1;
+    int left = 0, right = nums.Length - 1;
     
-    while left <= right:
-        mid = left + (right - left) // 2
-        if nums[mid] == target: return mid
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) return mid;
         
-        # Left half is sorted
-        if nums[left] <= nums[mid]:
-            if nums[left] <= target < nums[mid]:
-                right = mid - 1 # Target is in the sorted left half
-            else:
-                left = mid + 1 # Target must be in the right half
-        # Right half is sorted
-        else:
-            if nums[mid] < target <= nums[right]:
-                left = mid + 1 # Target is in the sorted right half
-            else:
-                right = mid - 1 # Target must be in the left half
-    return -1
-# Time Complexity: O(log N)
-# Space Complexity: O(1)
+        // Left half is sorted
+        if (nums[left] <= nums[mid]) {
+            if (nums[left] <= target && target < nums[mid]) {
+                right = mid - 1; // Target is in the sorted left half
+            } else {
+                left = mid + 1; // Target must be in the right half
+            }
+        } 
+        // Right half is sorted
+        else {
+            if (nums[mid] < target && target <= nums[right]) {
+                left = mid + 1; // Target is in the sorted right half
+            } else {
+                right = mid - 1; // Target must be in the left half
+            }
+        }
+    }
+    return -1;
+}
+// Time Complexity: O(log N)
+// Space Complexity: O(1)
 ```
 * * *
 
@@ -6536,32 +7026,34 @@ def search(self, nums: list[int], target: int) -> int:
 
 **Explanation:** We maintain a deque of indices such that the values are in strictly decreasing order. The front of the deque always holds the maximum element's index for the current window. We remove elements from the front that fall out of the window.
 
-```python
-def max_sliding_window(self, nums: list[int], k: int) -> list[int]:
-    if not nums or k <= 0: return []
-    n = len(nums)
-    res = [0] * (n - k + 1)
-    res_index = 0
-    from collections import deque
-    q = deque()
+```csharp
+public int[] MaxSlidingWindow(int[] nums, int k) {
+    if (nums == null || k <= 0) return new int[0];
+    int n = nums.Length;
+    int[] res = new int[n - k + 1];
+    int resIndex = 0;
+    LinkedList<int> q = new LinkedList<int>();
     
-    for i in range(n):
-        # Remove indices outside the current window
-        if q and q[0] < i - k + 1:
-            q.popleft()
-        # Remove smaller elements (maintain decreasing order)
-        while q and nums[q[-1]] < nums[i]:
-            q.pop()
-        q.append(i)
+    for (int i = 0; i < n; i++) {
+        // Remove indices outside the current window
+        if (q.Count > 0 && q.First.Value < i - k + 1) {
+            q.RemoveFirst();
+        }
+        // Remove smaller elements (maintain decreasing order)
+        while (q.Count > 0 && nums[q.Last.Value] < nums[i]) {
+            q.RemoveLast();
+        }
+        q.AddLast(i);
         
-        # Record max for the window
-        if i >= k - 1:
-            res[res_index] = nums[q[0]]
-            res_index += 1
-            
-    return res
-# Time Complexity: O(N) since each element is pushed/popped at most once
-# Space Complexity: O(K) for the deque
+        // Record max for the window
+        if (i >= k - 1) {
+            res[resIndex++] = nums[q.First.Value];
+        }
+    }
+    return res;
+}
+// Time Complexity: O(N) since each element is pushed/popped at most once
+// Space Complexity: O(K) for the deque
 ```
 * * *
 
@@ -6576,7 +7068,7 @@ def max_sliding_window(self, nums: list[int], k: int) -> list[int]:
 >
 > A **substring** must be contiguous (`"BCD"` from `"ABCDE"`). A **subsequence** can skip characters but must preserve order (`"ACE"` from `"ABCDE"` — pick A, skip B, pick C, skip D, pick E). The order matters: `"ECA"` is **not** a valid subsequence of `"ABCDE"` because the characters appear in the wrong order.
 
-![Subsequence vs Substring](editions/python/chapters/13-optimization-dp/visuals/subsequence_vs_substring.png){width=85%}
+![Subsequence vs Substring](editions/csharp/chapters/13-optimization-dp/visuals/subsequence_vs_substring.png){width=85%}
 
 **Trace-Through:** For `text1 = "CAT"`, `text2 = "CART"`, the DP table builds the answer cell by cell. Each cell asks: "What is the longest common subsequence using only the first *i* characters of text1 and first *j* characters of text2?"
 
@@ -6594,25 +7086,25 @@ The bold diagonal cells show: C matches C (1), A matches A (2), T matches T (3).
 
 **Explanation:** `dp[i][j]` represents the LCS of the prefixes of length `i` and `j`. If characters match, we add 1 to the result of `dp[i-1][j-1]`. If not, we take the max of skipping a character in either string.
 
-```python
-def longest_common_subsequence(self, text1: str, text2: str) -> int:
-    if len(text1) < len(text2): return self.longest_common_subsequence(text2, text1)
-    m, n = len(text1), len(text2)
-    prev = [0] * (n + 1)
-    curr = [0] * (n + 1)
-    
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if text1[i - 1] == text2[j - 1]:
-                curr[j] = prev[j - 1] + 1
-            else:
-                curr[j] = max(prev[j], curr[j - 1])
-        prev, curr = curr, prev
-        curr = [0] * (n + 1)
-        
-    return prev[n]
-# Time Complexity: O(M * N)
-# Space Complexity: O(min(M, N)) - Space compressed DP as taught in the vocabulary section.
+```csharp
+public int LongestCommonSubsequence(string text1, string text2) {
+    if (text1.Length < text2.Length) return LongestCommonSubsequence(text2, text1);
+    int m = text1.Length, n = text2.Length;
+    var prev = new int[n + 1];
+    var curr = new int[n + 1];
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            curr[j] = text1[i - 1] == text2[j - 1]
+                ? prev[j - 1] + 1
+                : Math.Max(prev[j], curr[j - 1]);
+        }
+        var temp = prev; prev = curr; curr = temp;
+        Array.Fill(curr, 0);
+    }
+    return prev[n];
+}
+// Time Complexity: O(M * N)
+// Space Complexity: O(min(M, N)) - Space compressed DP as taught in the vocabulary section.
 ```
 * * *
 
@@ -6629,7 +7121,7 @@ def longest_common_subsequence(self, text1: str, text2: str) -> int:
 >
 > The natural instinct is to simulate bursting balloons left-to-right, but that creates dependency chaos — bursting balloon `i` changes the neighbors of balloon `i+1`. Instead, ask: **"Which balloon do I burst LAST?"** If balloon `k` is the *last* to burst in interval `(i, j)`, then at that moment only `arr[i]` and `arr[j]` remain as its neighbors. This makes the left and right subproblems *independent*.
 
-![Burst Balloons — Think Backwards](editions/python/chapters/13-optimization-dp/visuals/burst_balloons_trace.png){width=85%}
+![Burst Balloons — Think Backwards](editions/csharp/chapters/13-optimization-dp/visuals/burst_balloons_trace.png){width=85%}
 
 **Trace-Through:** For `nums = [3, 1, 5, 8]`, we pad with 1s: `arr = [1, 3, 1, 5, 8, 1]`.
 
@@ -6641,25 +7133,31 @@ The three nested loops enumerate: interval length → starting position → whic
 
 **Explanation:** We think backwards: what is the LAST balloon to be burst in an interval `[left, right]`? This allows us to split the problem into independent subproblems. `dp[i][j]` is the max coins obtained from bursting balloons strictly between `i` and `j`.
 
-```python
-def max_coins(self, nums: list[int]) -> int:
-    n = len(nums)
-    arr = [1] + nums + [1] # Padding with 1s
+```csharp
+public int MaxCoins(int[] nums) {
+    int n = nums.Length;
+    int[] arr = new int[n + 2];
+    arr[0] = 1; arr[n + 1] = 1; // Padding with 1s
+    for (int i = 0; i < n; i++) arr[i + 1] = nums[i];
     
-    dp = [[0] * (n + 2) for _ in range(n + 2)]
+    int[][] dp = new int[n + 2][];
+    for(int i=0; i<n+2; i++) dp[i] = new int[n+2];
     
-    # len_ is the length of the interval strictly between i and j
-    for len_ in range(1, n + 1):
-        for i in range(n - len_ + 1):
-            j = i + len_ + 1
-            # k is the index of the LAST balloon to burst in (i, j)
-            for k in range(i + 1, j):
-                coins = arr[i] * arr[k] * arr[j] + dp[i][k] + dp[k][j]
-                dp[i][j] = max(dp[i][j], coins)
-                
-    return dp[0][n + 1]
-# Time Complexity: O(N^3)
-# Space Complexity: O(N^2)
+    // len is the length of the interval strictly between i and j
+    for (int len = 1; len <= n; len++) {
+        for (int i = 0; i <= n - len; i++) {
+            int j = i + len + 1;
+            // k is the index of the LAST balloon to burst in (i, j)
+            for (int k = i + 1; k < j; k++) {
+                int coins = arr[i] * arr[k] * arr[j] + dp[i][k] + dp[k][j];
+                dp[i][j] = Math.Max(dp[i][j], coins);
+            }
+        }
+    }
+    return dp[0][n + 1];
+}
+// Time Complexity: O(N^3)
+// Space Complexity: O(N^2)
 ```
 * * *
 
@@ -6672,23 +7170,26 @@ def max_coins(self, nums: list[int]) -> int:
 
 **Explanation:** Since multiplying two negative numbers yields a positive number, we must track BOTH the maximum product and the minimum product ending at the current position.
 
-```python
-def max_product(self, nums: list[int]) -> int:
-    if not nums: return 0
-    max_val = min_val = result = nums[0]
+```csharp
+public int MaxProduct(int[] nums) {
+    if (nums == null || nums.Length == 0) return 0;
+    int maxVal = nums[0], minVal = nums[0], result = nums[0];
     
-    for i in range(1, len(nums)):
-        # If current is negative, max and min will swap roles
-        if nums[i] < 0:
-            max_val, min_val = min_val, max_val
-            
-        max_val = max(nums[i], max_val * nums[i])
-        min_val = min(nums[i], min_val * nums[i])
-        result = max(result, max_val)
-        
-    return result
-# Time Complexity: O(N)
-# Space Complexity: O(1)
+    for (int i = 1; i < nums.Length; i++) {
+        // If current is negative, max and min will swap roles
+        if (nums[i] < 0) {
+            int temp = maxVal; 
+            maxVal = minVal; 
+            minVal = temp;
+        }
+        maxVal = Math.Max(nums[i], maxVal * nums[i]);
+        minVal = Math.Min(nums[i], minVal * nums[i]);
+        result = Math.Max(result, maxVal);
+    }
+    return result;
+}
+// Time Complexity: O(N)
+// Space Complexity: O(1)
 ```
 * * *
 
@@ -6701,35 +7202,38 @@ def max_product(self, nums: list[int]) -> int:
 
 **Explanation:** We binary search for the correct partition index in the smaller array such that the left halves of both arrays contain exactly half the total elements, and the largest element on the left is $\le$ the smallest element on the right.
 
-```python
-def find_median_sorted_arrays(self, A: list[int], B: list[int]) -> float:
-    if len(A) > len(B): return self.find_median_sorted_arrays(B, A) # ensure A is smaller
-    m, n = len(A), len(B)
-    left, right = 0, m
+```csharp
+public double FindMedianSortedArrays(int[] A, int[] B) {
+    if (A.Length > B.Length) return FindMedianSortedArrays(B, A); // ensure A is smaller
+    int m = A.Length, n = B.Length;
+    int left = 0, right = m;
     
-    while left <= right:
-        i = (left + right) // 2 # partition A
-        j = (m + n + 1) // 2 - i # partition B
+    while (left <= right) {
+        int i = (left + right) / 2; // partition A
+        int j = (m + n + 1) / 2 - i; // partition B
         
-        max_left_a = float('-inf') if i == 0 else A[i - 1]
-        min_right_a = float('inf') if i == m else A[i]
-        max_left_b = float('-inf') if j == 0 else B[j - 1]
-        min_right_b = float('inf') if j == n else B[j]
+        int maxLeftA = (i == 0) ? int.MinValue : A[i - 1];
+        int minRightA = (i == m) ? int.MaxValue : A[i];
+        int maxLeftB = (j == 0) ? int.MinValue : B[j - 1];
+        int minRightB = (j == n) ? int.MaxValue : B[j];
         
-        if max_left_a <= min_right_b and max_left_b <= min_right_a:
-            # Correct partition found
-            if (m + n) % 2 == 0:
-                return (max(max_left_a, max_left_b) + min(min_right_a, min_right_b)) / 2.0
-            else:
-                return max(max_left_a, max_left_b)
-        elif max_left_a > min_right_b:
-            right = i - 1 # move partition left in A
-        else:
-            left = i + 1 # move partition right in A
-            
-    return 0.0
-# Time Complexity: O(log(min(M, N)))
-# Space Complexity: O(1)
+        if (maxLeftA <= minRightB && maxLeftB <= minRightA) {
+            // Correct partition found
+            if ((m + n) % 2 == 0) {
+                return (Math.Max(maxLeftA, maxLeftB) + Math.Min(minRightA, minRightB)) / 2.0;
+            } else {
+                return Math.Max(maxLeftA, maxLeftB);
+            }
+        } else if (maxLeftA > minRightB) {
+            right = i - 1; // move partition left in A
+        } else {
+            left = i + 1; // move partition right in A
+        }
+    }
+    return 0.0;
+}
+// Time Complexity: O(log(min(M, N)))
+// Space Complexity: O(1)
 ```
 * * *
 
@@ -6742,25 +7246,27 @@ def find_median_sorted_arrays(self, A: list[int], B: list[int]) -> float:
 
 **Explanation:** The amount of water above a bar depends on `min(max_left, max_right)`. We use two pointers from both ends, safely moving the pointer that points to the strictly smaller max bound, adding water along the way.
 
-```python
-def trap(self, height: list[int]) -> int:
-    if not height: return 0
-    left, right = 0, len(height) - 1
-    left_max = right_max = total_water = 0
+```csharp
+public int Trap(int[] height) {
+    if (height == null || height.Length == 0) return 0;
+    int left = 0, right = height.Length - 1;
+    int leftMax = 0, rightMax = 0, totalWater = 0;
     
-    while left < right:
-        if height[left] < height[right]:
-            if height[left] >= left_max: left_max = height[left]
-            else: total_water += left_max - height[left]
-            left += 1
-        else:
-            if height[right] >= right_max: right_max = height[right]
-            else: total_water += right_max - height[right]
-            right -= 1
-            
-    return total_water
-# Time Complexity: O(N)
-# Space Complexity: O(1)
+    while (left < right) {
+        if (height[left] < height[right]) {
+            if (height[left] >= leftMax) leftMax = height[left];
+            else totalWater += leftMax - height[left];
+            left++;
+        } else {
+            if (height[right] >= rightMax) rightMax = height[right];
+            else totalWater += rightMax - height[right];
+            right--;
+        }
+    }
+    return totalWater;
+}
+// Time Complexity: O(N)
+// Space Complexity: O(1)
 ```
 * * *
 
@@ -6774,22 +7280,24 @@ def trap(self, height: list[int]) -> int:
 
 **Explanation:** We maintain a stack of indices representing days where we haven't found a warmer day yet (decreasing order). When we find a warmer day, we pop from the stack and compute the wait time.
 
-```python
-def daily_temperatures(self, temperatures: list[int]) -> list[int]:
-    n = len(temperatures)
-    res = [0] * n
-    stack = []
+```csharp
+public int[] DailyTemperatures(int[] temperatures) {
+    int n = temperatures.Length;
+    int[] res = new int[n];
+    Stack<int> stack = new Stack<int>();
     
-    for i in range(n):
-        # While current temp is greater than temp at stack top
-        while stack and temperatures[i] > temperatures[stack[-1]]:
-            prev_index = stack.pop()
-            res[prev_index] = i - prev_index
-        stack.append(i)
-        
-    return res
-# Time Complexity: O(N)
-# Space Complexity: O(N)
+    for (int i = 0; i < n; i++) {
+        // While current temp is greater than temp at stack top
+        while (stack.Count > 0 && temperatures[i] > temperatures[stack.Peek()]) {
+            int prevIndex = stack.Pop();
+            res[prevIndex] = i - prevIndex;
+        }
+        stack.Push(i);
+    }
+    return res;
+}
+// Time Complexity: O(N)
+// Space Complexity: O(N)
 ```
 * * *
 
@@ -6804,7 +7312,7 @@ def daily_temperatures(self, temperatures: list[int]) -> list[int]:
 >
 > At each cell, you choose the cheapest of three operations: **Replace** (↖ diagonal + 1), **Delete** from word1 (↑ up + 1), **Insert** into word1 (← left + 1). If characters already match, the diagonal costs 0 (no operation needed).
 
-![Edit Distance Trace](editions/python/chapters/13-optimization-dp/visuals/edit_distance_trace.png){width=85%}
+![Edit Distance Trace](editions/csharp/chapters/13-optimization-dp/visuals/edit_distance_trace.png){width=85%}
 
 **Trace-Through:** Convert `"CAT"` → `"CUT"` (answer: 1 — just replace A with U).
 
@@ -6824,27 +7332,31 @@ def daily_temperatures(self, temperatures: list[int]) -> list[int]:
 
 **Explanation:** `dp[i][j]` is the edit distance between `word1` prefix length `i` and `word2` prefix length `j`. If characters match, cost is `dp[i-1][j-1]`. Otherwise, cost is `1 + min(insert, delete, replace)`.
 
-```python
-def min_distance(self, word1: str, word2: str) -> int:
-    m, n = len(word1), len(word2)
-    dp = [[0] * (n + 1) for _ in range(m + 1)]
+```csharp
+public int MinDistance(string word1, string word2) {
+    int m = word1.Length, n = word2.Length;
+    int[][] dp = new int[m + 1][];
+    for(int i=0; i<=m; i++) dp[i] = new int[n + 1];
     
-    # Base cases
-    for i in range(m + 1): dp[i][0] = i
-    for j in range(n + 1): dp[0][j] = j
+    // Base cases
+    for (int i = 0; i <= m; i++) dp[i][0] = i;
+    for (int j = 0; j <= n; j++) dp[0][j] = j;
     
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if word1[i - 1] == word2[j - 1]:
-                dp[i][j] = dp[i - 1][j - 1] # No op
-            else:
-                dp[i][j] = 1 + min(dp[i - 1][j - 1], # Replace
-                                   dp[i - 1][j],     # Delete
-                                   dp[i][j - 1])     # Insert
-                                   
-    return dp[m][n]
-# Time Complexity: O(M * N)
-# Space Complexity: O(M * N)
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (word1[i - 1] == word2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1]; // No op
+            } else {
+                dp[i][j] = 1 + Math.Min(dp[i - 1][j - 1], // Replace
+                               Math.Min(dp[i - 1][j],     // Delete
+                                        dp[i][j - 1]));   // Insert
+            }
+        }
+    }
+    return dp[m][n];
+}
+// Time Complexity: O(M * N)
+// Space Complexity: O(M * N)
 ```
 * * *
 
@@ -6857,7 +7369,7 @@ def min_distance(self, word1: str, word2: str) -> int:
 >
 > A common question is: "Shouldn't we store a timestamp for when each item was last used?" The answer is no — the **position in the linked list** is the timestamp. The node closest to HEAD was used most recently. The node closest to TAIL was used longest ago. Every `get()` or `put()` moves that node to the HEAD. No clock needed — the list order *is* the chronological record.
 
-![LRU Cache — Position is the Timestamp](editions/python/chapters/13-optimization-dp/visuals/lru_cache_diagram.png){width=85%}
+![LRU Cache — Position is the Timestamp](editions/csharp/chapters/13-optimization-dp/visuals/lru_cache_diagram.png){width=85%}
 
 **Trace-Through:** Cache capacity = 2.
 
@@ -6873,53 +7385,61 @@ Notice: after `get(1)`, key 1 moved to head, saving it from eviction. Key 2, unt
 
 **Explanation:** The HashMap provides $\mathcal{O}(1)$ access to nodes. The Doubly Linked List maintains the eviction order. Moving a node to the head of the list designates it as most recently used.
 
-```python
-class Node:
-    def __init__(self, key=0, val=0):
-        self.key = key
-        self.val = val
-        self.prev = None
-        self.next = None
+```csharp
+public class LRUCache {
+    class Node { 
+        public int key, val; 
+        public Node prev, next; 
+    }
+    private Dictionary<int, Node> map = new Dictionary<int, Node>();
+    private int capacity;
+    private Node head, tail;
 
-class LRUCache:
-    def __init__(self, capacity: int):
-        self.capacity = capacity
-        self.cache = {}
-        self.head = Node()
-        self.tail = Node()
-        self.head.next = self.tail
-        self.tail.prev = self.head
-
-    def get(self, key: int) -> int:
-        if key not in self.cache: return -1
-        node = self.cache[key]
-        self._remove(node)
-        self._insert(node)
-        return node.val
-
-    def put(self, key: int, value: int) -> None:
-        if key in self.cache:
-            self._remove(self.cache[key])
-        if len(self.cache) == self.capacity:
-            lru = self.tail.prev
-            self._remove(lru)
-            del self.cache[lru.key]
-            
-        new_node = Node(key, value)
-        self._insert(new_node)
-        self.cache[key] = new_node
-
-    def _remove(self, node: Node) -> None:
-        node.prev.next = node.next
-        node.next.prev = node.prev
-
-    def _insert(self, node: Node) -> None:
-        node.next = self.head.next
-        node.next.prev = node
-        self.head.next = node
-        node.prev = self.head
-# Time Complexity: O(1) for both get and put
-# Space Complexity: O(Capacity)
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        head = new Node(); 
+        tail = new Node();
+        head.next = tail; 
+        tail.prev = head; // Connect dummy head and tail
+    }
+    
+    public int Get(int key) {
+        if (!map.ContainsKey(key)) return -1;
+        Node node = map[key];
+        Remove(node); // Move to head (MRU)
+        Insert(node);
+        return node.val;
+    }
+    
+    public void Put(int key, int value) {
+        if (map.ContainsKey(key)) {
+            Remove(map[key]);
+        }
+        if (map.Count == capacity) {
+            map.Remove(tail.prev.key);
+            Remove(tail.prev); // Evict LRU
+        }
+        Node node = new Node(); 
+        node.key = key; 
+        node.val = value;
+        Insert(node);
+        map[key] = node;
+    }
+    
+    private void Remove(Node node) {
+        node.prev.next = node.next; 
+        node.next.prev = node.prev;
+    }
+    
+    private void Insert(Node node) { // Insert right after head
+        node.next = head.next; 
+        node.next.prev = node;
+        head.next = node; 
+        node.prev = head;
+    }
+}
+// Time Complexity: O(1) for both get and put
+// Space Complexity: O(Capacity)
 ```
 * * *
 
@@ -6947,7 +7467,7 @@ class LRUCache:
 > - $\text{Width} = i - \text{stack.peek()} - 1$. $\text{Area} = h \times \text{width}$.
 > - A dummy bar of height `0` at `i = n` forces all remaining bars off the stack at the end.
 
-![Maximal Rectangle & Histogram Stack](editions/python/chapters/13-optimization-dp/visuals/maximal_rectangle_histogram.png){width=85%}
+![Maximal Rectangle & Histogram Stack](editions/csharp/chapters/13-optimization-dp/visuals/maximal_rectangle_histogram.png){width=85%}
 
 **Trace-Through (Monotonic Stack for Heights `[3, 1, 3, 2, 2]`):**
 
@@ -6966,37 +7486,39 @@ class LRUCache:
 
 **Explanation:** We treat each row as the base of a histogram and update heights. We then run the $\mathcal{O}(N)$ "Largest Rectangle in Histogram" algorithm using a monotonic stack on each row.
 
-```python
-def maximal_rectangle(self, matrix: list[list[str]]) -> int:
-    if not matrix or not matrix[0]: return 0
-    cols = len(matrix[0])
-    heights = [0] * cols
-    max_area = 0
+```csharp
+public int MaximalRectangle(char[][] matrix) {
+    if (matrix == null || matrix.Length == 0) return 0;
+    int cols = matrix[0].Length;
+    int[] heights = new int[cols];
+    int maxArea = 0;
     
-    for row in matrix:
-        # Update histogram heights
-        for c in range(cols):
-            heights[c] = heights[c] + 1 if row[c] == '1' else 0
-        max_area = max(max_area, self._max_histogram(heights))
-        
-    return max_area
+    foreach (char[] row in matrix) {
+        // Update histogram heights
+        for (int c = 0; c < cols; c++) {
+            heights[c] = (row[c] == '1') ? heights[c] + 1 : 0;
+        }
+        maxArea = Math.Max(maxArea, MaxHistogram(heights));
+    }
+    return maxArea;
+}
 
-def _max_histogram(self, heights: list[int]) -> int:
-    stack = []
-    max_val = 0
-    n = len(heights)
-    
-    for i in range(n + 1):
-        h = 0 if i == n else heights[i]
-        while stack and h < heights[stack[-1]]:
-            height = heights[stack.pop()]
-            width = i if not stack else i - stack[-1] - 1
-            max_val = max(max_val, height * width)
-        stack.append(i)
-        
-    return max_val
-# Time Complexity: O(R * C)
-# Space Complexity: O(C)
+private int MaxHistogram(int[] heights) {
+    Stack<int> stack = new Stack<int>();
+    int max = 0, n = heights.Length;
+    for (int i = 0; i <= n; i++) {
+        int h = (i == n) ? 0 : heights[i];
+        while (stack.Count > 0 && h < heights[stack.Peek()]) {
+            int height = heights[stack.Pop()];
+            int width = stack.Count == 0 ? i : i - stack.Peek() - 1;
+            max = Math.Max(max, height * width);
+        }
+        stack.Push(i);
+    }
+    return max;
+}
+// Time Complexity: O(R * C)
+// Space Complexity: O(C)
 ```
 * * *
 
@@ -7009,31 +7531,40 @@ def _max_histogram(self, heights: list[int]) -> int:
 
 **Explanation:** We use BFS because we want the shortest path in an unweighted graph. For each word, we generate all valid next mutations and enqueue them, tracking the level.
 
-```python
-def ladder_length(self, begin_word: str, end_word: str, word_list: list[str]) -> int:
-    word_set = set(word_list)
-    if end_word not in word_set: return 0
+```csharp
+public int LadderLength(string beginWord, string endWord, IList<string> wordList) {
+    HashSet<string> set = new HashSet<string>(wordList);
+    if (!set.Contains(endWord)) return 0;
     
-    from collections import deque
-    queue = deque([begin_word])
-    level = 1
+    Queue<string> queue = new Queue<string>();
+    queue.Enqueue(beginWord);
+    int level = 1;
     
-    while queue:
-        for _ in range(len(queue)): # Level-by-level processing
-            curr = queue.popleft()
-            for j in range(len(curr)):
-                for c in 'abcdefghijklmnopqrstuvwxyz':
-                    if c == curr[j]: continue
-                    next_word = curr[:j] + c + curr[j+1:]
-                    if next_word == end_word: return level + 1
-                    if next_word in word_set: # remove serves as 'visited' check
-                        word_set.remove(next_word)
-                        queue.append(next_word)
-        level += 1
-        
-    return 0
-# Time Complexity: O(M^2 * N) where M is word length, N is number of words
-# Space Complexity: O(M * N)
+    while (queue.Count > 0) {
+        int size = queue.Count;
+        for (int i = 0; i < size; i++) { // Level-by-level processing
+            string curr = queue.Dequeue();
+            char[] chars = curr.ToCharArray();
+            for (int j = 0; j < chars.Length; j++) {
+                char orig = chars[j];
+                for (char c = 'a'; c <= 'z'; c++) { // Try all mutations
+                    if (c == orig) continue;
+                    chars[j] = c;
+                    string next = new string(chars);
+                    if (next.Equals(endWord)) return level + 1;
+                    if (set.Remove(next)) { // remove serves as 'visited' check
+                        queue.Enqueue(next);
+                    }
+                }
+                chars[j] = orig; // Backtrack
+            }
+        }
+        level++;
+    }
+    return 0;
+}
+// Time Complexity: O(M^2 * N) where M is word length, N is number of words
+// Space Complexity: O(M * N)
 ```
 * * *
 
@@ -7046,19 +7577,23 @@ def ladder_length(self, begin_word: str, end_word: str, word_list: list[str]) ->
 
 **Explanation:** `dp[i]` is the minimum coins needed for amount `i`. We iterate through amounts and coins, taking the min of using the coin or not: `dp[i] = min(dp[i], dp[i - coin] + 1)`.
 
-```python
-def coin_change(self, coins: list[int], amount: int) -> int:
-    dp = [amount + 1] * (amount + 1) # Fill with max invalid value
-    dp[0] = 0
+```csharp
+public int CoinChange(int[] coins, int amount) {
+    int[] dp = new int[amount + 1];
+    Array.Fill(dp, amount + 1); // Fill with max invalid value
+    dp[0] = 0;
     
-    for i in range(1, amount + 1):
-        for coin in coins:
-            if i >= coin:
-                dp[i] = min(dp[i], dp[i - coin] + 1)
-                
-    return -1 if dp[amount] > amount else dp[amount]
-# Time Complexity: O(Amount * N)
-# Space Complexity: O(Amount)
+    for (int i = 1; i <= amount; i++) {
+        foreach (int coin in coins) {
+            if (i >= coin) {
+                dp[i] = Math.Min(dp[i], dp[i - coin] + 1);
+            }
+        }
+    }
+    return dp[amount] > amount ? -1 : dp[amount];
+}
+// Time Complexity: O(Amount * N)
+// Space Complexity: O(Amount)
 ```
 * * *
 
@@ -7071,20 +7606,21 @@ def coin_change(self, coins: list[int], amount: int) -> int:
 
 **Explanation:** The transition is `dp[i] = max(dp[i-1], dp[i-2] + nums[i])`. We only need to store the previous two values, saving space.
 
-```python
-def rob(self, nums: list[int]) -> int:
-    if not nums: return 0
-    prev1 = 0 # max so far excluding current
-    prev2 = 0 # max so far including current (-2)
+```csharp
+public int Rob(int[] nums) {
+    if (nums == null || nums.Length == 0) return 0;
+    int prev1 = 0; // max so far excluding current
+    int prev2 = 0; // max so far including current (-2)
     
-    for num in nums:
-        temp = max(prev1, prev2 + num) # rob or don't rob
-        prev2 = prev1
-        prev1 = temp
-        
-    return prev1
-# Time Complexity: O(N)
-# Space Complexity: O(1)
+    foreach (int num in nums) {
+        int temp = Math.Max(prev1, prev2 + num); // rob or don't rob
+        prev2 = prev1;
+        prev1 = temp;
+    }
+    return prev1;
+}
+// Time Complexity: O(N)
+// Space Complexity: O(1)
 ```
 * * *
 
@@ -7097,29 +7633,35 @@ def rob(self, nums: list[int]) -> int:
 
 **Explanation:** Complex transition logic based on whether we see a `*`. We either treat `*` as zero occurrences (`dp[i][j-2]`) or multiple occurrences (`dp[i-1][j]` if the preceding char matches).
 
-```python
-def is_match(self, s: str, p: str) -> bool:
-    m, n = len(s), len(p)
-    dp = [[False] * (n + 1) for _ in range(m + 1)]
-    dp[0][0] = True
+```csharp
+public bool IsMatch(string s, string p) {
+    int m = s.Length, n = p.Length;
+    bool[][] dp = new bool[m + 1][];
+    for(int i=0; i<=m; i++) dp[i] = new bool[n + 1];
+    dp[0][0] = true;
     
-    # Match empty string with patterns like a*b*
-    for j in range(1, n + 1):
-        if p[j - 1] == '*': dp[0][j] = dp[0][j - 2]
-        
-    for i in range(1, m + 1):
-        for j in range(1, n + 1):
-            if p[j - 1] == '.' or p[j - 1] == s[i - 1]:
-                dp[i][j] = dp[i - 1][j - 1] # Single char match
-            elif p[j - 1] == '*':
-                dp[i][j] = dp[i][j - 2] # Match zero times
-                # If preceding char matches, match one or more times
-                if p[j - 2] == '.' or p[j - 2] == s[i - 1]:
-                    dp[i][j] = dp[i][j] or dp[i - 1][j]
-                    
-    return dp[m][n]
-# Time Complexity: O(M * N)
-# Space Complexity: O(M * N)
+    // Match empty string with patterns like a*b*
+    for (int j = 1; j <= n; j++) {
+        if (p[j - 1] == '*') dp[0][j] = dp[0][j - 2];
+    }
+    
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (p[j - 1] == '.' || p[j - 1] == s[i - 1]) {
+                dp[i][j] = dp[i - 1][j - 1]; // Single char match
+            } else if (p[j - 1] == '*') {
+                dp[i][j] = dp[i][j - 2]; // Match zero times
+                // If preceding char matches, match one or more times
+                if (p[j - 2] == '.' || p[j - 2] == s[i - 1]) {
+                    dp[i][j] = dp[i][j] || dp[i - 1][j];
+                }
+            }
+        }
+    }
+    return dp[m][n];
+}
+// Time Complexity: O(M * N)
+// Space Complexity: O(M * N)
 ```
 * * *
 
@@ -7132,30 +7674,35 @@ def is_match(self, s: str, p: str) -> bool:
 
 **Explanation:** We count the in-degree of each course. A course with in-degree 0 has no prerequisites and can be taken. We enqueue it, take it, and decrement the in-degree of its neighbors.
 
-```python
-def find_order(self, num_courses: int, prerequisites: list[list[int]]) -> list[int]:
-    in_degree = [0] * num_courses
-    adj = [[] for _ in range(num_courses)]
+```csharp
+public int[] FindOrder(int numCourses, int[][] prerequisites) {
+    var inDegree = new int[numCourses];
+    var adj = new List<List<int>>();
+    for (int i = 0; i < numCourses; i++) adj.Add(new List<int>());
     
-    for dest, src in prerequisites:
-        adj[src].append(dest)
-        in_degree[dest] += 1
-        
-    from collections import deque
-    q = deque(i for i in range(num_courses) if in_degree[i] == 0)
+    foreach (int[] p in prerequisites) {
+        adj[p[1]].Add(p[0]);
+        inDegree[p[0]]++;
+    }
     
-    res = []
-    while q:
-        curr = q.popleft()
-        res.append(curr)
-        for nxt in adj[curr]:
-            in_degree[nxt] -= 1
-            if in_degree[nxt] == 0:
-                q.append(nxt)
-                
-    return res if len(res) == num_courses else [] # If not all courses taken, cycle exists
-# Time Complexity: O(V + E)
-# Space Complexity: O(V + E)
+    Queue<int> q = new Queue<int>();
+    for (int i = 0; i < numCourses; i++) {
+        if (inDegree[i] == 0) q.Enqueue(i);
+    }
+    
+    int[] res = new int[numCourses];
+    int idx = 0;
+    while (q.Count > 0) {
+        int curr = q.Dequeue();
+        res[idx++] = curr;
+        foreach (int next in adj[curr]) {
+            if (--inDegree[next] == 0) q.Enqueue(next);
+        }
+    }
+    return idx == numCourses ? res : new int[0]; // If not all courses taken, cycle exists
+}
+// Time Complexity: O(V + E)
+// Space Complexity: O(V + E)
 ```
 * * *
 
@@ -7168,23 +7715,26 @@ def find_order(self, num_courses: int, prerequisites: list[list[int]]) -> list[i
 
 **Explanation:** The problem translates to: "Is there a subset that sums exactly to `total_sum / 2`?" We use a 1D DP array where `dp[j]` is true if a sum `j` is achievable.
 
-```python
-def can_partition(self, nums: list[int]) -> bool:
-    total = sum(nums)
-    if total % 2 != 0: return False
+```csharp
+public bool CanPartition(int[] nums) {
+    int sum = 0;
+    foreach (int num in nums) sum += num;
+    if (sum % 2 != 0) return false;
     
-    target = total // 2
-    dp = [False] * (target + 1)
-    dp[0] = True
+    int target = sum / 2;
+    bool[] dp = new bool[target + 1];
+    dp[0] = true;
     
-    for num in nums:
-        # Iterate backwards to avoid reusing the same element
-        for j in range(target, num - 1, -1):
-            dp[j] = dp[j] or dp[j - num]
-            
-    return dp[target]
-# Time Complexity: O(N * Target)
-# Space Complexity: O(Target)
+    foreach (int num in nums) {
+        // Iterate backwards to avoid reusing the same element
+        for (int j = target; j >= num; j--) {
+            dp[j] = dp[j] || dp[j - num];
+        }
+    }
+    return dp[target];
+}
+// Time Complexity: O(N * Target)
+// Space Complexity: O(Target)
 ```
 * * *
 
@@ -7197,25 +7747,29 @@ def can_partition(self, nums: list[int]) -> bool:
 
 **Explanation:** Very similar to Fibonacci. The number of ways to decode up to `i` is the ways to decode up to `i-1` (if single digit valid) plus the ways to decode up to `i-2` (if two digits valid).
 
-```python
-def num_decodings(self, s: str) -> int:
-    if not s or s[0] == '0': return 0
-    n = len(s)
-    dp = [0] * (n + 1)
-    dp[0] = dp[1] = 1
+```csharp
+public int NumDecodings(string s) {
+    if (string.IsNullOrEmpty(s) || s[0] == '0') return 0;
+    int n = s.Length;
+    int[] dp = new int[n + 1];
+    dp[0] = 1; 
+    dp[1] = 1;
     
-    for i in range(2, n + 1):
-        one_digit = int(s[i - 1:i])
-        two_digits = int(s[i - 2:i])
+    for (int i = 2; i <= n; i++) {
+        int oneDigit = int.Parse(s.Substring(i - 1, 1));
+        int twoDigits = int.Parse(s.Substring(i - 2, 2));
         
-        if 1 <= one_digit <= 9:
-            dp[i] += dp[i - 1]
-        if 10 <= two_digits <= 26:
-            dp[i] += dp[i - 2]
-            
-    return dp[n]
-# Time Complexity: O(N)
-# Space Complexity: O(N) which can be optimized to O(1)
+        if (oneDigit >= 1 && oneDigit <= 9) {
+            dp[i] += dp[i - 1];
+        }
+        if (twoDigits >= 10 && twoDigits <= 26) {
+            dp[i] += dp[i - 2];
+        }
+    }
+    return dp[n];
+}
+// Time Complexity: O(N)
+// Space Complexity: O(N) which can be optimized to O(1)
 ```
 * * *
 
@@ -7228,20 +7782,22 @@ def num_decodings(self, s: str) -> int:
 
 **Explanation:** Maintain a stack of pairs `{price, span}`. If the incoming price is greater than the top of the stack, pop the stack and accumulate the span. This maintains a strictly decreasing stack.
 
-```python
-class StockSpanner:
-    def __init__(self):
-        # Array holds [price, span]
-        self.stack = []
-        
-    def next(self, price: int) -> int:
-        span = 1
-        while self.stack and self.stack[-1][0] <= price:
-            span += self.stack.pop()[1] # Accumulate previous spans
-        self.stack.append([price, span])
-        return span
-# Time Complexity: Amortized O(1) per next() call
-# Space Complexity: O(N)
+```csharp
+public class StockSpanner {
+    // Stack holds {price, span}
+    private Stack<int[]> stack = new Stack<int[]>(); 
+    
+    public int Next(int price) {
+        int span = 1;
+        while (stack.Count > 0 && stack.Peek()[0] <= price) {
+            span += stack.Pop()[1]; // Accumulate previous spans
+        }
+        stack.Push(new int[]{price, span});
+        return span;
+    }
+}
+// Time Complexity: Amortized O(1) per next() call
+// Space Complexity: O(N)
 ```
 * * *
 
@@ -7254,23 +7810,27 @@ class StockSpanner:
 
 **Explanation:** We maintain an array `tails` where `tails[i]` stores the smallest tail of all increasing subsequences of length `i+1`. We binary search the position to update in `tails`.
 
-```python
-def length_of_lis(self, nums: list[int]) -> int:
-    tails = [0] * len(nums)
-    size = 0
-    for x in nums:
-        left, right = 0, size
-        while left != right:
-            mid = left + (right - left) // 2
-            if tails[mid] < x:
-                left = mid + 1
-            else:
-                right = mid
-        tails[left] = x
-        if left == size: size += 1 # Found a larger element, expand LIS
-    return size
-# Time Complexity: O(N log N)
-# Space Complexity: O(N)
+```csharp
+public int LengthOfLIS(int[] nums) {
+    int[] tails = new int[nums.Length];
+    int size = 0;
+    foreach (int x in nums) {
+        int left = 0, right = size;
+        while (left != right) {
+            int mid = left + (right - left) / 2;
+            if (tails[mid] < x) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        tails[left] = x;
+        if (left == size) size++; // Found a larger element, expand LIS
+    }
+    return size;
+}
+// Time Complexity: O(N log N)
+// Space Complexity: O(N)
 ```
 * * *
 
@@ -7282,16 +7842,18 @@ def length_of_lis(self, nums: list[int]) -> int:
 **Pattern:** Binary Search
 
 **Explanation:** If `nums[mid] > nums[right]`, the minimum is in the right half. Else, the minimum is in the left half (including mid).
-```python
-def find_min(self, nums: list[int]) -> int:
-    left, right = 0, len(nums) - 1
-    while left < right:
-        mid = left + (right - left) // 2
-        if nums[mid] > nums[right]: left = mid + 1
-        else: right = mid
-    return nums[left]
-# Time Complexity: O(log N)
-# Space Complexity: O(1)
+```csharp
+public int FindMin(int[] nums) {
+    int left = 0, right = nums.Length - 1;
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] > nums[right]) left = mid + 1;
+        else right = mid;
+    }
+    return nums[left];
+}
+// Time Complexity: O(log N)
+// Space Complexity: O(1)
 ```
 * * *
 
@@ -7303,28 +7865,28 @@ def find_min(self, nums: list[int]) -> int:
 **Pattern:** Binary Search on Answer Space
 
 **Explanation:** Binary search the value space `[min, max]`. Count how many elements are $\le$ mid. If count $< k$, `left = mid + 1`. Else `right = mid`.
-```python
-def kth_smallest(self, matrix: list[list[int]], k: int) -> int:
-    n = len(matrix)
-    left, right = matrix[0][0], matrix[n-1][n-1]
-    while left < right:
-        mid = left + (right - left) // 2
-        count = self._count_less_equal(matrix, mid)
-        if count < k: left = mid + 1
-        else: right = mid
-    return left
-
-def _count_less_equal(self, matrix: list[list[int]], target: int) -> int:
-    n, i, j, count = len(matrix), len(matrix) - 1, 0, 0
-    while i >= 0 and j < n:
-        if matrix[i][j] <= target:
-            count += i + 1
-            j += 1
-        else:
-            i -= 1
-    return count
-# Time Complexity: O(N log(Max - Min))
-# Space Complexity: O(1)
+```csharp
+public int KthSmallest(int[][] matrix, int k) {
+    int n = matrix.Length;
+    int left = matrix[0][0], right = matrix[n-1][n-1];
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        int count = CountLessEqual(matrix, mid);
+        if (count < k) left = mid + 1;
+        else right = mid;
+    }
+    return left;
+}
+private int CountLessEqual(int[][] matrix, int target) {
+    int n = matrix.Length, i = n - 1, j = 0, count = 0;
+    while (i >= 0 && j < n) {
+        if (matrix[i][j] <= target) { count += i + 1; j++; }
+        else { i--; }
+    }
+    return count;
+}
+// Time Complexity: O(N log(Max - Min))
+// Space Complexity: O(1)
 ```
 * * *
 
@@ -7336,17 +7898,20 @@ def _count_less_equal(self, matrix: list[list[int]], target: int) -> int:
 **Pattern:** Greedy BFS levels
 
 **Explanation:** We maintain the farthest reach for the current jump level. When `i == currentEnd`, we must make a jump and update `currentEnd = farthest`.
-```python
-def jump(self, nums: list[int]) -> int:
-    jumps = current_end = farthest = 0
-    for i in range(len(nums) - 1):
-        farthest = max(farthest, i + nums[i])
-        if i == current_end:
-            jumps += 1
-            current_end = farthest
-    return jumps
-# Time Complexity: O(N)
-# Space Complexity: O(1)
+```csharp
+public int Jump(int[] nums) {
+    int jumps = 0, currentEnd = 0, farthest = 0;
+    for (int i = 0; i < nums.Length - 1; i++) {
+        farthest = Math.Max(farthest, i + nums[i]);
+        if (i == currentEnd) {
+            jumps++;
+            currentEnd = farthest;
+        }
+    }
+    return jumps;
+}
+// Time Complexity: O(N)
+// Space Complexity: O(1)
 ```
 * * *
 
@@ -7358,17 +7923,23 @@ def jump(self, nums: list[int]) -> int:
 **Pattern:** 2D DP
 
 **Explanation:** `dp[i][j] = dp[i-1][j] + dp[i][j-1]`.
-```python
-def unique_paths(self, m: int, n: int) -> int:
-    dp = [[0] * n for _ in range(m)]
-    for i in range(m): dp[i][0] = 1
-    for j in range(n): dp[0][j] = 1
-    for i in range(1, m):
-        for j in range(1, n):
-            dp[i][j] = dp[i-1][j] + dp[i][j-1]
-    return dp[m-1][n-1]
-# Time Complexity: O(M * N)
-# Space Complexity: O(M * N) (can be optimized to O(N))
+```csharp
+public int UniquePaths(int m, int n) {
+    int[][] dp = new int[m][];
+    for (int i = 0; i < m; i++) {
+        dp[i] = new int[n];
+        dp[i][0] = 1;
+    }
+    for (int j = 0; j < n; j++) dp[0][j] = 1;
+    for (int i = 1; i < m; i++) {
+        for (int j = 1; j < n; j++) {
+            dp[i][j] = dp[i-1][j] + dp[i][j-1];
+        }
+    }
+    return dp[m-1][n-1];
+}
+// Time Complexity: O(M * N)
+// Space Complexity: O(M * N) (can be optimized to O(N))
 ```
 * * *
 
@@ -7380,15 +7951,17 @@ def unique_paths(self, m: int, n: int) -> int:
 **Pattern:** DP / Greedy
 
 **Explanation:** At each step, either add the current element to the previous sum, or start a new subarray if the previous sum is negative.
-```python
-def max_sub_array(self, nums: list[int]) -> int:
-    max_sum = current_sum = nums[0]
-    for i in range(1, len(nums)):
-        current_sum = max(nums[i], current_sum + nums[i])
-        max_sum = max(max_sum, current_sum)
-    return max_sum
-# Time Complexity: O(N)
-# Space Complexity: O(1)
+```csharp
+public int MaxSubArray(int[] nums) {
+    int maxSum = nums[0], currentSum = nums[0];
+    for (int i = 1; i < nums.Length; i++) {
+        currentSum = Math.Max(nums[i], currentSum + nums[i]);
+        maxSum = Math.Max(maxSum, currentSum);
+    }
+    return maxSum;
+}
+// Time Complexity: O(N)
+// Space Complexity: O(1)
 ```
 * * *
 
@@ -7400,16 +7973,19 @@ def max_sub_array(self, nums: list[int]) -> int:
 **Pattern:** Fibonacci DP
 
 **Explanation:** `dp[i] = dp[i-1] + dp[i-2]`.
-```python
-def climb_stairs(self, n: int) -> int:
-    if n <= 2: return n
-    prev2, prev1 = 1, 2
-    for i in range(3, n + 1):
-        curr = prev1 + prev2
-        prev2, prev1 = prev1, curr
-    return prev1
-# Time Complexity: O(N)
-# Space Complexity: O(1)
+```csharp
+public int ClimbStairs(int n) {
+    if (n <= 2) return n;
+    int prev2 = 1, prev1 = 2;
+    for (int i = 3; i <= n; i++) {
+        int curr = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    return prev1;
+}
+// Time Complexity: O(N)
+// Space Complexity: O(1)
 ```
 * * *
 
@@ -7421,21 +7997,23 @@ def climb_stairs(self, n: int) -> int:
 **Pattern:** Monotonic Stack
 
 **Explanation:** Stack stores indices of strictly increasing heights. Pop when a smaller height is found, calculating area using the popped height as the bottleneck.
-```python
-def largest_rectangle_area(self, heights: list[int]) -> int:
-    stack = []
-    max_area = 0
-    n = len(heights)
-    for i in range(n + 1):
-        h = 0 if i == n else heights[i]
-        while stack and h < heights[stack[-1]]:
-            height = heights[stack.pop()]
-            width = i if not stack else i - stack[-1] - 1
-            max_area = max(max_area, height * width)
-        stack.append(i)
-    return max_area
-# Time Complexity: O(N)
-# Space Complexity: O(N)
+```csharp
+public int LargestRectangleArea(int[] heights) {
+    Stack<int> stack = new Stack<int>();
+    int maxArea = 0, n = heights.Length;
+    for (int i = 0; i <= n; i++) {
+        int h = (i == n) ? 0 : heights[i];
+        while (stack.Count > 0 && h < heights[stack.Peek()]) {
+            int height = heights[stack.Pop()];
+            int width = stack.Count == 0 ? i : i - stack.Peek() - 1;
+            maxArea = Math.Max(maxArea, height * width);
+        }
+        stack.Push(i);
+    }
+    return maxArea;
+}
+// Time Complexity: O(N)
+// Space Complexity: O(N)
 ```
 * * *
 
@@ -7447,35 +8025,23 @@ def largest_rectangle_area(self, heights: list[int]) -> int:
 **Pattern:** Min-Heap
 
 **Explanation:** Put all list heads into a PriorityQueue. Extract the min, append to result, and insert the next node from the extracted list.
-```python
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
-        
-def merge_k_lists(self, lists: list[ListNode]) -> ListNode:
-    import heapq
-    
-    # Python heapq requires a way to break ties if vals are equal.
-    # We can use id(node) or an index.
-    pq = []
-    for i, head in enumerate(lists):
-        if head:
-            heapq.heappush(pq, (head.val, i, head))
-            
-    dummy = ListNode(0)
-    curr = dummy
-    
-    while pq:
-        val, i, min_node = heapq.heappop(pq)
-        curr.next = min_node
-        curr = curr.next
-        if min_node.next:
-            heapq.heappush(pq, (min_node.next.val, i, min_node.next))
-            
-    return dummy.next
-# Time Complexity: O(N log K)
-# Space Complexity: O(K)
+```csharp
+public ListNode MergeKLists(ListNode[] lists) {
+    PriorityQueue<ListNode, int> pq = new PriorityQueue<ListNode, int>();
+    foreach (ListNode head in lists) {
+        if (head != null) pq.Enqueue(head, head.val);
+    }
+    ListNode dummy = new ListNode(0), curr = dummy;
+    while (pq.Count > 0) {
+        ListNode minNode = pq.Dequeue();
+        curr.next = minNode;
+        curr = curr.next;
+        if (minNode.next != null) pq.Enqueue(minNode.next, minNode.next.val);
+    }
+    return dummy.next;
+}
+// Time Complexity: O(N log K)
+// Space Complexity: O(K)
 ```
 * * *
 
@@ -7487,20 +8053,24 @@ def merge_k_lists(self, lists: list[ListNode]) -> ListNode:
 **Pattern:** DP
 
 **Explanation:** `dp[i]` is the length of longest valid substring ending at `i`. If `s[i] == ')'` and `s[i-1] == '('`, `dp[i] = dp[i-2] + 2`. If `s[i-1] == ')'`, match earlier part.
-```python
-def longest_valid_parentheses(self, s: str) -> int:
-    max_len = 0
-    dp = [0] * len(s)
-    for i in range(1, len(s)):
-        if s[i] == ')':
-            if s[i - 1] == '(':
-                dp[i] = (dp[i - 2] if i >= 2 else 0) + 2
-            elif i - dp[i - 1] > 0 and s[i - dp[i - 1] - 1] == '(':
-                dp[i] = dp[i - 1] + (dp[i - dp[i - 1] - 2] if (i - dp[i - 1]) >= 2 else 0) + 2
-            max_len = max(max_len, dp[i])
-    return max_len
-# Time Complexity: O(N)
-# Space Complexity: O(N)
+```csharp
+public int LongestValidParentheses(string s) {
+    int maxLen = 0;
+    int[] dp = new int[s.Length];
+    for (int i = 1; i < s.Length; i++) {
+        if (s[i] == ')') {
+            if (s[i - 1] == '(') {
+                dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
+            } else if (i - dp[i - 1] > 0 && s[i - dp[i - 1] - 1] == '(') {
+                dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
+            }
+            maxLen = Math.Max(maxLen, dp[i]);
+        }
+    }
+    return maxLen;
+}
+// Time Complexity: O(N)
+// Space Complexity: O(N)
 ```
 * * *
 
@@ -7512,19 +8082,21 @@ def longest_valid_parentheses(self, s: str) -> int:
 **Pattern:** Two-pointer
 
 **Explanation:** Area is `width * min(h[L], h[R])`. Move the pointer pointing to the shorter line to potentially find a taller line.
-```python
-def max_area(self, height: list[int]) -> int:
-    max_area = 0
-    left, right = 0, len(height) - 1
-    while left < right:
-        w = right - left
-        h = min(height[left], height[right])
-        max_area = max(max_area, w * h)
-        if height[left] < height[right]: left += 1
-        else: right -= 1
-    return max_area
-# Time Complexity: O(N)
-# Space Complexity: O(1)
+```csharp
+public int MaxArea(int[] height) {
+    int maxArea = 0;
+    int left = 0, right = height.Length - 1;
+    while (left < right) {
+        int w = right - left;
+        int h = Math.Min(height[left], height[right]);
+        maxArea = Math.Max(maxArea, w * h);
+        if (height[left] < height[right]) left++;
+        else right--;
+    }
+    return maxArea;
+}
+// Time Complexity: O(N)
+// Space Complexity: O(1)
 ```
 * * *
 
@@ -8694,9 +9266,6 @@ Before jumping into the 20 Mock Sets, review this executive checklist of top spe
     Always check `array != null && array.length > 0` before accessing index `0`, and ensure loops end at `i < array.length` (or `i <= array.length` when using a sentinel).
 
 
-\part{System Design \& Architecture at Scale}
-
-
 # System Architecture and Design Fundamentals
 
 > *"A system is not a collection of services, but a web of communication boundaries. If your boundaries are wrong, your microservices are just a distributed monolith."*
@@ -8732,7 +9301,7 @@ A bounded context defines the boundary within which a particular domain model ap
 -   **Entities:** Objects with a distinct identity that persists over time (e.g., a `LedgerAccount` with a unique UUID).
 -   **Value Objects:** Immutable objects with no identity defined solely by their attributes (e.g., a `Money` value object containing `amount` and `currency`). Value objects have no setters; they are replaced entirely, making them thread-safe.
 
-![DDD Bounded Context Map](editions/python/chapters/16-system-architecture/visuals/ddd_contexts.png){width=85%}
+![DDD Bounded Context Map](editions/csharp/chapters/16-system-architecture/visuals/ddd_contexts.png){width=85%}
 
 
 ## Monolithic vs. Microservices vs. Event-Driven
@@ -8758,7 +9327,7 @@ Choosing an architectural style is a trade-off between latency, complexity, and 
 -   **Pros:** High decoupling, loose runtime dependencies, and high resilience.
 -   **Cons:** Eventual consistency. If the matching engine publishes a "TradeExecuted" event, the ledger balances might not update for several milliseconds.
 
-![Monolithic vs Microservices vs Event-Driven Architecture](editions/python/chapters/16-system-architecture/visuals/arch_styles.png){width=80%}
+![Monolithic vs Microservices vs Event-Driven Architecture](editions/csharp/chapters/16-system-architecture/visuals/arch_styles.png){width=80%}
 
 
 ## Scaling Out: Partitioning & Consistent Hashing
@@ -8810,7 +9379,7 @@ When designing APIs for microservices, you must handle network failures graceful
 
 The following sequence diagram maps out how an order is submitted, validated, matched inside the memory buffer, and settled inside the ledger:
 
-![ZenithTrade Order Lifecycle Sequence](editions/python/chapters/16-system-architecture/visuals/order_lifecycle.png){width=95%}
+![ZenithTrade Order Lifecycle Sequence](editions/csharp/chapters/16-system-architecture/visuals/order_lifecycle.png){width=95%}
 
 ### Explaining the Sequence:
 
@@ -9115,11 +9684,12 @@ In a senior architecture interview, you must explain how to resolve this. You wi
 
 A common architectural flaw is the **Dual-Write**. This occurs when a service attempts to modify a database and send a message to a message broker (like Kafka or RabbitMQ) within the same API request:
 
-```python
-# Anti-pattern: Dual-Write
-def complete_transaction(tx: TransactionRecord) -> None:
-    database.save(tx) # Database Write
-    kafka_producer.send("transaction-topic", tx) # Network Call
+```csharp
+// Anti-pattern: Dual-Write
+public void CompleteTransaction(TransactionRecord tx) {
+    _database.Save(tx); // Database Write
+    _kafkaTemplate.Send("transaction-topic", tx); // Network Call
+}
 ```
 
 
@@ -9135,65 +9705,78 @@ A background process (or CDC log tailer like Debezium) then polls the outbox tab
 
 The following code illustrates this Outbox Publisher worker:
 
-```python
-from abc import ABC, abstractmethod
-from dataclasses import dataclass
-from datetime import datetime
-from uuid import UUID
+```csharp
+using System;
+using System.Collections.Generic;
 
-@dataclass
-class OutboxEvent:
-    id: UUID
-    aggregate_type: str
-    aggregate_id: UUID
-    event_type: str
-    payload: str
-    created_at: datetime
-    processed: bool
+namespace AuraPay.Integration
+{
+    public record OutboxEvent(
+        Guid Id,
+        string AggregateType,
+        Guid AggregateId,
+        string EventType,
+        string Payload,
+        DateTime CreatedAt,
+        bool Processed
+    );
 
-class MessageBrokerClient(ABC):
-    @abstractmethod
-    def publish(self, topic: str, payload: str):
-        pass
+    public interface IMessageBrokerClient
+    {
+        void Publish(string topic, string payload);
+    }
 
-class OutboxRepository(ABC):
-    @abstractmethod
-    def find_unprocessed_and_lock(self, limit: int) -> List[OutboxEvent]:
-        pass
+    public interface IOutboxRepository
+    {
+        List<OutboxEvent> FindUnprocessedAndLock(int limit);
+        void MarkAsProcessed(Guid eventId);
+    }
 
-    @abstractmethod
-    def mark_as_processed(self, event_id: UUID):
-        pass
+    /// <summary>
+    /// Service that polls the database Outbox table and publishes events to the broker.
+    /// Guarantees At-Least-Once delivery of domain events.
+    /// </summary>
+    public class TransactionalOutboxPublisher
+    {
+        private readonly IOutboxRepository _outboxRepository;
+        private readonly IMessageBrokerClient _brokerClient;
 
-class TransactionalOutboxPublisher:
-    """
-    Service that polls the database Outbox table and publishes events to the broker.
-    Guarantees At-Least-Once delivery of domain events.
-    """
-    def __init__(self, outbox_repository: OutboxRepository, broker_client: MessageBrokerClient):
-        self.outbox_repository = outbox_repository
-        self.broker_client = broker_client
+        public TransactionalOutboxPublisher(IOutboxRepository outboxRepository, IMessageBrokerClient brokerClient)
+        {
+            _outboxRepository = outboxRepository;
+            _brokerClient = brokerClient;
+        }
 
-    def publish_pending_events(self):
-        # Retrieve unprocessed events under lock
-        pending_events = self.outbox_repository.find_unprocessed_and_lock(100)
+        public void PublishPendingEvents()
+        {
+            // Retrieve unprocessed events under lock
+            var pendingEvents = _outboxRepository.FindUnprocessedAndLock(100);
 
-        for event in pending_events:
-            try:
-                # Publish to broker (external network call)
-                topic = f"events.{event.aggregate_type.lower()}"
-                self.broker_client.publish(topic, event.payload)
+            foreach (var @event in pendingEvents)
+            {
+                try
+                {
+                    // Publish to broker (external network call)
+                    string topic = $"events.{@event.AggregateType.ToLower()}";
+                    _brokerClient.Publish(topic, @event.Payload);
 
-                # Mark as processed in the database
-                self.outbox_repository.mark_as_processed(event.id)
-            except Exception as e:
-                # If publishing fails, we log and skip.
-                # It will be retried on the next poll cycle (At-Least-Once).
-                print(f"Failed to publish outbox event {event.id}: {str(e)}. Will retry.")
+                    // Mark as processed in the database
+                    _outboxRepository.MarkAsProcessed(@event.Id);
+                }
+                catch (Exception e)
+                {
+                    // If publishing fails, we do NOT mark it as processed.
+                    // It will be retried on the next poll cycle (At-Least-Once).
+                    Console.Error.WriteLine($"Failed to publish outbox event {@event.Id}: {e.Message}. Will retry.");
+                }
+            }
+        }
+    }
+}
 ```
 
 
-![Transactional Outbox Pattern](editions/python/chapters/17-resiliency/visuals/outbox_pattern.png){width=85%}
+![Transactional Outbox Pattern](editions/csharp/chapters/17-resiliency/visuals/outbox_pattern.png){width=85%}
 
 If the message broker fails during publication, the event remains unmarked in the database and will be retried in the next execution cycle. This ensures that the message is eventually delivered at least once.
 
@@ -9235,7 +9818,7 @@ In an orchestration-based saga, a central service (the orchestrator) coordinates
 -   **Pros:** Clear visibility into the state of the transaction; easier to debug and manage complex flows.
 -   **Cons:** Introduces a central point of failure; requires a state-machine engine.
 
-![Saga Orchestration vs Choreography](editions/python/chapters/17-resiliency/visuals/saga_comparison.png){width=90%}
+![Saga Orchestration vs Choreography](editions/csharp/chapters/17-resiliency/visuals/saga_comparison.png){width=90%}
 
 
 ## Distributed Rate Limiting
@@ -9250,7 +9833,7 @@ We use Redis to store request timestamps. A sliding window rate limiter maintain
 3.  **Count Volume:** Count active timestamps using `ZCARD`.
 4.  **Enforce Limit:** If the count exceeds the threshold, reject the request. Otherwise, allow it and set a key TTL (`EXPIRE`) to reclaim memory when the client goes inactive.
 
-![Redis Sliding Window Rate Limiting](editions/python/chapters/17-resiliency/visuals/rate_limiter.png){width=70%}
+![Redis Sliding Window Rate Limiting](editions/csharp/chapters/17-resiliency/visuals/rate_limiter.png){width=70%}
 
 
 ## Microservice Resiliency Patterns
@@ -9269,7 +9852,7 @@ A **Circuit Breaker** wraps remote calls. It monitors failure rates.
 -   **Open State:** When the failure rate crosses a threshold (e.g., 50% failures over 10 seconds), the circuit trips (opens). Subsequent requests fail fast immediately, preventing resource exhaustion on the caller.
 -   **Half-Open State:** After a timeout, the breaker allows a few probe requests to pass. If they succeed, it closes; if they fail, it opens again.
 
-![Circuit Breaker State Machine](editions/python/chapters/17-resiliency/visuals/circuit_breaker.png){width=85%}
+![Circuit Breaker State Machine](editions/csharp/chapters/17-resiliency/visuals/circuit_breaker.png){width=85%}
 
 > **Why is it called a "Circuit Breaker"?** The pattern is borrowed directly from **electrical engineering**. In your home's breaker panel, a circuit breaker trips (opens) when it detects excessive current, preventing an electrical fire. Michael Nygard popularized the software version in his 2007 book *Release It!*, mapping the electrical metaphor to distributed systems: when a downstream service is failing, "trip the breaker" to fail fast and protect the calling system from cascading overload. The three states (Closed, Open, Half-Open) mirror how a physical breaker resets after the fault clears.
 
@@ -9334,7 +9917,7 @@ RDBMS engines (PostgreSQL, MySQL, Oracle) utilize **ACID** transactions (Atomici
 -   **NoSQL (Cassandra, DynamoDB):** Trade consistency for scalability (BASE model - Basically Available, Soft state, Eventual consistency). They use LSM-Tree (Log-Structured Merge-tree) storage engines, which write sequentially to memory buffers (MemTable) before flushing to disk (SSTable), providing very high write speeds but slow random reads.
 -   **NewSQL (Spanner, CockroachDB):** Provide the scale of NoSQL with the ACID guarantees of an RDBMS using distributed consensus protocols (Raft/Paxos) and atomic clocks.
 
-![B-Tree vs LSM-Tree Storage Engines](editions/python/chapters/18-database-compliance/visuals/btree_vs_lsm.png){width=85%}
+![B-Tree vs LSM-Tree Storage Engines](editions/csharp/chapters/18-database-compliance/visuals/btree_vs_lsm.png){width=85%}
 
 > **Why is it called \"PostgreSQL\"?** The name traces back to the 1970s. UC Berkeley professor Michael Stonebraker created a relational database called **Ingres**. In 1986, he started a successor project called **Post-Ingres** (i.e., \"after Ingres\"), later shortened to **Postgres**. When SQL support was added in 1996, the name became **PostgreSQL** \u2014 literally \"Post-Ingres with SQL.\" The elephant logo? Chosen simply because elephants *never forget* \u2014 a fitting mascot for a database.
 
@@ -9390,59 +9973,102 @@ To minimize audit scope, you must implement **Tokenization**:
 2.  **Encryption:** Inside the Vault, PAN data is encrypted using AES-256-GCM before storage.
 3.  **Application Separation:** The main billing and ledger applications only store and reference the token. Since they never store, process, or transmit raw card data, they are kept outside the scope of PCI-DSS regulations.
 
-![PCI-DSS Tokenization Vault Architecture](editions/python/chapters/18-database-compliance/visuals/tokenization_vault.png){width=85%}
+![PCI-DSS Tokenization Vault Architecture](editions/csharp/chapters/18-database-compliance/visuals/tokenization_vault.png){width=85%}
 
 The following utility demonstrates the encryption standard (AES-256 in Galois/Counter Mode) required for encrypting PANs or PII:
 
-```python
-import base64
-import os
-from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+```csharp
+using System;
+using System.Security.Cryptography;
+using System.Text;
 
-class TokenizationUtility:
-    """
-    Utility for AES-GCM 256-bit encryption/decryption of sensitive PII or PAN data,
-    adhering to PCI-DSS requirements.
-    """
-    
-    @staticmethod
-    def encrypt(plaintext: str, key_bytes: bytes) -> str:
-        if not plaintext or len(key_bytes) != 32:
-            raise ValueError("Invalid plaintext or key size. Key must be 256-bit.")
-            
-        # 1. Generate a secure random Initialization Vector (IV)
-        iv = os.urandom(12)
-        
-        # 2. Encrypt using AES-GCM
-        aesgcm = AESGCM(key_bytes)
-        ciphertext = aesgcm.encrypt(iv, plaintext.encode('utf-8'), None)
-        
-        # 3. Combine IV and Ciphertext and base64-encode
-        payload = iv + ciphertext
-        return base64.urlsafe_b64encode(payload).decode('utf-8').rstrip('=')
+namespace AuraPay.Security
+{
+    /// <summary>
+    /// Utility for AES-GCM 256-bit encryption/decryption of sensitive PII or PAN data,
+    /// adhering to PCI-DSS requirements.
+    /// </summary>
+    public static class TokenizationUtility
+    {
+        private const int NonceSize = 12; // 96-bit nonce/IV
+        private const int TagSize = 16;   // 128-bit authentication tag
 
-    @staticmethod
-    def decrypt(base64_payload: str, key_bytes: bytes) -> str:
-        if not base64_payload or len(key_bytes) != 32:
-            raise ValueError("Invalid payload or key size. Key must be 256-bit.")
-            
-        # 1. Pad and decode the base64 string
-        missing_padding = len(base64_payload) % 4
-        if missing_padding:
-            base64_payload += '=' * (4 - missing_padding)
-        encrypted_payload = base64.urlsafe_b64decode(base64_payload.encode('utf-8'))
-        
-        if len(encrypted_payload) < 12:
-            raise ValueError("Ciphertext payload is truncated or invalid.")
-            
-        # 2. Extract IV and Ciphertext
-        iv = encrypted_payload[:12]
-        ciphertext = encrypted_payload[12:]
-        
-        # 3. Decrypt using AES-GCM
-        aesgcm = AESGCM(key_bytes)
-        decrypted_bytes = aesgcm.decrypt(iv, ciphertext, None)
-        return decrypted_bytes.decode('utf-8')
+        /// <summary>
+        /// Encrypts the plaintext data using the provided 256-bit key.
+        /// Returns a URL-safe Base64-encoded string containing [Nonce][Ciphertext][Tag].
+        /// </summary>
+        public static string Encrypt(string plaintext, byte[] keyBytes)
+        {
+            if (string.IsNullOrEmpty(plaintext) || keyBytes == null || keyBytes.Length != 32)
+            {
+                throw new ArgumentException("Invalid plaintext or key size. Key must be 256-bit.");
+            }
+
+            byte[] plaintextBytes = Encoding.UTF8.GetBytes(plaintext);
+            byte[] nonce = new byte[NonceSize];
+            RandomNumberGenerator.Fill(nonce);
+
+            byte[] ciphertext = new byte[plaintextBytes.Length];
+            byte[] tag = new byte[TagSize];
+
+            using (var aesGcm = new AesGcm(keyBytes, TagSize))
+            {
+                aesGcm.Encrypt(nonce, plaintextBytes, ciphertext, tag);
+            }
+
+            // Combine Nonce + Ciphertext + Tag
+            byte[] result = new byte[NonceSize + ciphertext.Length + TagSize];
+            Buffer.BlockCopy(nonce, 0, result, 0, NonceSize);
+            Buffer.BlockCopy(ciphertext, 0, result, NonceSize, ciphertext.Length);
+            Buffer.BlockCopy(tag, 0, result, NonceSize + ciphertext.Length, TagSize);
+
+            return Convert.ToBase64String(result).Replace('+', '-').Replace('/', '_').TrimEnd('=');
+        }
+
+        /// <summary>
+        /// Decrypts the Base64-encoded payload using the provided 256-bit key.
+        /// </summary>
+        public static string Decrypt(string base64Payload, byte[] keyBytes)
+        {
+            if (string.IsNullOrEmpty(base64Payload) || keyBytes == null || keyBytes.Length != 32)
+            {
+                throw new ArgumentException("Invalid payload or key size. Key must be 256-bit.");
+            }
+
+            // Restore base64 padding
+            string incoming = base64Payload.Replace('-', '+').Replace('_', '/');
+            switch (incoming.Length % 4)
+            {
+                case 2: incoming += "=="; break;
+                case 3: incoming += "="; break;
+            }
+            byte[] encryptedPayload = Convert.FromBase64String(incoming);
+
+            if (encryptedPayload.Length < NonceSize + TagSize)
+            {
+                throw new ArgumentException("Ciphertext payload is truncated or invalid.");
+            }
+
+            byte[] nonce = new byte[NonceSize];
+            byte[] tag = new byte[TagSize];
+            int ciphertextLength = encryptedPayload.Length - NonceSize - TagSize;
+            byte[] ciphertext = new byte[ciphertextLength];
+
+            Buffer.BlockCopy(encryptedPayload, 0, nonce, 0, NonceSize);
+            Buffer.BlockCopy(encryptedPayload, NonceSize, ciphertext, 0, ciphertextLength);
+            Buffer.BlockCopy(encryptedPayload, NonceSize + ciphertextLength, tag, 0, TagSize);
+
+            byte[] decryptedBytes = new byte[ciphertextLength];
+
+            using (var aesGcm = new AesGcm(keyBytes, TagSize))
+            {
+                aesGcm.Decrypt(nonce, ciphertext, tag, decryptedBytes);
+            }
+
+            return Encoding.UTF8.GetString(decryptedBytes);
+        }
+    }
+}
 ```
 
 
@@ -9476,7 +10102,7 @@ For compliance frameworks like SOC2, you must maintain a tamper-proof audit trai
 2.  **Cryptographic Chaining:** Each audit log row should contain a cryptographic hash of the current row and the previous row's hash (similar to a blockchain ledger). If an attacker modifies a historical row, the chain break is instantly detectable during audit validation.
 3.  **Immutable Databases:** Utilize native ledger databases (like Amazon QLDB) or WORM (Write Once, Read Many) storage to mathematically guarantee data immutability.
 
-![Cryptographic Audit Trail Chain](editions/python/chapters/18-database-compliance/visuals/audit_trail.png){width=85%}
+![Cryptographic Audit Trail Chain](editions/csharp/chapters/18-database-compliance/visuals/audit_trail.png){width=85%}
 
 
 ## Hardening the Data Tier & Audits
@@ -9524,7 +10150,7 @@ In this chapter, we adapt the classic **STAR (Situation, Task, Action, Result)**
 
 To present your career achievements effectively, structure your behavioral narratives around technical metrics and architectural trade-offs:
 
-![The Technical STAR Framework](editions/python/chapters/19-behavioral-leadership/visuals/technical_star.png){width=90%}
+![The Technical STAR Framework](editions/csharp/chapters/19-behavioral-leadership/visuals/technical_star.png){width=90%}
 
 > **How to apply the framework:**
 >
@@ -9628,7 +10254,7 @@ In technical interviews for lead, staff, or engineering manager roles, coding ch
 
 Many candidates respond with simple unit tests. However, a senior candidate must present a structured **Testing Pyramid** strategy, showing how they balance unit tests with Testcontainers-based integration tests, API contract tests, and continuous delivery (CI/CD) verification.
 
-![The Technical Testing Pyramid](editions/python/chapters/20-testing-cicd/visuals/testing_pyramid.png){width=80%}
+![The Technical Testing Pyramid](editions/csharp/chapters/20-testing-cicd/visuals/testing_pyramid.png){width=80%}
 
 
 ## The Testing Pyramid
@@ -9644,35 +10270,42 @@ Unit tests are the foundation of the pyramid. They validate the internal logic o
 
 The following code illustrates unit testing our decoupled `TransactionProcessor` by mocking its repository and notification interfaces:
 
-```python
-import unittest
-from unittest.mock import Mock, call
+```csharp
+using Moq;
+using Xunit;
 
-class TestTransactionProcessor(unittest.TestCase):
-    def test_successful_transfer_enforces_invariants(self):
-        # Arrange Mock Dependencies
-        mock_repo = Mock()
-        mock_calculator = Mock()
-        mock_sender = Mock()
+public class TransactionProcessorTests
+{
+    [Fact]
+    public void TestSuccessfulTransfer_EnforcesInvariants()
+    {
+        // Arrange Mock Dependencies
+        var mockRepo = new Mock<ILedgerRepository>();
+        var mockCalculator = new Mock<IFeeCalculator>();
+        var mockSender = new Mock<ITransactionNotificationSender>();
 
-        source = LedgerAccount("acc-source", 100.00, "USD")
-        destination = LedgerAccount("acc-dest", 50.00, "USD")
+        var source = new LedgerAccount("acc-source", 100.00m, "USD");
+        var destination = new LedgerAccount("acc-dest", 50.00m, "USD");
 
-        mock_repo.find_by_id.side_effect = lambda uid: source if uid == "acc-source" else destination
-        mock_calculator.calculate_fee.return_value = 0.0
+        mockRepo.Setup(r => r.FindById("acc-source")).Returns(source);
+        mockRepo.Setup(r => r.FindById("acc-dest")).Returns(destination);
+        mockCalculator.Setup(c => c.CalculateFee(It.IsAny<decimal>())).Returns(0.00m);
 
-        processor = TransactionProcessor(mock_repo, mock_calculator, mock_sender)
+        var processor = new TransactionProcessor(mockRepo.Object, mockCalculator.Object, mockSender.Object);
 
-        # Act
-        processor.process_transfer("acc-source", "acc-dest", 30.0)
+        // Act
+        processor.ProcessTransfer("acc-source", "acc-dest", 30.00m);
 
-        # Assert state invariants updated
-        self.assertEqual(70.0, source.balance)
-        self.assertEqual(80.0, destination.balance)
+        // Assert state invariants updated
+        Assert.Equal(70.00m, source.Balance);
+        Assert.Equal(80.00m, destination.Balance);
 
-        # Assert repository saved both
-        mock_repo.save.assert_has_calls([call(source), call(destination)])
-        mock_sender.send_notification.assert_called_once()
+        // Assert repository saved both
+        mockRepo.Verify(r => r.Save(source), Times.Once);
+        mockRepo.Verify(r => r.Save(destination), Times.Once);
+        mockSender.Verify(s => s.SendNotification(It.IsAny<TransactionEvent>()), Times.Once);
+    }
+}
 ```
 
 By utilizing mock objects, we verify that the processor correctly coordinates the transfer, updates balance invariants, and calls the persistence layer, without requiring an active database connection.
@@ -9910,7 +10543,7 @@ If you stop there, you miss the opportunity to demonstrate depth. A senior syste
 
 In this chapter, we deep-dive into Apache Kafka's storage internals and partition routing mechanics, showing how AuraPay shards event streams to maintain ledger correctness.
 
-![Apache Kafka Topic Partitions and Consumer Groups](editions/python/chapters/21-message-brokers/visuals/kafka_internals.png){width=90%}
+![Apache Kafka Topic Partitions and Consumer Groups](editions/csharp/chapters/21-message-brokers/visuals/kafka_internals.png){width=90%}
 
 
 ## Apache Kafka Internals & Sharding
@@ -9956,28 +10589,34 @@ By sharding on `accountId`, all transaction events for a specific account are gu
 
 The following code illustrates this partition-key routing implementation in a Kafka producer:
 
-```python
-from confluent_kafka import Producer
+```csharp
+using Confluent.Kafka;
+using System.Threading.Tasks;
 
-class TransactionEventProducer:
-    def __init__(self, bootstrap_servers: str, topic: str):
-        config = {
-            'bootstrap.servers': bootstrap_servers,
-            'enable.idempotence': True,
-            'acks': 'all'
-        }
-        self.producer = Producer(config)
-        self.topic = topic
+public class TransactionEventProducer 
+{
+    private final IProducer<string, string> _producer;
+    private final string _topic;
 
-    def publish_event(self, account_id: str, event_json: str):
-        # Shard by account_id to guarantee partition ordering
-        self.producer.produce(
-            self.topic, 
-            key=account_id.encode('utf-8'), 
-            value=event_json.encode('utf-8'),
-            callback=lambda err, msg: print(f"Published: {msg.key()}") if not err else print(f"Error: {err}")
-        )
-        self.producer.poll(0)
+    public TransactionEventProducer(string bootstrapServers, string topic) 
+    {
+        var config = new ProducerConfig
+        {
+            BootstrapServers = bootstrapServers,
+            EnableIdempotence = true,
+            Acks = Acks.All
+        };
+        _producer = new ProducerBuilder<string, string>(config).Build();
+        _topic = topic;
+    }
+
+    public async Task PublishEventAsync(string accountId, string eventJson) 
+    {
+        // Shard by accountId to guarantee partition message ordering
+        var message = new Message<string, string> { Key = accountId, Value = eventJson };
+        await _producer.ProduceAsync(_topic, message);
+    }
+}
 ```
 
 Setting `enable.idempotence = true` ensures that network retries by the producer do not result in duplicate messages landing in the partition log.
@@ -10072,7 +10711,7 @@ Junior candidates treat AI as magic, describing prompt calls without considering
 
 In this chapter, we outline a structured approach to AI/ML system design, focusing on the ML system design framework, vector databases, RAG architecture pipelines, agentic tool-use patterns, and prompt gateway security.
 
-![Retrieval-Augmented Generation (RAG) Architecture Pipeline](editions/python/chapters/22-aiml-llm/visuals/rag_architecture.png){width=90%}
+![Retrieval-Augmented Generation (RAG) Architecture Pipeline](editions/csharp/chapters/22-aiml-llm/visuals/rag_architecture.png){width=90%}
 
 
 ## The AI/ML System Design Framework
@@ -10204,22 +10843,31 @@ To defend your platform, you must place a **Security Filter** in front of your L
 
 The following code illustrates a prompt verification filter:
 
-```python
-import re
+```csharp
+using System;
+using System.Text.RegularExpressions;
 
-class LlmGatewaySecurityFilter:
-    _INJECTION_PATTERN = re.compile(
-        r"(ignore all previous instructions|system prompt|bypass validation|reveal key)",
-        re.IGNORECASE
-    )
+public class LlmGatewaySecurityFilter 
+{
+    private static readonly Regex InjectionPattern = new Regex(
+        "(ignore all previous instructions|system prompt|bypass validation|reveal key)",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled
+    );
 
-    def validate_prompt(self, user_prompt: str) -> bool:
-        if not user_prompt or not user_prompt.strip():
-            return False
-        # Fail-fast if malicious injection signature detected
-        if self._INJECTION_PATTERN.search(user_prompt):
-            raise PermissionError("Potential prompt injection attack blocked")
-        return True
+    public bool ValidatePrompt(string userPrompt) 
+    {
+        if (string.IsNullOrWhiteSpace(userPrompt)) 
+        {
+            return false;
+        }
+        // Fail-fast if malicious injection signature detected
+        if (InjectionPattern.IsMatch(userPrompt)) 
+        {
+            throw new UnauthorizedAccessException("Potential prompt injection attack blocked");
+        }
+        return true;
+    }
+}
 ```
 
 Any incoming prompt containing injection signatures is blocked immediately before execution, protecting the LLM boundary from security drift.

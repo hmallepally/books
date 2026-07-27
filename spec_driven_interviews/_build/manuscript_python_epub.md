@@ -1,8 +1,5 @@
 
 
-\part{The Spec-Driven Paradigm}
-
-
 # Prologue: The Syntax Trap {.unnumbered}
 
 > *"The greatest threat to software craftsmanship is not the speed of the typist, but the direction of their design."*
@@ -697,9 +694,6 @@ If the Ledger database slows down or halts, the matching engine continues to pro
 > ⭐ **STAR Moment: Bounded Context Isolation**
 > 
 > During system design interviews, explain that microservice division should mirror DDD Bounded Contexts. Say: *"We will isolate the ZenithTrade Matching Engine from the AuraPay Ledger. If the ledger experiences a database write lag, our matching engine can continue to accept and queue orders in memory, preventing system-wide downtime."* This shows you design for fault isolation.
-
-
-\part{Code Design and Craftsmanship}
 
 
 # Principles of Object-Oriented Design
@@ -1749,9 +1743,6 @@ Setting the pool size to 17 will yield *higher* overall throughput than setting 
 > ⭐ **STAR Moment: The Cache Invalidation Design**
 > 
 > When discussing performance during an interview, never say *"We will add a cache."* Say: *"We will implement a Cache-Aside pattern using Redis. To prevent stale reads in our double-entry ledger, we will use a transactional write-through strategy, invalidating cache keys atomically inside the database commit boundary to ensure absolute consistency."* This shows you understand caching boundaries in financial transaction systems.
-
-
-\part{Algorithmic Mastery}
 
 
 # Core Algorithms & Assessment Tactical Guide
@@ -8692,9 +8683,6 @@ Before jumping into the 20 Mock Sets, review this executive checklist of top spe
    When calculating product, array sums, or coordinate products, initialize sum/product accumulators as `long` to prevent 32-bit integer overflow before returning `(int) sum`.
 10. **Array Bounds Guarding:**  
     Always check `array != null && array.length > 0` before accessing index `0`, and ensure loops end at `i < array.length` (or `i <= array.length` when using a sentinel).
-
-
-\part{System Design \& Architecture at Scale}
 
 
 # System Architecture and Design Fundamentals

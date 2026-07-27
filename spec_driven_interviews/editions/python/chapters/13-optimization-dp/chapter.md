@@ -182,129 +182,101 @@ Why it matters: Problems like climbing stairs, decode ways, and tiling can be in
 ## Reusable Code Templates
 
 ### Template A: Binary Search
-```java
-// Standard Binary Search
-int binarySearch(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) return mid;
-        else if (nums[mid] < target) left = mid + 1;
-        else right = mid - 1;
-    }
-    return -1;
-}
+```python
+# Standard Binary Search
+def binary_search(nums: list[int], target: int) -> int:
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target: return mid
+        elif nums[mid] < target: left = mid + 1
+        else: right = mid - 1
+    return -1
 
-// Binary Search on Answer Space (Leftmost valid)
-int binarySearchAnswerSpace(int min, int max) {
-    int left = min, right = max;
-    int best = -1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (isValid(mid)) {
-            best = mid;
-            right = mid - 1; // Try to find a smaller valid answer
-        } else {
-            left = mid + 1;
-        }
-    }
-    return best;
-}
+# Binary Search on Answer Space (Leftmost valid)
+def binary_search_answer_space(min_val: int, max_val: int) -> int:
+    left, right = min_val, max_val
+    best = -1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if is_valid(mid):
+            best = mid
+            right = mid - 1 # Try to find a smaller valid answer
+        else:
+            left = mid + 1
+    return best
 ```
-
 ### Template B: Monotonic Stack
-```java
-public int[] nextGreaterElement(int[] nums) {
-    int n = nums.length;
-    int[] result = new int[n];
-    Arrays.fill(result, -1);
-    Deque<Integer> stack = new ArrayDeque<>(); // stores indices
-    for (int i = 0; i < n; i++) {
-        // Maintain strictly decreasing stack
-        while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
-            int prevIndex = stack.pop();
-            result[prevIndex] = nums[i]; // Found next greater!
-        }
-        stack.push(i);
-    }
-    return result;
-}
+```python
+def next_greater_element(self, nums: list[int]) -> list[int]:
+    n = len(nums)
+    result = [-1] * n
+    stack = [] # stores indices
+    for i in range(n):
+        # Maintain strictly decreasing stack
+        while stack and nums[i] > nums[stack[-1]]:
+            prev_index = stack.pop()
+            result[prev_index] = nums[i] # Found next greater!
+        stack.append(i)
+    return result
 ```
-
 ### Template C: 1D DP with State Compression
-```java
-public int dpStateCompression(int[] nums) {
-    if (nums.length == 0) return 0;
-    int prev2 = 0; // dp[i-2]
-    int prev1 = nums[0]; // dp[i-1]
-    for (int i = 1; i < nums.length; i++) {
-        int curr = Math.max(prev1, prev2 + nums[i]);
-        prev2 = prev1;
-        prev1 = curr;
-    }
-    return prev1;
-}
+```python
+def dp_state_compression(self, nums: list[int]) -> int:
+    if not nums: return 0
+    prev2 = 0 # dp[i-2]
+    prev1 = nums[0] # dp[i-1]
+    for i in range(1, len(nums)):
+        curr = max(prev1, prev2 + nums[i])
+        prev2 = prev1
+        prev1 = curr
+    return prev1
 ```
-
 ### Template D: BFS with Level Tracking
-```java
-public int bfsLevel(Node start, Node target) {
-    Queue<Node> queue = new ArrayDeque<>();
-    Set<Node> visited = new HashSet<>();
-    queue.offer(start);
-    visited.add(start);
+```python
+def bfs_level(self, start: 'Node', target: 'Node') -> int:
+    from collections import deque
+    queue = deque([start])
+    visited = {start}
     
-    int level = 0;
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i < size; i++) {
-            Node curr = queue.poll();
-            if (curr.equals(target)) return level;
+    level = 0
+    while queue:
+        size = len(queue)
+        for _ in range(size):
+            curr = queue.popleft()
+            if curr == target: return level
             
-            for (Node neighbor : curr.neighbors) {
-                if (!visited.contains(neighbor)) {
-                    visited.add(neighbor);
-                    queue.offer(neighbor);
-                }
-            }
-        }
-        level++; // Increment level after exploring all nodes at current depth
-    }
-    return -1;
-}
+            for neighbor in curr.neighbors:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+        level += 1 # Increment level after exploring all nodes at current depth
+    return -1
 ```
-
 ### Template E: Topological Sort (Kahn's Algorithm)
-```java
-public List<Integer> topologicalSort(int numNodes, int[][] edges) {
-    var adj = new ArrayList<List<Integer>>();
-    int[] inDegree = new int[numNodes];
-    for (int i = 0; i < numNodes; i++) adj.add(new ArrayList<>());
+```python
+def topological_sort(self, num_nodes: int, edges: list[list[int]]) -> list[int]:
+    from collections import deque
+    adj = [[] for _ in range(num_nodes)]
+    in_degree = [0] * num_nodes
     
-    for (int[] edge : edges) {
-        adj.get(edge[1]).add(edge[0]); // edge[1] -> edge[0]
-        inDegree[edge[0]]++;
-    }
+    for u, v in edges:
+        adj[v].append(u) # v -> u
+        in_degree[u] += 1
+        
+    queue = deque(i for i in range(num_nodes) if in_degree[i] == 0)
     
-    var queue = new ArrayDeque<Integer>();
-    for (int i = 0; i < numNodes; i++) {
-        if (inDegree[i] == 0) queue.offer(i);
-    }
-    
-    List<Integer> order = new ArrayList<>();
-    while (!queue.isEmpty()) {
-        int curr = queue.poll();
-        order.add(curr);
-        for (int neighbor : adj.get(curr)) {
-            if (--inDegree[neighbor] == 0) {
-                queue.offer(neighbor);
-            }
-        }
-    }
-    return order.size() == numNodes ? order : new ArrayList<>(); // Empty if cycle exists
-}
+    order = []
+    while queue:
+        curr = queue.popleft()
+        order.append(curr)
+        for neighbor in adj[curr]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+                
+    return order if len(order) == num_nodes else [] # Empty if cycle exists
 ```
-
 * * *
 
 ## Solved Exemplar Problems
@@ -319,38 +291,31 @@ public List<Integer> topologicalSort(int numNodes, int[][] edges) {
 
 **Explanation:** We use the monotonic partition invariant. At any midpoint, at least one half of the array is strictly sorted. We identify the sorted half and check if the target falls within its range.
 
-```java
-public int search(int[] nums, int target) {
-    if (nums == null || nums.length == 0) return -1;
-    int left = 0, right = nums.length - 1;
+```python
+def search(self, nums: list[int], target: int) -> int:
+    if not nums: return -1
+    left, right = 0, len(nums) - 1
     
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) return mid;
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target: return mid
         
-        // Left half is sorted
-        if (nums[left] <= nums[mid]) {
-            if (nums[left] <= target && target < nums[mid]) {
-                right = mid - 1; // Target is in the sorted left half
-            } else {
-                left = mid + 1; // Target must be in the right half
-            }
-        } 
-        // Right half is sorted
-        else {
-            if (nums[mid] < target && target <= nums[right]) {
-                left = mid + 1; // Target is in the sorted right half
-            } else {
-                right = mid - 1; // Target must be in the left half
-            }
-        }
-    }
-    return -1;
-}
-// Time Complexity: O(log N)
-// Space Complexity: O(1)
+        # Left half is sorted
+        if nums[left] <= nums[mid]:
+            if nums[left] <= target < nums[mid]:
+                right = mid - 1 # Target is in the sorted left half
+            else:
+                left = mid + 1 # Target must be in the right half
+        # Right half is sorted
+        else:
+            if nums[mid] < target <= nums[right]:
+                left = mid + 1 # Target is in the sorted right half
+            else:
+                right = mid - 1 # Target must be in the left half
+    return -1
+# Time Complexity: O(log N)
+# Space Complexity: O(1)
 ```
-
 * * *
 
 **2. Sliding Window Maximum**
@@ -362,36 +327,33 @@ public int search(int[] nums, int target) {
 
 **Explanation:** We maintain a deque of indices such that the values are in strictly decreasing order. The front of the deque always holds the maximum element's index for the current window. We remove elements from the front that fall out of the window.
 
-```java
-public int[] maxSlidingWindow(int[] nums, int k) {
-    if (nums == null || k <= 0) return new int[0];
-    int n = nums.length;
-    int[] res = new int[n - k + 1];
-    int resIndex = 0;
-    Deque<Integer> q = new ArrayDeque<>();
+```python
+def max_sliding_window(self, nums: list[int], k: int) -> list[int]:
+    if not nums or k <= 0: return []
+    n = len(nums)
+    res = [0] * (n - k + 1)
+    res_index = 0
+    from collections import deque
+    q = deque()
     
-    for (int i = 0; i < n; i++) {
-        // Remove indices outside the current window
-        if (!q.isEmpty() && q.peekFirst() < i - k + 1) {
-            q.pollFirst();
-        }
-        // Remove smaller elements (maintain decreasing order)
-        while (!q.isEmpty() && nums[q.peekLast()] < nums[i]) {
-            q.pollLast();
-        }
-        q.offerLast(i);
+    for i in range(n):
+        # Remove indices outside the current window
+        if q and q[0] < i - k + 1:
+            q.popleft()
+        # Remove smaller elements (maintain decreasing order)
+        while q and nums[q[-1]] < nums[i]:
+            q.pop()
+        q.append(i)
         
-        // Record max for the window
-        if (i >= k - 1) {
-            res[resIndex++] = nums[q.peekFirst()];
-        }
-    }
-    return res;
-}
-// Time Complexity: O(N) since each element is pushed/popped at most once
-// Space Complexity: O(K) for the deque
+        # Record max for the window
+        if i >= k - 1:
+            res[res_index] = nums[q[0]]
+            res_index += 1
+            
+    return res
+# Time Complexity: O(N) since each element is pushed/popped at most once
+# Space Complexity: O(K) for the deque
 ```
-
 * * *
 
 **3. Longest Common Subsequence**
@@ -423,27 +385,26 @@ The bold diagonal cells show: C matches C (1), A matches A (2), T matches T (3).
 
 **Explanation:** `dp[i][j]` represents the LCS of the prefixes of length `i` and `j`. If characters match, we add 1 to the result of `dp[i-1][j-1]`. If not, we take the max of skipping a character in either string.
 
-```java
-public int longestCommonSubsequence(String text1, String text2) {
-    if (text1.length() < text2.length()) return longestCommonSubsequence(text2, text1);
-    int m = text1.length(), n = text2.length();
-    var prev = new int[n + 1];
-    var curr = new int[n + 1];
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            curr[j] = text1.charAt(i - 1) == text2.charAt(j - 1)
-                ? prev[j - 1] + 1
-                : Math.max(prev[j], curr[j - 1]);
-        }
-        var temp = prev; prev = curr; curr = temp;
-        java.util.Arrays.fill(curr, 0);
-    }
-    return prev[n];
-}
-// Time Complexity: O(M * N)
-// Space Complexity: O(min(M, N)) - Space compressed DP as taught in the vocabulary section.
+```python
+def longest_common_subsequence(self, text1: str, text2: str) -> int:
+    if len(text1) < len(text2): return self.longest_common_subsequence(text2, text1)
+    m, n = len(text1), len(text2)
+    prev = [0] * (n + 1)
+    curr = [0] * (n + 1)
+    
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if text1[i - 1] == text2[j - 1]:
+                curr[j] = prev[j - 1] + 1
+            else:
+                curr[j] = max(prev[j], curr[j - 1])
+        prev, curr = curr, prev
+        curr = [0] * (n + 1)
+        
+    return prev[n]
+# Time Complexity: O(M * N)
+# Space Complexity: O(min(M, N)) - Space compressed DP as taught in the vocabulary section.
 ```
-
 * * *
 
 **4. Burst Balloons**
@@ -471,32 +432,26 @@ The three nested loops enumerate: interval length → starting position → whic
 
 **Explanation:** We think backwards: what is the LAST balloon to be burst in an interval `[left, right]`? This allows us to split the problem into independent subproblems. `dp[i][j]` is the max coins obtained from bursting balloons strictly between `i` and `j`.
 
-```java
-public int maxCoins(int[] nums) {
-    int n = nums.length;
-    int[] arr = new int[n + 2];
-    arr[0] = 1; arr[n + 1] = 1; // Padding with 1s
-    for (int i = 0; i < n; i++) arr[i + 1] = nums[i];
+```python
+def max_coins(self, nums: list[int]) -> int:
+    n = len(nums)
+    arr = [1] + nums + [1] # Padding with 1s
     
-    int[][] dp = new int[n + 2][n + 2];
+    dp = [[0] * (n + 2) for _ in range(n + 2)]
     
-    // len is the length of the interval strictly between i and j
-    for (int len = 1; len <= n; len++) {
-        for (int i = 0; i <= n - len; i++) {
-            int j = i + len + 1;
-            // k is the index of the LAST balloon to burst in (i, j)
-            for (int k = i + 1; k < j; k++) {
-                int coins = arr[i] * arr[k] * arr[j] + dp[i][k] + dp[k][j];
-                dp[i][j] = Math.max(dp[i][j], coins);
-            }
-        }
-    }
-    return dp[0][n + 1];
-}
-// Time Complexity: O(N^3)
-// Space Complexity: O(N^2)
+    # len_ is the length of the interval strictly between i and j
+    for len_ in range(1, n + 1):
+        for i in range(n - len_ + 1):
+            j = i + len_ + 1
+            # k is the index of the LAST balloon to burst in (i, j)
+            for k in range(i + 1, j):
+                coins = arr[i] * arr[k] * arr[j] + dp[i][k] + dp[k][j]
+                dp[i][j] = max(dp[i][j], coins)
+                
+    return dp[0][n + 1]
+# Time Complexity: O(N^3)
+# Space Complexity: O(N^2)
 ```
-
 * * *
 
 **5. Maximum Product Subarray**
@@ -508,28 +463,24 @@ public int maxCoins(int[] nums) {
 
 **Explanation:** Since multiplying two negative numbers yields a positive number, we must track BOTH the maximum product and the minimum product ending at the current position.
 
-```java
-public int maxProduct(int[] nums) {
-    if (nums == null || nums.length == 0) return 0;
-    int maxVal = nums[0], minVal = nums[0], result = nums[0];
+```python
+def max_product(self, nums: list[int]) -> int:
+    if not nums: return 0
+    max_val = min_val = result = nums[0]
     
-    for (int i = 1; i < nums.length; i++) {
-        // If current is negative, max and min will swap roles
-        if (nums[i] < 0) {
-            int temp = maxVal; 
-            maxVal = minVal; 
-            minVal = temp;
-        }
-        maxVal = Math.max(nums[i], maxVal * nums[i]);
-        minVal = Math.min(nums[i], minVal * nums[i]);
-        result = Math.max(result, maxVal);
-    }
-    return result;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(1)
+    for i in range(1, len(nums)):
+        # If current is negative, max and min will swap roles
+        if nums[i] < 0:
+            max_val, min_val = min_val, max_val
+            
+        max_val = max(nums[i], max_val * nums[i])
+        min_val = min(nums[i], min_val * nums[i])
+        result = max(result, max_val)
+        
+    return result
+# Time Complexity: O(N)
+# Space Complexity: O(1)
 ```
-
 * * *
 
 **6. Median of Two Sorted Arrays**
@@ -541,40 +492,36 @@ public int maxProduct(int[] nums) {
 
 **Explanation:** We binary search for the correct partition index in the smaller array such that the left halves of both arrays contain exactly half the total elements, and the largest element on the left is $\le$ the smallest element on the right.
 
-```java
-public double findMedianSortedArrays(int[] A, int[] B) {
-    if (A.length > B.length) return findMedianSortedArrays(B, A); // ensure A is smaller
-    int m = A.length, n = B.length;
-    int left = 0, right = m;
+```python
+def find_median_sorted_arrays(self, A: list[int], B: list[int]) -> float:
+    if len(A) > len(B): return self.find_median_sorted_arrays(B, A) # ensure A is smaller
+    m, n = len(A), len(B)
+    left, right = 0, m
     
-    while (left <= right) {
-        int i = (left + right) / 2; // partition A
-        int j = (m + n + 1) / 2 - i; // partition B
+    while left <= right:
+        i = (left + right) // 2 # partition A
+        j = (m + n + 1) // 2 - i # partition B
         
-        int maxLeftA = (i == 0) ? Integer.MIN_VALUE : A[i - 1];
-        int minRightA = (i == m) ? Integer.MAX_VALUE : A[i];
-        int maxLeftB = (j == 0) ? Integer.MIN_VALUE : B[j - 1];
-        int minRightB = (j == n) ? Integer.MAX_VALUE : B[j];
+        max_left_a = float('-inf') if i == 0 else A[i - 1]
+        min_right_a = float('inf') if i == m else A[i]
+        max_left_b = float('-inf') if j == 0 else B[j - 1]
+        min_right_b = float('inf') if j == n else B[j]
         
-        if (maxLeftA <= minRightB && maxLeftB <= minRightA) {
-            // Correct partition found
-            if ((m + n) % 2 == 0) {
-                return (Math.max(maxLeftA, maxLeftB) + Math.min(minRightA, minRightB)) / 2.0;
-            } else {
-                return Math.max(maxLeftA, maxLeftB);
-            }
-        } else if (maxLeftA > minRightB) {
-            right = i - 1; // move partition left in A
-        } else {
-            left = i + 1; // move partition right in A
-        }
-    }
-    return 0.0;
-}
-// Time Complexity: O(log(min(M, N)))
-// Space Complexity: O(1)
+        if max_left_a <= min_right_b and max_left_b <= min_right_a:
+            # Correct partition found
+            if (m + n) % 2 == 0:
+                return (max(max_left_a, max_left_b) + min(min_right_a, min_right_b)) / 2.0
+            else:
+                return max(max_left_a, max_left_b)
+        elif max_left_a > min_right_b:
+            right = i - 1 # move partition left in A
+        else:
+            left = i + 1 # move partition right in A
+            
+    return 0.0
+# Time Complexity: O(log(min(M, N)))
+# Space Complexity: O(1)
 ```
-
 * * *
 
 **7. Trapping Rain Water**
@@ -586,29 +533,26 @@ public double findMedianSortedArrays(int[] A, int[] B) {
 
 **Explanation:** The amount of water above a bar depends on `min(max_left, max_right)`. We use two pointers from both ends, safely moving the pointer that points to the strictly smaller max bound, adding water along the way.
 
-```java
-public int trap(int[] height) {
-    if (height == null || height.length == 0) return 0;
-    int left = 0, right = height.length - 1;
-    int leftMax = 0, rightMax = 0, totalWater = 0;
+```python
+def trap(self, height: list[int]) -> int:
+    if not height: return 0
+    left, right = 0, len(height) - 1
+    left_max = right_max = total_water = 0
     
-    while (left < right) {
-        if (height[left] < height[right]) {
-            if (height[left] >= leftMax) leftMax = height[left];
-            else totalWater += leftMax - height[left];
-            left++;
-        } else {
-            if (height[right] >= rightMax) rightMax = height[right];
-            else totalWater += rightMax - height[right];
-            right--;
-        }
-    }
-    return totalWater;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(1)
+    while left < right:
+        if height[left] < height[right]:
+            if height[left] >= left_max: left_max = height[left]
+            else: total_water += left_max - height[left]
+            left += 1
+        else:
+            if height[right] >= right_max: right_max = height[right]
+            else: total_water += right_max - height[right]
+            right -= 1
+            
+    return total_water
+# Time Complexity: O(N)
+# Space Complexity: O(1)
 ```
-
 * * *
 
 **8. Daily Temperatures**
@@ -621,26 +565,23 @@ public int trap(int[] height) {
 
 **Explanation:** We maintain a stack of indices representing days where we haven't found a warmer day yet (decreasing order). When we find a warmer day, we pop from the stack and compute the wait time.
 
-```java
-public int[] dailyTemperatures(int[] temperatures) {
-    int n = temperatures.length;
-    int[] res = new int[n];
-    Deque<Integer> stack = new ArrayDeque<>();
+```python
+def daily_temperatures(self, temperatures: list[int]) -> list[int]:
+    n = len(temperatures)
+    res = [0] * n
+    stack = []
     
-    for (int i = 0; i < n; i++) {
-        // While current temp is greater than temp at stack top
-        while (!stack.isEmpty() && temperatures[i] > temperatures[stack.peek()]) {
-            int prevIndex = stack.pop();
-            res[prevIndex] = i - prevIndex;
-        }
-        stack.push(i);
-    }
-    return res;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(N)
+    for i in range(n):
+        # While current temp is greater than temp at stack top
+        while stack and temperatures[i] > temperatures[stack[-1]]:
+            prev_index = stack.pop()
+            res[prev_index] = i - prev_index
+        stack.append(i)
+        
+    return res
+# Time Complexity: O(N)
+# Space Complexity: O(N)
 ```
-
 * * *
 
 **9. Edit Distance / Levenshtein**
@@ -674,32 +615,28 @@ public int[] dailyTemperatures(int[] temperatures) {
 
 **Explanation:** `dp[i][j]` is the edit distance between `word1` prefix length `i` and `word2` prefix length `j`. If characters match, cost is `dp[i-1][j-1]`. Otherwise, cost is `1 + min(insert, delete, replace)`.
 
-```java
-public int minDistance(String word1, String word2) {
-    int m = word1.length(), n = word2.length();
-    int[][] dp = new int[m + 1][n + 1];
+```python
+def min_distance(self, word1: str, word2: str) -> int:
+    m, n = len(word1), len(word2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
     
-    // Base cases
-    for (int i = 0; i <= m; i++) dp[i][0] = i;
-    for (int j = 0; j <= n; j++) dp[0][j] = j;
+    # Base cases
+    for i in range(m + 1): dp[i][0] = i
+    for j in range(n + 1): dp[0][j] = j
     
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
-                dp[i][j] = dp[i - 1][j - 1]; // No op
-            } else {
-                dp[i][j] = 1 + Math.min(dp[i - 1][j - 1], // Replace
-                               Math.min(dp[i - 1][j],     // Delete
-                                        dp[i][j - 1]));   // Insert
-            }
-        }
-    }
-    return dp[m][n];
-}
-// Time Complexity: O(M * N)
-// Space Complexity: O(M * N)
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if word1[i - 1] == word2[j - 1]:
+                dp[i][j] = dp[i - 1][j - 1] # No op
+            else:
+                dp[i][j] = 1 + min(dp[i - 1][j - 1], # Replace
+                                   dp[i - 1][j],     # Delete
+                                   dp[i][j - 1])     # Insert
+                                   
+    return dp[m][n]
+# Time Complexity: O(M * N)
+# Space Complexity: O(M * N)
 ```
-
 * * *
 
 **10. LRU Cache**
@@ -727,63 +664,54 @@ Notice: after `get(1)`, key 1 moved to head, saving it from eviction. Key 2, unt
 
 **Explanation:** The HashMap provides $\mathcal{O}(1)$ access to nodes. The Doubly Linked List maintains the eviction order. Moving a node to the head of the list designates it as most recently used.
 
-```java
-public class LRUCache {
-    class Node { 
-        int key, val; 
-        Node prev, next; 
-    }
-    private Map<Integer, Node> map = new HashMap<>();
-    private int capacity;
-    private Node head, tail;
+```python
+class Node:
+    def __init__(self, key=0, val=0):
+        self.key = key
+        self.val = val
+        self.prev = None
+        self.next = None
 
-    public LRUCache(int capacity) {
-        this.capacity = capacity;
-        head = new Node(); 
-        tail = new Node();
-        head.next = tail; 
-        tail.prev = head; // Connect dummy head and tail
-    }
-    
-    public int get(int key) {
-        if (!map.containsKey(key)) return -1;
-        Node node = map.get(key);
-        remove(node); // Move to head (MRU)
-        insert(node);
-        return node.val;
-    }
-    
-    public void put(int key, int value) {
-        if (map.containsKey(key)) {
-            remove(map.get(key));
-        }
-        if (map.size() == capacity) {
-            map.remove(tail.prev.key);
-            remove(tail.prev); // Evict LRU
-        }
-        Node node = new Node(); 
-        node.key = key; 
-        node.val = value;
-        insert(node);
-        map.put(key, node);
-    }
-    
-    private void remove(Node node) {
-        node.prev.next = node.next; 
-        node.next.prev = node.prev;
-    }
-    
-    private void insert(Node node) { // Insert right after head
-        node.next = head.next; 
-        node.next.prev = node;
-        head.next = node; 
-        node.prev = head;
-    }
-}
-// Time Complexity: O(1) for both get and put
-// Space Complexity: O(Capacity)
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = Node()
+        self.tail = Node()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def get(self, key: int) -> int:
+        if key not in self.cache: return -1
+        node = self.cache[key]
+        self._remove(node)
+        self._insert(node)
+        return node.val
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            self._remove(self.cache[key])
+        if len(self.cache) == self.capacity:
+            lru = self.tail.prev
+            self._remove(lru)
+            del self.cache[lru.key]
+            
+        new_node = Node(key, value)
+        self._insert(new_node)
+        self.cache[key] = new_node
+
+    def _remove(self, node: Node) -> None:
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
+    def _insert(self, node: Node) -> None:
+        node.next = self.head.next
+        node.next.prev = node
+        self.head.next = node
+        node.prev = self.head
+# Time Complexity: O(1) for both get and put
+# Space Complexity: O(Capacity)
 ```
-
 * * *
 
 **11. Maximal Rectangle in Binary Matrix**
@@ -829,41 +757,38 @@ public class LRUCache {
 
 **Explanation:** We treat each row as the base of a histogram and update heights. We then run the $\mathcal{O}(N)$ "Largest Rectangle in Histogram" algorithm using a monotonic stack on each row.
 
-```java
-public int maximalRectangle(char[][] matrix) {
-    if (matrix == null || matrix.length == 0) return 0;
-    int cols = matrix[0].length;
-    int[] heights = new int[cols];
-    int maxArea = 0;
+```python
+def maximal_rectangle(self, matrix: list[list[str]]) -> int:
+    if not matrix or not matrix[0]: return 0
+    cols = len(matrix[0])
+    heights = [0] * cols
+    max_area = 0
     
-    for (char[] row : matrix) {
-        // Update histogram heights
-        for (int c = 0; c < cols; c++) {
-            heights[c] = (row[c] == '1') ? heights[c] + 1 : 0;
-        }
-        maxArea = Math.max(maxArea, maxHistogram(heights));
-    }
-    return maxArea;
-}
+    for row in matrix:
+        # Update histogram heights
+        for c in range(cols):
+            heights[c] = heights[c] + 1 if row[c] == '1' else 0
+        max_area = max(max_area, self._max_histogram(heights))
+        
+    return max_area
 
-private int maxHistogram(int[] heights) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    int max = 0, n = heights.length;
-    for (int i = 0; i <= n; i++) {
-        int h = (i == n) ? 0 : heights[i];
-        while (!stack.isEmpty() && h < heights[stack.peek()]) {
-            int height = heights[stack.pop()];
-            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
-            max = Math.max(max, height * width);
-        }
-        stack.push(i);
-    }
-    return max;
-}
-// Time Complexity: O(R * C)
-// Space Complexity: O(C)
+def _max_histogram(self, heights: list[int]) -> int:
+    stack = []
+    max_val = 0
+    n = len(heights)
+    
+    for i in range(n + 1):
+        h = 0 if i == n else heights[i]
+        while stack and h < heights[stack[-1]]:
+            height = heights[stack.pop()]
+            width = i if not stack else i - stack[-1] - 1
+            max_val = max(max_val, height * width)
+        stack.append(i)
+        
+    return max_val
+# Time Complexity: O(R * C)
+# Space Complexity: O(C)
 ```
-
 * * *
 
 **12. Word Ladder**
@@ -875,42 +800,32 @@ private int maxHistogram(int[] heights) {
 
 **Explanation:** We use BFS because we want the shortest path in an unweighted graph. For each word, we generate all valid next mutations and enqueue them, tracking the level.
 
-```java
-public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-    Set<String> set = new HashSet<>(wordList);
-    if (!set.contains(endWord)) return 0;
+```python
+def ladder_length(self, begin_word: str, end_word: str, word_list: list[str]) -> int:
+    word_set = set(word_list)
+    if end_word not in word_set: return 0
     
-    Queue<String> queue = new ArrayDeque<>();
-    queue.offer(beginWord);
-    int level = 1;
+    from collections import deque
+    queue = deque([begin_word])
+    level = 1
     
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i < size; i++) { // Level-by-level processing
-            String curr = queue.poll();
-            char[] chars = curr.toCharArray();
-            for (int j = 0; j < chars.length; j++) {
-                char orig = chars[j];
-                for (char c = 'a'; c <= 'z'; c++) { // Try all mutations
-                    if (c == orig) continue;
-                    chars[j] = c;
-                    String next = new String(chars);
-                    if (next.equals(endWord)) return level + 1;
-                    if (set.remove(next)) { // remove serves as 'visited' check
-                        queue.offer(next);
-                    }
-                }
-                chars[j] = orig; // Backtrack
-            }
-        }
-        level++;
-    }
-    return 0;
-}
-// Time Complexity: O(M^2 * N) where M is word length, N is number of words
-// Space Complexity: O(M * N)
+    while queue:
+        for _ in range(len(queue)): # Level-by-level processing
+            curr = queue.popleft()
+            for j in range(len(curr)):
+                for c in 'abcdefghijklmnopqrstuvwxyz':
+                    if c == curr[j]: continue
+                    next_word = curr[:j] + c + curr[j+1:]
+                    if next_word == end_word: return level + 1
+                    if next_word in word_set: # remove serves as 'visited' check
+                        word_set.remove(next_word)
+                        queue.append(next_word)
+        level += 1
+        
+    return 0
+# Time Complexity: O(M^2 * N) where M is word length, N is number of words
+# Space Complexity: O(M * N)
 ```
-
 * * *
 
 **13. Coin Change**
@@ -922,25 +837,20 @@ public int ladderLength(String beginWord, String endWord, List<String> wordList)
 
 **Explanation:** `dp[i]` is the minimum coins needed for amount `i`. We iterate through amounts and coins, taking the min of using the coin or not: `dp[i] = min(dp[i], dp[i - coin] + 1)`.
 
-```java
-public int coinChange(int[] coins, int amount) {
-    int[] dp = new int[amount + 1];
-    Arrays.fill(dp, amount + 1); // Fill with max invalid value
-    dp[0] = 0;
+```python
+def coin_change(self, coins: list[int], amount: int) -> int:
+    dp = [amount + 1] * (amount + 1) # Fill with max invalid value
+    dp[0] = 0
     
-    for (int i = 1; i <= amount; i++) {
-        for (int coin : coins) {
-            if (i >= coin) {
-                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-            }
-        }
-    }
-    return dp[amount] > amount ? -1 : dp[amount];
-}
-// Time Complexity: O(Amount * N)
-// Space Complexity: O(Amount)
+    for i in range(1, amount + 1):
+        for coin in coins:
+            if i >= coin:
+                dp[i] = min(dp[i], dp[i - coin] + 1)
+                
+    return -1 if dp[amount] > amount else dp[amount]
+# Time Complexity: O(Amount * N)
+# Space Complexity: O(Amount)
 ```
-
 * * *
 
 **14. House Robber**
@@ -952,23 +862,21 @@ public int coinChange(int[] coins, int amount) {
 
 **Explanation:** The transition is `dp[i] = max(dp[i-1], dp[i-2] + nums[i])`. We only need to store the previous two values, saving space.
 
-```java
-public int rob(int[] nums) {
-    if (nums == null || nums.length == 0) return 0;
-    int prev1 = 0; // max so far excluding current
-    int prev2 = 0; // max so far including current (-2)
+```python
+def rob(self, nums: list[int]) -> int:
+    if not nums: return 0
+    prev1 = 0 # max so far excluding current
+    prev2 = 0 # max so far including current (-2)
     
-    for (int num : nums) {
-        int temp = Math.max(prev1, prev2 + num); // rob or don't rob
-        prev2 = prev1;
-        prev1 = temp;
-    }
-    return prev1;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(1)
+    for num in nums:
+        temp = max(prev1, prev2 + num) # rob or don't rob
+        prev2 = prev1
+        prev1 = temp
+        
+    return prev1
+# Time Complexity: O(N)
+# Space Complexity: O(1)
 ```
-
 * * *
 
 **15. Regular Expression Matching**
@@ -980,36 +888,30 @@ public int rob(int[] nums) {
 
 **Explanation:** Complex transition logic based on whether we see a `*`. We either treat `*` as zero occurrences (`dp[i][j-2]`) or multiple occurrences (`dp[i-1][j]` if the preceding char matches).
 
-```java
-public boolean isMatch(String s, String p) {
-    int m = s.length(), n = p.length();
-    boolean[][] dp = new boolean[m + 1][n + 1];
-    dp[0][0] = true;
+```python
+def is_match(self, s: str, p: str) -> bool:
+    m, n = len(s), len(p)
+    dp = [[False] * (n + 1) for _ in range(m + 1)]
+    dp[0][0] = True
     
-    // Match empty string with patterns like a*b*
-    for (int j = 1; j <= n; j++) {
-        if (p.charAt(j - 1) == '*') dp[0][j] = dp[0][j - 2];
-    }
-    
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            if (p.charAt(j - 1) == '.' || p.charAt(j - 1) == s.charAt(i - 1)) {
-                dp[i][j] = dp[i - 1][j - 1]; // Single char match
-            } else if (p.charAt(j - 1) == '*') {
-                dp[i][j] = dp[i][j - 2]; // Match zero times
-                // If preceding char matches, match one or more times
-                if (p.charAt(j - 2) == '.' || p.charAt(j - 2) == s.charAt(i - 1)) {
-                    dp[i][j] = dp[i][j] || dp[i - 1][j];
-                }
-            }
-        }
-    }
-    return dp[m][n];
-}
-// Time Complexity: O(M * N)
-// Space Complexity: O(M * N)
+    # Match empty string with patterns like a*b*
+    for j in range(1, n + 1):
+        if p[j - 1] == '*': dp[0][j] = dp[0][j - 2]
+        
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if p[j - 1] == '.' or p[j - 1] == s[i - 1]:
+                dp[i][j] = dp[i - 1][j - 1] # Single char match
+            elif p[j - 1] == '*':
+                dp[i][j] = dp[i][j - 2] # Match zero times
+                # If preceding char matches, match one or more times
+                if p[j - 2] == '.' or p[j - 2] == s[i - 1]:
+                    dp[i][j] = dp[i][j] or dp[i - 1][j]
+                    
+    return dp[m][n]
+# Time Complexity: O(M * N)
+# Space Complexity: O(M * N)
 ```
-
 * * *
 
 **16. Course Schedule II**
@@ -1021,37 +923,31 @@ public boolean isMatch(String s, String p) {
 
 **Explanation:** We count the in-degree of each course. A course with in-degree 0 has no prerequisites and can be taken. We enqueue it, take it, and decrement the in-degree of its neighbors.
 
-```java
-public int[] findOrder(int numCourses, int[][] prerequisites) {
-    var inDegree = new int[numCourses];
-    var adj = new ArrayList<List<Integer>>();
-    for (int i = 0; i < numCourses; i++) adj.add(new ArrayList<>());
+```python
+def find_order(self, num_courses: int, prerequisites: list[list[int]]) -> list[int]:
+    in_degree = [0] * num_courses
+    adj = [[] for _ in range(num_courses)]
     
-    for (int[] p : prerequisites) {
-        adj.get(p[1]).add(p[0]);
-        inDegree[p[0]]++;
-    }
+    for dest, src in prerequisites:
+        adj[src].append(dest)
+        in_degree[dest] += 1
+        
+    from collections import deque
+    q = deque(i for i in range(num_courses) if in_degree[i] == 0)
     
-    Queue<Integer> q = new ArrayDeque<>();
-    for (int i = 0; i < numCourses; i++) {
-        if (inDegree[i] == 0) q.offer(i);
-    }
-    
-    int[] res = new int[numCourses];
-    int idx = 0;
-    while (!q.isEmpty()) {
-        int curr = q.poll();
-        res[idx++] = curr;
-        for (int next : adj.get(curr)) {
-            if (--inDegree[next] == 0) q.offer(next);
-        }
-    }
-    return idx == numCourses ? res : new int[0]; // If not all courses taken, cycle exists
-}
-// Time Complexity: O(V + E)
-// Space Complexity: O(V + E)
+    res = []
+    while q:
+        curr = q.popleft()
+        res.append(curr)
+        for nxt in adj[curr]:
+            in_degree[nxt] -= 1
+            if in_degree[nxt] == 0:
+                q.append(nxt)
+                
+    return res if len(res) == num_courses else [] # If not all courses taken, cycle exists
+# Time Complexity: O(V + E)
+# Space Complexity: O(V + E)
 ```
-
 * * *
 
 **17. Partition Equal Subset Sum**
@@ -1063,28 +959,24 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
 
 **Explanation:** The problem translates to: "Is there a subset that sums exactly to `total_sum / 2`?" We use a 1D DP array where `dp[j]` is true if a sum `j` is achievable.
 
-```java
-public boolean canPartition(int[] nums) {
-    int sum = 0;
-    for (int num : nums) sum += num;
-    if (sum % 2 != 0) return false;
+```python
+def can_partition(self, nums: list[int]) -> bool:
+    total = sum(nums)
+    if total % 2 != 0: return False
     
-    int target = sum / 2;
-    boolean[] dp = new boolean[target + 1];
-    dp[0] = true;
+    target = total // 2
+    dp = [False] * (target + 1)
+    dp[0] = True
     
-    for (int num : nums) {
-        // Iterate backwards to avoid reusing the same element
-        for (int j = target; j >= num; j--) {
-            dp[j] = dp[j] || dp[j - num];
-        }
-    }
-    return dp[target];
-}
-// Time Complexity: O(N * Target)
-// Space Complexity: O(Target)
+    for num in nums:
+        # Iterate backwards to avoid reusing the same element
+        for j in range(target, num - 1, -1):
+            dp[j] = dp[j] or dp[j - num]
+            
+    return dp[target]
+# Time Complexity: O(N * Target)
+# Space Complexity: O(Target)
 ```
-
 * * *
 
 **18. Decode Ways**
@@ -1096,31 +988,26 @@ public boolean canPartition(int[] nums) {
 
 **Explanation:** Very similar to Fibonacci. The number of ways to decode up to `i` is the ways to decode up to `i-1` (if single digit valid) plus the ways to decode up to `i-2` (if two digits valid).
 
-```java
-public int numDecodings(String s) {
-    if (s == null || s.isEmpty() || s.charAt(0) == '0') return 0;
-    int n = s.length();
-    int[] dp = new int[n + 1];
-    dp[0] = 1; 
-    dp[1] = 1;
+```python
+def num_decodings(self, s: str) -> int:
+    if not s or s[0] == '0': return 0
+    n = len(s)
+    dp = [0] * (n + 1)
+    dp[0] = dp[1] = 1
     
-    for (int i = 2; i <= n; i++) {
-        int oneDigit = Integer.parseInt(s.substring(i - 1, i));
-        int twoDigits = Integer.parseInt(s.substring(i - 2, i));
+    for i in range(2, n + 1):
+        one_digit = int(s[i - 1:i])
+        two_digits = int(s[i - 2:i])
         
-        if (oneDigit >= 1 && oneDigit <= 9) {
-            dp[i] += dp[i - 1];
-        }
-        if (twoDigits >= 10 && twoDigits <= 26) {
-            dp[i] += dp[i - 2];
-        }
-    }
-    return dp[n];
-}
-// Time Complexity: O(N)
-// Space Complexity: O(N) which can be optimized to O(1)
+        if 1 <= one_digit <= 9:
+            dp[i] += dp[i - 1]
+        if 10 <= two_digits <= 26:
+            dp[i] += dp[i - 2]
+            
+    return dp[n]
+# Time Complexity: O(N)
+# Space Complexity: O(N) which can be optimized to O(1)
 ```
-
 * * *
 
 **19. Stock Span**
@@ -1132,24 +1019,21 @@ public int numDecodings(String s) {
 
 **Explanation:** Maintain a stack of pairs `{price, span}`. If the incoming price is greater than the top of the stack, pop the stack and accumulate the span. This maintains a strictly decreasing stack.
 
-```java
-public class StockSpanner {
-    // Array holds {price, span}
-    private Deque<int[]> stack = new ArrayDeque<>(); 
-    
-    public int next(int price) {
-        int span = 1;
-        while (!stack.isEmpty() && stack.peek()[0] <= price) {
-            span += stack.pop()[1]; // Accumulate previous spans
-        }
-        stack.push(new int[]{price, span});
-        return span;
-    }
-}
-// Time Complexity: Amortized O(1) per next() call
-// Space Complexity: O(N)
+```python
+class StockSpanner:
+    def __init__(self):
+        # Array holds [price, span]
+        self.stack = []
+        
+    def next(self, price: int) -> int:
+        span = 1
+        while self.stack and self.stack[-1][0] <= price:
+            span += self.stack.pop()[1] # Accumulate previous spans
+        self.stack.append([price, span])
+        return span
+# Time Complexity: Amortized O(1) per next() call
+# Space Complexity: O(N)
 ```
-
 * * *
 
 **20. Longest Increasing Subsequence**
@@ -1161,29 +1045,24 @@ public class StockSpanner {
 
 **Explanation:** We maintain an array `tails` where `tails[i]` stores the smallest tail of all increasing subsequences of length `i+1`. We binary search the position to update in `tails`.
 
-```java
-public int lengthOfLIS(int[] nums) {
-    int[] tails = new int[nums.length];
-    int size = 0;
-    for (int x : nums) {
-        int left = 0, right = size;
-        while (left != right) {
-            int mid = left + (right - left) / 2;
-            if (tails[mid] < x) {
-                left = mid + 1;
-            } else {
-                right = mid;
-            }
-        }
-        tails[left] = x;
-        if (left == size) size++; // Found a larger element, expand LIS
-    }
-    return size;
-}
-// Time Complexity: O(N log N)
-// Space Complexity: O(N)
+```python
+def length_of_lis(self, nums: list[int]) -> int:
+    tails = [0] * len(nums)
+    size = 0
+    for x in nums:
+        left, right = 0, size
+        while left != right:
+            mid = left + (right - left) // 2
+            if tails[mid] < x:
+                left = mid + 1
+            else:
+                right = mid
+        tails[left] = x
+        if left == size: size += 1 # Found a larger element, expand LIS
+    return size
+# Time Complexity: O(N log N)
+# Space Complexity: O(N)
 ```
-
 * * *
 
 **21. Find Minimum in Rotated Sorted Array**
@@ -1194,20 +1073,17 @@ public int lengthOfLIS(int[] nums) {
 **Pattern:** Binary Search
 
 **Explanation:** If `nums[mid] > nums[right]`, the minimum is in the right half. Else, the minimum is in the left half (including mid).
-```java
-public int findMin(int[] nums) {
-    int left = 0, right = nums.length - 1;
-    while (left < right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] > nums[right]) left = mid + 1;
-        else right = mid;
-    }
-    return nums[left];
-}
-// Time Complexity: O(log N)
-// Space Complexity: O(1)
+```python
+def find_min(self, nums: list[int]) -> int:
+    left, right = 0, len(nums) - 1
+    while left < right:
+        mid = left + (right - left) // 2
+        if nums[mid] > nums[right]: left = mid + 1
+        else: right = mid
+    return nums[left]
+# Time Complexity: O(log N)
+# Space Complexity: O(1)
 ```
-
 * * *
 
 **22. Kth Smallest Element in Sorted Matrix**
@@ -1218,30 +1094,29 @@ public int findMin(int[] nums) {
 **Pattern:** Binary Search on Answer Space
 
 **Explanation:** Binary search the value space `[min, max]`. Count how many elements are $\le$ mid. If count $< k$, `left = mid + 1`. Else `right = mid`.
-```java
-public int kthSmallest(int[][] matrix, int k) {
-    int n = matrix.length;
-    int left = matrix[0][0], right = matrix[n-1][n-1];
-    while (left < right) {
-        int mid = left + (right - left) / 2;
-        int count = countLessEqual(matrix, mid);
-        if (count < k) left = mid + 1;
-        else right = mid;
-    }
-    return left;
-}
-private int countLessEqual(int[][] matrix, int target) {
-    int n = matrix.length, i = n - 1, j = 0, count = 0;
-    while (i >= 0 && j < n) {
-        if (matrix[i][j] <= target) { count += i + 1; j++; }
-        else { i--; }
-    }
-    return count;
-}
-// Time Complexity: O(N log(Max - Min))
-// Space Complexity: O(1)
-```
+```python
+def kth_smallest(self, matrix: list[list[int]], k: int) -> int:
+    n = len(matrix)
+    left, right = matrix[0][0], matrix[n-1][n-1]
+    while left < right:
+        mid = left + (right - left) // 2
+        count = self._count_less_equal(matrix, mid)
+        if count < k: left = mid + 1
+        else: right = mid
+    return left
 
+def _count_less_equal(self, matrix: list[list[int]], target: int) -> int:
+    n, i, j, count = len(matrix), len(matrix) - 1, 0, 0
+    while i >= 0 and j < n:
+        if matrix[i][j] <= target:
+            count += i + 1
+            j += 1
+        else:
+            i -= 1
+    return count
+# Time Complexity: O(N log(Max - Min))
+# Space Complexity: O(1)
+```
 * * *
 
 **23. Jump Game II**
@@ -1252,22 +1127,18 @@ private int countLessEqual(int[][] matrix, int target) {
 **Pattern:** Greedy BFS levels
 
 **Explanation:** We maintain the farthest reach for the current jump level. When `i == currentEnd`, we must make a jump and update `currentEnd = farthest`.
-```java
-public int jump(int[] nums) {
-    int jumps = 0, currentEnd = 0, farthest = 0;
-    for (int i = 0; i < nums.length - 1; i++) {
-        farthest = Math.max(farthest, i + nums[i]);
-        if (i == currentEnd) {
-            jumps++;
-            currentEnd = farthest;
-        }
-    }
-    return jumps;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(1)
+```python
+def jump(self, nums: list[int]) -> int:
+    jumps = current_end = farthest = 0
+    for i in range(len(nums) - 1):
+        farthest = max(farthest, i + nums[i])
+        if i == current_end:
+            jumps += 1
+            current_end = farthest
+    return jumps
+# Time Complexity: O(N)
+# Space Complexity: O(1)
 ```
-
 * * *
 
 **24. Unique Paths**
@@ -1278,22 +1149,18 @@ public int jump(int[] nums) {
 **Pattern:** 2D DP
 
 **Explanation:** `dp[i][j] = dp[i-1][j] + dp[i][j-1]`.
-```java
-public int uniquePaths(int m, int n) {
-    int[][] dp = new int[m][n];
-    for (int i = 0; i < m; i++) dp[i][0] = 1;
-    for (int j = 0; j < n; j++) dp[0][j] = 1;
-    for (int i = 1; i < m; i++) {
-        for (int j = 1; j < n; j++) {
-            dp[i][j] = dp[i-1][j] + dp[i][j-1];
-        }
-    }
-    return dp[m-1][n-1];
-}
-// Time Complexity: O(M * N)
-// Space Complexity: O(M * N) (can be optimized to O(N))
+```python
+def unique_paths(self, m: int, n: int) -> int:
+    dp = [[0] * n for _ in range(m)]
+    for i in range(m): dp[i][0] = 1
+    for j in range(n): dp[0][j] = 1
+    for i in range(1, m):
+        for j in range(1, n):
+            dp[i][j] = dp[i-1][j] + dp[i][j-1]
+    return dp[m-1][n-1]
+# Time Complexity: O(M * N)
+# Space Complexity: O(M * N) (can be optimized to O(N))
 ```
-
 * * *
 
 **25. Maximum Subarray / Kadane's Algorithm**
@@ -1304,19 +1171,16 @@ public int uniquePaths(int m, int n) {
 **Pattern:** DP / Greedy
 
 **Explanation:** At each step, either add the current element to the previous sum, or start a new subarray if the previous sum is negative.
-```java
-public int maxSubArray(int[] nums) {
-    int maxSum = nums[0], currentSum = nums[0];
-    for (int i = 1; i < nums.length; i++) {
-        currentSum = Math.max(nums[i], currentSum + nums[i]);
-        maxSum = Math.max(maxSum, currentSum);
-    }
-    return maxSum;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(1)
+```python
+def max_sub_array(self, nums: list[int]) -> int:
+    max_sum = current_sum = nums[0]
+    for i in range(1, len(nums)):
+        current_sum = max(nums[i], current_sum + nums[i])
+        max_sum = max(max_sum, current_sum)
+    return max_sum
+# Time Complexity: O(N)
+# Space Complexity: O(1)
 ```
-
 * * *
 
 **26. Climbing Stairs**
@@ -1327,21 +1191,17 @@ public int maxSubArray(int[] nums) {
 **Pattern:** Fibonacci DP
 
 **Explanation:** `dp[i] = dp[i-1] + dp[i-2]`.
-```java
-public int climbStairs(int n) {
-    if (n <= 2) return n;
-    int prev2 = 1, prev1 = 2;
-    for (int i = 3; i <= n; i++) {
-        int curr = prev1 + prev2;
-        prev2 = prev1;
-        prev1 = curr;
-    }
-    return prev1;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(1)
+```python
+def climb_stairs(self, n: int) -> int:
+    if n <= 2: return n
+    prev2, prev1 = 1, 2
+    for i in range(3, n + 1):
+        curr = prev1 + prev2
+        prev2, prev1 = prev1, curr
+    return prev1
+# Time Complexity: O(N)
+# Space Complexity: O(1)
 ```
-
 * * *
 
 **27. Largest Rectangle in Histogram**
@@ -1352,25 +1212,22 @@ public int climbStairs(int n) {
 **Pattern:** Monotonic Stack
 
 **Explanation:** Stack stores indices of strictly increasing heights. Pop when a smaller height is found, calculating area using the popped height as the bottleneck.
-```java
-public int largestRectangleArea(int[] heights) {
-    Deque<Integer> stack = new ArrayDeque<>();
-    int maxArea = 0, n = heights.length;
-    for (int i = 0; i <= n; i++) {
-        int h = (i == n) ? 0 : heights[i];
-        while (!stack.isEmpty() && h < heights[stack.peek()]) {
-            int height = heights[stack.pop()];
-            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
-            maxArea = Math.max(maxArea, height * width);
-        }
-        stack.push(i);
-    }
-    return maxArea;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(N)
+```python
+def largest_rectangle_area(self, heights: list[int]) -> int:
+    stack = []
+    max_area = 0
+    n = len(heights)
+    for i in range(n + 1):
+        h = 0 if i == n else heights[i]
+        while stack and h < heights[stack[-1]]:
+            height = heights[stack.pop()]
+            width = i if not stack else i - stack[-1] - 1
+            max_area = max(max_area, height * width)
+        stack.append(i)
+    return max_area
+# Time Complexity: O(N)
+# Space Complexity: O(N)
 ```
-
 * * *
 
 **28. Merge K Sorted Lists**
@@ -1381,25 +1238,36 @@ public int largestRectangleArea(int[] heights) {
 **Pattern:** Min-Heap
 
 **Explanation:** Put all list heads into a PriorityQueue. Extract the min, append to result, and insert the next node from the extracted list.
-```java
-public ListNode mergeKLists(ListNode[] lists) {
-    PriorityQueue<ListNode> pq = new PriorityQueue<>((a,b) -> a.val - b.val);
-    for (ListNode head : lists) {
-        if (head != null) pq.offer(head);
-    }
-    ListNode dummy = new ListNode(0), curr = dummy;
-    while (!pq.isEmpty()) {
-        ListNode minNode = pq.poll();
-        curr.next = minNode;
-        curr = curr.next;
-        if (minNode.next != null) pq.offer(minNode.next);
-    }
-    return dummy.next;
-}
-// Time Complexity: O(N log K)
-// Space Complexity: O(K)
+```python
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+        
+def merge_k_lists(self, lists: list[ListNode]) -> ListNode:
+    import heapq
+    
+    # Python heapq requires a way to break ties if vals are equal.
+    # We can use id(node) or an index.
+    pq = []
+    for i, head in enumerate(lists):
+        if head:
+            heapq.heappush(pq, (head.val, i, head))
+            
+    dummy = ListNode(0)
+    curr = dummy
+    
+    while pq:
+        val, i, min_node = heapq.heappop(pq)
+        curr.next = min_node
+        curr = curr.next
+        if min_node.next:
+            heapq.heappush(pq, (min_node.next.val, i, min_node.next))
+            
+    return dummy.next
+# Time Complexity: O(N log K)
+# Space Complexity: O(K)
 ```
-
 * * *
 
 **29. Longest Valid Parentheses**
@@ -1410,26 +1278,21 @@ public ListNode mergeKLists(ListNode[] lists) {
 **Pattern:** DP
 
 **Explanation:** `dp[i]` is the length of longest valid substring ending at `i`. If `s[i] == ')'` and `s[i-1] == '('`, `dp[i] = dp[i-2] + 2`. If `s[i-1] == ')'`, match earlier part.
-```java
-public int longestValidParentheses(String s) {
-    int maxLen = 0;
-    int[] dp = new int[s.length()];
-    for (int i = 1; i < s.length(); i++) {
-        if (s.charAt(i) == ')') {
-            if (s.charAt(i - 1) == '(') {
-                dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
-            } else if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == '(') {
-                dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
-            }
-            maxLen = Math.max(maxLen, dp[i]);
-        }
-    }
-    return maxLen;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(N)
+```python
+def longest_valid_parentheses(self, s: str) -> int:
+    max_len = 0
+    dp = [0] * len(s)
+    for i in range(1, len(s)):
+        if s[i] == ')':
+            if s[i - 1] == '(':
+                dp[i] = (dp[i - 2] if i >= 2 else 0) + 2
+            elif i - dp[i - 1] > 0 and s[i - dp[i - 1] - 1] == '(':
+                dp[i] = dp[i - 1] + (dp[i - dp[i - 1] - 2] if (i - dp[i - 1]) >= 2 else 0) + 2
+            max_len = max(max_len, dp[i])
+    return max_len
+# Time Complexity: O(N)
+# Space Complexity: O(N)
 ```
-
 * * *
 
 **30. Container With Most Water**
@@ -1440,23 +1303,20 @@ public int longestValidParentheses(String s) {
 **Pattern:** Two-pointer
 
 **Explanation:** Area is `width * min(h[L], h[R])`. Move the pointer pointing to the shorter line to potentially find a taller line.
-```java
-public int maxArea(int[] height) {
-    int maxArea = 0;
-    int left = 0, right = height.length - 1;
-    while (left < right) {
-        int w = right - left;
-        int h = Math.min(height[left], height[right]);
-        maxArea = Math.max(maxArea, w * h);
-        if (height[left] < height[right]) left++;
-        else right--;
-    }
-    return maxArea;
-}
-// Time Complexity: O(N)
-// Space Complexity: O(1)
+```python
+def max_area(self, height: list[int]) -> int:
+    max_area = 0
+    left, right = 0, len(height) - 1
+    while left < right:
+        w = right - left
+        h = min(height[left], height[right])
+        max_area = max(max_area, w * h)
+        if height[left] < height[right]: left += 1
+        else: right -= 1
+    return max_area
+# Time Complexity: O(N)
+# Space Complexity: O(1)
 ```
-
 * * *
 
 ## Practice Problem Bank
