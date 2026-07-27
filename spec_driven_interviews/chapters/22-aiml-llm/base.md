@@ -50,9 +50,9 @@ In ML system design interviews, you must explain the right evaluation metric for
 
 | Metric | Formula | Best For | Pitfall |
 |---|---|---|---|
-| **Precision** | $\frac{TP}{TP + FP}$ | Fraud detection (minimize false alarms) | Misses real fraud if too conservative |
-| **Recall** | $\frac{TP}{TP + FN}$ | Medical diagnosis (catch all positives) | Too many false positives annoy users |
-| **F1-Score** | $2 \times \frac{Precision \times Recall}{Precision + Recall}$ | Balanced classification tasks | Hides class imbalance issues |
+| **Precision** | `TP / (TP + FP)` | Fraud detection (minimize false alarms) | Misses real fraud if too conservative |
+| **Recall** | `TP / (TP + FN)` | Medical diagnosis (catch all positives) | Too many false positives annoy users |
+| **F1-Score** | `2 * (Precision * Recall) / (Precision + Recall)` | Balanced classification tasks | Hides class imbalance issues |
 | **AUC-ROC** | Area under the ROC curve | Ranking quality across thresholds | Misleading on heavily imbalanced datasets |
 | **NDCG** | Normalized Discounted Cumulative Gain | Recommendation/search ranking | Sensitive to the number of results evaluated |
 

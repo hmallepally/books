@@ -89,7 +89,9 @@ Before the loop starts, the invariant must hold true. We initialize `left = 0` a
 If the invariant is true before an iteration, we must prove it remains true after updating our pointers.
 During the loop, we calculate:
 
-$$mid = left + \frac{right - left}{2}$$
+```
+mid = left + (right - left) / 2
+```
 
 We check three cases:
 
