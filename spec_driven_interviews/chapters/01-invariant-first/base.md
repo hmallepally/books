@@ -12,52 +12,9 @@ This approach is fragile. In the pressure of a live interview or a timed online 
 This is the "hack-and-test" methodology, and it signals to the interviewer that you lack structural discipline. A senior engineer or manager must demonstrate a systematic, predictable approach to code correctness. The solution is the **Invariant-First Strategy**.
 
 
-## Escaping the Syntax Trap: A Quick-Reference Guide
+## Escaping the Syntax Trap
 
-In high-stress technical interviews, a common failure point for senior engineers and engineering managers who do not write code every day is getting tripped up by basic language syntax or type conversions. Spending five minutes debugging why a string comparison isn't working or how to convert an integer count into characters (chars) can derail an interview, even if your architectural approach is correct.
-
-Below is a quick-reference guide for common type conversion and syntax pitfalls to help you stay focused on your design boundaries.
-
-### Number to Character Conversions
-*   **Char Digit to Int:** 
-    *   *Incorrect:* `(int) '5'` returns `53` (its ASCII value).
-    *   *Correct:* `'5' - '0'` returns `5`. Always subtract the character `'0'` offset.
-*   **Int Digit to Char:** 
-    *   *Incorrect:* `(char) 5` returns a non-printable control character.
-    *   *Correct:* `(char) (5 + '0')` returns the character `'5'`.
-*   **Int to String:**
-    *   *Correct:* `String.valueOf(number)` or `number + ""` (using empty string concatenation).
-
-### Length, Size, and Count
-The syntax for checking size varies across data types, and mixing them up is the most frequent syntax error under stress:
-
-*   **Array:** `arr.length` (Property — no parentheses)
-*   **String:** `str.length()` (Method — with parentheses)
-*   **Collections (List, Set, Map):** `list.size()` (Method — with parentheses)
-
-### String Manipulation Pitfalls
-*   **Immutability:** Strings in Java are immutable. You cannot modify a character in-place: `str.charAt(i) = 'c'` is a compilation error.
-    *   *Remedy:* Convert the string to a `StringBuilder` or a character array first:
-        ```java
-        StringBuilder sb = new StringBuilder(str);
-        sb.setCharAt(i, 'c');
-        String result = sb.toString();
-        ```
-*   **Comparison:** 
-    *   *Incorrect:* `str1 == str2` (compares object memory references).
-    *   *Correct:* `str1.equals(str2)` (compares character values).
-
-### Integer Division & Modulo
-*   **Integer Division:** 
-    *   *Incorrect:* `5 / 2` evaluates to `2` (truncates decimals).
-    *   *Correct:* Cast at least one operand: `(double) 5 / 2` or `5.0 / 2` to yield `2.5`.
-*   **Negative Modulo:** 
-    *   *Incorrect:* `-5 % 2` evaluates to `-1` in Java.
-    *   *Correct:* To guarantee a positive wrap-around index: `(val % N + N) % N`.
-
-### PriorityQueue (Heaps) Comparators
-*   *Incorrect:* `new PriorityQueue<>((a, b) -> a.val - b.val)` is susceptible to integer underflow/overflow if values can be negative.
-*   *Correct:* Use the safe comparison method: `new PriorityQueue<>((a, b) -> Integer.compare(a.val, b.val))`.
+This book assumes fluency in your primary language's type system, collection APIs, and standard library. If you find yourself struggling with basic syntax during practice, dedicate focused time to language mastery before tackling algorithmic patterns.
 
 
 ## Defining the Invariant Wall

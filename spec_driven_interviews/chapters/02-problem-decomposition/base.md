@@ -12,49 +12,27 @@ Mastering problem decomposition transitions your mindset from "Have I seen this 
 
 ## The 5-Step Decomposition Framework
 
-To systematically dismantle any technical problem, you must adhere to a rigorous analytical process. The following 5-step framework is designed to prevent premature coding and ensure a comprehensive understanding of the problem domain.
+To systematically dismantle any technical problem, you must adhere to a rigorous analytical process. The following 5-step framework is designed for senior-level decomposition, preventing premature coding and ensuring a comprehensive understanding of the problem domain.
 
-### Step 1: Read, Restate, and Clarify
+### Step 1: Constraint Analysis
 
-The first step is entirely about comprehension. Read the problem statement at least two to three times. Resist the urge to start thinking about data structures immediately. Instead, restate the problem in your own words. Identify what is *actually* being asked, stripping away any narrative fluff or distracting context.
+Extract time and space bounds directly from the constraints to narrow the algorithm class before you even read the problem narrative. For example, if $N \le 10^5$, an $O(N^2)$ brute-force solution will fail immediately due to time limits. You are mathematically required to find an $O(N \log N)$ or $O(N)$ solution. If $N \le 20$, an $O(2^N)$ backtracking approach is expected. The constraints are not trivia; they are the architectural specifications of your solution.
 
-In a live interview setting, this is the moment to ask clarifying questions to resolve ambiguities. In timed, automated assessments, you should write your restatement as a comment at the top of your workspace. This not only clarifies your own thinking but also demonstrates your analytical process to whoever reviews your code.
+### Step 2: Data Flow Mapping
 
-### Step 2: Identify Input/Output Contracts and Constraints
+Trace the input-to-output transformations to identify the structural nature of the problem. Is this a mapping operation (1:1 transformation)? A reduction operation (N:1 aggregation)? Or a search operation (finding a needle in a haystack)? By mapping the data flow, you constrain the types of data structures that can be used.
 
-Once the core problem is understood, you must define the boundaries of the solution. What exactly are the inputs? What are the expected outputs? 
+### Step 3: Invariant Identification
 
-Critically, analyze the constraints. The constraints are not mere trivia; they are the loudest hints the problem provides. For example, if the input size $N \le 10^5$, an $O(N^2)$ brute-force solution will fail due to time limits. You are mathematically required to find an $O(N \log N)$ or $O(N)$ solution. Conversely, if $N \le 20$, an $O(2^N)$ backtracking approach might be expected. 
+Define what property must remain mathematically true across iterations. This is the core thesis of the Invariant-First strategy. Whether you are maintaining a sorted boundary in a two-pointer approach, or a monotonic property in a stack, identifying the invariant reduces the algorithm to a simple proof of correctness rather than a guessing game.
 
-Simultaneously, identify edge cases. What happens when the input is empty? What if all elements are identical? What about negative numbers or integer overflow? Building a mental contract of these constraints ensures your solution is robust by design.
+### Step 4: Pattern Matching
 
-### Step 3: Decompose into Sub-Problems
+With constraints, data flow, and invariants defined, map these characteristics to the 24 canonical patterns (Chapter 9). You are no longer inventing an algorithm; you are selecting the appropriate structural blueprint that satisfies the defined bounds.
 
-With the boundaries defined, you must break the overarching problem into two to four independent sub-problems. A complex task is rarely solved by a single conceptual leap; it is solved by chaining together simple, logical steps.
+### Step 5: Edge Case Enumeration
 
-For example, consider the classic problem: "Find the maximum profit from multiple stock trades." This can seem daunting until decomposed:
-1. Track the minimum price seen so far.
-2. Calculate the potential profit at each subsequent step.
-3. Track the maximum profit globally.
-
-Each of these sub-problems is trivial on its own. The complexity only arises from their composition.
-
-### Step 4: Map Sub-Problems to Known Patterns
-
-This is where your foundational knowledge is applied. Use the 24 Canonical Patterns (detailed in Chapter 9) as your mental lookup table. Map each sub-problem identified in Step 3 to a specific pattern.
-
-Continuing with the stock trade example:
-- "Track the minimum price seen so far" maps directly to **[PAT-02] Running State**.
-- "Calculate the potential profit at each step" implies a **[PAT-01] Single Pass** over the data.
-- "Track the maximum profit globally" utilizes a standard running accumulator pattern.
-
-By mapping sub-problems to known patterns, you eliminate the need to invent novel algorithms under pressure. Reference the Pattern Recognition Quick Reference from the Prologue whenever you need to align a sub-problem with its structural solution.
-
-### Step 5: Design Before Coding
-
-The final step before implementation is the design phase. Write your intended approach as pseudocode or plain-text comments *before* writing any executable code. Define the necessary invariants that must hold true throughout your logic. Explicitly identify your target time and space complexity based on the constraints analyzed in Step 2.
-
-Only after this design is solid should you begin writing real code. This step typically requires 3 to 5 minutes of focused thought, but it routinely saves 15 to 20 minutes of frantic, error-prone debugging later. Code should flow naturally from a well-constructed design; if you are making structural decisions while typing syntax, you have skipped this crucial step.
+Systematically generate boundary inputs based on the constraints. What happens at $N=0$ or $N=1$? What if the input array contains negative values or duplicates? Enumerating edge cases before implementation guarantees your invariant holds at the boundaries.
 
 ## A Quick Decomposition Example
 
@@ -62,27 +40,29 @@ Let us walk through a concrete example using the framework. Consider this proble
 
 **"Given an array of non-negative integers representing the heights of adjacent buildings of unit width, compute how much rainwater can be trapped between the buildings after a storm."**
 
-**Step 1: Read, Restate, and Clarify**
-*Restatement:* We need to find the total volume of water held above each building. The water a building can hold depends on the tallest buildings to its left and right.
 
-**Step 2: Identify Input/Output Contracts and Constraints**
-*Inputs:* Array of integers `heights`.
-*Outputs:* Integer representing total trapped water.
-*Constraints:* Assuming $N \le 10^5$, we need at least an $O(N)$ solution.
-*Edge Cases:* Less than 3 buildings (cannot trap water, return 0). All buildings same height (return 0).
+**Step 1: Constraint Analysis**
+Assume $N \le 10^5$. This instantly rules out any $O(N^2)$ solution. We must solve this in $O(N)$ or $O(N \log N)$ time.
 
-**Step 3: Decompose into Sub-Problems**
-1. For any given index `i`, how much water is trapped above it? It is bounded by the minimum of the highest building to its left and the highest building to its right, minus its own height.
-2. We need to efficiently find the maximum height to the left of `i` for all `i`.
-3. We need to efficiently find the maximum height to the right of `i` for all `i`.
-4. We need to iterate through the array and sum the trapped water at each index.
+**Step 2: Data Flow Mapping**
+Input: Array of $N$ heights. Output: A single integer (total water). This is a reduction problem. For any building `i`, the water it traps is `min(max_left, max_right) - height[i]`.
 
-**Step 4: Map Sub-Problems to Known Patterns**
-- Finding the maximum to the left for all elements maps to **[PAT-01] Prefix Max Arrays** (or a running maximum from left to right).
-- Finding the maximum to the right maps to a Suffix Max Array (running maximum from right to left).
-- Alternatively, managing both boundaries simultaneously maps perfectly to **[PAT-06] Converging Two-Pointers**.
+**The Failed Naive Approach ($O(N^2)$)**
+A junior engineer might immediately code a loop within a loop: for every element `i`, iterate left to find `max_left`, and iterate right to find `max_right`. 
+*Why it fails:* Scanning the remaining array for every single element yields $O(N^2)$ time complexity. With $N=10^5$, this requires $10^{10}$ operations, which will time out on any assessment platform.
 
-**Step 5: Design Before Coding**
+**Step 3: Invariant Identification**
+To achieve $O(N)$, we must eliminate the inner loops. The amount of water trapped depends *only on the shorter of the two maximum boundaries*. 
+*Invariant:* If we have two pointers (`left` and `right`), and `height[left] < height[right]`, the trapped water at `left` is strictly bounded by `max_left`, regardless of what happens between `left` and `right`. We can safely process `left` and move inward.
+
+**Step 4: Pattern Matching**
+Processing an array from the outsides inward based on boundary conditions maps perfectly to **[PAT-06] Converging Two-Pointers**.
+
+**Step 5: Edge Case Enumeration**
+- $N < 3$: Cannot trap water. Return 0.
+- All heights equal: Return 0.
+
+**Design Before Coding**
 *Approach (Two-Pointer Design):*
 - Initialize `left` at 0, `right` at $N-1$.
 - Maintain `left_max` and `right_max`.
