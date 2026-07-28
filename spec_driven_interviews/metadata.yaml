@@ -19,6 +19,7 @@ toc-depth: 1
 number-sections: true
 cover-image: "visuals/cover.png"
 header-includes:
+  - \raggedbottom
   - \usepackage{fancyhdr}
   - \usepackage{graphicx}
   - \usepackage{float}
