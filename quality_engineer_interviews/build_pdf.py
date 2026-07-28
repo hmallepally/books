@@ -170,6 +170,7 @@ def build_epub():
             '--metadata', 'author=Harinath Mallepally',
             '--metadata', 'lang=en-US',
             '--epub-chapter-level=1',
+            '--css=visuals/epub_styles.css',
         ]
         
         # Add cover image if it exists
