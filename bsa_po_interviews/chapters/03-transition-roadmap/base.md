@@ -6,7 +6,7 @@ This chapter provides a transition framework. It is designed to help you honestl
 
 To break this bottleneck, the modern tech industry no longer seeks generic facilitators. It demands specialists who can articulate domain complexity with precision, translating business needs into rigorous, actionable specifications that both human engineers and AI code-generation agents can process flawlessly.
 
-![Transition Roadmap](visuals/transition_roadmap.png){width=85%}
+![Transition Roadmap](visuals/transition_roadmap.jpg){width=85%}
 
 ## Current State vs. Future State Transition Framework
 

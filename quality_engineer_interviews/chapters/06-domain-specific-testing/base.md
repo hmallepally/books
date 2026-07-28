@@ -16,7 +16,7 @@ When you enter an interview, your ability to automate a login page proves you ca
 
 This chapter dives into three complex domains: Healthcare, Finance, and E-commerce. For each, we will explore the critical testing challenges, compliance requirements, and common interview scenarios, equipping you for the interviews of TODAY and the Quality Partner role of TOMORROW. We will ground these discussions in the MedPortal, TradeForge, and CartFlow environments introduced earlier, providing concrete, real-world context to abstract concepts.
 
-![Domain Testing Focus Areas](visuals/domain_testing.png){width=85%}
+![Domain Testing Focus Areas](visuals/domain_testing.jpg){width=85%}
 
 ## Healthcare Testing: The MedPortal Environment
 

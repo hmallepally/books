@@ -14,7 +14,7 @@ To ace this interview---and to step into the role of a Quality Partner of tomorr
 
 This chapter is your comprehensive guide to mobile testing. We will explore the technical depths of Appium architecture, unravel the complexities of device fragmentation, and master mobile-specific non-functional testing. Throughout this chapter, we will anchor our practical examples in the **CartFlow** environment---the high-throughput retail checkout engine introduced in Chapter 2---examining how mobile context transforms an e-commerce checkout flow into a minefield of unique risks.
 
-![Mobile Testing Approaches](visuals/mobile_testing.png){width=85%}
+![Mobile Testing Approaches](visuals/mobile_testing.jpg){width=85%}
 
 ## The CartFlow Mobile Experience: Contextualizing Risk
 

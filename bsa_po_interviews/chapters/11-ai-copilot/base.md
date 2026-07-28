@@ -245,7 +245,7 @@ AI is a tool, not an oracle. It comes with significant risks that the Product Sp
 
 In the SDSD (Spec-Driven Secure Development) POD model, the workflow is revolutionized by the introduction of AI at every layer, fundamentally altering how Product Specialists (PS) and Development Experts (DE) collaborate.
 
-![AI Workflow Flowchart](visuals/ai_workflow.png){width=85%}
+![AI Workflow Flowchart](visuals/ai_workflow.jpg){width=85%}
 
 1. **The PS Phase (Analysis & Specification):** The Product Specialist analyzes the customer problem and writes a detailed specification. You use AI to expand edge cases, verify completeness, and draft the initial invariants. You do NOT write code. You write strict constraints.
 2. **The Hand-off:** The PS hands the verified, robust specification to the DE. Because the spec is already structurally sound (thanks to AI-assisted auditing), the DE spends zero time deciphering ambiguous English.
