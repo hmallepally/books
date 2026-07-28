@@ -439,7 +439,17 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
 
 * **Q4 (Hard): Word Search II**
   * *Specification:* Given an M×N board of characters and a list of words, find all words that can be formed by sequentially adjacent cells (horizontally or vertically). Each cell may only be used once per word.
-  * *Sample Test Case:* Input: `board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], words = ["oath","pea","eat","rain"] -> ["eat","oath"]`
+  * *Sample Test Case:* Input:
+    ```
+    board = [
+      ["o","a","a","n"],
+      ["e","t","a","e"],
+      ["i","h","k","r"],
+      ["i","f","l","v"]
+    ]
+    words = ["oath","pea","eat","rain"]
+    Output: ["eat","oath"]
+    ```
   * *Constraints:* M, N \le 12, words.length \le 3 \times 10^4, words[i].length \le 10.
   * *Hint:* Combine Trie prefix tree with DFS backtracking for efficient multi-word search.
 
