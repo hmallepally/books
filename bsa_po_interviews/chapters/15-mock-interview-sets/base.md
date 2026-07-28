@@ -1038,7 +1038,11 @@ These sets evaluate readiness for the evolved, highly technical Product Speciali
 
 *   **Acknowledge the Gap:** Validate the engineer's catch. It's a missing edge case.
 *   **Do Not Just Say It Verbally:** "I'll update the spec" is not enough. You must define *how* you update it.
-*   **The Update:** "I will update the `POST /reset-password` endpoint section in the spec document. I will add an Error Response block specifying that if the token timestamp is > 15 minutes old, the API must return a `400 Bad Request` (or 403) with the payload `{ "error": "TOKEN_EXPIRED", "message": "Your reset link has expired." }`. I will then commit this change to our spec repository."
+*   **The Update:** "I will update the `POST /reset-password` endpoint section in the spec document. I will add an Error Response block specifying that if the token timestamp is > 15 minutes old, the API must return a `400 Bad Request` (or 403) with the payload:
+    ```json
+    { "error": "TOKEN_EXPIRED", "message": "Your reset link has expired." }
+    ```
+    I will then commit this change to our spec repository."
 
 **Scoring Rubric (1-5):**
 

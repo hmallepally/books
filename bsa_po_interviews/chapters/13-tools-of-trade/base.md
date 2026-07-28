@@ -58,34 +58,54 @@ Jira Query Language (JQL) is arguably the most powerful feature in Jira for a BS
 Here are 10 highly useful JQL examples that every BSA/PO should know:
 
 1.  **Find all unresolved blocker bugs in the current project:**
-    `project = "XYZ" AND issuetype = Bug AND priority = Blocker AND resolution = Unresolved`
+    ```text
+    project = "XYZ" AND issuetype = Bug AND priority = Blocker AND resolution = Unresolved
+    ```
 
 2.  **Find stories assigned to me that are in the current active sprint:**
-    `assignee = currentUser() AND issuetype = Story AND sprint in openSprints()`
+    ```text
+    assignee = currentUser() AND issuetype = Story AND sprint in openSprints()
+    ```
 
 3.  **Find epics that lack a description (quality control check):**
-    `project = "XYZ" AND issuetype = Epic AND description IS EMPTY`
+    ```text
+    project = "XYZ" AND issuetype = Epic AND description IS EMPTY
+    ```
 
 4.  **Find issues updated in the last 24 hours (great for morning standup prep):**
-    `project = "XYZ" AND updated >= -1d ORDER BY updated DESC`
+    ```text
+    project = "XYZ" AND updated >= -1d ORDER BY updated DESC
+    ```
 
 5.  **Find all stories planned for a specific release that are not yet done:**
-    `project = "XYZ" AND fixVersion = "Release 2.5" AND statusCategory != Done`
+    ```text
+    project = "XYZ" AND fixVersion = "Release 2.5" AND statusCategory != Done
+    ```
 
 6.  **Find issues that have been in the "In Progress" status for more than 5 days (identifying bottlenecks):**
-    `project = "XYZ" AND status = "In Progress" AND status changed to "In Progress" before -5d`
+    ```text
+    project = "XYZ" AND status = "In Progress" AND status changed to "In Progress" before -5d
+    ```
 
 7.  **Find stories with no story points assigned (grooming prep):**
-    `project = "XYZ" AND issuetype = Story AND "Story Points" IS EMPTY AND status = "Ready for Dev"`
+    ```text
+    project = "XYZ" AND issuetype = Story AND "Story Points" IS EMPTY AND status = "Ready for Dev"
+    ```
 
 8.  **Find all work related to a specific customer (using a custom field or label):**
-    `project = "XYZ" AND (labels = "AcmeCorp" OR "Customer Name" ~ "Acme")`
+    ```text
+    project = "XYZ" AND (labels = "AcmeCorp" OR "Customer Name" ~ "Acme")
+    ```
 
 9.  **Find issues where I am mentioned in the comments but not the assignee:**
-    `comment ~ currentUser() AND assignee != currentUser() AND resolution = Unresolved`
+    ```text
+    comment ~ currentUser() AND assignee != currentUser() AND resolution = Unresolved
+    ```
 
 10. **Find all sub-tasks belonging to a specific Epic:**
-    `"Epic Link" = XYZ-123 AND issuetype = Sub-task`
+    ```text
+    "Epic Link" = XYZ-123 AND issuetype = Sub-task
+    ```
 
 ### Dashboards and Filters
 
@@ -213,15 +233,21 @@ Ultimately, tool mastery is a proxy for operational excellence. A candidate who 
 Mastering Jira Query Language (JQL) transforms you from a backlog administrator into a strategic data analyst. Here are 10 of the most useful JQL queries for Business Systems Analysts and Product Owners:
 
 1. **Find Unestimated Stories:**
-   `project = "XYZ" AND issuetype = Story AND "Story Points" is EMPTY AND status = "To Do"`
+   ```text
+   project = "XYZ" AND issuetype = Story AND "Story Points" is EMPTY AND status = "To Do"
+   ```
    *Explanation: Identifies stories that need to be groomed and estimated before sprint planning.*
 
 2. **Find Blocked Items:**
-   `project = "XYZ" AND status = "Blocked" OR issueLinkType = "is blocked by"`
+   ```text
+   project = "XYZ" AND status = "Blocked" OR issueLinkType = "is blocked by"
+   ```
    *Explanation: Locates work that is currently stalled and requires your intervention to unblock.*
 
 3. **Sprint Velocity / Completed Items:**
-   `project = "XYZ" AND sprint in closedSprints() AND status = "Done" AND resolved >= startOfMonth()`
+   ```text
+   project = "XYZ" AND sprint in closedSprints() AND status = "Done" AND resolved >= startOfMonth()
+   ```
    *Explanation: Shows all completed work in recent closed sprints to help calculate velocity.*
 
 4. **Overdue Items:**

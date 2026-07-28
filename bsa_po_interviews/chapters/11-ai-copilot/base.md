@@ -132,7 +132,7 @@ Here is how a PO uses AI to rapidly build out specifications, moving from vague 
 *AI Prompt:* "Translate this business rule into a strict mathematical invariant and a pre-condition for the checkout API: 'Users can't buy more items than we have in stock.' Consider race conditions."
 *AI Output:*
 
-- **Invariant:** `Sum(Cart.Item[X].Quantity) <= Inventory.Item[X].AvailableToPromise`
+- **Invariant:** *Sum(Cart.Item[X].Quantity) $\le$ Inventory.Item[X].AvailableToPromise*
 - **Pre-Condition (Checkout API):** The system must place a hard lock on `Inventory.Item[X]` for the duration of the payment processing phase (max 5 minutes) to prevent concurrent checkouts of the last remaining item. 
 - **Error State:** If `Cart.Item[X].Quantity > Inventory.Item[X].AvailableToPromise` at the moment of payment execution, the system must return a 409 Conflict, release any holds, and alert the user.
 
@@ -141,7 +141,7 @@ Here is how a PO uses AI to rapidly build out specifications, moving from vague 
 *AI Prompt:* "Define the state transition and calculation logic for a mid-cycle subscription upgrade. Identify edge cases like upgrading on the 31st of a month."
 *AI Output:* 
 
-- **Calculation Rule:** `(NewPlan.MonthlyCost - OldPlan.MonthlyCost) * (RemainingDaysInBillingCycle / TotalDaysInCurrentMonth)`
+- **Calculation Rule:** *(NewPlan.MonthlyCost - OldPlan.MonthlyCost) $\times$ (RemainingDaysInBillingCycle / TotalDaysInCurrentMonth)*
 - **Edge Case Handled:** February leap years. `TotalDaysInCurrentMonth` must dynamically query the calendar, not hardcode 30.
 - **State Transition:** `Plan.Active` -> `Plan.PendingUpgrade` (awaiting payment) -> `Plan.Active` (new tier). 
 
@@ -150,7 +150,7 @@ Here is how a PO uses AI to rapidly build out specifications, moving from vague 
 *AI Prompt:* "Create an RBAC (Role-Based Access Control) matrix and invariants for this HIPAA requirement: 'Only doctors can see the patient's full chart.' Include nurses, billing staff, and system admins."
 *AI Output:*
 
-- **Invariant:** `User.Role IN [Attending_Physician, Consulting_Physician] AND User.AssignedTo == Patient.ID => Allow(View.FullChart)`
+- **Invariant:** *User.Role IN [Attending_Physician, Consulting_Physician] AND User.AssignedTo == Patient.ID $\implies$ Allow(View.FullChart)*
 - **RBAC Matrix Generated:** (AI outputs a full table showing read/write access across 10 different roles).
 
 **Worked Example 4: The Logistics Routing Logic**
@@ -161,7 +161,7 @@ Here is how a PO uses AI to rapidly build out specifications, moving from vague 
 - Scenario 1: Closest warehouse is out of stock.
 - Scenario 2: Closest warehouse is backlogged by 5 days, while a warehouse 50 miles further is operating at 0 delay.
 - Scenario 3: Closest warehouse cannot legally ship the item (e.g., lithium batteries via air freight vs ground).
-- **Refined Invariant:** `OptimalWarehouse = Min(Distance) WHERE Warehouse.Stock >= Order.Qty AND Warehouse.SLA <= RequiredDeliveryDate`
+- **Refined Invariant:** *OptimalWarehouse = Min(Distance) WHERE Warehouse.Stock $\ge$ Order.Qty AND Warehouse.SLA $\le$ RequiredDeliveryDate*
 
 **Worked Example 5: The FinTech Ledger**
 *Input (Stakeholder):* "Keep track of all user deposits and withdrawals."
