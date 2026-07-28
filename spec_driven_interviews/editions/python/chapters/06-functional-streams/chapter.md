@@ -87,13 +87,14 @@ Debugging streams can be difficult due to their lazy execution model. To inspect
 
 1. **Injecting `peek()` for Logging:**
    Use the `.peek()` intermediate operation to log elements as they flow through specific stages of the pipeline:
-   ```python
+```python
 def log_and_map(t):
     log.debug(f"Passed Filter: {t.id}")
     return t.merchant_id
 
 merchant_ids = [log_and_map(t) for t in transactions if t.amount > 100]
 ```
+
 
 2. **Utilizing IDE Stream Debuggers:**
    Modern IDEs (like IntelliJ IDEA or Visual Studio) contain visual stream debuggers. When you set a breakpoint on a stream statement, the debugger can render a visual representation of how elements are filtered and mapped at each stage.

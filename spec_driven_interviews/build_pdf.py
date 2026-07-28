@@ -149,7 +149,7 @@ def build_epub(edition):
             manuscript_path,
             '-o', epub_output_path,
             '--toc',
-            '--toc-depth=2',
+            '--toc-depth=1',
             '--metadata', f'title=Spec-Driven Coding Interviews ({lang_label} Edition)',
             '--metadata', 'author=Harinath Mallepally',
             '--metadata', 'lang=en-US',

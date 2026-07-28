@@ -136,7 +136,7 @@ This manual is designed for a dual audience. For individual engineers preparing 
 For mid-to-senior engineers targeting algorithmic assessments. Follow this intensive schedule to rebuild coding muscle memory.
 
 | Day | Focus Area | Chapters | Practice Target | Time |
-|---|---|---|---|---|
+|:---:|:------------------------|:----------------------|:-------------------------------------------------------|:-----:|
 | 1 | Foundations | Prologue, Ch 1-2 | Read Invariant-First strategy & Decomposition | 3-4 hrs |
 | 2 | Core Algorithms | Ch 8-9 | Memorize Big-O table, implement 5 core algorithms | 3-4 hrs |
 | 3 | Easy-Tier Patterns | Ch 10 | Solve 15 implementation problems under 8-min timer | 4-5 hrs |
@@ -157,7 +157,7 @@ For mid-to-senior engineers targeting algorithmic assessments. Follow this inten
 For lead and staff engineers focused on system design and architecture.
 
 | Day | Focus Area | Chapters | Practice Target | Time |
-|---|---|---|---|---|
+|:---:|:------------------------|:----------------------|:-------------------------------------------------------|:-----:|
 | 1 | Foundations & Case Studies | Prologue, Ch 1-3 | Internalize case studies and design boundaries | 3-4 hrs |
 | 2 | OOP & SOLID | Ch 4-5 | Domain boundaries and strict SOLID inversion | 3-4 hrs |
 | 3 | Functional Streams | Ch 6 | Imperative-vs-stream optimizations | 2-3 hrs |
@@ -182,7 +182,7 @@ For lead and staff engineers focused on system design and architecture.
 You lead teams but haven't personally coded in assessments recently. Your edge is architectural judgment and leadership — this plan leverages that while rebuilding algorithmic fluency.
 
 | Day | Focus | Chapters | Time |
-|-----|-------|----------|------|
+|:---:|:-------------------------------------------------------|:---------|:----:|
 | 1 | Invariant-First Mindset + Decomposition Framework | Ch 1-2 | 2h |
 | 2 | Case Study Architectures (AuraPay, ZenithTrade) | Ch 3 | 1.5h |
 | 3 | SOLID Trade-offs + Design Patterns (Strategic View) | Ch 5, 7 | 2h |
@@ -325,7 +325,9 @@ We define two pointers, `left` and `right`, defining our active search range $[l
 
 - **The Loop Invariant:** *If target is present in the array, it must reside within the index boundaries:*
 
-$$\text{Invariant } P(left, right): \text{target} \in nums[left \dots right]$$
+```
+Invariant P(left, right): target in nums[left...right]
+```
 
 ### Mathematical Proof of Correctness
 To prove the algorithm is correct, we must prove three properties of our loop invariant:
@@ -339,7 +341,9 @@ Before the loop starts, the invariant must hold true. We initialize `left = 0` a
 If the invariant is true before an iteration, we must prove it remains true after updating our pointers.
 During the loop, we calculate:
 
-$$mid = left + \frac{right - left}{2}$$
+```
+mid = left + (right - left) / 2
+```
 
 We check three cases:
 
@@ -395,6 +399,7 @@ public int binarySearch(int[] nums, int target) {
     return -1; // Search range is empty -> target not in nums
 }
 ```
+
 
 By applying this invariant-first approach, we eliminate all cognitive overhead. We do not need to "dry-run" multiple edge cases or guess boundary updates. The math guarantees the correctness of our implementation.
 
@@ -695,6 +700,7 @@ public class Order {
 }
 ```
 
+
 These architectures serve as running case studies throughout the book. You will implement components of each system as you learn the patterns in Parts II, III, and IV. Do not attempt to design these systems now — let the patterns guide you.
 
 
@@ -714,7 +720,9 @@ ChiramTrust is a decentralized identity wallet that allows users to store creden
 
 To implement consensus-based key recovery, the user's private key $S$ is split into $N$ distinct shares. We construct a random polynomial of degree $T - 1$ (where $T$ is the threshold of guardians needed to recover the key):
 
-$$f(x) = a_0 + a_1 x + a_2 x^2 + \dots + a_{T-1} x^{T-1} \pmod P$$
+```
+f(x) = a_0 + a_1*x + a_2*x^2 + ... + a_{T-1}*x^{T-1} (mod P)
+```
 
 where $a_0 = S$ (the secret key), and the coefficients $a_1, \dots, a_{T-1}$ are randomly generated integers. The prime $P$ defines the finite field $\mathbb{F}_P$. Each guardian $i$ receives a coordinate point $(i, f(i))$. 
 
@@ -722,7 +730,9 @@ By the properties of polynomial interpolation:
 
 1.  **Any $T$ guardians** can pool their shares $(x_i, y_i)$ and reconstruct the polynomial $f(x)$ using Lagrange interpolation, finding $f(0) = a_0 = S$:
    
-    $$S = \sum_{i=1}^{T} y_i \prod_{j \neq i} \frac{-x_j}{x_i - x_j} \pmod P$$
+```
+S = Sum_{i=1..T} ( y_i * Product_{j != i} ( -x_j / (x_i - x_j) ) ) (mod P)
+```
    
 2.  **Any $T - 1$ or fewer guardians** possess a system of equations with infinite solutions, revealing absolutely zero information about the secret key $S$.
 
@@ -754,6 +764,7 @@ public class DidConsentRecord {
     }
 }
 ```
+
 
 ### Interview Drill: Applying Bounded Context Isolation
 
@@ -816,6 +827,7 @@ public class LedgerService {
     }
 }
 ```
+
 
 ### Why the Anemic Model Fails in Production
 
@@ -1400,13 +1412,14 @@ Debugging streams can be difficult due to their lazy execution model. To inspect
 
 1. **Injecting `peek()` for Logging:**
    Use the `.peek()` intermediate operation to log elements as they flow through specific stages of the pipeline:
-   ```java
+```java
 transactions.stream()
     .filter(t -> t.amount() > 100)
     .peek(t -> log.debug("Passed Filter: {}", t.id()))
     .map(Transaction::merchantId)
     .collect(Collectors.toList());
 ```
+
 
 2. **Utilizing IDE Stream Debuggers:**
    Modern IDEs (like IntelliJ IDEA or Visual Studio) contain visual stream debuggers. When you set a breakpoint on a stream statement, the debugger can render a visual representation of how elements are filtered and mapped at each stage.
@@ -1483,6 +1496,7 @@ public class LedgerConnectionPool {
     }
 }
 ```
+
 
 > **Warning for Senior Candidates:** In cloud-native systems, classical Singletons are often considered an anti-pattern:
 > 1. **Testing Complexity:** They introduce global mutable state, making parallel unit tests prone to side effects.
@@ -1928,11 +1942,15 @@ A common design flaw is over-allocating database connection pool sizes. If you h
 
 HikariCP (the industry-standard connection pool manager) uses a formula derived from PostgreSQL benchmark testing to size database pools:
 
-$$Pool\ Size = (Core\ Count \times 2) + Effective\ Spindle\ Count$$
+```
+Pool Size = (Core Count * 2) + Effective Spindle Count
+```
 
 For example, a database server with 8 CPU cores and an SSD array (spindle count of 1) should have a pool size of:
 
-$$(8 \times 2) + 1 = 17\ Connections$$
+```
+(8 * 2) + 1 = 17 Connections
+```
 
 Setting the pool size to 17 will yield *higher* overall throughput than setting it to 100, due to the minimization of CPU context switching and disk spindle thrashing.
 
@@ -1978,7 +1996,7 @@ Standardized online coding assessments (e.g., General Coding Assessments, Hacker
 ### The 4-Question Blueprint
 
 | Question | Difficulty | Target Time | Primary Pattern Types | Tactical Rule |
-|---|---|---|---|---|
+|:-----------------|:------------|:------------|:----------------------|:-------------------------------------------------------------------|
 | **Easy-tier** | Easy | 5–8 Min | `[PAT-01]`, `[PAT-02]` | Write clean, brute-force code immediately. Do not over-optimize. |
 | **Medium-tier** | Medium | 10–12 Min | `[PAT-03]`, `[PAT-06]`, `[PAT-10]` | Watch for array bounds and off-by-one errors. |
 | **Medium-Hard-tier** | Medium-Hard | 15–20 Min | `[PAT-04]`, `[PAT-13]`, `[PAT-14]` | Identify the window state or queue batching early. |
@@ -2011,7 +2029,7 @@ Before diving into the 25 canonical patterns, ensure you have instant recall of 
 
 **The Constraint-to-Complexity Rule:** Read the problem constraints FIRST. If N ≤ 10^4, O(N²) is acceptable. If N ≤ 10^5, you need O(N log N) or better. If N ≤ 10^6, you need O(N). This single rule eliminates 50% of wrong algorithm choices before you write a line of code.
 
-![Constraint-to-Complexity Flowchart](../02-problem-decomposition/visuals/constraint_flowchart.jpg){width=85%}
+![Constraint-to-Complexity Flowchart](editions/java/chapters/09-algorithms-assessment/visuals/constraint_flowchart.jpg){width=85%}
 
 ---
 
@@ -3033,7 +3051,7 @@ public int compress(char[] chars) {
 **Trace Walkthrough** (input: `['a','a','b','b','c','c','c']`):
 
 | Step | read | write | Action | State |
-|------|------|-------|--------|-------|
+|:---:|:----:|:-----:|:--------------|:-----------------------------------|
 | Init | 0    | 0     | Start  | `['a','a','b','b','c','c','c']` |
 | 1    | 2    | 2     | Run 'a' len 2 | `['a','2','b','b','c','c','c']` |
 | 2    | 4    | 4     | Run 'b' len 2 | `['a','2','b','2','c','c','c']` |
@@ -3865,7 +3883,7 @@ public boolean almostIncreasingSequence(int[] sequence) {
 **Trace Walkthrough** (input: `[1, 3, 2, 1]`):
 
 | Step | i | nums[i] | nums[i+1] | Violation? | Action | State (Violations) |
-|------|---|---------|-----------|------------|--------|--------------------|
+|:---:|:---:|:-------:|:---------:|:----------:|:-------|:-------------------|
 | 1    | 0 | 1       | 3         | No         | Continue | 0 |
 | 2    | 1 | 3       | 2         | Yes        | Check removals | 1 |
 | 3    | 2 | 2       | 1         | Yes        | Return false   | >1 |
@@ -3904,7 +3922,7 @@ public String reverseInParentheses(String s) {
 **Trace Walkthrough** (input: `"(u(love)i)"`):
 
 | Step | char | Action | Stack | Current String |
-|------|------|--------|-------|----------------|
+|:---:|:----:|:-------|:------|:---------------|
 | 1    | '('  | Push new | `[""]` | `""` |
 | 2    | 'u'  | Append   | `[""]` | `"u"` |
 | 3    | '('  | Push new | `["", "u"]` | `""` |
@@ -4367,9 +4385,13 @@ Prefix Sum Array S (row 0 and column 0 are all zeros):
 
 **Cell-by-cell trace for S[2][2] = 12:**
 
-$$S[r][c] = A[r\text{-}1][c\text{-}1] + S[r\text{-}1][c] + S[r][c\text{-}1] - S[r\text{-}1][c\text{-}1]$$
+```
+S[r][c] = A[r-1][c-1] + S[r-1][c] + S[r][c-1] - S[r-1][c-1]
+```
 
-$$S[2][2] = \underbrace{A[1][1]}_{5} + \underbrace{S[1][2]}_{3} + \underbrace{S[2][1]}_{5} - \underbrace{S[1][1]}_{1} = 12$$
+```
+S[2][2] = A[1][1] (5) + S[1][2] (3) + S[2][1] (5) - S[1][1] (1) = 12
+```
 
 The two 5s come from different sources: `A[1][1] = 5` is the center cell of the original matrix, while `S[2][1] = 5` is the prefix sum of the first column (`1 + 4 = 5`). Verify: `S[2][2]` should equal `1 + 2 + 4 + 5 = 12` — the sum of all elements from `(0,0)` to `(1,1)`. ✓
 
@@ -4379,7 +4401,9 @@ The two 5s come from different sources: `A[1][1] = 5` is the center cell of the 
 
 **Understanding the Query — Inclusion-Exclusion.** To find the sum of a sub-rectangle from `(r1, c1)` to `(r2, c2)`, we carve it out of the full prefix sum using four overlapping rectangles:
 
-$$\text{query}(r_1, c_1, r_2, c_2) = S[r_2\text{+}1][c_2\text{+}1] - S[r_1][c_2\text{+}1] - S[r_2\text{+}1][c_1] + S[r_1][c_1]$$
+```
+query(r1, c1, r2, c2) = S[r2+1][c2+1] - S[r1][c2+1] - S[r2+1][c1] + S[r1][c1]
+```
 
 **The `+1` rule**: `+1` means "include this boundary." The middle two terms are *crossed* — each keeps one dimension full and chops the other:
 
@@ -4392,7 +4416,9 @@ $$\text{query}(r_1, c_1, r_2, c_2) = S[r_2\text{+}1][c_2\text{+}1] - S[r_1][c_2\
 
 **Worked query**: Sum of sub-rectangle `(1,1)` to `(2,2)` — cells `{5, 6, 8, 9}` = 28:
 
-$$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
+```
+S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28
+```
 
 ![2D Prefix Sum — Query via Inclusion-Exclusion](editions/java/chapters/11-matrix-grid-patterns/visuals/prefix_sum_2d_query.png){width=85%}
 
@@ -4467,7 +4493,7 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 **Trace Walkthrough** (input: `3x3 matrix`):
 
 | Step | Row | Col | Direction | Value | Action |
-|------|-----|-----|-----------|-------|--------|
+|:---:|:---:|:---:|:----------|:-----:|:-------|
 | 1    | 0   | 0   | Right     | 1     | Add to result |
 | 2    | 0   | 1   | Right     | 2     | Add to result |
 | 3    | 0   | 2   | Right     | 3     | Add, contract top bound |
@@ -4815,7 +4841,7 @@ Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
 **Trace Walkthrough** (input: `Sudoku with duplicate 5s in row 0`):
 
 | Step | Row | Col | Value | Encoded Strings | Action |
-|------|-----|-----|-------|-----------------|--------|
+|:---:|:---:|:---:|:-----:|:----------------|:-------|
 | 1    | 0   | 0   | 5     | "5 in row 0", "5 in col 0", "5 in block 0-0" | Add to HashSet (Success) |
 | 2    | 0   | 1   | 3     | "3 in row 0", "3 in col 1", "3 in block 0-0" | Add to HashSet (Success) |
 | 3    | 0   | 4   | 5     | "5 in row 0", "5 in col 4", "5 in block 0-1" | Add to HashSet (Collision on "5 in row 0") -> Return false |
@@ -4881,7 +4907,7 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 **Trace Walkthrough** (input: `mat=[[1,2,3],[4,5,6],[7,8,9]], K=2`):
 
 | Step | Row | Col | Value | Action |
-|------|-----|-----|-------|--------|
+|:---:|:---:|:---:|:-----:|:-------|
 | 1    | 2   | 2   | 12    | Query (2,2) with K=2: 12 - 0 - 0 + 0 = 12 |
 | 2    | 2   | 3   | 16    | Query (2,3) with K=2: 18 - 0 - 2 + 0 = 16 |
 | 3    | 3   | 2   | 24    | Query (3,2) with K=2: 27 - 3 - 0 + 0 = 24 |
@@ -5307,7 +5333,7 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 **Trace Walkthrough** (input: `[[2,1,1],[1,1,0],[0,1,1]]`):
 
 | Step | Row | Col | Minute | Value | Action |
-|------|-----|-----|--------|-------|--------|
+|:---:|:---:|:---:|:------:|:-----:|:-------|
 | 1    | 0   | 0   | 0      | 2     | Initial rotten, enqueue |
 | 2    | 0   | 1   | 1      | 1->2  | Rot right neighbor, enqueue |
 | 3    | 1   | 0   | 1      | 1->2  | Rot bottom neighbor, enqueue |
@@ -5620,7 +5646,7 @@ A technique where a window expands to the right to include elements and contract
 **Fixed-Size Sliding Window vs Dynamic Sliding Window**
 
 | Feature | Fixed-Size Window | Dynamic Sliding Window |
-|---|---|---|
+|:-----------------|:--------------------------------------------|:--------------------------------------------|
 | **Window Size** | Constant (e.g., length K). | Variable (expands and contracts). |
 | **Movement** | Move both left and right pointers together. | Move right continuously, move left only to fix invariants. |
 | **Use Case** | Anagrams in a fixed window, max sum of K elements. | Longest substring with K distinct chars, minimum subarray sum. |
@@ -6863,10 +6889,15 @@ This chapter covers Hard-tier of the General Coding Assessments (Hard difficulty
 A **Rotated Sorted Array** is an array that was originally sorted in ascending order (with unique elements), but has been shifted (rotated) at some unknown pivot index $K$.
 
 For example, consider the original sorted array:
-$$\text{Original Sorted Array: } [0, 1, 2, 4, 5, 6, 7]$$
+```
+Original Sorted Array: [0, 1, 2, 4, 5, 6, 7]
+```
 
 If we rotate this array at pivot index $K = 3$ (shifting elements from index 3 onwards to the front), we get:
-$$\text{Rotated Sorted Array: } [4, 5, 6, 7, 0, 1, 2]$$
+
+```
+Rotated Sorted Array: [4, 5, 6, 7, 0, 1, 2]
+```
 
 Notice what happened:
 
@@ -7569,7 +7600,7 @@ public int minDistance(String word1, String word2) {
 **Trace-Through:** Cache capacity = 2.
 
 | Operation | HashMap | Linked List (HEAD → TAIL) | Why |
-|---|---|---|---|
+|:-----------------|:-------------------|:--------------------------|:-------------------------------------------------------|
 | `put(1, "A")` | {1→A} | **[1]** | First entry, goes to head |
 | `put(2, "B")` | {1→A, 2→B} | **[2, 1]** | Newest at head |
 | `get(1)` | {1→A, 2→B} | **[1, 2]** | Accessed 1 → move to head |
@@ -7668,7 +7699,7 @@ public class LRUCache {
 **Trace-Through (Monotonic Stack for Heights `[3, 1, 3, 2, 2]`):**
 
 | Index `i` | Height `h` | Action | Stack State | Area Calculated |
-|---|---|---|---|---|
+|:---------:|:----------:|:-----------------------------|:------------|:----------------|
 | 0 | 3 | Push 0 | `[0]` | — |
 | 1 | 1 | `1 < 3` $\rightarrow$ Pop 0 (h=3) | `[]` | `height=3, width=1` $\rightarrow$ **3** |
 | 1 | 1 | Push 1 | `[1]` | — |
@@ -9301,7 +9332,17 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
 
 * **Q4 (Hard): Word Search II**
   * *Specification:* Given an M×N board of characters and a list of words, find all words that can be formed by sequentially adjacent cells (horizontally or vertically). Each cell may only be used once per word.
-  * *Sample Test Case:* Input: `board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], words = ["oath","pea","eat","rain"] -> ["eat","oath"]`
+  * *Sample Test Case:* Input:
+    ```
+    board = [
+      ["o","a","a","n"],
+      ["e","t","a","e"],
+      ["i","h","k","r"],
+      ["i","f","l","v"]
+    ]
+    words = ["oath","pea","eat","rain"]
+    Output: ["eat","oath"]
+    ```
   * *Constraints:* M, N \le 12, words.length \le 3 \times 10^4, words[i].length \le 10.
   * *Hint:* Combine Trie prefix tree with DFS backtracking for efficient multi-word search.
 
@@ -9557,6 +9598,7 @@ A single matching engine instance cannot handle all trading instruments globally
 ### Consistent Hashing for Instrument Sharding
 
 ![Consistent Hashing Ring — Distributed Key Routing](editions/java/chapters/16-system-architecture/visuals/consistent_hashing.jpg){width=85%}
+
 Instead of traditional modulo sharding (`hash(instrumentId) % nodeCount`), which causes massive data reshuffling when nodes are added or removed, ZenithTrade utilizes a **Consistent Hash Ring**:
 
 1.  **The Ring:** The hash space is mapped onto a circular ring (e.g., 0 to $2^{32} - 1$).
@@ -9659,6 +9701,7 @@ public class TokenBucket {
 }
 ```
 
+
 ### Leaky Bucket Algorithm
 In the leaky bucket algorithm, incoming requests enter a FIFO queue (the bucket). The system processes requests from the queue at a strictly constant rate. If the queue is full, new requests are discarded. Unlike the token bucket, it entirely smooths out bursts, ensuring a perfectly constant output rate.
 
@@ -9721,6 +9764,7 @@ public class UserService {
     }
 }
 ```
+
 
 ### Write-Through Cache
 Under Write-Through caching, the application writes data to the cache and the database simultaneously (often abstracted so the application only writes to the cache, which synchronously updates the DB).
@@ -9815,7 +9859,9 @@ To demonstrate how a senior candidate should navigate a system design round, her
 ### High-Level Estimations (Scale & Math)
 **Candidate:** *"Let's calculate our network and storage needs. At 100,000 RPS, if an average order payload is 200 bytes, our network ingest rate at the gateway is:"*
 
-$$\text{Ingest Bandwidth} = 100,000 \times 200 \text{ bytes} = 20 \text{ MB/s} = 160 \text{ Mbps}$$
+```
+Ingest Bandwidth = 100,000 * 200 bytes = 20 MB/s = 160 Mbps
+```
 
 *"This is easily handled by standard network infrastructure. However, processing 100,000 matches per second in a single SQL database is impossible due to disk I/O bottlenecks. Therefore, our primary design boundary is that **the active matching engine must run entirely in-memory**, keeping reads and writes decoupled from disk operations during the matching loop."*
 
@@ -10019,7 +10065,9 @@ For financial ledgers (like AuraPay) where correctness and auditability are para
 - **State-Based Storage:** Storing a row `Account(id=101, balance=500.00)`. If a balance mismatch occurs, it is impossible to trace *why* the balance is incorrect without parsing external database logs.
 - **Event-Sourced Storage:** Storing a stream of immutable events: `[Deposited(50.00), Deposited(70.00), Debited(20.00)]`. The current balance is a derived projection computed by folding/aggregating these events over time:
 
-$$\text{Current Balance} = \sum \text{Credit Events} - \sum \text{Debit Events}$$
+```
+Current Balance = Sum(Credit Events) - Sum(Debit Events)
+```
 
 ### Key Invariants & Advantages
 
@@ -10181,7 +10229,9 @@ When database size or write throughput exceeds the limits of a single master ser
    - **Trade-off:** Simple to implement but leads to severe write imbalances if activity is concentrated in a specific range.
 2. **Hash-Based Sharding:** Applying a hash function to the partition key:
    
-   $$\text{Shard ID} = \text{hash}(\text{key}) \pmod N$$
+   ```
+   Shard ID = hash(key) % N
+   ```
    
    - **Trade-off:** Uniform data distribution. However, if the number of shards $N$ changes (re-sharding), almost all historical data must be migrated.
 3. **Directory-Based Sharding:** Utilizing a centralized lookup service (lookup table) to track which shard stores a specific partition key.
@@ -10567,6 +10617,7 @@ public class TransactionProcessorTest {
 }
 ```
 
+
 By utilizing mock objects, we verify that the processor correctly coordinates the transfer, updates balance invariants, and calls the persistence layer, without requiring an active database connection.
 
 > **Why is it called "Mockito"?** The popular Java mocking framework is named after the **Mojito** cocktail — a playful twist by its Polish creator Szczepan Faber. Just as a bartender mixes ingredients to create something refreshing, Mockito mixes stubs and verifications to create clean, readable tests. The name also echoes the Spanish suffix *"-ito"* (meaning "little"), suggesting lightweight mock objects.
@@ -10795,7 +10846,9 @@ When designing load tests, avoid these common mistakes:
 
 When load testing data-intensive applications, connection pool sizing is a common bottleneck. As discussed in earlier chapters, the optimal pool size formula is:
 
-$$\text{Pool Size} = T_n \times (C_m - 1) + 1$$
+```
+Pool Size = Tn * (Cm - 1) + 1
+```
 
 Where $T_n$ = number of threads, $C_m$ = maximum concurrent queries per thread.
 
@@ -10857,7 +10910,9 @@ To guarantee in-order delivery, Kafka enforces a strict rule: **messages written
 - If you publish messages without a key (null key), Kafka distributes them across partitions using a round-robin algorithm, losing all ordering guarantees.
 - **The Solution:** Publish messages with a **Partition Key** (e.g., `accountId`). Kafka hashes the key to determine the partition:
 
-$$\text{Partition ID} = \text{hash}(\text{accountId}) \pmod{\text{Number of Partitions}}$$
+```
+Partition ID = hash(accountId) % Number of Partitions
+```
 
 By sharding on `accountId`, all transaction events for a specific account are guaranteed to land in the same partition and be processed in exact chronological order by a single consumer thread.
 
@@ -10896,6 +10951,7 @@ public class TransactionEventProducer {
     }
 }
 ```
+
 
 Setting `enable.idempotence = true` ensures that network retries by the producer do not result in duplicate messages landing in the partition log.
 
@@ -11041,10 +11097,10 @@ Machine learning models degrade over time as the real-world distribution shifts 
 In ML system design interviews, you must explain the right evaluation metric for the use case:
 
 | Metric | Formula | Best For | Pitfall |
-|---|---|---|---|
-| **Precision** | $\frac{TP}{TP + FP}$ | Fraud detection (minimize false alarms) | Misses real fraud if too conservative |
-| **Recall** | $\frac{TP}{TP + FN}$ | Medical diagnosis (catch all positives) | Too many false positives annoy users |
-| **F1-Score** | $2 \times \frac{Precision \times Recall}{Precision + Recall}$ | Balanced classification tasks | Hides class imbalance issues |
+|:-----------------|:--------------------------------------------|:----------------------------------------|:----------------------------------------|
+| **Precision** | `TP / (TP + FP)` | Fraud detection (minimize false alarms) | Misses real fraud if too conservative |
+| **Recall** | `TP / (TP + FN)` | Medical diagnosis (catch all positives) | Too many false positives annoy users |
+| **F1-Score** | `2 * (Precision * Recall) / (Precision + Recall)` | Balanced classification tasks | Hides class imbalance issues |
 | **AUC-ROC** | Area under the ROC curve | Ranking quality across thresholds | Misleading on heavily imbalanced datasets |
 | **NDCG** | Normalized Discounted Cumulative Gain | Recommendation/search ranking | Sensitive to the number of results evaluated |
 
@@ -11173,6 +11229,7 @@ public class LlmGatewaySecurityFilter {
     }
 }
 ```
+
 
 Any incoming prompt containing injection signatures is blocked immediately before execution, protecting the LLM boundary from security drift.
 

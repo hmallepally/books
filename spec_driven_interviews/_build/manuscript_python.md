@@ -139,7 +139,7 @@ This manual is designed for a dual audience. For individual engineers preparing 
 For mid-to-senior engineers targeting algorithmic assessments. Follow this intensive schedule to rebuild coding muscle memory.
 
 | Day | Focus Area | Chapters | Practice Target | Time |
-|---|---|---|---|---|
+|:---:|:------------------------|:----------------------|:-------------------------------------------------------|:-----:|
 | 1 | Foundations | Prologue, Ch 1-2 | Read Invariant-First strategy & Decomposition | 3-4 hrs |
 | 2 | Core Algorithms | Ch 8-9 | Memorize Big-O table, implement 5 core algorithms | 3-4 hrs |
 | 3 | Easy-Tier Patterns | Ch 10 | Solve 15 implementation problems under 8-min timer | 4-5 hrs |
@@ -160,7 +160,7 @@ For mid-to-senior engineers targeting algorithmic assessments. Follow this inten
 For lead and staff engineers focused on system design and architecture.
 
 | Day | Focus Area | Chapters | Practice Target | Time |
-|---|---|---|---|---|
+|:---:|:------------------------|:----------------------|:-------------------------------------------------------|:-----:|
 | 1 | Foundations & Case Studies | Prologue, Ch 1-3 | Internalize case studies and design boundaries | 3-4 hrs |
 | 2 | OOP & SOLID | Ch 4-5 | Domain boundaries and strict SOLID inversion | 3-4 hrs |
 | 3 | Functional Streams | Ch 6 | Imperative-vs-stream optimizations | 2-3 hrs |
@@ -185,7 +185,7 @@ For lead and staff engineers focused on system design and architecture.
 You lead teams but haven't personally coded in assessments recently. Your edge is architectural judgment and leadership — this plan leverages that while rebuilding algorithmic fluency.
 
 | Day | Focus | Chapters | Time |
-|-----|-------|----------|------|
+|:---:|:-------------------------------------------------------|:---------|:----:|
 | 1 | Invariant-First Mindset + Decomposition Framework | Ch 1-2 | 2h |
 | 2 | Case Study Architectures (AuraPay, ZenithTrade) | Ch 3 | 1.5h |
 | 3 | SOLID Trade-offs + Design Patterns (Strategic View) | Ch 5, 7 | 2h |
@@ -328,7 +328,9 @@ We define two pointers, `left` and `right`, defining our active search range $[l
 
 - **The Loop Invariant:** *If target is present in the array, it must reside within the index boundaries:*
 
-$$\text{Invariant } P(left, right): \text{target} \in nums[left \dots right]$$
+```
+Invariant P(left, right): target in nums[left...right]
+```
 
 ### Mathematical Proof of Correctness
 To prove the algorithm is correct, we must prove three properties of our loop invariant:
@@ -342,7 +344,9 @@ Before the loop starts, the invariant must hold true. We initialize `left = 0` a
 If the invariant is true before an iteration, we must prove it remains true after updating our pointers.
 During the loop, we calculate:
 
-$$mid = left + \frac{right - left}{2}$$
+```
+mid = left + (right - left) / 2
+```
 
 We check three cases:
 
@@ -394,6 +398,7 @@ def binary_search(nums: list[int], target: int) -> int:
 
     return -1  # Search range is empty -> target not in nums
 ```
+
 
 By applying this invariant-first approach, we eliminate all cognitive overhead. We do not need to "dry-run" multiple edge cases or guess boundary updates. The math guarantees the correctness of our implementation.
 
@@ -661,6 +666,7 @@ class Order:
         self.quantity = quantity
 ```
 
+
 These architectures serve as running case studies throughout the book. You will implement components of each system as you learn the patterns in Parts II, III, and IV. Do not attempt to design these systems now — let the patterns guide you.
 
 
@@ -680,7 +686,9 @@ ChiramTrust is a decentralized identity wallet that allows users to store creden
 
 To implement consensus-based key recovery, the user's private key $S$ is split into $N$ distinct shares. We construct a random polynomial of degree $T - 1$ (where $T$ is the threshold of guardians needed to recover the key):
 
-$$f(x) = a_0 + a_1 x + a_2 x^2 + \dots + a_{T-1} x^{T-1} \pmod P$$
+```
+f(x) = a_0 + a_1*x + a_2*x^2 + ... + a_{T-1}*x^{T-1} (mod P)
+```
 
 where $a_0 = S$ (the secret key), and the coefficients $a_1, \dots, a_{T-1}$ are randomly generated integers. The prime $P$ defines the finite field $\mathbb{F}_P$. Each guardian $i$ receives a coordinate point $(i, f(i))$. 
 
@@ -688,7 +696,9 @@ By the properties of polynomial interpolation:
 
 1.  **Any $T$ guardians** can pool their shares $(x_i, y_i)$ and reconstruct the polynomial $f(x)$ using Lagrange interpolation, finding $f(0) = a_0 = S$:
    
-    $$S = \sum_{i=1}^{T} y_i \prod_{j \neq i} \frac{-x_j}{x_i - x_j} \pmod P$$
+```
+S = Sum_{i=1..T} ( y_i * Product_{j != i} ( -x_j / (x_i - x_j) ) ) (mod P)
+```
    
 2.  **Any $T - 1$ or fewer guardians** possess a system of equations with infinite solutions, revealing absolutely zero information about the secret key $S$.
 
@@ -710,6 +720,7 @@ class DidConsentRecord:
     def revoke_consent(self, scope: str) -> None:
         self._consent_scopes[scope] = False
 ```
+
 
 ### Interview Drill: Applying Bounded Context Isolation
 
@@ -764,6 +775,7 @@ class LedgerService:
         from_acc.balance -= amount
         to_acc.balance += amount
 ```
+
 
 ### Why the Anemic Model Fails in Production
 
@@ -1283,13 +1295,14 @@ Debugging streams can be difficult due to their lazy execution model. To inspect
 
 1. **Injecting `peek()` for Logging:**
    Use the `.peek()` intermediate operation to log elements as they flow through specific stages of the pipeline:
-   ```python
+```python
 def log_and_map(t):
     log.debug(f"Passed Filter: {t.id}")
     return t.merchant_id
 
 merchant_ids = [log_and_map(t) for t in transactions if t.amount > 100]
 ```
+
 
 2. **Utilizing IDE Stream Debuggers:**
    Modern IDEs (like IntelliJ IDEA or Visual Studio) contain visual stream debuggers. When you set a breakpoint on a stream statement, the debugger can render a visual representation of how elements are filtered and mapped at each stage.
@@ -1357,6 +1370,7 @@ class LedgerConnectionPool:
                     cls._instance = super(LedgerConnectionPool, cls).__new__(cls)
         return cls._instance
 ```
+
 
 > **Warning for Senior Candidates:** In cloud-native systems, classical Singletons are often considered an anti-pattern:
 > 1. **Testing Complexity:** They introduce global mutable state, making parallel unit tests prone to side effects.
@@ -1768,11 +1782,15 @@ A common design flaw is over-allocating database connection pool sizes. If you h
 
 HikariCP (the industry-standard connection pool manager) uses a formula derived from PostgreSQL benchmark testing to size database pools:
 
-$$Pool\ Size = (Core\ Count \times 2) + Effective\ Spindle\ Count$$
+```
+Pool Size = (Core Count * 2) + Effective Spindle Count
+```
 
 For example, a database server with 8 CPU cores and an SSD array (spindle count of 1) should have a pool size of:
 
-$$(8 \times 2) + 1 = 17\ Connections$$
+```
+(8 * 2) + 1 = 17 Connections
+```
 
 Setting the pool size to 17 will yield *higher* overall throughput than setting it to 100, due to the minimization of CPU context switching and disk spindle thrashing.
 
@@ -1821,7 +1839,7 @@ Standardized online coding assessments (e.g., General Coding Assessments, Hacker
 ### The 4-Question Blueprint
 
 | Question | Difficulty | Target Time | Primary Pattern Types | Tactical Rule |
-|---|---|---|---|---|
+|:-----------------|:------------|:------------|:----------------------|:-------------------------------------------------------------------|
 | **Easy-tier** | Easy | 5–8 Min | `[PAT-01]`, `[PAT-02]` | Write clean, brute-force code immediately. Do not over-optimize. |
 | **Medium-tier** | Medium | 10–12 Min | `[PAT-03]`, `[PAT-06]`, `[PAT-10]` | Watch for array bounds and off-by-one errors. |
 | **Medium-Hard-tier** | Medium-Hard | 15–20 Min | `[PAT-04]`, `[PAT-13]`, `[PAT-14]` | Identify the window state or queue batching early. |
@@ -1854,7 +1872,7 @@ Before diving into the 25 canonical patterns, ensure you have instant recall of 
 
 **The Constraint-to-Complexity Rule:** Read the problem constraints FIRST. If N ≤ 10^4, O(N²) is acceptable. If N ≤ 10^5, you need O(N log N) or better. If N ≤ 10^6, you need O(N). This single rule eliminates 50% of wrong algorithm choices before you write a line of code.
 
-![Constraint-to-Complexity Flowchart](../02-problem-decomposition/visuals/constraint_flowchart.jpg){width=85%}
+![Constraint-to-Complexity Flowchart](editions/python/chapters/09-algorithms-assessment/visuals/constraint_flowchart.jpg){width=85%}
 
 ---
 
@@ -2763,6 +2781,7 @@ for read in range(len(arr)):
         write += 1
 # Result is arr[0..write-1], return write as the new length
 ```
+
 **Used by:** Remove Element, Move Zeros, Remove Duplicates, Squeeze Spaces.
 
 ### Template B: Symmetric Converging Pointers
@@ -2775,6 +2794,7 @@ while left < right:
     left += 1
     right -= 1
 ```
+
 **Used by:** Palindrome Check, Reverse Array, Two Sum (sorted), Sort Colors.
 
 * * *
@@ -2807,6 +2827,7 @@ def first_uniq_char(self, s: str) -> int:
     return -1 # All characters repeat
 # Time: O(N), Space: O(1) — the counts list is constant size
 ```
+
 * * *
 
 **2. In-Place String Compression (Run-Length Encoding)**
@@ -2850,10 +2871,11 @@ def compress(self, chars: list[str]) -> int:
 # Time: O(N), Space: O(1) auxiliary
 ```
 
+
 **Trace Walkthrough** (input: `['a','a','b','b','c','c','c']`):
 
 | Step | read | write | Action | State |
-|------|------|-------|--------|-------|
+|:---:|:----:|:-----:|:--------------|:-----------------------------------|
 | Init | 0    | 0     | Start  | `['a','a','b','b','c','c','c']` |
 | 1    | 2    | 2     | Run 'a' len 2 | `['a','2','b','b','c','c','c']` |
 | 2    | 4    | 4     | Run 'b' len 2 | `['a','2','b','2','c','c','c']` |
@@ -2894,6 +2916,7 @@ def is_palindrome(self, s: str) -> bool:
     return True
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **4. Move Zeros to End**
@@ -2923,6 +2946,7 @@ def move_zeroes(self, nums: list[int]) -> None:
         write += 1
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **5. Remove Duplicates from Sorted Array**
@@ -2946,6 +2970,7 @@ def remove_duplicates(self, nums: list[int]) -> int:
     return write
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **6. Single Number (XOR Uniqueness)**
@@ -2963,6 +2988,7 @@ def single_number(self, nums: list[int]) -> int:
     return result
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **7. Valid Parentheses**
@@ -2991,6 +3017,7 @@ def is_valid(self, s: str) -> bool:
     return len(stack) == 0 # Stack must be empty
 # Time: O(N), Space: O(N) worst case for the stack
 ```
+
 * * *
 
 **8. Reverse String In-Place**
@@ -3012,6 +3039,7 @@ def reverse_string(self, s: list[str]) -> None:
         right -= 1
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **9. Pivot Index (Balance Point)**
@@ -3038,6 +3066,7 @@ def pivot_index(self, nums: list[int]) -> int:
     return -1
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **10. Check Array Monotonicity**
@@ -3062,6 +3091,7 @@ def is_monotonic(self, nums: list[int]) -> bool:
     return increasing or decreasing
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **11. Neighbor Sum Transformation**
@@ -3087,6 +3117,7 @@ def neighbor_sum(self, a: list[int]) -> list[int]:
     return b
 # Time: O(N), Space: O(N) for output array
 ```
+
 * * *
 
 **12. Maximum Subarray Sum of Fixed Window K**
@@ -3113,6 +3144,7 @@ def max_sum_subarray(self, nums: list[int], k: int) -> int:
     return max_sum
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **13. Find the Added Character**
@@ -3130,6 +3162,7 @@ def find_the_difference(self, s: str, t: str) -> str:
     return chr(result) # Only the unpaired character survives
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **14. Capitalize or Reverse by Word Length Parity**
@@ -3154,6 +3187,7 @@ def transform_words(self, words: list[str]) -> list[str]:
     return result
 # Time: O(N * K) where K is average word length, Space: O(N * K) for output
 ```
+
 * * *
 
 **15. Check Equal Character Frequencies**
@@ -3180,6 +3214,7 @@ def are_occurrences_equal(self, s: str) -> bool:
     return True
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **16. Remove Element In-Place**
@@ -3203,6 +3238,7 @@ def remove_element(self, nums: list[int], val: int) -> int:
     return write
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **17. Parity Alternation Validation**
@@ -3225,6 +3261,7 @@ def is_alternating_parity(self, nums: list[int]) -> bool:
     return True
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **18. Two Sum (Unsorted Array)**
@@ -3247,6 +3284,7 @@ def two_sum(self, nums: list[int], target: int) -> list[int]:
     return [] # Should not reach here per problem guarantee
 # Time: O(N), Space: O(N)
 ```
+
 * * *
 
 **19. Majority Element**
@@ -3273,6 +3311,7 @@ def majority_element(self, nums: list[int]) -> int:
     return candidate
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **20. Plus One (Large Number as Array)**
@@ -3295,6 +3334,7 @@ def plus_one(self, digits: list[int]) -> list[int]:
     return [1] + [0] * len(digits)
 # Time: O(N), Space: O(1) amortized (O(N) only for all-9s edge case)
 ```
+
 * * *
 
 
@@ -3326,6 +3366,7 @@ def adjacent_elements_product(self, input_array: list[int]) -> int:
     return max_prod
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **22. Century From Year**
@@ -3340,6 +3381,7 @@ def century_from_year(self, year: int) -> int:
     return (year + 99) // 100
 # Time: O(1), Space: O(1)
 ```
+
 * * *
 
 **23. All Longest Strings**
@@ -3367,6 +3409,7 @@ def all_longest_strings(self, input_array: list[str]) -> list[str]:
     return result
 # Time: O(N), Space: O(N) for output
 ```
+
 * * *
 
 **24. Common Character Count**
@@ -3391,6 +3434,7 @@ def common_character_count(self, s1: str, s2: str) -> int:
     return common
 # Time: O(N + M), Space: O(1) — fixed 26-element lists
 ```
+
 * * *
 
 **25. Lucky Ticket (Digit Sum Halves)**
@@ -3414,6 +3458,7 @@ def is_lucky(self, n: int) -> bool:
     return sum1 == sum2
 # Time: O(D) where D is digit count, Space: O(D) for string conversion
 ```
+
 * * *
 
 **26. Sort By Height (Obstacles in Place)**
@@ -3443,6 +3488,7 @@ def sort_by_height(self, a: list[int]) -> list[int]:
     return a
 # Time: O(N log N) for sorting, Space: O(N) for extracted list
 ```
+
 * * *
 
 **27. Alternating Team Sums**
@@ -3466,6 +3512,7 @@ def alternating_sums(self, a: list[int]) -> list[int]:
     return [team1, team2]
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **28. Add Border to Character Matrix**
@@ -3496,6 +3543,7 @@ def add_border(self, picture: list[str]) -> list[str]:
     return result
 # Time: O(rows * cols), Space: O(rows * cols) for output
 ```
+
 * * *
 
 **29. Array Change (Minimum Moves for Strict Increase)**
@@ -3521,6 +3569,7 @@ def array_change(self, input_array: list[int]) -> int:
     return moves
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **30. Matrix Elements Sum (Haunted Rooms)**
@@ -3545,6 +3594,7 @@ def matrix_elements_sum(self, matrix: list[list[int]]) -> int:
     return total
 # Time: O(rows * cols), Space: O(1)
 ```
+
 * * *
 
 **31. Almost Increasing Sequence**
@@ -3580,10 +3630,11 @@ def almost_increasing_sequence(self, sequence: list[int]) -> bool:
 # Time: O(N), Space: O(1)
 ```
 
+
 **Trace Walkthrough** (input: `[1, 3, 2, 1]`):
 
 | Step | i | nums[i] | nums[i+1] | Violation? | Action | State (Violations) |
-|------|---|---------|-----------|------------|--------|--------------------|
+|:---:|:---:|:-------:|:---------:|:----------:|:-------|:-------------------|
 | 1    | 0 | 1       | 3         | No         | Continue | 0 |
 | 2    | 1 | 3       | 2         | Yes        | Check removals | 1 |
 | 3    | 2 | 2       | 1         | Yes        | Return false   | >1 |
@@ -3614,10 +3665,11 @@ def reverse_in_parentheses(self, s: str) -> str:
 # Time: O(N^2) worst case for nested reversals, Space: O(N)
 ```
 
+
 **Trace Walkthrough** (input: `"(u(love)i)"`):
 
 | Step | char | Action | Stack | Current String |
-|------|------|--------|-------|----------------|
+|:---:|:----:|:-------|:------|:---------------|
 | 1    | '('  | Push new | `[""]` | `""` |
 | 2    | 'u'  | Append   | `[""]` | `"u"` |
 | 3    | '('  | Push new | `["", "u"]` | `""` |
@@ -4024,6 +4076,7 @@ while top <= bottom and left <= right:
         for i in range(bottom, top - 1, -1): pass # process matrix[i][left]
         left += 1
 ```
+
 ![Spiral Boundary Traversal — Layer-by-Layer Contraction](editions/python/chapters/11-matrix-grid-patterns/visuals/spiral_traversal.png){width=85%}
 
 ### Template B: 4-Directional BFS/DFS Grid Walk
@@ -4037,6 +4090,7 @@ def dfs(grid: list[list[int]], r: int, c: int) -> None:
     for i in range(4):
         dfs(grid, r + dr[i], c + dc[i])
 ```
+
 ### Template C: 2D Prefix Sum Construction + Query
 ```python
 # Construction
@@ -4049,6 +4103,7 @@ for r in range(1, R + 1):
 def query(r1: int, c1: int, r2: int, c2: int) -> int:
     return sum_grid[r2+1][c2+1] - sum_grid[r1][c2+1] - sum_grid[r2+1][c1] + sum_grid[r1][c1]
 ```
+
 **Understanding the Construction — Worked Example.** Given a 3×3 matrix, we build a 4×4 prefix sum array `S` padded with a zero row and zero column. Each cell `S[r][c]` stores the sum of all original elements from `(0,0)` to `(r-1, c-1)`.
 
 Original Matrix A:
@@ -4070,9 +4125,13 @@ Prefix Sum Array S (row 0 and column 0 are all zeros):
 
 **Cell-by-cell trace for S[2][2] = 12:**
 
-$$S[r][c] = A[r\text{-}1][c\text{-}1] + S[r\text{-}1][c] + S[r][c\text{-}1] - S[r\text{-}1][c\text{-}1]$$
+```
+S[r][c] = A[r-1][c-1] + S[r-1][c] + S[r][c-1] - S[r-1][c-1]
+```
 
-$$S[2][2] = \underbrace{A[1][1]}_{5} + \underbrace{S[1][2]}_{3} + \underbrace{S[2][1]}_{5} - \underbrace{S[1][1]}_{1} = 12$$
+```
+S[2][2] = A[1][1] (5) + S[1][2] (3) + S[2][1] (5) - S[1][1] (1) = 12
+```
 
 The two 5s come from different sources: `A[1][1] = 5` is the center cell of the original matrix, while `S[2][1] = 5` is the prefix sum of the first column (`1 + 4 = 5`). Verify: `S[2][2]` should equal `1 + 2 + 4 + 5 = 12` — the sum of all elements from `(0,0)` to `(1,1)`. ✓
 
@@ -4082,7 +4141,9 @@ The two 5s come from different sources: `A[1][1] = 5` is the center cell of the 
 
 **Understanding the Query — Inclusion-Exclusion.** To find the sum of a sub-rectangle from `(r1, c1)` to `(r2, c2)`, we carve it out of the full prefix sum using four overlapping rectangles:
 
-$$\text{query}(r_1, c_1, r_2, c_2) = S[r_2\text{+}1][c_2\text{+}1] - S[r_1][c_2\text{+}1] - S[r_2\text{+}1][c_1] + S[r_1][c_1]$$
+```
+query(r1, c1, r2, c2) = S[r2+1][c2+1] - S[r1][c2+1] - S[r2+1][c1] + S[r1][c1]
+```
 
 **The `+1` rule**: `+1` means "include this boundary." The middle two terms are *crossed* — each keeps one dimension full and chops the other:
 
@@ -4095,7 +4156,9 @@ $$\text{query}(r_1, c_1, r_2, c_2) = S[r_2\text{+}1][c_2\text{+}1] - S[r_1][c_2\
 
 **Worked query**: Sum of sub-rectangle `(1,1)` to `(2,2)` — cells `{5, 6, 8, 9}` = 28:
 
-$$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
+```
+S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28
+```
 
 ![2D Prefix Sum — Query via Inclusion-Exclusion](editions/python/chapters/11-matrix-grid-patterns/visuals/prefix_sum_2d_query.png){width=85%}
 
@@ -4122,7 +4185,8 @@ def rotate(self, matrix: list[list[int]]) -> None:
     for i in range(n):
         for j in range(n // 2):
             matrix[i][j], matrix[i][n - 1 - j] = matrix[i][n - 1 - j], matrix[i][j]
-```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **2. Spiral Matrix Traversal**
@@ -4150,12 +4214,13 @@ def spiral_order(self, matrix: list[list[int]]) -> list[int]:
             for i in range(b, t - 1, -1): res.append(matrix[i][l]) # Left
             l += 1
     return res
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Trace Walkthrough** (input: `3x3 matrix`):
 
 | Step | Row | Col | Direction | Value | Action |
-|------|-----|-----|-----------|-------|--------|
+|:---:|:---:|:---:|:----------|:-----:|:-------|
 | 1    | 0   | 0   | Right     | 1     | Add to result |
 | 2    | 0   | 1   | Right     | 2     | Add to result |
 | 3    | 0   | 2   | Right     | 3     | Add, contract top bound |
@@ -4200,7 +4265,8 @@ def set_zeroes(self, matrix: list[list[int]]) -> None:
         for j in range(n): matrix[0][j] = 0
     if first_col_zero:
         for i in range(m): matrix[i][0] = 0
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **4. Diagonal Matrix Traversal**
@@ -4228,7 +4294,8 @@ def find_diagonal_order(self, mat: list[list[int]]) -> list[int]:
             elif c == 0: r += 1
             else: r += 1; c -= 1
     return res
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **5. Matrix Reshape Validation**
@@ -4249,7 +4316,8 @@ def matrix_reshape(self, mat: list[list[int]], r: int, c: int) -> list[list[int]
     for i in range(m * n):
         res[i // c][i % c] = mat[i // n][i % n]
     return res
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
 
 * * *
 **6. Rotate Matrix 90° Counter-Clockwise**
@@ -4272,7 +4340,8 @@ def rotate_counter(self, matrix: list[list[int]]) -> None:
     for j in range(n):
         for i in range(n // 2):
             matrix[i][j], matrix[n - 1 - i][j] = matrix[n - 1 - i][j], matrix[i][j]
-```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **7. Search in Row-Column Sorted Matrix**
@@ -4292,7 +4361,8 @@ def search_matrix(self, matrix: list[list[int]], target: int) -> bool:
         elif matrix[r][c] > target: c -= 1
         else: r += 1
     return False
-```Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **8. Game of Life**
@@ -4322,7 +4392,8 @@ def game_of_life(self, board: list[list[int]]) -> None:
         for c in range(n):
             if board[r][c] > 0: board[r][c] = 1
             else: board[r][c] = 0
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **9. Toeplitz Matrix Verification**
@@ -4341,7 +4412,8 @@ def is_toeplitz_matrix(self, matrix: list[list[int]]) -> bool:
             if matrix[i][j] != matrix[i-1][j-1]:
                 return False
     return True
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **10. Spiral Matrix Construction**
@@ -4378,7 +4450,8 @@ def generate_matrix(self, n: int) -> list[list[int]]:
                 val += 1
             l += 1
     return mat
-```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
+```
+Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
 
 * * *
 **11. Flood Fill**
@@ -4403,7 +4476,8 @@ def _dfs(self, img: list[list[int]], r: int, c: int, old_c: int, new_c: int) -> 
     self._dfs(img, r+1, c, old_c, new_c)
     self._dfs(img, r, c-1, old_c, new_c)
     self._dfs(img, r, c+1, old_c, new_c)
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **12. Transpose Rectangular Matrix**
@@ -4424,7 +4498,8 @@ def transpose(self, matrix: list[list[int]]) -> list[list[int]]:
         for j in range(c):
             ans[j][i] = matrix[i][j]
     return ans
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **13. Valid Sudoku**
@@ -4453,12 +4528,13 @@ def is_valid_sudoku(self, board: list[list[str]]) -> bool:
                 seen.add(col_key)
                 seen.add(box_key)
     return True
-```Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
 
 **Trace Walkthrough** (input: `Sudoku with duplicate 5s in row 0`):
 
 | Step | Row | Col | Value | Encoded Strings | Action |
-|------|-----|-----|-------|-----------------|--------|
+|:---:|:---:|:---:|:-----:|:----------------|:-------|
 | 1    | 0   | 0   | 5     | "5 in row 0", "5 in col 0", "5 in block 0-0" | Add to HashSet (Success) |
 | 2    | 0   | 1   | 3     | "3 in row 0", "3 in col 1", "3 in block 0-0" | Add to HashSet (Success) |
 | 3    | 0   | 4   | 5     | "5 in row 0", "5 in col 4", "5 in block 0-1" | Add to HashSet (Collision on "5 in row 0") -> Return false |
@@ -4483,7 +4559,8 @@ def island_perimeter(self, grid: list[list[int]]) -> int:
                 if i > 0 and grid[i - 1][j] == 1: perimeter -= 2
                 if j > 0 and grid[i][j - 1] == 1: perimeter -= 2
     return perimeter
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **15. Maximum K×K Submatrix Sum**
@@ -4509,12 +4586,13 @@ def max_sum(self, mat: list[list[int]], k: int) -> int:
             s = pre[i][j] - pre[i-k][j] - pre[i][j-k] + pre[i-k][j-k]
             max_val = max(max_val, s)
     return max_val
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Trace Walkthrough** (input: `mat=[[1,2,3],[4,5,6],[7,8,9]], K=2`):
 
 | Step | Row | Col | Value | Action |
-|------|-----|-----|-------|--------|
+|:---:|:---:|:---:|:-----:|:-------|
 | 1    | 2   | 2   | 12    | Query (2,2) with K=2: 12 - 0 - 0 + 0 = 12 |
 | 2    | 2   | 3   | 16    | Query (2,3) with K=2: 18 - 0 - 2 + 0 = 16 |
 | 3    | 3   | 2   | 24    | Query (3,2) with K=2: 27 - 3 - 0 + 0 = 24 |
@@ -4545,7 +4623,8 @@ def _dfs(self, grid: list[list[str]], r: int, c: int) -> None:
     grid[r][c] = '0'
     self._dfs(grid, r+1, c); self._dfs(grid, r-1, c)
     self._dfs(grid, r, c+1); self._dfs(grid, r, c-1)
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **17. Flip and Invert Image**
@@ -4565,7 +4644,8 @@ def flip_and_invert_image(self, image: list[list[int]]) -> list[list[int]]:
             row[left], row[right] = row[right] ^ 1, row[left] ^ 1
             left += 1; right -= 1
     return image
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **18. Shift 2D Grid**
@@ -4589,7 +4669,8 @@ def shift_grid(self, grid: list[list[int]], k: int) -> list[list[int]]:
             new_1d = (r * n + c + k) % total
             res[new_1d // n][new_1d % n] = grid[r][c]
     return res
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **19. Word Search in Grid**
@@ -4618,7 +4699,8 @@ def _dfs(self, b: list[list[str]], r: int, c: int, word: str, idx: int) -> bool:
              self._dfs(b, r, c+1, word, idx+1) or self._dfs(b, r, c-1, word, idx+1))
     b[r][c] = temp
     return found
-```Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
+```
+Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
 
 * * *
 **20. Determine If Matrix Can Be Obtained By Rotation**
@@ -4645,7 +4727,8 @@ def rotate(self, mat: list[list[int]]) -> None:
     for i in range(n):
         for j in range(n // 2):
             mat[i][j], mat[i][n-1-j] = mat[i][n-1-j], mat[i][j]
-```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **21. Chess Board Cell Color**
@@ -4662,7 +4745,8 @@ def solution(self, cell1: str, cell2: str) -> bool:
     sum1 = (ord(cell1[0]) - ord('A')) + (ord(cell1[1]) - ord('1'))
     sum2 = (ord(cell2[0]) - ord('A')) + (ord(cell2[1]) - ord('1'))
     return (sum1 % 2) == (sum2 % 2)
-```Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **22. Minesweeper Click Reveal**
@@ -4699,7 +4783,8 @@ def _dfs(self, b: list[list[str]], r: int, c: int) -> None:
         for i in range(-1, 2):
             for j in range(-1, 2):
                 self._dfs(b, r+i, c+j)
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **23. Battleship Placement Validation**
@@ -4721,7 +4806,8 @@ def count_battleships(self, board: list[list[str]]) -> int:
                 if j > 0 and board[i][j-1] == 'X': continue
                 count += 1
     return count
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **24. Box Blur**
@@ -4743,7 +4829,8 @@ def box_blur(self, image: list[list[int]]) -> list[list[int]]:
             s = sum(image[i + di][j + dj] for di in range(-1, 2) for dj in range(-1, 2))
             res[i-1][j-1] = s // 9
     return res
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **25. Zigzag String Conversion**
@@ -4770,7 +4857,8 @@ def convert(self, s: str, num_rows: int) -> str:
         cur_row += 1 if going_down else -1
         
     return "".join(rows)
-```Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
+```
+Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
 
 * * *
 **26. Simulate Robot Commands on Grid**
@@ -4798,7 +4886,8 @@ def robot_sim(self, commands: list[int], obstacles: list[list[int]]) -> int:
                 x, y = nx, ny
                 max_dist = max(max_dist, x*x + y*y)
     return max_dist
-```Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
+```
+Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
 
 * * *
 **27. Matrix Water Flow (Pacific Atlantic)**
@@ -4835,7 +4924,8 @@ def _dfs_pa(self, h, v, r, c):
         nr, nc = r + dr, c + dc
         if 0 <= nr < len(h) and 0 <= nc < len(h[0]) and not v[nr][nc] and h[nr][nc] >= h[r][c]:
             self._dfs_pa(h, v, nr, nc)
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **28. Rotting Oranges**
@@ -4876,12 +4966,13 @@ def oranges_rotting(self, grid: list[list[int]]) -> int:
         if rotted: mins += 1
         
     return mins if fresh == 0 else -1
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Trace Walkthrough** (input: `[[2,1,1],[1,1,0],[0,1,1]]`):
 
 | Step | Row | Col | Minute | Value | Action |
-|------|-----|-----|--------|-------|--------|
+|:---:|:---:|:---:|:------:|:-----:|:-------|
 | 1    | 0   | 0   | 0      | 2     | Initial rotten, enqueue |
 | 2    | 0   | 1   | 1      | 1->2  | Rot right neighbor, enqueue |
 | 3    | 1   | 0   | 1      | 1->2  | Rot bottom neighbor, enqueue |
@@ -4920,7 +5011,8 @@ def _dfs_s(self, b: list[list[str]], r: int, c: int) -> None:
     b[r][c] = '#'
     self._dfs_s(b, r+1, c); self._dfs_s(b, r-1, c)
     self._dfs_s(b, r, c+1); self._dfs_s(b, r, c-1)
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **30. Path with Minimum Effort**
@@ -4961,7 +5053,8 @@ def _can_reach(self, h: list[list[int]], limit: int) -> bool:
                     vis[nr][nc] = True
                     q.append((nr, nc))
     return False
-```Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M \times N)$
 
 ## Practice Problem Bank
 
@@ -5188,7 +5281,7 @@ A technique where a window expands to the right to include elements and contract
 **Fixed-Size Sliding Window vs Dynamic Sliding Window**
 
 | Feature | Fixed-Size Window | Dynamic Sliding Window |
-|---|---|---|
+|:-----------------|:--------------------------------------------|:--------------------------------------------|
 | **Window Size** | Constant (e.g., length K). | Variable (expands and contracts). |
 | **Movement** | Move both left and right pointers together. | Move right continuously, move left only to fix invariants. |
 | **Use Case** | Anagrams in a fixed window, max sum of K elements. | Longest substring with K distinct chars, minimum subarray sum. |
@@ -5266,6 +5359,7 @@ for right in range(len(arr)):
     # 3. Update maxLen or minLen
     max_len = max(max_len, right - left + 1)
 ```
+
 ### Template B: Fixed-Size Sliding Window
 ```python
 k, total_sum, max_val = 3, 0, 0
@@ -5275,6 +5369,7 @@ for i in range(len(arr)):
         max_val = max(max_val, total_sum) # Update result
         total_sum -= arr[i - (k - 1)]     # Remove leftmost element for next iteration
 ```
+
 ### Template C: Prefix Sum + HashMap Counter
 ```python
 from collections import defaultdict
@@ -5287,6 +5382,7 @@ for num in nums:
         count += hash_map[total_sum - k]
     hash_map[total_sum] += 1
 ```
+
 ### Template D: HashMap Frequency Grouping
 ```python
 from collections import defaultdict
@@ -5297,6 +5393,7 @@ for s in strs:
     key = str(count)
     hash_map[key].append(s)
 ```
+
 * * *
 
 ## Solved Exemplar Problems
@@ -5323,6 +5420,7 @@ def length_of_longest_substring(self, s: str) -> int:
     return max_val
 # Time Complexity: O(N) | Space Complexity: O(min(N, M))
 ```
+
 * * *
 
 **2. Subarray Sum Equals K**
@@ -5347,6 +5445,7 @@ def subarray_sum(self, nums: list[int], k: int) -> int:
     return count
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **3. Group Anagrams**
@@ -5369,6 +5468,7 @@ def group_anagrams(self, strs: list[str]) -> list[list[str]]:
     return list(hash_map.values())
 # Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
+
 * * *
 
 **4. Find All Anagram Start Indices**
@@ -5392,6 +5492,7 @@ def find_anagrams(self, s: str, p: str) -> list[int]:
     return res
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **5. Longest Substring with At Most K Distinct Characters**
@@ -5419,6 +5520,7 @@ def length_of_longest_substring_k_distinct(self, s: str, k: int) -> int:
     return max_val
 # Time Complexity: O(N) | Space Complexity: O(K)
 ```
+
 * * *
 
 **6. Minimum Window Substring (Hard)**
@@ -5452,6 +5554,7 @@ def min_window(self, s: str, t: str) -> str:
     return "" if min_len == float('inf') else s[min_start:min_start + min_len]
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **7. Group Shifted Strings**
@@ -5475,6 +5578,7 @@ def group_strings(self, strings: list[str]) -> list[list[str]]:
     return list(hash_map.values())
 # Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
+
 * * *
 
 **8. Contiguous Array Equal 0s and 1s**
@@ -5498,6 +5602,7 @@ def find_max_length(self, nums: list[int]) -> int:
     return max_val
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **9. Subarray Product Less Than K**
@@ -5521,6 +5626,7 @@ def num_subarray_product_less_than_k(self, nums: list[int], k: int) -> int:
     return count
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **10. Permutation in String**
@@ -5543,6 +5649,7 @@ def check_inclusion(self, s1: str, s2: str) -> bool:
     return False
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **11. Maximum Erasure Value**
@@ -5568,6 +5675,7 @@ def maximum_unique_subarray(self, nums: list[int]) -> int:
     return max_val
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **12. Longest Repeating Character Replacement**
@@ -5593,6 +5701,7 @@ def character_replacement(self, s: str, k: int) -> int:
     return max_len
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **13. Fruit Into Baskets**
@@ -5619,6 +5728,7 @@ def total_fruit(self, fruits: list[int]) -> int:
     return max_val
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **14. Continuous Subarray Sum Multiple of K**
@@ -5643,6 +5753,7 @@ def check_subarray_sum(self, nums: list[int], k: int) -> bool:
     return False
 # Time Complexity: O(N) | Space Complexity: O(min(N, K))
 ```
+
 * * *
 
 **15. Max Consecutive Ones III**
@@ -5664,6 +5775,7 @@ def longest_ones(self, nums: list[int], k: int) -> int:
     return len(nums) - left # Trick to return max valid length seen
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **16. Find All Duplicates in Array**
@@ -5684,6 +5796,7 @@ def find_duplicates(self, nums: list[int]) -> list[int]:
     return res
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **17. Task Scheduler CPU Units**
@@ -5713,6 +5826,7 @@ def least_interval(self, tasks: list[str], n: int) -> int:
     return len(tasks) + idles
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **18. Insert & Merge Overlapping Intervals**
@@ -5741,6 +5855,7 @@ def insert(self, intervals: list[list[int]], new_interval: list[int]) -> list[li
     return res
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **19. Top K Frequent Elements**
@@ -5760,6 +5875,7 @@ def top_k_frequent(self, nums: list[int], k: int) -> list[int]:
     return heapq.nlargest(k, count.keys(), key=count.get)
 # Time Complexity: O(N log K) | Space Complexity: O(N)
 ```
+
 * * *
 
 **20. First Missing Positive Integer**
@@ -5786,6 +5902,7 @@ def first_missing_positive(self, nums: list[int]) -> int:
     return len(nums) + 1
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **21. Minimum Size Subarray Sum**
@@ -5809,6 +5926,7 @@ def min_sub_array_len(self, target: int, nums: list[int]) -> int:
     return 0 if min_val == float('inf') else min_val
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **22. Substring with Concatenation of All Words**
@@ -5844,6 +5962,7 @@ def find_substring(self, s: str, words: list[str]) -> list[int]:
     return res
 # Time Complexity: O(N * M * L) | Space Complexity: O(M)
 ```
+
 * * *
 
 **23. Contains Duplicate II**
@@ -5864,6 +5983,7 @@ def contains_nearby_duplicate(self, nums: list[int], k: int) -> bool:
     return False
 # Time Complexity: O(N) | Space Complexity: O(K)
 ```
+
 * * *
 
 **24. Count Number of Nice Subarrays**
@@ -5887,6 +6007,7 @@ def number_of_subarrays(self, nums: list[int], k: int) -> int:
     return count
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **25. Frequency of Most Frequent Element**
@@ -5909,6 +6030,7 @@ def max_frequency(self, nums: list[int], k: int) -> int:
     return len(nums) - left
 # Time Complexity: O(N log N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **26. Subarrays with K Different Integers**
@@ -5937,6 +6059,7 @@ def _at_most_k(self, nums: list[int], k: int) -> int:
     return res
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **27. Longest Palindromic Substring**
@@ -5965,6 +6088,7 @@ def _expand(self, s: str, l: int, r: int) -> int:
     return r - l - 1
 # Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
+
 * * *
 
 **28. 3Sum**
@@ -5994,6 +6118,7 @@ def three_sum(self, nums: list[int]) -> list[list[int]]:
     return res
 # Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
+
 * * *
 
 **29. 4Sum**
@@ -6025,6 +6150,7 @@ def four_sum(self, nums: list[int], target: int) -> list[list[int]]:
     return res
 # Time Complexity: O(N^3) | Space Complexity: O(1)
 ```
+
 * * *
 
 **30. Number of Distinct Islands**
@@ -6057,6 +6183,7 @@ def _dfs(self, grid: list[list[int]], r: int, c: int, dir_str: str, path: list[s
     path.append("B") # Backtrack to distinguish paths
 # Time Complexity: O(R * C) | Space Complexity: O(R * C)
 ```
+
 * * *
 
 ## Practice Problem Bank
@@ -6344,10 +6471,15 @@ This chapter covers Hard-tier of the General Coding Assessments (Hard difficulty
 A **Rotated Sorted Array** is an array that was originally sorted in ascending order (with unique elements), but has been shifted (rotated) at some unknown pivot index $K$.
 
 For example, consider the original sorted array:
-$$\text{Original Sorted Array: } [0, 1, 2, 4, 5, 6, 7]$$
+```
+Original Sorted Array: [0, 1, 2, 4, 5, 6, 7]
+```
 
 If we rotate this array at pivot index $K = 3$ (shifting elements from index 3 onwards to the front), we get:
-$$\text{Rotated Sorted Array: } [4, 5, 6, 7, 0, 1, 2]$$
+
+```
+Rotated Sorted Array: [4, 5, 6, 7, 0, 1, 2]
+```
 
 Notice what happened:
 
@@ -6540,6 +6672,7 @@ def binary_search_answer_space(min_val: int, max_val: int) -> int:
             left = mid + 1
     return best
 ```
+
 ### Template B: Monotonic Stack
 ```python
 def next_greater_element(self, nums: list[int]) -> list[int]:
@@ -6554,6 +6687,7 @@ def next_greater_element(self, nums: list[int]) -> list[int]:
         stack.append(i)
     return result
 ```
+
 ### Template C: 1D DP with State Compression
 ```python
 def dp_state_compression(self, nums: list[int]) -> int:
@@ -6566,6 +6700,7 @@ def dp_state_compression(self, nums: list[int]) -> int:
         prev1 = curr
     return prev1
 ```
+
 ### Template D: BFS with Level Tracking
 ```python
 def bfs_level(self, start: 'Node', target: 'Node') -> int:
@@ -6587,6 +6722,7 @@ def bfs_level(self, start: 'Node', target: 'Node') -> int:
         level += 1 # Increment level after exploring all nodes at current depth
     return -1
 ```
+
 ### Template E: Topological Sort (Kahn's Algorithm)
 ```python
 def topological_sort(self, num_nodes: int, edges: list[list[int]]) -> list[int]:
@@ -6611,6 +6747,7 @@ def topological_sort(self, num_nodes: int, edges: list[list[int]]) -> list[int]:
                 
     return order if len(order) == num_nodes else [] # Empty if cycle exists
 ```
+
 * * *
 
 ## Solved Exemplar Problems
@@ -6650,6 +6787,7 @@ def search(self, nums: list[int], target: int) -> int:
 # Time Complexity: O(log N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **2. Sliding Window Maximum**
@@ -6688,6 +6826,7 @@ def max_sliding_window(self, nums: list[int], k: int) -> list[int]:
 # Time Complexity: O(N) since each element is pushed/popped at most once
 # Space Complexity: O(K) for the deque
 ```
+
 * * *
 
 **3. Longest Common Subsequence**
@@ -6739,6 +6878,7 @@ def longest_common_subsequence(self, text1: str, text2: str) -> int:
 # Time Complexity: O(M * N)
 # Space Complexity: O(min(M, N)) - Space compressed DP as taught in the vocabulary section.
 ```
+
 * * *
 
 **4. Burst Balloons**
@@ -6786,6 +6926,7 @@ def max_coins(self, nums: list[int]) -> int:
 # Time Complexity: O(N^3)
 # Space Complexity: O(N^2)
 ```
+
 * * *
 
 **5. Maximum Product Subarray**
@@ -6815,6 +6956,7 @@ def max_product(self, nums: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **6. Median of Two Sorted Arrays**
@@ -6856,6 +6998,7 @@ def find_median_sorted_arrays(self, A: list[int], B: list[int]) -> float:
 # Time Complexity: O(log(min(M, N)))
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **7. Trapping Rain Water**
@@ -6887,6 +7030,7 @@ def trap(self, height: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **8. Daily Temperatures**
@@ -6916,6 +7060,7 @@ def daily_temperatures(self, temperatures: list[int]) -> list[int]:
 # Time Complexity: O(N)
 # Space Complexity: O(N)
 ```
+
 * * *
 
 **9. Edit Distance / Levenshtein**
@@ -6971,6 +7116,7 @@ def min_distance(self, word1: str, word2: str) -> int:
 # Time Complexity: O(M * N)
 # Space Complexity: O(M * N)
 ```
+
 * * *
 
 **10. LRU Cache**
@@ -6987,7 +7133,7 @@ def min_distance(self, word1: str, word2: str) -> int:
 **Trace-Through:** Cache capacity = 2.
 
 | Operation | HashMap | Linked List (HEAD → TAIL) | Why |
-|---|---|---|---|
+|:-----------------|:-------------------|:--------------------------|:-------------------------------------------------------|
 | `put(1, "A")` | {1→A} | **[1]** | First entry, goes to head |
 | `put(2, "B")` | {1→A, 2→B} | **[2, 1]** | Newest at head |
 | `get(1)` | {1→A, 2→B} | **[1, 2]** | Accessed 1 → move to head |
@@ -7046,6 +7192,7 @@ class LRUCache:
 # Time Complexity: O(1) for both get and put
 # Space Complexity: O(Capacity)
 ```
+
 * * *
 
 **11. Maximal Rectangle in Binary Matrix**
@@ -7077,7 +7224,7 @@ class LRUCache:
 **Trace-Through (Monotonic Stack for Heights `[3, 1, 3, 2, 2]`):**
 
 | Index `i` | Height `h` | Action | Stack State | Area Calculated |
-|---|---|---|---|---|
+|:---------:|:----------:|:-----------------------------|:------------|:----------------|
 | 0 | 3 | Push 0 | `[0]` | — |
 | 1 | 1 | `1 < 3` $\rightarrow$ Pop 0 (h=3) | `[]` | `height=3, width=1` $\rightarrow$ **3** |
 | 1 | 1 | Push 1 | `[1]` | — |
@@ -7123,6 +7270,7 @@ def _max_histogram(self, heights: list[int]) -> int:
 # Time Complexity: O(R * C)
 # Space Complexity: O(C)
 ```
+
 * * *
 
 **12. Word Ladder**
@@ -7160,6 +7308,7 @@ def ladder_length(self, begin_word: str, end_word: str, word_list: list[str]) ->
 # Time Complexity: O(M^2 * N) where M is word length, N is number of words
 # Space Complexity: O(M * N)
 ```
+
 * * *
 
 **13. Coin Change**
@@ -7185,6 +7334,7 @@ def coin_change(self, coins: list[int], amount: int) -> int:
 # Time Complexity: O(Amount * N)
 # Space Complexity: O(Amount)
 ```
+
 * * *
 
 **14. House Robber**
@@ -7211,6 +7361,7 @@ def rob(self, nums: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **15. Regular Expression Matching**
@@ -7246,6 +7397,7 @@ def is_match(self, s: str, p: str) -> bool:
 # Time Complexity: O(M * N)
 # Space Complexity: O(M * N)
 ```
+
 * * *
 
 **16. Course Schedule II**
@@ -7282,6 +7434,7 @@ def find_order(self, num_courses: int, prerequisites: list[list[int]]) -> list[i
 # Time Complexity: O(V + E)
 # Space Complexity: O(V + E)
 ```
+
 * * *
 
 **17. Partition Equal Subset Sum**
@@ -7311,6 +7464,7 @@ def can_partition(self, nums: list[int]) -> bool:
 # Time Complexity: O(N * Target)
 # Space Complexity: O(Target)
 ```
+
 * * *
 
 **18. Decode Ways**
@@ -7342,6 +7496,7 @@ def num_decodings(self, s: str) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(N) which can be optimized to O(1)
 ```
+
 * * *
 
 **19. Stock Span**
@@ -7368,6 +7523,7 @@ class StockSpanner:
 # Time Complexity: Amortized O(1) per next() call
 # Space Complexity: O(N)
 ```
+
 * * *
 
 **20. Longest Increasing Subsequence**
@@ -7397,6 +7553,7 @@ def length_of_lis(self, nums: list[int]) -> int:
 # Time Complexity: O(N log N)
 # Space Complexity: O(N)
 ```
+
 * * *
 
 **21. Find Minimum in Rotated Sorted Array**
@@ -7418,6 +7575,7 @@ def find_min(self, nums: list[int]) -> int:
 # Time Complexity: O(log N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **22. Kth Smallest Element in Sorted Matrix**
@@ -7451,6 +7609,7 @@ def _count_less_equal(self, matrix: list[list[int]], target: int) -> int:
 # Time Complexity: O(N log(Max - Min))
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **23. Jump Game II**
@@ -7473,6 +7632,7 @@ def jump(self, nums: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **24. Unique Paths**
@@ -7495,6 +7655,7 @@ def unique_paths(self, m: int, n: int) -> int:
 # Time Complexity: O(M * N)
 # Space Complexity: O(M * N) (can be optimized to O(N))
 ```
+
 * * *
 
 **25. Maximum Subarray / Kadane's Algorithm**
@@ -7515,6 +7676,7 @@ def max_sub_array(self, nums: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **26. Climbing Stairs**
@@ -7536,6 +7698,7 @@ def climb_stairs(self, n: int) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **27. Largest Rectangle in Histogram**
@@ -7562,6 +7725,7 @@ def largest_rectangle_area(self, heights: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(N)
 ```
+
 * * *
 
 **28. Merge K Sorted Lists**
@@ -7602,6 +7766,7 @@ def merge_k_lists(self, lists: list[ListNode]) -> ListNode:
 # Time Complexity: O(N log K)
 # Space Complexity: O(K)
 ```
+
 * * *
 
 **29. Longest Valid Parentheses**
@@ -7627,6 +7792,7 @@ def longest_valid_parentheses(self, s: str) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(N)
 ```
+
 * * *
 
 **30. Container With Most Water**
@@ -7651,6 +7817,7 @@ def max_area(self, height: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 ## Practice Problem Bank
@@ -8642,7 +8809,17 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
 
 * **Q4 (Hard): Word Search II**
   * *Specification:* Given an M×N board of characters and a list of words, find all words that can be formed by sequentially adjacent cells (horizontally or vertically). Each cell may only be used once per word.
-  * *Sample Test Case:* Input: `board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], words = ["oath","pea","eat","rain"] -> ["eat","oath"]`
+  * *Sample Test Case:* Input:
+    ```
+    board = [
+      ["o","a","a","n"],
+      ["e","t","a","e"],
+      ["i","h","k","r"],
+      ["i","f","l","v"]
+    ]
+    words = ["oath","pea","eat","rain"]
+    Output: ["eat","oath"]
+    ```
   * *Constraints:* M, N \le 12, words.length \le 3 \times 10^4, words[i].length \le 10.
   * *Hint:* Combine Trie prefix tree with DFS backtracking for efficient multi-word search.
 
@@ -8901,6 +9078,7 @@ A single matching engine instance cannot handle all trading instruments globally
 ### Consistent Hashing for Instrument Sharding
 
 ![Consistent Hashing Ring — Distributed Key Routing](editions/python/chapters/16-system-architecture/visuals/consistent_hashing.jpg){width=85%}
+
 Instead of traditional modulo sharding (`hash(instrumentId) % nodeCount`), which causes massive data reshuffling when nodes are added or removed, ZenithTrade utilizes a **Consistent Hash Ring**:
 
 1.  **The Ring:** The hash space is mapped onto a circular ring (e.g., 0 to $2^{32} - 1$).
@@ -8999,6 +9177,7 @@ class TokenBucket:
             return True
 ```
 
+
 ### Leaky Bucket Algorithm
 In the leaky bucket algorithm, incoming requests enter a FIFO queue (the bucket). The system processes requests from the queue at a strictly constant rate. If the queue is full, new requests are discarded. Unlike the token bucket, it entirely smooths out bursts, ensuring a perfectly constant output rate.
 
@@ -9053,6 +9232,7 @@ class UserService:
             
         return user
 ```
+
 
 ### Write-Through Cache
 Under Write-Through caching, the application writes data to the cache and the database simultaneously (often abstracted so the application only writes to the cache, which synchronously updates the DB).
@@ -9147,7 +9327,9 @@ To demonstrate how a senior candidate should navigate a system design round, her
 ### High-Level Estimations (Scale & Math)
 **Candidate:** *"Let's calculate our network and storage needs. At 100,000 RPS, if an average order payload is 200 bytes, our network ingest rate at the gateway is:"*
 
-$$\text{Ingest Bandwidth} = 100,000 \times 200 \text{ bytes} = 20 \text{ MB/s} = 160 \text{ Mbps}$$
+```
+Ingest Bandwidth = 100,000 * 200 bytes = 20 MB/s = 160 Mbps
+```
 
 *"This is easily handled by standard network infrastructure. However, processing 100,000 matches per second in a single SQL database is impossible due to disk I/O bottlenecks. Therefore, our primary design boundary is that **the active matching engine must run entirely in-memory**, keeping reads and writes decoupled from disk operations during the matching loop."*
 
@@ -9332,7 +9514,9 @@ For financial ledgers (like AuraPay) where correctness and auditability are para
 - **State-Based Storage:** Storing a row `Account(id=101, balance=500.00)`. If a balance mismatch occurs, it is impossible to trace *why* the balance is incorrect without parsing external database logs.
 - **Event-Sourced Storage:** Storing a stream of immutable events: `[Deposited(50.00), Deposited(70.00), Debited(20.00)]`. The current balance is a derived projection computed by folding/aggregating these events over time:
 
-$$\text{Current Balance} = \sum \text{Credit Events} - \sum \text{Debit Events}$$
+```
+Current Balance = Sum(Credit Events) - Sum(Debit Events)
+```
 
 ### Key Invariants & Advantages
 
@@ -9494,7 +9678,9 @@ When database size or write throughput exceeds the limits of a single master ser
    - **Trade-off:** Simple to implement but leads to severe write imbalances if activity is concentrated in a specific range.
 2. **Hash-Based Sharding:** Applying a hash function to the partition key:
    
-   $$\text{Shard ID} = \text{hash}(\text{key}) \pmod N$$
+   ```
+   Shard ID = hash(key) % N
+   ```
    
    - **Trade-off:** Uniform data distribution. However, if the number of shards $N$ changes (re-sharding), almost all historical data must be migrated.
 3. **Directory-Based Sharding:** Utilizing a centralized lookup service (lookup table) to track which shard stores a specific partition key.
@@ -9834,6 +10020,7 @@ class TestTransactionProcessor(unittest.TestCase):
         mock_sender.send_notification.assert_called_with(ANY)
 ```
 
+
 By utilizing mock objects, we verify that the processor correctly coordinates the transfer, updates balance invariants, and calls the persistence layer, without requiring an active database connection.
 
 > **Why is it called "Mockito"?** The popular Java mocking framework is named after the **Mojito** cocktail — a playful twist by its Polish creator Szczepan Faber. Just as a bartender mixes ingredients to create something refreshing, Mockito mixes stubs and verifications to create clean, readable tests. The name also echoes the Spanish suffix *"-ito"* (meaning "little"), suggesting lightweight mock objects.
@@ -10062,7 +10249,9 @@ When designing load tests, avoid these common mistakes:
 
 When load testing data-intensive applications, connection pool sizing is a common bottleneck. As discussed in earlier chapters, the optimal pool size formula is:
 
-$$\text{Pool Size} = T_n \times (C_m - 1) + 1$$
+```
+Pool Size = Tn * (Cm - 1) + 1
+```
 
 Where $T_n$ = number of threads, $C_m$ = maximum concurrent queries per thread.
 
@@ -10124,7 +10313,9 @@ To guarantee in-order delivery, Kafka enforces a strict rule: **messages written
 - If you publish messages without a key (null key), Kafka distributes them across partitions using a round-robin algorithm, losing all ordering guarantees.
 - **The Solution:** Publish messages with a **Partition Key** (e.g., `accountId`). Kafka hashes the key to determine the partition:
 
-$$\text{Partition ID} = \text{hash}(\text{accountId}) \pmod{\text{Number of Partitions}}$$
+```
+Partition ID = hash(accountId) % Number of Partitions
+```
 
 By sharding on `accountId`, all transaction events for a specific account are guaranteed to land in the same partition and be processed in exact chronological order by a single consumer thread.
 
@@ -10153,6 +10344,7 @@ class TransactionEventProducer:
         )
         self.producer.poll(0)
 ```
+
 
 Setting `enable.idempotence = true` ensures that network retries by the producer do not result in duplicate messages landing in the partition log.
 
@@ -10298,10 +10490,10 @@ Machine learning models degrade over time as the real-world distribution shifts 
 In ML system design interviews, you must explain the right evaluation metric for the use case:
 
 | Metric | Formula | Best For | Pitfall |
-|---|---|---|---|
-| **Precision** | $\frac{TP}{TP + FP}$ | Fraud detection (minimize false alarms) | Misses real fraud if too conservative |
-| **Recall** | $\frac{TP}{TP + FN}$ | Medical diagnosis (catch all positives) | Too many false positives annoy users |
-| **F1-Score** | $2 \times \frac{Precision \times Recall}{Precision + Recall}$ | Balanced classification tasks | Hides class imbalance issues |
+|:-----------------|:--------------------------------------------|:----------------------------------------|:----------------------------------------|
+| **Precision** | `TP / (TP + FP)` | Fraud detection (minimize false alarms) | Misses real fraud if too conservative |
+| **Recall** | `TP / (TP + FN)` | Medical diagnosis (catch all positives) | Too many false positives annoy users |
+| **F1-Score** | `2 * (Precision * Recall) / (Precision + Recall)` | Balanced classification tasks | Hides class imbalance issues |
 | **AUC-ROC** | Area under the ROC curve | Ranking quality across thresholds | Misleading on heavily imbalanced datasets |
 | **NDCG** | Normalized Discounted Cumulative Gain | Recommendation/search ranking | Sensitive to the number of results evaluated |
 
@@ -10425,6 +10617,7 @@ class LlmGatewaySecurityFilter:
             raise PermissionError("Potential prompt injection attack blocked")
         return True
 ```
+
 
 Any incoming prompt containing injection signatures is blocked immediately before execution, protecting the LLM boundary from security drift.
 

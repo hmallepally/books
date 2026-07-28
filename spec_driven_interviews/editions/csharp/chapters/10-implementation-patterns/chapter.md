@@ -119,6 +119,7 @@ for (int read = 0; read < arr.Length; read++) {
 }
 // Result is arr[0..write-1], return write as the new length
 ```
+
 **Used by:** Remove Element, Move Zeros, Remove Duplicates, Squeeze Spaces.
 
 ### Template B: Symmetric Converging Pointers
@@ -132,6 +133,7 @@ while (left < right) {
     right--;
 }
 ```
+
 **Used by:** Palindrome Check, Reverse Array, Two Sum (sorted), Sort Colors.
 
 * * *
@@ -165,6 +167,7 @@ public int FirstUniqChar(string s) {
 }
 // Time: O(N), Space: O(1) — the int[256] is constant size
 ```
+
 * * *
 
 **2. In-Place String Compression (Run-Length Encoding)**
@@ -210,10 +213,11 @@ public int Compress(char[] chars) {
 // Time: O(N), Space: O(1) auxiliary
 ```
 
+
 **Trace Walkthrough** (input: `['a','a','b','b','c','c','c']`):
 
 | Step | read | write | Action | State |
-|------|------|-------|--------|-------|
+|:---:|:----:|:-----:|:--------------|:-----------------------------------|
 | Init | 0    | 0     | Start  | `['a','a','b','b','c','c','c']` |
 | 1    | 2    | 2     | Run 'a' len 2 | `['a','2','b','b','c','c','c']` |
 | 2    | 4    | 4     | Run 'b' len 2 | `['a','2','b','2','c','c','c']` |
@@ -258,6 +262,7 @@ public bool IsPalindrome(string s) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **4. Move Zeros to End**
@@ -288,6 +293,7 @@ public void MoveZeroes(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **5. Remove Duplicates from Sorted Array**
@@ -312,6 +318,7 @@ public int RemoveDuplicates(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **6. Single Number (XOR Uniqueness)**
@@ -331,6 +338,7 @@ public int SingleNumber(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **7. Valid Parentheses**
@@ -361,6 +369,7 @@ public bool IsValid(string s) {
 }
 // Time: O(N), Space: O(N) worst case for the stack
 ```
+
 * * *
 
 **8. Reverse String In-Place**
@@ -385,6 +394,7 @@ public void ReverseString(char[] s) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **9. Pivot Index (Balance Point)**
@@ -412,6 +422,7 @@ public int PivotIndex(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **10. Check Array Monotonicity**
@@ -437,6 +448,7 @@ public bool IsMonotonic(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **11. Neighbor Sum Transformation**
@@ -463,6 +475,7 @@ public int[] NeighborSum(int[] a) {
 }
 // Time: O(N), Space: O(N) for output array
 ```
+
 * * *
 
 **12. Maximum Subarray Sum of Fixed Window K**
@@ -492,6 +505,7 @@ public int MaxSumSubarray(int[] nums, int k) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **13. Find the Added Character**
@@ -510,6 +524,7 @@ public char FindTheDifference(string s, string t) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **14. Capitalize or Reverse by Word Length Parity**
@@ -538,6 +553,7 @@ public string[] TransformWords(string[] words) {
 }
 // Time: O(N * K) where K is average word length, Space: O(N * K) for output
 ```
+
 * * *
 
 **15. Check Equal Character Frequencies**
@@ -566,6 +582,7 @@ public bool AreOccurrencesEqual(string s) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **16. Remove Element In-Place**
@@ -590,6 +607,7 @@ public int RemoveElement(int[] nums, int val) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **17. Parity Alternation Validation**
@@ -615,6 +633,7 @@ public bool IsAlternatingParity(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **18. Two Sum (Unsorted Array)**
@@ -640,6 +659,7 @@ public int[] TwoSum(int[] nums, int target) {
 }
 // Time: O(N), Space: O(N)
 ```
+
 * * *
 
 **19. Majority Element**
@@ -669,6 +689,7 @@ public int MajorityElement(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **20. Plus One (Large Number as Array)**
@@ -696,6 +717,7 @@ public int[] PlusOne(int[] digits) {
 }
 // Time: O(N), Space: O(1) amortized (O(N) only for all-9s edge case)
 ```
+
 * * *
 
 
@@ -729,6 +751,7 @@ public int AdjacentElementsProduct(int[] inputArray) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **22. Century From Year**
@@ -744,6 +767,7 @@ public int CenturyFromYear(int year) {
 }
 // Time: O(1), Space: O(1)
 ```
+
 * * *
 
 **23. All Longest Strings**
@@ -776,6 +800,7 @@ public string[] AllLongestStrings(string[] inputArray) {
 }
 // Time: O(N), Space: O(N) for output
 ```
+
 * * *
 
 **24. Common Character Count**
@@ -802,6 +827,7 @@ public int CommonCharacterCount(string s1, string s2) {
 }
 // Time: O(N + M), Space: O(1) — fixed 26-element arrays
 ```
+
 * * *
 
 **25. Lucky Ticket (Digit Sum Halves)**
@@ -826,6 +852,7 @@ public bool IsLucky(int n) {
 }
 // Time: O(D) where D is digit count, Space: O(D) for string conversion
 ```
+
 * * *
 
 **26. Sort By Height (Obstacles in Place)**
@@ -860,6 +887,7 @@ public int[] SortByHeight(int[] a) {
 }
 // Time: O(N log N) for sorting, Space: O(N) for extracted list
 ```
+
 * * *
 
 **27. Alternating Team Sums**
@@ -885,6 +913,7 @@ public int[] AlternatingSums(int[] a) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **28. Add Border to Character Matrix**
@@ -917,6 +946,7 @@ public string[] AddBorder(string[] picture) {
 }
 // Time: O(rows * cols), Space: O(rows * cols) for output
 ```
+
 * * *
 
 **29. Array Change (Minimum Moves for Strict Increase)**
@@ -945,6 +975,7 @@ public int ArrayChange(int[] inputArray) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **30. Matrix Elements Sum (Haunted Rooms)**
@@ -973,6 +1004,7 @@ public int MatrixElementsSum(int[][] matrix) {
 }
 // Time: O(rows * cols), Space: O(1)
 ```
+
 * * *
 
 **31. Almost Increasing Sequence**
@@ -1013,10 +1045,11 @@ public bool AlmostIncreasingSequence(int[] sequence) {
 // Time: O(N), Space: O(1)
 ```
 
+
 **Trace Walkthrough** (input: `[1, 3, 2, 1]`):
 
 | Step | i | nums[i] | nums[i+1] | Violation? | Action | State (Violations) |
-|------|---|---------|-----------|------------|--------|--------------------|
+|:---:|:---:|:-------:|:---------:|:----------:|:-------|:-------------------|
 | 1    | 0 | 1       | 3         | No         | Continue | 0 |
 | 2    | 1 | 3       | 2         | Yes        | Check removals | 1 |
 | 3    | 2 | 2       | 1         | Yes        | Return false   | >1 |
@@ -1055,10 +1088,11 @@ public string ReverseInParentheses(string s) {
 // Time: O(N^2) worst case for nested reversals, Space: O(N)
 ```
 
+
 **Trace Walkthrough** (input: `"(u(love)i)"`):
 
 | Step | char | Action | Stack | Current String |
-|------|------|--------|-------|----------------|
+|:---:|:----:|:-------|:------|:---------------|
 | 1    | '('  | Push new | `[""]` | `""` |
 | 2    | 'u'  | Append   | `[""]` | `"u"` |
 | 3    | '('  | Push new | `["", "u"]` | `""` |

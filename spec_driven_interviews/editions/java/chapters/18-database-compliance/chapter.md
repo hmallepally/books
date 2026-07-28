@@ -47,7 +47,9 @@ When database size or write throughput exceeds the limits of a single master ser
    - **Trade-off:** Simple to implement but leads to severe write imbalances if activity is concentrated in a specific range.
 2. **Hash-Based Sharding:** Applying a hash function to the partition key:
    
-   $$\text{Shard ID} = \text{hash}(\text{key}) \pmod N$$
+   ```
+   Shard ID = hash(key) % N
+   ```
    
    - **Trade-off:** Uniform data distribution. However, if the number of shards $N$ changes (re-sharding), almost all historical data must be migrated.
 3. **Directory-Based Sharding:** Utilizing a centralized lookup service (lookup table) to track which shard stores a specific partition key.

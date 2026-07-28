@@ -117,6 +117,7 @@ for read in range(len(arr)):
         write += 1
 # Result is arr[0..write-1], return write as the new length
 ```
+
 **Used by:** Remove Element, Move Zeros, Remove Duplicates, Squeeze Spaces.
 
 ### Template B: Symmetric Converging Pointers
@@ -129,6 +130,7 @@ while left < right:
     left += 1
     right -= 1
 ```
+
 **Used by:** Palindrome Check, Reverse Array, Two Sum (sorted), Sort Colors.
 
 * * *
@@ -161,6 +163,7 @@ def first_uniq_char(self, s: str) -> int:
     return -1 # All characters repeat
 # Time: O(N), Space: O(1) — the counts list is constant size
 ```
+
 * * *
 
 **2. In-Place String Compression (Run-Length Encoding)**
@@ -204,10 +207,11 @@ def compress(self, chars: list[str]) -> int:
 # Time: O(N), Space: O(1) auxiliary
 ```
 
+
 **Trace Walkthrough** (input: `['a','a','b','b','c','c','c']`):
 
 | Step | read | write | Action | State |
-|------|------|-------|--------|-------|
+|:---:|:----:|:-----:|:--------------|:-----------------------------------|
 | Init | 0    | 0     | Start  | `['a','a','b','b','c','c','c']` |
 | 1    | 2    | 2     | Run 'a' len 2 | `['a','2','b','b','c','c','c']` |
 | 2    | 4    | 4     | Run 'b' len 2 | `['a','2','b','2','c','c','c']` |
@@ -248,6 +252,7 @@ def is_palindrome(self, s: str) -> bool:
     return True
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **4. Move Zeros to End**
@@ -277,6 +282,7 @@ def move_zeroes(self, nums: list[int]) -> None:
         write += 1
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **5. Remove Duplicates from Sorted Array**
@@ -300,6 +306,7 @@ def remove_duplicates(self, nums: list[int]) -> int:
     return write
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **6. Single Number (XOR Uniqueness)**
@@ -317,6 +324,7 @@ def single_number(self, nums: list[int]) -> int:
     return result
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **7. Valid Parentheses**
@@ -345,6 +353,7 @@ def is_valid(self, s: str) -> bool:
     return len(stack) == 0 # Stack must be empty
 # Time: O(N), Space: O(N) worst case for the stack
 ```
+
 * * *
 
 **8. Reverse String In-Place**
@@ -366,6 +375,7 @@ def reverse_string(self, s: list[str]) -> None:
         right -= 1
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **9. Pivot Index (Balance Point)**
@@ -392,6 +402,7 @@ def pivot_index(self, nums: list[int]) -> int:
     return -1
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **10. Check Array Monotonicity**
@@ -416,6 +427,7 @@ def is_monotonic(self, nums: list[int]) -> bool:
     return increasing or decreasing
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **11. Neighbor Sum Transformation**
@@ -441,6 +453,7 @@ def neighbor_sum(self, a: list[int]) -> list[int]:
     return b
 # Time: O(N), Space: O(N) for output array
 ```
+
 * * *
 
 **12. Maximum Subarray Sum of Fixed Window K**
@@ -467,6 +480,7 @@ def max_sum_subarray(self, nums: list[int], k: int) -> int:
     return max_sum
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **13. Find the Added Character**
@@ -484,6 +498,7 @@ def find_the_difference(self, s: str, t: str) -> str:
     return chr(result) # Only the unpaired character survives
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **14. Capitalize or Reverse by Word Length Parity**
@@ -508,6 +523,7 @@ def transform_words(self, words: list[str]) -> list[str]:
     return result
 # Time: O(N * K) where K is average word length, Space: O(N * K) for output
 ```
+
 * * *
 
 **15. Check Equal Character Frequencies**
@@ -534,6 +550,7 @@ def are_occurrences_equal(self, s: str) -> bool:
     return True
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **16. Remove Element In-Place**
@@ -557,6 +574,7 @@ def remove_element(self, nums: list[int], val: int) -> int:
     return write
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **17. Parity Alternation Validation**
@@ -579,6 +597,7 @@ def is_alternating_parity(self, nums: list[int]) -> bool:
     return True
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **18. Two Sum (Unsorted Array)**
@@ -601,6 +620,7 @@ def two_sum(self, nums: list[int], target: int) -> list[int]:
     return [] # Should not reach here per problem guarantee
 # Time: O(N), Space: O(N)
 ```
+
 * * *
 
 **19. Majority Element**
@@ -627,6 +647,7 @@ def majority_element(self, nums: list[int]) -> int:
     return candidate
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **20. Plus One (Large Number as Array)**
@@ -649,6 +670,7 @@ def plus_one(self, digits: list[int]) -> list[int]:
     return [1] + [0] * len(digits)
 # Time: O(N), Space: O(1) amortized (O(N) only for all-9s edge case)
 ```
+
 * * *
 
 
@@ -680,6 +702,7 @@ def adjacent_elements_product(self, input_array: list[int]) -> int:
     return max_prod
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **22. Century From Year**
@@ -694,6 +717,7 @@ def century_from_year(self, year: int) -> int:
     return (year + 99) // 100
 # Time: O(1), Space: O(1)
 ```
+
 * * *
 
 **23. All Longest Strings**
@@ -721,6 +745,7 @@ def all_longest_strings(self, input_array: list[str]) -> list[str]:
     return result
 # Time: O(N), Space: O(N) for output
 ```
+
 * * *
 
 **24. Common Character Count**
@@ -745,6 +770,7 @@ def common_character_count(self, s1: str, s2: str) -> int:
     return common
 # Time: O(N + M), Space: O(1) — fixed 26-element lists
 ```
+
 * * *
 
 **25. Lucky Ticket (Digit Sum Halves)**
@@ -768,6 +794,7 @@ def is_lucky(self, n: int) -> bool:
     return sum1 == sum2
 # Time: O(D) where D is digit count, Space: O(D) for string conversion
 ```
+
 * * *
 
 **26. Sort By Height (Obstacles in Place)**
@@ -797,6 +824,7 @@ def sort_by_height(self, a: list[int]) -> list[int]:
     return a
 # Time: O(N log N) for sorting, Space: O(N) for extracted list
 ```
+
 * * *
 
 **27. Alternating Team Sums**
@@ -820,6 +848,7 @@ def alternating_sums(self, a: list[int]) -> list[int]:
     return [team1, team2]
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **28. Add Border to Character Matrix**
@@ -850,6 +879,7 @@ def add_border(self, picture: list[str]) -> list[str]:
     return result
 # Time: O(rows * cols), Space: O(rows * cols) for output
 ```
+
 * * *
 
 **29. Array Change (Minimum Moves for Strict Increase)**
@@ -875,6 +905,7 @@ def array_change(self, input_array: list[int]) -> int:
     return moves
 # Time: O(N), Space: O(1)
 ```
+
 * * *
 
 **30. Matrix Elements Sum (Haunted Rooms)**
@@ -899,6 +930,7 @@ def matrix_elements_sum(self, matrix: list[list[int]]) -> int:
     return total
 # Time: O(rows * cols), Space: O(1)
 ```
+
 * * *
 
 **31. Almost Increasing Sequence**
@@ -934,10 +966,11 @@ def almost_increasing_sequence(self, sequence: list[int]) -> bool:
 # Time: O(N), Space: O(1)
 ```
 
+
 **Trace Walkthrough** (input: `[1, 3, 2, 1]`):
 
 | Step | i | nums[i] | nums[i+1] | Violation? | Action | State (Violations) |
-|------|---|---------|-----------|------------|--------|--------------------|
+|:---:|:---:|:-------:|:---------:|:----------:|:-------|:-------------------|
 | 1    | 0 | 1       | 3         | No         | Continue | 0 |
 | 2    | 1 | 3       | 2         | Yes        | Check removals | 1 |
 | 3    | 2 | 2       | 1         | Yes        | Return false   | >1 |
@@ -968,10 +1001,11 @@ def reverse_in_parentheses(self, s: str) -> str:
 # Time: O(N^2) worst case for nested reversals, Space: O(N)
 ```
 
+
 **Trace Walkthrough** (input: `"(u(love)i)"`):
 
 | Step | char | Action | Stack | Current String |
-|------|------|--------|-------|----------------|
+|:---:|:----:|:-------|:------|:---------------|
 | 1    | '('  | Push new | `[""]` | `""` |
 | 2    | 'u'  | Append   | `[""]` | `"u"` |
 | 3    | '('  | Push new | `["", "u"]` | `""` |

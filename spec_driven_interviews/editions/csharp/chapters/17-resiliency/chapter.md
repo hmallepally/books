@@ -128,7 +128,9 @@ For financial ledgers (like AuraPay) where correctness and auditability are para
 - **State-Based Storage:** Storing a row `Account(id=101, balance=500.00)`. If a balance mismatch occurs, it is impossible to trace *why* the balance is incorrect without parsing external database logs.
 - **Event-Sourced Storage:** Storing a stream of immutable events: `[Deposited(50.00), Deposited(70.00), Debited(20.00)]`. The current balance is a derived projection computed by folding/aggregating these events over time:
 
-$$\text{Current Balance} = \sum \text{Credit Events} - \sum \text{Debit Events}$$
+```
+Current Balance = Sum(Credit Events) - Sum(Debit Events)
+```
 
 ### Key Invariants & Advantages
 

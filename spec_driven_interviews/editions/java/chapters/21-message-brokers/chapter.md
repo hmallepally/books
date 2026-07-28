@@ -53,7 +53,9 @@ To guarantee in-order delivery, Kafka enforces a strict rule: **messages written
 - If you publish messages without a key (null key), Kafka distributes them across partitions using a round-robin algorithm, losing all ordering guarantees.
 - **The Solution:** Publish messages with a **Partition Key** (e.g., `accountId`). Kafka hashes the key to determine the partition:
 
-$$\text{Partition ID} = \text{hash}(\text{accountId}) \pmod{\text{Number of Partitions}}$$
+```
+Partition ID = hash(accountId) % Number of Partitions
+```
 
 By sharding on `accountId`, all transaction events for a specific account are guaranteed to land in the same partition and be processed in exact chronological order by a single consumer thread.
 
@@ -92,6 +94,7 @@ public class TransactionEventProducer {
     }
 }
 ```
+
 
 Setting `enable.idempotence = true` ensures that network retries by the producer do not result in duplicate messages landing in the partition log.
 

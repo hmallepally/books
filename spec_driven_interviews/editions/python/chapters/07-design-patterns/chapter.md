@@ -53,6 +53,7 @@ class LedgerConnectionPool:
         return cls._instance
 ```
 
+
 > **Warning for Senior Candidates:** In cloud-native systems, classical Singletons are often considered an anti-pattern:
 > 1. **Testing Complexity:** They introduce global mutable state, making parallel unit tests prone to side effects.
 > 2. **Scalability limits:** A Singleton is only single per JVM instance. If your service scales out to ten microservice containers, you have ten connection pool instances, not one.

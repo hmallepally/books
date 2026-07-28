@@ -10,7 +10,7 @@ A technique where a window expands to the right to include elements and contract
 **Fixed-Size Sliding Window vs Dynamic Sliding Window**
 
 | Feature | Fixed-Size Window | Dynamic Sliding Window |
-|---|---|---|
+|:-----------------|:--------------------------------------------|:--------------------------------------------|
 | **Window Size** | Constant (e.g., length K). | Variable (expands and contracts). |
 | **Movement** | Move both left and right pointers together. | Move right continuously, move left only to fix invariants. |
 | **Use Case** | Anagrams in a fixed window, max sum of K elements. | Longest substring with K distinct chars, minimum subarray sum. |
@@ -88,6 +88,7 @@ for right in range(len(arr)):
     # 3. Update maxLen or minLen
     max_len = max(max_len, right - left + 1)
 ```
+
 ### Template B: Fixed-Size Sliding Window
 ```python
 k, total_sum, max_val = 3, 0, 0
@@ -97,6 +98,7 @@ for i in range(len(arr)):
         max_val = max(max_val, total_sum) # Update result
         total_sum -= arr[i - (k - 1)]     # Remove leftmost element for next iteration
 ```
+
 ### Template C: Prefix Sum + HashMap Counter
 ```python
 from collections import defaultdict
@@ -109,6 +111,7 @@ for num in nums:
         count += hash_map[total_sum - k]
     hash_map[total_sum] += 1
 ```
+
 ### Template D: HashMap Frequency Grouping
 ```python
 from collections import defaultdict
@@ -119,6 +122,7 @@ for s in strs:
     key = str(count)
     hash_map[key].append(s)
 ```
+
 * * *
 
 ## Solved Exemplar Problems
@@ -145,6 +149,7 @@ def length_of_longest_substring(self, s: str) -> int:
     return max_val
 # Time Complexity: O(N) | Space Complexity: O(min(N, M))
 ```
+
 * * *
 
 **2. Subarray Sum Equals K**
@@ -169,6 +174,7 @@ def subarray_sum(self, nums: list[int], k: int) -> int:
     return count
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **3. Group Anagrams**
@@ -191,6 +197,7 @@ def group_anagrams(self, strs: list[str]) -> list[list[str]]:
     return list(hash_map.values())
 # Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
+
 * * *
 
 **4. Find All Anagram Start Indices**
@@ -214,6 +221,7 @@ def find_anagrams(self, s: str, p: str) -> list[int]:
     return res
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **5. Longest Substring with At Most K Distinct Characters**
@@ -241,6 +249,7 @@ def length_of_longest_substring_k_distinct(self, s: str, k: int) -> int:
     return max_val
 # Time Complexity: O(N) | Space Complexity: O(K)
 ```
+
 * * *
 
 **6. Minimum Window Substring (Hard)**
@@ -274,6 +283,7 @@ def min_window(self, s: str, t: str) -> str:
     return "" if min_len == float('inf') else s[min_start:min_start + min_len]
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **7. Group Shifted Strings**
@@ -297,6 +307,7 @@ def group_strings(self, strings: list[str]) -> list[list[str]]:
     return list(hash_map.values())
 # Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
+
 * * *
 
 **8. Contiguous Array Equal 0s and 1s**
@@ -320,6 +331,7 @@ def find_max_length(self, nums: list[int]) -> int:
     return max_val
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **9. Subarray Product Less Than K**
@@ -343,6 +355,7 @@ def num_subarray_product_less_than_k(self, nums: list[int], k: int) -> int:
     return count
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **10. Permutation in String**
@@ -365,6 +378,7 @@ def check_inclusion(self, s1: str, s2: str) -> bool:
     return False
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **11. Maximum Erasure Value**
@@ -390,6 +404,7 @@ def maximum_unique_subarray(self, nums: list[int]) -> int:
     return max_val
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **12. Longest Repeating Character Replacement**
@@ -415,6 +430,7 @@ def character_replacement(self, s: str, k: int) -> int:
     return max_len
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **13. Fruit Into Baskets**
@@ -441,6 +457,7 @@ def total_fruit(self, fruits: list[int]) -> int:
     return max_val
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **14. Continuous Subarray Sum Multiple of K**
@@ -465,6 +482,7 @@ def check_subarray_sum(self, nums: list[int], k: int) -> bool:
     return False
 # Time Complexity: O(N) | Space Complexity: O(min(N, K))
 ```
+
 * * *
 
 **15. Max Consecutive Ones III**
@@ -486,6 +504,7 @@ def longest_ones(self, nums: list[int], k: int) -> int:
     return len(nums) - left # Trick to return max valid length seen
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **16. Find All Duplicates in Array**
@@ -506,6 +525,7 @@ def find_duplicates(self, nums: list[int]) -> list[int]:
     return res
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **17. Task Scheduler CPU Units**
@@ -535,6 +555,7 @@ def least_interval(self, tasks: list[str], n: int) -> int:
     return len(tasks) + idles
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **18. Insert & Merge Overlapping Intervals**
@@ -563,6 +584,7 @@ def insert(self, intervals: list[list[int]], new_interval: list[int]) -> list[li
     return res
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **19. Top K Frequent Elements**
@@ -582,6 +604,7 @@ def top_k_frequent(self, nums: list[int], k: int) -> list[int]:
     return heapq.nlargest(k, count.keys(), key=count.get)
 # Time Complexity: O(N log K) | Space Complexity: O(N)
 ```
+
 * * *
 
 **20. First Missing Positive Integer**
@@ -608,6 +631,7 @@ def first_missing_positive(self, nums: list[int]) -> int:
     return len(nums) + 1
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **21. Minimum Size Subarray Sum**
@@ -631,6 +655,7 @@ def min_sub_array_len(self, target: int, nums: list[int]) -> int:
     return 0 if min_val == float('inf') else min_val
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **22. Substring with Concatenation of All Words**
@@ -666,6 +691,7 @@ def find_substring(self, s: str, words: list[str]) -> list[int]:
     return res
 # Time Complexity: O(N * M * L) | Space Complexity: O(M)
 ```
+
 * * *
 
 **23. Contains Duplicate II**
@@ -686,6 +712,7 @@ def contains_nearby_duplicate(self, nums: list[int], k: int) -> bool:
     return False
 # Time Complexity: O(N) | Space Complexity: O(K)
 ```
+
 * * *
 
 **24. Count Number of Nice Subarrays**
@@ -709,6 +736,7 @@ def number_of_subarrays(self, nums: list[int], k: int) -> int:
     return count
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **25. Frequency of Most Frequent Element**
@@ -731,6 +759,7 @@ def max_frequency(self, nums: list[int], k: int) -> int:
     return len(nums) - left
 # Time Complexity: O(N log N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **26. Subarrays with K Different Integers**
@@ -759,6 +788,7 @@ def _at_most_k(self, nums: list[int], k: int) -> int:
     return res
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **27. Longest Palindromic Substring**
@@ -787,6 +817,7 @@ def _expand(self, s: str, l: int, r: int) -> int:
     return r - l - 1
 # Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
+
 * * *
 
 **28. 3Sum**
@@ -816,6 +847,7 @@ def three_sum(self, nums: list[int]) -> list[list[int]]:
     return res
 # Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
+
 * * *
 
 **29. 4Sum**
@@ -847,6 +879,7 @@ def four_sum(self, nums: list[int], target: int) -> list[list[int]]:
     return res
 # Time Complexity: O(N^3) | Space Complexity: O(1)
 ```
+
 * * *
 
 **30. Number of Distinct Islands**
@@ -879,6 +912,7 @@ def _dfs(self, grid: list[list[int]], r: int, c: int, dir_str: str, path: list[s
     path.append("B") # Backtrack to distinguish paths
 # Time Complexity: O(R * C) | Space Complexity: O(R * C)
 ```
+
 * * *
 
 ## Practice Problem Bank

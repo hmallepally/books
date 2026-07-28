@@ -75,7 +75,9 @@ We define two pointers, `left` and `right`, defining our active search range $[l
 
 - **The Loop Invariant:** *If target is present in the array, it must reside within the index boundaries:*
 
-$$\text{Invariant } P(left, right): \text{target} \in nums[left \dots right]$$
+```
+Invariant P(left, right): target in nums[left...right]
+```
 
 ### Mathematical Proof of Correctness
 To prove the algorithm is correct, we must prove three properties of our loop invariant:
@@ -89,7 +91,9 @@ Before the loop starts, the invariant must hold true. We initialize `left = 0` a
 If the invariant is true before an iteration, we must prove it remains true after updating our pointers.
 During the loop, we calculate:
 
-$$mid = left + \frac{right - left}{2}$$
+```
+mid = left + (right - left) / 2
+```
 
 We check three cases:
 
@@ -153,6 +157,7 @@ public int BinarySearch(int[] nums, int target)
     return -1; // Search range is empty -> target not in nums
 }
 ```
+
 
 By applying this invariant-first approach, we eliminate all cognitive overhead. We do not need to "dry-run" multiple edge cases or guess boundary updates. The math guarantees the correctness of our implementation.
 

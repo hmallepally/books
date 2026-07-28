@@ -10,10 +10,15 @@ This chapter covers Hard-tier of the General Coding Assessments (Hard difficulty
 A **Rotated Sorted Array** is an array that was originally sorted in ascending order (with unique elements), but has been shifted (rotated) at some unknown pivot index $K$.
 
 For example, consider the original sorted array:
-$$\text{Original Sorted Array: } [0, 1, 2, 4, 5, 6, 7]$$
+```
+Original Sorted Array: [0, 1, 2, 4, 5, 6, 7]
+```
 
 If we rotate this array at pivot index $K = 3$ (shifting elements from index 3 onwards to the front), we get:
-$$\text{Rotated Sorted Array: } [4, 5, 6, 7, 0, 1, 2]$$
+
+```
+Rotated Sorted Array: [4, 5, 6, 7, 0, 1, 2]
+```
 
 Notice what happened:
 
@@ -206,6 +211,7 @@ def binary_search_answer_space(min_val: int, max_val: int) -> int:
             left = mid + 1
     return best
 ```
+
 ### Template B: Monotonic Stack
 ```python
 def next_greater_element(self, nums: list[int]) -> list[int]:
@@ -220,6 +226,7 @@ def next_greater_element(self, nums: list[int]) -> list[int]:
         stack.append(i)
     return result
 ```
+
 ### Template C: 1D DP with State Compression
 ```python
 def dp_state_compression(self, nums: list[int]) -> int:
@@ -232,6 +239,7 @@ def dp_state_compression(self, nums: list[int]) -> int:
         prev1 = curr
     return prev1
 ```
+
 ### Template D: BFS with Level Tracking
 ```python
 def bfs_level(self, start: 'Node', target: 'Node') -> int:
@@ -253,6 +261,7 @@ def bfs_level(self, start: 'Node', target: 'Node') -> int:
         level += 1 # Increment level after exploring all nodes at current depth
     return -1
 ```
+
 ### Template E: Topological Sort (Kahn's Algorithm)
 ```python
 def topological_sort(self, num_nodes: int, edges: list[list[int]]) -> list[int]:
@@ -277,6 +286,7 @@ def topological_sort(self, num_nodes: int, edges: list[list[int]]) -> list[int]:
                 
     return order if len(order) == num_nodes else [] # Empty if cycle exists
 ```
+
 * * *
 
 ## Solved Exemplar Problems
@@ -316,6 +326,7 @@ def search(self, nums: list[int], target: int) -> int:
 # Time Complexity: O(log N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **2. Sliding Window Maximum**
@@ -354,6 +365,7 @@ def max_sliding_window(self, nums: list[int], k: int) -> list[int]:
 # Time Complexity: O(N) since each element is pushed/popped at most once
 # Space Complexity: O(K) for the deque
 ```
+
 * * *
 
 **3. Longest Common Subsequence**
@@ -405,6 +417,7 @@ def longest_common_subsequence(self, text1: str, text2: str) -> int:
 # Time Complexity: O(M * N)
 # Space Complexity: O(min(M, N)) - Space compressed DP as taught in the vocabulary section.
 ```
+
 * * *
 
 **4. Burst Balloons**
@@ -452,6 +465,7 @@ def max_coins(self, nums: list[int]) -> int:
 # Time Complexity: O(N^3)
 # Space Complexity: O(N^2)
 ```
+
 * * *
 
 **5. Maximum Product Subarray**
@@ -481,6 +495,7 @@ def max_product(self, nums: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **6. Median of Two Sorted Arrays**
@@ -522,6 +537,7 @@ def find_median_sorted_arrays(self, A: list[int], B: list[int]) -> float:
 # Time Complexity: O(log(min(M, N)))
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **7. Trapping Rain Water**
@@ -553,6 +569,7 @@ def trap(self, height: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **8. Daily Temperatures**
@@ -582,6 +599,7 @@ def daily_temperatures(self, temperatures: list[int]) -> list[int]:
 # Time Complexity: O(N)
 # Space Complexity: O(N)
 ```
+
 * * *
 
 **9. Edit Distance / Levenshtein**
@@ -637,6 +655,7 @@ def min_distance(self, word1: str, word2: str) -> int:
 # Time Complexity: O(M * N)
 # Space Complexity: O(M * N)
 ```
+
 * * *
 
 **10. LRU Cache**
@@ -653,7 +672,7 @@ def min_distance(self, word1: str, word2: str) -> int:
 **Trace-Through:** Cache capacity = 2.
 
 | Operation | HashMap | Linked List (HEAD → TAIL) | Why |
-|---|---|---|---|
+|:-----------------|:-------------------|:--------------------------|:-------------------------------------------------------|
 | `put(1, "A")` | {1→A} | **[1]** | First entry, goes to head |
 | `put(2, "B")` | {1→A, 2→B} | **[2, 1]** | Newest at head |
 | `get(1)` | {1→A, 2→B} | **[1, 2]** | Accessed 1 → move to head |
@@ -712,6 +731,7 @@ class LRUCache:
 # Time Complexity: O(1) for both get and put
 # Space Complexity: O(Capacity)
 ```
+
 * * *
 
 **11. Maximal Rectangle in Binary Matrix**
@@ -743,7 +763,7 @@ class LRUCache:
 **Trace-Through (Monotonic Stack for Heights `[3, 1, 3, 2, 2]`):**
 
 | Index `i` | Height `h` | Action | Stack State | Area Calculated |
-|---|---|---|---|---|
+|:---------:|:----------:|:-----------------------------|:------------|:----------------|
 | 0 | 3 | Push 0 | `[0]` | — |
 | 1 | 1 | `1 < 3` $\rightarrow$ Pop 0 (h=3) | `[]` | `height=3, width=1` $\rightarrow$ **3** |
 | 1 | 1 | Push 1 | `[1]` | — |
@@ -789,6 +809,7 @@ def _max_histogram(self, heights: list[int]) -> int:
 # Time Complexity: O(R * C)
 # Space Complexity: O(C)
 ```
+
 * * *
 
 **12. Word Ladder**
@@ -826,6 +847,7 @@ def ladder_length(self, begin_word: str, end_word: str, word_list: list[str]) ->
 # Time Complexity: O(M^2 * N) where M is word length, N is number of words
 # Space Complexity: O(M * N)
 ```
+
 * * *
 
 **13. Coin Change**
@@ -851,6 +873,7 @@ def coin_change(self, coins: list[int], amount: int) -> int:
 # Time Complexity: O(Amount * N)
 # Space Complexity: O(Amount)
 ```
+
 * * *
 
 **14. House Robber**
@@ -877,6 +900,7 @@ def rob(self, nums: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **15. Regular Expression Matching**
@@ -912,6 +936,7 @@ def is_match(self, s: str, p: str) -> bool:
 # Time Complexity: O(M * N)
 # Space Complexity: O(M * N)
 ```
+
 * * *
 
 **16. Course Schedule II**
@@ -948,6 +973,7 @@ def find_order(self, num_courses: int, prerequisites: list[list[int]]) -> list[i
 # Time Complexity: O(V + E)
 # Space Complexity: O(V + E)
 ```
+
 * * *
 
 **17. Partition Equal Subset Sum**
@@ -977,6 +1003,7 @@ def can_partition(self, nums: list[int]) -> bool:
 # Time Complexity: O(N * Target)
 # Space Complexity: O(Target)
 ```
+
 * * *
 
 **18. Decode Ways**
@@ -1008,6 +1035,7 @@ def num_decodings(self, s: str) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(N) which can be optimized to O(1)
 ```
+
 * * *
 
 **19. Stock Span**
@@ -1034,6 +1062,7 @@ class StockSpanner:
 # Time Complexity: Amortized O(1) per next() call
 # Space Complexity: O(N)
 ```
+
 * * *
 
 **20. Longest Increasing Subsequence**
@@ -1063,6 +1092,7 @@ def length_of_lis(self, nums: list[int]) -> int:
 # Time Complexity: O(N log N)
 # Space Complexity: O(N)
 ```
+
 * * *
 
 **21. Find Minimum in Rotated Sorted Array**
@@ -1084,6 +1114,7 @@ def find_min(self, nums: list[int]) -> int:
 # Time Complexity: O(log N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **22. Kth Smallest Element in Sorted Matrix**
@@ -1117,6 +1148,7 @@ def _count_less_equal(self, matrix: list[list[int]], target: int) -> int:
 # Time Complexity: O(N log(Max - Min))
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **23. Jump Game II**
@@ -1139,6 +1171,7 @@ def jump(self, nums: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **24. Unique Paths**
@@ -1161,6 +1194,7 @@ def unique_paths(self, m: int, n: int) -> int:
 # Time Complexity: O(M * N)
 # Space Complexity: O(M * N) (can be optimized to O(N))
 ```
+
 * * *
 
 **25. Maximum Subarray / Kadane's Algorithm**
@@ -1181,6 +1215,7 @@ def max_sub_array(self, nums: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **26. Climbing Stairs**
@@ -1202,6 +1237,7 @@ def climb_stairs(self, n: int) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 **27. Largest Rectangle in Histogram**
@@ -1228,6 +1264,7 @@ def largest_rectangle_area(self, heights: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(N)
 ```
+
 * * *
 
 **28. Merge K Sorted Lists**
@@ -1268,6 +1305,7 @@ def merge_k_lists(self, lists: list[ListNode]) -> ListNode:
 # Time Complexity: O(N log K)
 # Space Complexity: O(K)
 ```
+
 * * *
 
 **29. Longest Valid Parentheses**
@@ -1293,6 +1331,7 @@ def longest_valid_parentheses(self, s: str) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(N)
 ```
+
 * * *
 
 **30. Container With Most Water**
@@ -1317,6 +1356,7 @@ def max_area(self, height: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 * * *
 
 ## Practice Problem Bank

@@ -58,6 +58,7 @@ class TestTransactionProcessor(unittest.TestCase):
         mock_sender.send_notification.assert_called_with(ANY)
 ```
 
+
 By utilizing mock objects, we verify that the processor correctly coordinates the transfer, updates balance invariants, and calls the persistence layer, without requiring an active database connection.
 
 > **Why is it called "Mockito"?** The popular Java mocking framework is named after the **Mojito** cocktail — a playful twist by its Polish creator Szczepan Faber. Just as a bartender mixes ingredients to create something refreshing, Mockito mixes stubs and verifications to create clean, readable tests. The name also echoes the Spanish suffix *"-ito"* (meaning "little"), suggesting lightweight mock objects.
@@ -286,7 +287,9 @@ When designing load tests, avoid these common mistakes:
 
 When load testing data-intensive applications, connection pool sizing is a common bottleneck. As discussed in earlier chapters, the optimal pool size formula is:
 
-$$\text{Pool Size} = T_n \times (C_m - 1) + 1$$
+```
+Pool Size = Tn * (Cm - 1) + 1
+```
 
 Where $T_n$ = number of threads, $C_m$ = maximum concurrent queries per thread.
 

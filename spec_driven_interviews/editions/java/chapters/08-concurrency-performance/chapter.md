@@ -273,11 +273,15 @@ A common design flaw is over-allocating database connection pool sizes. If you h
 
 HikariCP (the industry-standard connection pool manager) uses a formula derived from PostgreSQL benchmark testing to size database pools:
 
-$$Pool\ Size = (Core\ Count \times 2) + Effective\ Spindle\ Count$$
+```
+Pool Size = (Core Count * 2) + Effective Spindle Count
+```
 
 For example, a database server with 8 CPU cores and an SSD array (spindle count of 1) should have a pool size of:
 
-$$(8 \times 2) + 1 = 17\ Connections$$
+```
+(8 * 2) + 1 = 17 Connections
+```
 
 Setting the pool size to 17 will yield *higher* overall throughput than setting it to 100, due to the minimization of CPU context switching and disk spindle thrashing.
 

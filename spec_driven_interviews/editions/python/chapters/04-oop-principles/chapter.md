@@ -32,6 +32,7 @@ class LedgerService:
         to_acc.balance += amount
 ```
 
+
 ### Why the Anemic Model Fails in Production
 
 1. **Lack of Encapsulation:** Any part of the application can modify the account balance directly: `account.setBalance(new BigDecimal("-1000.00"))`, bypassing the business checks entirely.

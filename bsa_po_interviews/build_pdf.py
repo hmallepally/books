@@ -161,7 +161,7 @@ def build_epub():
             manuscript_path,
             '-o', epub_output_path,
             '--toc',
-            '--toc-depth=2',
+            '--toc-depth=1',
             '--metadata', 'title=Spec-Driven Business & Product Mastery',
             '--metadata', 'author=Harinath Mallepally',
             '--metadata', 'lang=en-US',

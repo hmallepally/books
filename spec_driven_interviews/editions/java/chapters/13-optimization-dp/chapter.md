@@ -10,10 +10,15 @@ This chapter covers Hard-tier of the General Coding Assessments (Hard difficulty
 A **Rotated Sorted Array** is an array that was originally sorted in ascending order (with unique elements), but has been shifted (rotated) at some unknown pivot index $K$.
 
 For example, consider the original sorted array:
-$$\text{Original Sorted Array: } [0, 1, 2, 4, 5, 6, 7]$$
+```
+Original Sorted Array: [0, 1, 2, 4, 5, 6, 7]
+```
 
 If we rotate this array at pivot index $K = 3$ (shifting elements from index 3 onwards to the front), we get:
-$$\text{Rotated Sorted Array: } [4, 5, 6, 7, 0, 1, 2]$$
+
+```
+Rotated Sorted Array: [4, 5, 6, 7, 0, 1, 2]
+```
 
 Notice what happened:
 
@@ -716,7 +721,7 @@ public int minDistance(String word1, String word2) {
 **Trace-Through:** Cache capacity = 2.
 
 | Operation | HashMap | Linked List (HEAD → TAIL) | Why |
-|---|---|---|---|
+|:-----------------|:-------------------|:--------------------------|:-------------------------------------------------------|
 | `put(1, "A")` | {1→A} | **[1]** | First entry, goes to head |
 | `put(2, "B")` | {1→A, 2→B} | **[2, 1]** | Newest at head |
 | `get(1)` | {1→A, 2→B} | **[1, 2]** | Accessed 1 → move to head |
@@ -815,7 +820,7 @@ public class LRUCache {
 **Trace-Through (Monotonic Stack for Heights `[3, 1, 3, 2, 2]`):**
 
 | Index `i` | Height `h` | Action | Stack State | Area Calculated |
-|---|---|---|---|---|
+|:---------:|:----------:|:-----------------------------|:------------|:----------------|
 | 0 | 3 | Push 0 | `[0]` | — |
 | 1 | 1 | `1 < 3` $\rightarrow$ Pop 0 (h=3) | `[]` | `height=3, width=1` $\rightarrow$ **3** |
 | 1 | 1 | Push 1 | `[1]` | — |

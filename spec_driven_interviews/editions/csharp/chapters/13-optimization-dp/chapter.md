@@ -10,10 +10,15 @@ This chapter covers Hard-tier of the General Coding Assessments (Hard difficulty
 A **Rotated Sorted Array** is an array that was originally sorted in ascending order (with unique elements), but has been shifted (rotated) at some unknown pivot index $K$.
 
 For example, consider the original sorted array:
-$$\text{Original Sorted Array: } [0, 1, 2, 4, 5, 6, 7]$$
+```
+Original Sorted Array: [0, 1, 2, 4, 5, 6, 7]
+```
 
 If we rotate this array at pivot index $K = 3$ (shifting elements from index 3 onwards to the front), we get:
-$$\text{Rotated Sorted Array: } [4, 5, 6, 7, 0, 1, 2]$$
+
+```
+Rotated Sorted Array: [4, 5, 6, 7, 0, 1, 2]
+```
 
 Notice what happened:
 
@@ -211,6 +216,7 @@ int BinarySearchAnswerSpace(int min, int max) {
     return best;
 }
 ```
+
 ### Template B: Monotonic Stack
 ```csharp
 public int[] NextGreaterElement(int[] nums) {
@@ -229,6 +235,7 @@ public int[] NextGreaterElement(int[] nums) {
     return result;
 }
 ```
+
 ### Template C: 1D DP with State Compression
 ```csharp
 public int DpStateCompression(int[] nums) {
@@ -243,6 +250,7 @@ public int DpStateCompression(int[] nums) {
     return prev1;
 }
 ```
+
 ### Template D: BFS with Level Tracking
 ```csharp
 public int BfsLevel(Node start, Node target) {
@@ -270,6 +278,7 @@ public int BfsLevel(Node start, Node target) {
     return -1;
 }
 ```
+
 ### Template E: Topological Sort (Kahn's Algorithm)
 ```csharp
 public IList<int> TopologicalSort(int numNodes, int[][] edges) {
@@ -300,6 +309,7 @@ public IList<int> TopologicalSort(int numNodes, int[][] edges) {
     return order.Count == numNodes ? order : new List<int>(); // Empty if cycle exists
 }
 ```
+
 * * *
 
 ## Solved Exemplar Problems
@@ -345,6 +355,7 @@ public int Search(int[] nums, int target) {
 // Time Complexity: O(log N)
 // Space Complexity: O(1)
 ```
+
 * * *
 
 **2. Sliding Window Maximum**
@@ -385,6 +396,7 @@ public int[] MaxSlidingWindow(int[] nums, int k) {
 // Time Complexity: O(N) since each element is pushed/popped at most once
 // Space Complexity: O(K) for the deque
 ```
+
 * * *
 
 **3. Longest Common Subsequence**
@@ -436,6 +448,7 @@ public int LongestCommonSubsequence(string text1, string text2) {
 // Time Complexity: O(M * N)
 // Space Complexity: O(min(M, N)) - Space compressed DP as taught in the vocabulary section.
 ```
+
 * * *
 
 **4. Burst Balloons**
@@ -489,6 +502,7 @@ public int MaxCoins(int[] nums) {
 // Time Complexity: O(N^3)
 // Space Complexity: O(N^2)
 ```
+
 * * *
 
 **5. Maximum Product Subarray**
@@ -521,6 +535,7 @@ public int MaxProduct(int[] nums) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
+
 * * *
 
 **6. Median of Two Sorted Arrays**
@@ -565,6 +580,7 @@ public double FindMedianSortedArrays(int[] A, int[] B) {
 // Time Complexity: O(log(min(M, N)))
 // Space Complexity: O(1)
 ```
+
 * * *
 
 **7. Trapping Rain Water**
@@ -598,6 +614,7 @@ public int Trap(int[] height) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
+
 * * *
 
 **8. Daily Temperatures**
@@ -629,6 +646,7 @@ public int[] DailyTemperatures(int[] temperatures) {
 // Time Complexity: O(N)
 // Space Complexity: O(N)
 ```
+
 * * *
 
 **9. Edit Distance / Levenshtein**
@@ -688,6 +706,7 @@ public int MinDistance(string word1, string word2) {
 // Time Complexity: O(M * N)
 // Space Complexity: O(M * N)
 ```
+
 * * *
 
 **10. LRU Cache**
@@ -704,7 +723,7 @@ public int MinDistance(string word1, string word2) {
 **Trace-Through:** Cache capacity = 2.
 
 | Operation | HashMap | Linked List (HEAD → TAIL) | Why |
-|---|---|---|---|
+|:-----------------|:-------------------|:--------------------------|:-------------------------------------------------------|
 | `put(1, "A")` | {1→A} | **[1]** | First entry, goes to head |
 | `put(2, "B")` | {1→A, 2→B} | **[2, 1]** | Newest at head |
 | `get(1)` | {1→A, 2→B} | **[1, 2]** | Accessed 1 → move to head |
@@ -771,6 +790,7 @@ public class LRUCache {
 // Time Complexity: O(1) for both get and put
 // Space Complexity: O(Capacity)
 ```
+
 * * *
 
 **11. Maximal Rectangle in Binary Matrix**
@@ -802,7 +822,7 @@ public class LRUCache {
 **Trace-Through (Monotonic Stack for Heights `[3, 1, 3, 2, 2]`):**
 
 | Index `i` | Height `h` | Action | Stack State | Area Calculated |
-|---|---|---|---|---|
+|:---------:|:----------:|:-----------------------------|:------------|:----------------|
 | 0 | 3 | Push 0 | `[0]` | — |
 | 1 | 1 | `1 < 3` $\rightarrow$ Pop 0 (h=3) | `[]` | `height=3, width=1` $\rightarrow$ **3** |
 | 1 | 1 | Push 1 | `[1]` | — |
@@ -850,6 +870,7 @@ private int MaxHistogram(int[] heights) {
 // Time Complexity: O(R * C)
 // Space Complexity: O(C)
 ```
+
 * * *
 
 **12. Word Ladder**
@@ -896,6 +917,7 @@ public int LadderLength(string beginWord, string endWord, IList<string> wordList
 // Time Complexity: O(M^2 * N) where M is word length, N is number of words
 // Space Complexity: O(M * N)
 ```
+
 * * *
 
 **13. Coin Change**
@@ -925,6 +947,7 @@ public int CoinChange(int[] coins, int amount) {
 // Time Complexity: O(Amount * N)
 // Space Complexity: O(Amount)
 ```
+
 * * *
 
 **14. House Robber**
@@ -952,6 +975,7 @@ public int Rob(int[] nums) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
+
 * * *
 
 **15. Regular Expression Matching**
@@ -993,6 +1017,7 @@ public bool IsMatch(string s, string p) {
 // Time Complexity: O(M * N)
 // Space Complexity: O(M * N)
 ```
+
 * * *
 
 **16. Course Schedule II**
@@ -1034,6 +1059,7 @@ public int[] FindOrder(int numCourses, int[][] prerequisites) {
 // Time Complexity: O(V + E)
 // Space Complexity: O(V + E)
 ```
+
 * * *
 
 **17. Partition Equal Subset Sum**
@@ -1066,6 +1092,7 @@ public bool CanPartition(int[] nums) {
 // Time Complexity: O(N * Target)
 // Space Complexity: O(Target)
 ```
+
 * * *
 
 **18. Decode Ways**
@@ -1101,6 +1128,7 @@ public int NumDecodings(string s) {
 // Time Complexity: O(N)
 // Space Complexity: O(N) which can be optimized to O(1)
 ```
+
 * * *
 
 **19. Stock Span**
@@ -1129,6 +1157,7 @@ public class StockSpanner {
 // Time Complexity: Amortized O(1) per next() call
 // Space Complexity: O(N)
 ```
+
 * * *
 
 **20. Longest Increasing Subsequence**
@@ -1162,6 +1191,7 @@ public int LengthOfLIS(int[] nums) {
 // Time Complexity: O(N log N)
 // Space Complexity: O(N)
 ```
+
 * * *
 
 **21. Find Minimum in Rotated Sorted Array**
@@ -1185,6 +1215,7 @@ public int FindMin(int[] nums) {
 // Time Complexity: O(log N)
 // Space Complexity: O(1)
 ```
+
 * * *
 
 **22. Kth Smallest Element in Sorted Matrix**
@@ -1218,6 +1249,7 @@ private int CountLessEqual(int[][] matrix, int target) {
 // Time Complexity: O(N log(Max - Min))
 // Space Complexity: O(1)
 ```
+
 * * *
 
 **23. Jump Game II**
@@ -1243,6 +1275,7 @@ public int Jump(int[] nums) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
+
 * * *
 
 **24. Unique Paths**
@@ -1271,6 +1304,7 @@ public int UniquePaths(int m, int n) {
 // Time Complexity: O(M * N)
 // Space Complexity: O(M * N) (can be optimized to O(N))
 ```
+
 * * *
 
 **25. Maximum Subarray / Kadane's Algorithm**
@@ -1293,6 +1327,7 @@ public int MaxSubArray(int[] nums) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
+
 * * *
 
 **26. Climbing Stairs**
@@ -1317,6 +1352,7 @@ public int ClimbStairs(int n) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
+
 * * *
 
 **27. Largest Rectangle in Histogram**
@@ -1345,6 +1381,7 @@ public int LargestRectangleArea(int[] heights) {
 // Time Complexity: O(N)
 // Space Complexity: O(N)
 ```
+
 * * *
 
 **28. Merge K Sorted Lists**
@@ -1373,6 +1410,7 @@ public ListNode MergeKLists(ListNode[] lists) {
 // Time Complexity: O(N log K)
 // Space Complexity: O(K)
 ```
+
 * * *
 
 **29. Longest Valid Parentheses**
@@ -1402,6 +1440,7 @@ public int LongestValidParentheses(string s) {
 // Time Complexity: O(N)
 // Space Complexity: O(N)
 ```
+
 * * *
 
 **30. Container With Most Water**
@@ -1428,6 +1467,7 @@ public int MaxArea(int[] height) {
 // Time Complexity: O(N)
 // Space Complexity: O(1)
 ```
+
 * * *
 
 ## Practice Problem Bank

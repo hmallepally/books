@@ -148,6 +148,7 @@ class Order:
         self.quantity = quantity
 ```
 
+
 These architectures serve as running case studies throughout the book. You will implement components of each system as you learn the patterns in Parts II, III, and IV. Do not attempt to design these systems now — let the patterns guide you.
 
 
@@ -167,7 +168,9 @@ ChiramTrust is a decentralized identity wallet that allows users to store creden
 
 To implement consensus-based key recovery, the user's private key $S$ is split into $N$ distinct shares. We construct a random polynomial of degree $T - 1$ (where $T$ is the threshold of guardians needed to recover the key):
 
-$$f(x) = a_0 + a_1 x + a_2 x^2 + \dots + a_{T-1} x^{T-1} \pmod P$$
+```
+f(x) = a_0 + a_1*x + a_2*x^2 + ... + a_{T-1}*x^{T-1} (mod P)
+```
 
 where $a_0 = S$ (the secret key), and the coefficients $a_1, \dots, a_{T-1}$ are randomly generated integers. The prime $P$ defines the finite field $\mathbb{F}_P$. Each guardian $i$ receives a coordinate point $(i, f(i))$. 
 
@@ -175,7 +178,9 @@ By the properties of polynomial interpolation:
 
 1.  **Any $T$ guardians** can pool their shares $(x_i, y_i)$ and reconstruct the polynomial $f(x)$ using Lagrange interpolation, finding $f(0) = a_0 = S$:
    
-    $$S = \sum_{i=1}^{T} y_i \prod_{j \neq i} \frac{-x_j}{x_i - x_j} \pmod P$$
+```
+S = Sum_{i=1..T} ( y_i * Product_{j != i} ( -x_j / (x_i - x_j) ) ) (mod P)
+```
    
 2.  **Any $T - 1$ or fewer guardians** possess a system of equations with infinite solutions, revealing absolutely zero information about the secret key $S$.
 
@@ -197,6 +202,7 @@ class DidConsentRecord:
     def revoke_consent(self, scope: str) -> None:
         self._consent_scopes[scope] = False
 ```
+
 
 ### Interview Drill: Applying Bounded Context Isolation
 

@@ -71,6 +71,7 @@ A single matching engine instance cannot handle all trading instruments globally
 ### Consistent Hashing for Instrument Sharding
 
 ![Consistent Hashing Ring — Distributed Key Routing](visuals/consistent_hashing.jpg){width=85%}
+
 Instead of traditional modulo sharding (`hash(instrumentId) % nodeCount`), which causes massive data reshuffling when nodes are added or removed, ZenithTrade utilizes a **Consistent Hash Ring**:
 
 1.  **The Ring:** The hash space is mapped onto a circular ring (e.g., 0 to $2^{32} - 1$).
@@ -169,6 +170,7 @@ class TokenBucket:
             return True
 ```
 
+
 ### Leaky Bucket Algorithm
 In the leaky bucket algorithm, incoming requests enter a FIFO queue (the bucket). The system processes requests from the queue at a strictly constant rate. If the queue is full, new requests are discarded. Unlike the token bucket, it entirely smooths out bursts, ensuring a perfectly constant output rate.
 
@@ -223,6 +225,7 @@ class UserService:
             
         return user
 ```
+
 
 ### Write-Through Cache
 Under Write-Through caching, the application writes data to the cache and the database simultaneously (often abstracted so the application only writes to the cache, which synchronously updates the DB).
@@ -317,7 +320,9 @@ To demonstrate how a senior candidate should navigate a system design round, her
 ### High-Level Estimations (Scale & Math)
 **Candidate:** *"Let's calculate our network and storage needs. At 100,000 RPS, if an average order payload is 200 bytes, our network ingest rate at the gateway is:"*
 
-$$\text{Ingest Bandwidth} = 100,000 \times 200 \text{ bytes} = 20 \text{ MB/s} = 160 \text{ Mbps}$$
+```
+Ingest Bandwidth = 100,000 * 200 bytes = 20 MB/s = 160 Mbps
+```
 
 *"This is easily handled by standard network infrastructure. However, processing 100,000 matches per second in a single SQL database is impossible due to disk I/O bottlenecks. Therefore, our primary design boundary is that **the active matching engine must run entirely in-memory**, keeping reads and writes decoupled from disk operations during the matching loop."*
 

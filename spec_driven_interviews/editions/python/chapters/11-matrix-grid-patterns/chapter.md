@@ -60,6 +60,7 @@ while top <= bottom and left <= right:
         for i in range(bottom, top - 1, -1): pass # process matrix[i][left]
         left += 1
 ```
+
 ![Spiral Boundary Traversal — Layer-by-Layer Contraction](visuals/spiral_traversal.png){width=85%}
 
 ### Template B: 4-Directional BFS/DFS Grid Walk
@@ -73,6 +74,7 @@ def dfs(grid: list[list[int]], r: int, c: int) -> None:
     for i in range(4):
         dfs(grid, r + dr[i], c + dc[i])
 ```
+
 ### Template C: 2D Prefix Sum Construction + Query
 ```python
 # Construction
@@ -85,6 +87,7 @@ for r in range(1, R + 1):
 def query(r1: int, c1: int, r2: int, c2: int) -> int:
     return sum_grid[r2+1][c2+1] - sum_grid[r1][c2+1] - sum_grid[r2+1][c1] + sum_grid[r1][c1]
 ```
+
 **Understanding the Construction — Worked Example.** Given a 3×3 matrix, we build a 4×4 prefix sum array `S` padded with a zero row and zero column. Each cell `S[r][c]` stores the sum of all original elements from `(0,0)` to `(r-1, c-1)`.
 
 Original Matrix A:
@@ -106,9 +109,13 @@ Prefix Sum Array S (row 0 and column 0 are all zeros):
 
 **Cell-by-cell trace for S[2][2] = 12:**
 
-$$S[r][c] = A[r\text{-}1][c\text{-}1] + S[r\text{-}1][c] + S[r][c\text{-}1] - S[r\text{-}1][c\text{-}1]$$
+```
+S[r][c] = A[r-1][c-1] + S[r-1][c] + S[r][c-1] - S[r-1][c-1]
+```
 
-$$S[2][2] = \underbrace{A[1][1]}_{5} + \underbrace{S[1][2]}_{3} + \underbrace{S[2][1]}_{5} - \underbrace{S[1][1]}_{1} = 12$$
+```
+S[2][2] = A[1][1] (5) + S[1][2] (3) + S[2][1] (5) - S[1][1] (1) = 12
+```
 
 The two 5s come from different sources: `A[1][1] = 5` is the center cell of the original matrix, while `S[2][1] = 5` is the prefix sum of the first column (`1 + 4 = 5`). Verify: `S[2][2]` should equal `1 + 2 + 4 + 5 = 12` — the sum of all elements from `(0,0)` to `(1,1)`. ✓
 
@@ -118,7 +125,9 @@ The two 5s come from different sources: `A[1][1] = 5` is the center cell of the 
 
 **Understanding the Query — Inclusion-Exclusion.** To find the sum of a sub-rectangle from `(r1, c1)` to `(r2, c2)`, we carve it out of the full prefix sum using four overlapping rectangles:
 
-$$\text{query}(r_1, c_1, r_2, c_2) = S[r_2\text{+}1][c_2\text{+}1] - S[r_1][c_2\text{+}1] - S[r_2\text{+}1][c_1] + S[r_1][c_1]$$
+```
+query(r1, c1, r2, c2) = S[r2+1][c2+1] - S[r1][c2+1] - S[r2+1][c1] + S[r1][c1]
+```
 
 **The `+1` rule**: `+1` means "include this boundary." The middle two terms are *crossed* — each keeps one dimension full and chops the other:
 
@@ -131,7 +140,9 @@ $$\text{query}(r_1, c_1, r_2, c_2) = S[r_2\text{+}1][c_2\text{+}1] - S[r_1][c_2\
 
 **Worked query**: Sum of sub-rectangle `(1,1)` to `(2,2)` — cells `{5, 6, 8, 9}` = 28:
 
-$$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
+```
+S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28
+```
 
 ![2D Prefix Sum — Query via Inclusion-Exclusion](visuals/prefix_sum_2d_query.png){width=85%}
 
@@ -158,7 +169,8 @@ def rotate(self, matrix: list[list[int]]) -> None:
     for i in range(n):
         for j in range(n // 2):
             matrix[i][j], matrix[i][n - 1 - j] = matrix[i][n - 1 - j], matrix[i][j]
-```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **2. Spiral Matrix Traversal**
@@ -186,12 +198,13 @@ def spiral_order(self, matrix: list[list[int]]) -> list[int]:
             for i in range(b, t - 1, -1): res.append(matrix[i][l]) # Left
             l += 1
     return res
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Trace Walkthrough** (input: `3x3 matrix`):
 
 | Step | Row | Col | Direction | Value | Action |
-|------|-----|-----|-----------|-------|--------|
+|:---:|:---:|:---:|:----------|:-----:|:-------|
 | 1    | 0   | 0   | Right     | 1     | Add to result |
 | 2    | 0   | 1   | Right     | 2     | Add to result |
 | 3    | 0   | 2   | Right     | 3     | Add, contract top bound |
@@ -236,7 +249,8 @@ def set_zeroes(self, matrix: list[list[int]]) -> None:
         for j in range(n): matrix[0][j] = 0
     if first_col_zero:
         for i in range(m): matrix[i][0] = 0
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **4. Diagonal Matrix Traversal**
@@ -264,7 +278,8 @@ def find_diagonal_order(self, mat: list[list[int]]) -> list[int]:
             elif c == 0: r += 1
             else: r += 1; c -= 1
     return res
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **5. Matrix Reshape Validation**
@@ -285,7 +300,8 @@ def matrix_reshape(self, mat: list[list[int]], r: int, c: int) -> list[list[int]
     for i in range(m * n):
         res[i // c][i % c] = mat[i // n][i % n]
     return res
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
 
 * * *
 **6. Rotate Matrix 90° Counter-Clockwise**
@@ -308,7 +324,8 @@ def rotate_counter(self, matrix: list[list[int]]) -> None:
     for j in range(n):
         for i in range(n // 2):
             matrix[i][j], matrix[n - 1 - i][j] = matrix[n - 1 - i][j], matrix[i][j]
-```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **7. Search in Row-Column Sorted Matrix**
@@ -328,7 +345,8 @@ def search_matrix(self, matrix: list[list[int]], target: int) -> bool:
         elif matrix[r][c] > target: c -= 1
         else: r += 1
     return False
-```Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **8. Game of Life**
@@ -358,7 +376,8 @@ def game_of_life(self, board: list[list[int]]) -> None:
         for c in range(n):
             if board[r][c] > 0: board[r][c] = 1
             else: board[r][c] = 0
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **9. Toeplitz Matrix Verification**
@@ -377,7 +396,8 @@ def is_toeplitz_matrix(self, matrix: list[list[int]]) -> bool:
             if matrix[i][j] != matrix[i-1][j-1]:
                 return False
     return True
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **10. Spiral Matrix Construction**
@@ -414,7 +434,8 @@ def generate_matrix(self, n: int) -> list[list[int]]:
                 val += 1
             l += 1
     return mat
-```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
+```
+Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
 
 * * *
 **11. Flood Fill**
@@ -439,7 +460,8 @@ def _dfs(self, img: list[list[int]], r: int, c: int, old_c: int, new_c: int) -> 
     self._dfs(img, r+1, c, old_c, new_c)
     self._dfs(img, r, c-1, old_c, new_c)
     self._dfs(img, r, c+1, old_c, new_c)
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **12. Transpose Rectangular Matrix**
@@ -460,7 +482,8 @@ def transpose(self, matrix: list[list[int]]) -> list[list[int]]:
         for j in range(c):
             ans[j][i] = matrix[i][j]
     return ans
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **13. Valid Sudoku**
@@ -489,12 +512,13 @@ def is_valid_sudoku(self, board: list[list[str]]) -> bool:
                 seen.add(col_key)
                 seen.add(box_key)
     return True
-```Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
 
 **Trace Walkthrough** (input: `Sudoku with duplicate 5s in row 0`):
 
 | Step | Row | Col | Value | Encoded Strings | Action |
-|------|-----|-----|-------|-----------------|--------|
+|:---:|:---:|:---:|:-----:|:----------------|:-------|
 | 1    | 0   | 0   | 5     | "5 in row 0", "5 in col 0", "5 in block 0-0" | Add to HashSet (Success) |
 | 2    | 0   | 1   | 3     | "3 in row 0", "3 in col 1", "3 in block 0-0" | Add to HashSet (Success) |
 | 3    | 0   | 4   | 5     | "5 in row 0", "5 in col 4", "5 in block 0-1" | Add to HashSet (Collision on "5 in row 0") -> Return false |
@@ -519,7 +543,8 @@ def island_perimeter(self, grid: list[list[int]]) -> int:
                 if i > 0 and grid[i - 1][j] == 1: perimeter -= 2
                 if j > 0 and grid[i][j - 1] == 1: perimeter -= 2
     return perimeter
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **15. Maximum K×K Submatrix Sum**
@@ -545,12 +570,13 @@ def max_sum(self, mat: list[list[int]], k: int) -> int:
             s = pre[i][j] - pre[i-k][j] - pre[i][j-k] + pre[i-k][j-k]
             max_val = max(max_val, s)
     return max_val
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Trace Walkthrough** (input: `mat=[[1,2,3],[4,5,6],[7,8,9]], K=2`):
 
 | Step | Row | Col | Value | Action |
-|------|-----|-----|-------|--------|
+|:---:|:---:|:---:|:-----:|:-------|
 | 1    | 2   | 2   | 12    | Query (2,2) with K=2: 12 - 0 - 0 + 0 = 12 |
 | 2    | 2   | 3   | 16    | Query (2,3) with K=2: 18 - 0 - 2 + 0 = 16 |
 | 3    | 3   | 2   | 24    | Query (3,2) with K=2: 27 - 3 - 0 + 0 = 24 |
@@ -581,7 +607,8 @@ def _dfs(self, grid: list[list[str]], r: int, c: int) -> None:
     grid[r][c] = '0'
     self._dfs(grid, r+1, c); self._dfs(grid, r-1, c)
     self._dfs(grid, r, c+1); self._dfs(grid, r, c-1)
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **17. Flip and Invert Image**
@@ -601,7 +628,8 @@ def flip_and_invert_image(self, image: list[list[int]]) -> list[list[int]]:
             row[left], row[right] = row[right] ^ 1, row[left] ^ 1
             left += 1; right -= 1
     return image
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **18. Shift 2D Grid**
@@ -625,7 +653,8 @@ def shift_grid(self, grid: list[list[int]], k: int) -> list[list[int]]:
             new_1d = (r * n + c + k) % total
             res[new_1d // n][new_1d % n] = grid[r][c]
     return res
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **19. Word Search in Grid**
@@ -654,7 +683,8 @@ def _dfs(self, b: list[list[str]], r: int, c: int, word: str, idx: int) -> bool:
              self._dfs(b, r, c+1, word, idx+1) or self._dfs(b, r, c-1, word, idx+1))
     b[r][c] = temp
     return found
-```Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
+```
+Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
 
 * * *
 **20. Determine If Matrix Can Be Obtained By Rotation**
@@ -681,7 +711,8 @@ def rotate(self, mat: list[list[int]]) -> None:
     for i in range(n):
         for j in range(n // 2):
             mat[i][j], mat[i][n-1-j] = mat[i][n-1-j], mat[i][j]
-```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **21. Chess Board Cell Color**
@@ -698,7 +729,8 @@ def solution(self, cell1: str, cell2: str) -> bool:
     sum1 = (ord(cell1[0]) - ord('A')) + (ord(cell1[1]) - ord('1'))
     sum2 = (ord(cell2[0]) - ord('A')) + (ord(cell2[1]) - ord('1'))
     return (sum1 % 2) == (sum2 % 2)
-```Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **22. Minesweeper Click Reveal**
@@ -735,7 +767,8 @@ def _dfs(self, b: list[list[str]], r: int, c: int) -> None:
         for i in range(-1, 2):
             for j in range(-1, 2):
                 self._dfs(b, r+i, c+j)
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **23. Battleship Placement Validation**
@@ -757,7 +790,8 @@ def count_battleships(self, board: list[list[str]]) -> int:
                 if j > 0 and board[i][j-1] == 'X': continue
                 count += 1
     return count
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **24. Box Blur**
@@ -779,7 +813,8 @@ def box_blur(self, image: list[list[int]]) -> list[list[int]]:
             s = sum(image[i + di][j + dj] for di in range(-1, 2) for dj in range(-1, 2))
             res[i-1][j-1] = s // 9
     return res
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **25. Zigzag String Conversion**
@@ -806,7 +841,8 @@ def convert(self, s: str, num_rows: int) -> str:
         cur_row += 1 if going_down else -1
         
     return "".join(rows)
-```Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
+```
+Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
 
 * * *
 **26. Simulate Robot Commands on Grid**
@@ -834,7 +870,8 @@ def robot_sim(self, commands: list[int], obstacles: list[list[int]]) -> int:
                 x, y = nx, ny
                 max_dist = max(max_dist, x*x + y*y)
     return max_dist
-```Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
+```
+Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
 
 * * *
 **27. Matrix Water Flow (Pacific Atlantic)**
@@ -871,7 +908,8 @@ def _dfs_pa(self, h, v, r, c):
         nr, nc = r + dr, c + dc
         if 0 <= nr < len(h) and 0 <= nc < len(h[0]) and not v[nr][nc] and h[nr][nc] >= h[r][c]:
             self._dfs_pa(h, v, nr, nc)
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **28. Rotting Oranges**
@@ -912,12 +950,13 @@ def oranges_rotting(self, grid: list[list[int]]) -> int:
         if rotted: mins += 1
         
     return mins if fresh == 0 else -1
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Trace Walkthrough** (input: `[[2,1,1],[1,1,0],[0,1,1]]`):
 
 | Step | Row | Col | Minute | Value | Action |
-|------|-----|-----|--------|-------|--------|
+|:---:|:---:|:---:|:------:|:-----:|:-------|
 | 1    | 0   | 0   | 0      | 2     | Initial rotten, enqueue |
 | 2    | 0   | 1   | 1      | 1->2  | Rot right neighbor, enqueue |
 | 3    | 1   | 0   | 1      | 1->2  | Rot bottom neighbor, enqueue |
@@ -956,7 +995,8 @@ def _dfs_s(self, b: list[list[str]], r: int, c: int) -> None:
     b[r][c] = '#'
     self._dfs_s(b, r+1, c); self._dfs_s(b, r-1, c)
     self._dfs_s(b, r, c+1); self._dfs_s(b, r, c-1)
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **30. Path with Minimum Effort**
@@ -997,7 +1037,8 @@ def _can_reach(self, h: list[list[int]], limit: int) -> bool:
                     vis[nr][nc] = True
                     q.append((nr, nc))
     return False
-```Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M \times N)$
 
 ## Practice Problem Bank
 

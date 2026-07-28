@@ -63,6 +63,7 @@ while (top <= bottom && left <= right) {
   }
 }
 ```
+
 ![Spiral Boundary Traversal — Layer-by-Layer Contraction](visuals/spiral_traversal.png){width=85%}
 
 ### Template B: 4-Directional BFS/DFS Grid Walk
@@ -78,6 +79,7 @@ void Dfs(int[][] grid, int r, int c) {
   }
 }
 ```
+
 ### Template C: 2D Prefix Sum Construction + Query
 ```csharp
 // Construction
@@ -92,6 +94,7 @@ int Query(int r1, int c1, int r2, int c2) {
   return sum[r2+1, c2+1] - sum[r1, c2+1] - sum[r2+1, c1] + sum[r1, c1];
 }
 ```
+
 **Understanding the Construction — Worked Example.** Given a 3×3 matrix, we build a 4×4 prefix sum array `S` padded with a zero row and zero column. Each cell `S[r][c]` stores the sum of all original elements from `(0,0)` to `(r-1, c-1)`.
 
 Original Matrix A:
@@ -113,9 +116,13 @@ Prefix Sum Array S (row 0 and column 0 are all zeros):
 
 **Cell-by-cell trace for S[2][2] = 12:**
 
-$$S[r][c] = A[r\text{-}1][c\text{-}1] + S[r\text{-}1][c] + S[r][c\text{-}1] - S[r\text{-}1][c\text{-}1]$$
+```
+S[r][c] = A[r-1][c-1] + S[r-1][c] + S[r][c-1] - S[r-1][c-1]
+```
 
-$$S[2][2] = \underbrace{A[1][1]}_{5} + \underbrace{S[1][2]}_{3} + \underbrace{S[2][1]}_{5} - \underbrace{S[1][1]}_{1} = 12$$
+```
+S[2][2] = A[1][1] (5) + S[1][2] (3) + S[2][1] (5) - S[1][1] (1) = 12
+```
 
 The two 5s come from different sources: `A[1][1] = 5` is the center cell of the original matrix, while `S[2][1] = 5` is the prefix sum of the first column (`1 + 4 = 5`). Verify: `S[2][2]` should equal `1 + 2 + 4 + 5 = 12` — the sum of all elements from `(0,0)` to `(1,1)`. ✓
 
@@ -125,7 +132,9 @@ The two 5s come from different sources: `A[1][1] = 5` is the center cell of the 
 
 **Understanding the Query — Inclusion-Exclusion.** To find the sum of a sub-rectangle from `(r1, c1)` to `(r2, c2)`, we carve it out of the full prefix sum using four overlapping rectangles:
 
-$$\text{query}(r_1, c_1, r_2, c_2) = S[r_2\text{+}1][c_2\text{+}1] - S[r_1][c_2\text{+}1] - S[r_2\text{+}1][c_1] + S[r_1][c_1]$$
+```
+query(r1, c1, r2, c2) = S[r2+1][c2+1] - S[r1][c2+1] - S[r2+1][c1] + S[r1][c1]
+```
 
 **The `+1` rule**: `+1` means "include this boundary." The middle two terms are *crossed* — each keeps one dimension full and chops the other:
 
@@ -138,7 +147,9 @@ $$\text{query}(r_1, c_1, r_2, c_2) = S[r_2\text{+}1][c_2\text{+}1] - S[r_1][c_2\
 
 **Worked query**: Sum of sub-rectangle `(1,1)` to `(2,2)` — cells `{5, 6, 8, 9}` = 28:
 
-$$S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28 \checkmark$$
+```
+S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28
+```
 
 ![2D Prefix Sum — Query via Inclusion-Exclusion](visuals/prefix_sum_2d_query.png){width=85%}
 
@@ -174,7 +185,8 @@ public void Rotate(int[][] matrix) {
     }
   }
 }
-```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **2. Spiral Matrix Traversal**
@@ -206,12 +218,13 @@ public IList<int> SpiralOrder(int[][] matrix) {
   }
   return res;
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Trace Walkthrough** (input: `3x3 matrix`):
 
 | Step | Row | Col | Direction | Value | Action |
-|------|-----|-----|-----------|-------|--------|
+|:---:|:---:|:---:|:----------|:-----:|:-------|
 | 1    | 0   | 0   | Right     | 1     | Add to result |
 | 2    | 0   | 1   | Right     | 2     | Add to result |
 | 3    | 0   | 2   | Right     | 3     | Add, contract top bound |
@@ -260,7 +273,8 @@ public void SetZeroes(int[][] matrix) {
     for (int i = 0; i < m; i++) matrix[i][0] = 0;
   }
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **4. Diagonal Matrix Traversal**
@@ -291,7 +305,8 @@ public int[] FindDiagonalOrder(int[][] mat) {
   }
   return res;
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **5. Matrix Reshape Validation**
@@ -316,7 +331,8 @@ public int[][] MatrixReshape(int[][] mat, int r, int c) {
   }
   return res;
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(R \times C)$
 
 * * *
 **6. Rotate Matrix 90° Counter-Clockwise**
@@ -348,7 +364,8 @@ public void RotateCounter(int[][] matrix) {
     }
   }
 }
-```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **7. Search in Row-Column Sorted Matrix**
@@ -370,7 +387,8 @@ public bool SearchMatrix(int[][] matrix, int target) {
   }
   return false;
 }
-```Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M + N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **8. Game of Life**
@@ -406,7 +424,8 @@ public void GameOfLife(int[][] board) {
     }
   }
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **9. Toeplitz Matrix Verification**
@@ -429,7 +448,8 @@ public bool IsToeplitzMatrix(int[][] matrix) {
   }
   return true;
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **10. Spiral Matrix Construction**
@@ -464,7 +484,8 @@ public int[][] GenerateMatrix(int n) {
   }
   return mat;
 }
-```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
+```
+Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(N^2)$
 
 * * *
 **11. Flood Fill**
@@ -491,7 +512,8 @@ private void Dfs(int[][] img, int r, int c, int oldC, int newC) {
   Dfs(img, r, c-1, oldC, newC);
   Dfs(img, r, c+1, oldC, newC);
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **12. Transpose Rectangular Matrix**
@@ -517,7 +539,8 @@ public int[][] Transpose(int[][] matrix) {
   }
   return ans;
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **13. Valid Sudoku**
@@ -546,12 +569,13 @@ public bool IsValidSudoku(char[][] board) {
   }
   return true;
 }
-```Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(1)$ (fixed 9×9) | Space: $\mathcal{O}(1)$
 
 **Trace Walkthrough** (input: `Sudoku with duplicate 5s in row 0`):
 
 | Step | Row | Col | Value | Encoded Strings | Action |
-|------|-----|-----|-------|-----------------|--------|
+|:---:|:---:|:---:|:-----:|:----------------|:-------|
 | 1    | 0   | 0   | 5     | "5 in row 0", "5 in col 0", "5 in block 0-0" | Add to HashSet (Success) |
 | 2    | 0   | 1   | 3     | "3 in row 0", "3 in col 1", "3 in block 0-0" | Add to HashSet (Success) |
 | 3    | 0   | 4   | 5     | "5 in row 0", "5 in col 4", "5 in block 0-1" | Add to HashSet (Collision on "5 in row 0") -> Return false |
@@ -580,7 +604,8 @@ public int IslandPerimeter(int[][] grid) {
   }
   return perimeter;
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **15. Maximum K×K Submatrix Sum**
@@ -612,12 +637,13 @@ public int MaxSum(int[][] mat, int k) {
   }
   return max;
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Trace Walkthrough** (input: `mat=[[1,2,3],[4,5,6],[7,8,9]], K=2`):
 
 | Step | Row | Col | Value | Action |
-|------|-----|-----|-------|--------|
+|:---:|:---:|:---:|:-----:|:-------|
 | 1    | 2   | 2   | 12    | Query (2,2) with K=2: 12 - 0 - 0 + 0 = 12 |
 | 2    | 2   | 3   | 16    | Query (2,3) with K=2: 18 - 0 - 2 + 0 = 16 |
 | 3    | 3   | 2   | 24    | Query (3,2) with K=2: 27 - 3 - 0 + 0 = 24 |
@@ -652,7 +678,8 @@ private void Dfs(char[][] grid, int r, int c) {
   Dfs(grid, r+1, c); Dfs(grid, r-1, c);
   Dfs(grid, r, c+1); Dfs(grid, r, c-1);
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **17. Flip and Invert Image**
@@ -677,7 +704,8 @@ public int[][] FlipAndInvertImage(int[][] image) {
   }
   return image;
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **18. Shift 2D Grid**
@@ -706,7 +734,8 @@ public IList<IList<int>> ShiftGrid(int[][] grid, int k) {
   }
   return res;
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **19. Word Search in Grid**
@@ -737,7 +766,8 @@ private bool Dfs(char[][] b, int r, int c, string word, int idx) {
   b[r][c] = temp;
   return found;
 }
-```Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
+```
+Time: $\mathcal{O}(M \times N \times 4^L)$ | Space: $\mathcal{O}(L)$
 
 * * *
 **20. Determine If Matrix Can Be Obtained By Rotation**
@@ -776,7 +806,8 @@ private void Rotate(int[][] mat) {
     }
   }
 }
-```Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(N^2)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **21. Chess Board Cell Color**
@@ -794,7 +825,8 @@ public bool Solution(string cell1, string cell2) {
   int sum2 = (cell2[0] - 'A') + (cell2[1] - '1');
   return (sum1 % 2) == (sum2 % 2);
 }
-```Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(1)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **22. Minesweeper Click Reveal**
@@ -834,7 +866,8 @@ private void Dfs(char[][] b, int r, int c) {
     }
   }
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **23. Battleship Placement Validation**
@@ -860,7 +893,8 @@ public int CountBattleships(char[][] board) {
   }
   return count;
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 * * *
 **24. Box Blur**
@@ -891,7 +925,8 @@ public int[][] BoxBlur(int[][] image) {
   }
   return res;
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **25. Zigzag String Conversion**
@@ -921,7 +956,8 @@ public string Convert(string s, int numRows) {
   foreach (StringBuilder row in rows) ret.Append(row);
   return ret.ToString();
 }
-```Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
+```
+Time: $\mathcal{O}(N)$ | Space: $\mathcal{O}(N)$
 
 * * *
 **26. Simulate Robot Commands on Grid**
@@ -954,7 +990,8 @@ public int RobotSim(int[] commands, int[][] obstacles) {
   }
   return maxDist;
 }
-```Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
+```
+Time: $\mathcal{O}(C + O)$ | Space: $\mathcal{O}(O)$
 
 * * *
 **27. Matrix Water Flow (Pacific Atlantic)**
@@ -992,7 +1029,8 @@ private void Dfs(int[][] h, bool[][] v, int r, int c) {
       Dfs(h, v, nr, nc);
   }
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **28. Rotting Oranges**
@@ -1035,12 +1073,13 @@ public int OrangesRotting(int[][] grid) {
   }
   return fresh == 0 ? mins : -1;
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Trace Walkthrough** (input: `[[2,1,1],[1,1,0],[0,1,1]]`):
 
 | Step | Row | Col | Minute | Value | Action |
-|------|-----|-----|--------|-------|--------|
+|:---:|:---:|:---:|:------:|:-----:|:-------|
 | 1    | 0   | 0   | 0      | 2     | Initial rotten, enqueue |
 | 2    | 0   | 1   | 1      | 1->2  | Rot right neighbor, enqueue |
 | 3    | 1   | 0   | 1      | 1->2  | Rot bottom neighbor, enqueue |
@@ -1077,7 +1116,8 @@ private void Dfs(char[][] b, int r, int c) {
   b[r][c] = '#';
   Dfs(b, r+1, c); Dfs(b, r-1, c); Dfs(b, r, c+1); Dfs(b, r, c-1);
 }
-```Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 * * *
 **30. Path with Minimum Effort**
@@ -1126,7 +1166,8 @@ private bool CanReach(int[][] h, int limit) {
   }
   return false;
 }
-```Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M \times N)$
+```
+Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M \times N)$
 
 ## Practice Problem Bank
 

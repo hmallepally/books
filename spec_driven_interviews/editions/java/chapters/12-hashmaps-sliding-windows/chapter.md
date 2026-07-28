@@ -10,7 +10,7 @@ A technique where a window expands to the right to include elements and contract
 **Fixed-Size Sliding Window vs Dynamic Sliding Window**
 
 | Feature | Fixed-Size Window | Dynamic Sliding Window |
-|---|---|---|
+|:-----------------|:--------------------------------------------|:--------------------------------------------|
 | **Window Size** | Constant (e.g., length K). | Variable (expands and contracts). |
 | **Movement** | Move both left and right pointers together. | Move right continuously, move left only to fix invariants. |
 | **Use Case** | Anagrams in a fixed window, max sum of K elements. | Longest substring with K distinct chars, minimum subarray sum. |

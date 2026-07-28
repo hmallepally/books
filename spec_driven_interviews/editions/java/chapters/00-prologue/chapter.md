@@ -134,7 +134,7 @@ This manual is designed for a dual audience. For individual engineers preparing 
 For mid-to-senior engineers targeting algorithmic assessments. Follow this intensive schedule to rebuild coding muscle memory.
 
 | Day | Focus Area | Chapters | Practice Target | Time |
-|---|---|---|---|---|
+|:---:|:------------------------|:----------------------|:-------------------------------------------------------|:-----:|
 | 1 | Foundations | Prologue, Ch 1-2 | Read Invariant-First strategy & Decomposition | 3-4 hrs |
 | 2 | Core Algorithms | Ch 8-9 | Memorize Big-O table, implement 5 core algorithms | 3-4 hrs |
 | 3 | Easy-Tier Patterns | Ch 10 | Solve 15 implementation problems under 8-min timer | 4-5 hrs |
@@ -155,7 +155,7 @@ For mid-to-senior engineers targeting algorithmic assessments. Follow this inten
 For lead and staff engineers focused on system design and architecture.
 
 | Day | Focus Area | Chapters | Practice Target | Time |
-|---|---|---|---|---|
+|:---:|:------------------------|:----------------------|:-------------------------------------------------------|:-----:|
 | 1 | Foundations & Case Studies | Prologue, Ch 1-3 | Internalize case studies and design boundaries | 3-4 hrs |
 | 2 | OOP & SOLID | Ch 4-5 | Domain boundaries and strict SOLID inversion | 3-4 hrs |
 | 3 | Functional Streams | Ch 6 | Imperative-vs-stream optimizations | 2-3 hrs |
@@ -180,7 +180,7 @@ For lead and staff engineers focused on system design and architecture.
 You lead teams but haven't personally coded in assessments recently. Your edge is architectural judgment and leadership — this plan leverages that while rebuilding algorithmic fluency.
 
 | Day | Focus | Chapters | Time |
-|-----|-------|----------|------|
+|:---:|:-------------------------------------------------------|:---------|:----:|
 | 1 | Invariant-First Mindset + Decomposition Framework | Ch 1-2 | 2h |
 | 2 | Case Study Architectures (AuraPay, ZenithTrade) | Ch 3 | 1.5h |
 | 3 | SOLID Trade-offs + Design Patterns (Strategic View) | Ch 5, 7 | 2h |

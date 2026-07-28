@@ -10,7 +10,7 @@ A technique where a window expands to the right to include elements and contract
 **Fixed-Size Sliding Window vs Dynamic Sliding Window**
 
 | Feature | Fixed-Size Window | Dynamic Sliding Window |
-|---|---|---|
+|:-----------------|:--------------------------------------------|:--------------------------------------------|
 | **Window Size** | Constant (e.g., length K). | Variable (expands and contracts). |
 | **Movement** | Move both left and right pointers together. | Move right continuously, move left only to fix invariants. |
 | **Use Case** | Anagrams in a fixed window, max sum of K elements. | Longest substring with K distinct chars, minimum subarray sum. |
@@ -90,6 +90,7 @@ for (int right = 0; right < arr.Length; right++) {
     maxLen = Math.Max(maxLen, right - left + 1);
 }
 ```
+
 ### Template B: Fixed-Size Sliding Window
 ```csharp
 int k = 3, sum = 0, max = 0;
@@ -101,6 +102,7 @@ for (int i = 0; i < arr.Length; i++) {
     }
 }
 ```
+
 ### Template C: Prefix Sum + HashMap Counter
 ```csharp
 Dictionary<int, int> map = new Dictionary<int, int>();
@@ -114,6 +116,7 @@ foreach (int num in nums) {
     map[sum] = map.GetValueOrDefault(sum, 0) + 1;
 }
 ```
+
 ### Template D: HashMap Frequency Grouping
 ```csharp
 Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
@@ -125,6 +128,7 @@ foreach (string s in strs) {
     map[key].Add(s);
 }
 ```
+
 * * *
 
 ## Solved Exemplar Problems
@@ -153,6 +157,7 @@ public int LengthOfLongestSubstring(string s) {
 }
 // Time Complexity: O(N) | Space Complexity: O(min(N, M))
 ```
+
 * * *
 
 **2. Subarray Sum Equals K**
@@ -178,6 +183,7 @@ public int SubarraySum(int[] nums, int k) {
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **3. Group Anagrams**
@@ -202,6 +208,7 @@ public IList<IList<string>> GroupAnagrams(string[] strs) {
 }
 // Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
+
 * * *
 
 **4. Find All Anagram Start Indices**
@@ -227,6 +234,7 @@ public IList<int> FindAnagrams(string s, string p) {
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **5. Longest Substring with At Most K Distinct Characters**
@@ -255,6 +263,7 @@ public int LengthOfLongestSubstringKDistinct(string s, int k) {
 }
 // Time Complexity: O(N) | Space Complexity: O(K)
 ```
+
 * * *
 
 **6. Minimum Window Substring (Hard)**
@@ -285,6 +294,7 @@ public string MinWindow(string s, string t) {
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **7. Group Shifted Strings**
@@ -312,6 +322,7 @@ public IList<IList<string>> GroupStrings(string[] strings) {
 }
 // Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
+
 * * *
 
 **8. Contiguous Array Equal 0s and 1s**
@@ -339,6 +350,7 @@ public int FindMaxLength(int[] nums) {
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **9. Subarray Product Less Than K**
@@ -362,6 +374,7 @@ public int NumSubarrayProductLessThanK(int[] nums, int k) {
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **10. Permutation in String**
@@ -386,6 +399,7 @@ public bool CheckInclusion(string s1, string s2) {
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **11. Maximum Erasure Value**
@@ -413,6 +427,7 @@ public int MaximumUniqueSubarray(int[] nums) {
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **12. Longest Repeating Character Replacement**
@@ -438,6 +453,7 @@ public int CharacterReplacement(string s, int k) {
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **13. Fruit Into Baskets**
@@ -465,6 +481,7 @@ public int TotalFruit(int[] fruits) {
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **14. Continuous Subarray Sum Multiple of K**
@@ -493,6 +510,7 @@ public bool CheckSubarraySum(int[] nums, int k) {
 }
 // Time Complexity: O(N) | Space Complexity: O(min(N, K))
 ```
+
 * * *
 
 **15. Max Consecutive Ones III**
@@ -516,6 +534,7 @@ public int LongestOnes(int[] nums, int k) {
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **16. Find All Duplicates in Array**
@@ -538,6 +557,7 @@ public IList<int> FindDuplicates(int[] nums) {
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **17. Task Scheduler CPU Units**
@@ -564,6 +584,7 @@ public int LeastInterval(char[] tasks, int n) {
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **18. Insert & Merge Overlapping Intervals**
@@ -590,6 +611,7 @@ public int[][] Insert(int[][] intervals, int[] newInterval) {
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **19. Top K Frequent Elements**
@@ -615,6 +637,7 @@ public int[] TopKFrequent(int[] nums, int k) {
 }
 // Time Complexity: O(N log K) | Space Complexity: O(N)
 ```
+
 * * *
 
 **20. First Missing Positive Integer**
@@ -645,6 +668,7 @@ public int FirstMissingPositive(int[] nums) {
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **21. Minimum Size Subarray Sum**
@@ -669,6 +693,7 @@ public int MinSubArrayLen(int target, int[] nums) {
 }
 // Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **22. Substring with Concatenation of All Words**
@@ -704,6 +729,7 @@ public IList<int> FindSubstring(string s, string[] words) {
 }
 // Time Complexity: O(N * M * L) | Space Complexity: O(M)
 ```
+
 * * *
 
 **23. Contains Duplicate II**
@@ -725,6 +751,7 @@ public bool ContainsNearbyDuplicate(int[] nums, int k) {
 }
 // Time Complexity: O(N) | Space Complexity: O(K)
 ```
+
 * * *
 
 **24. Count Number of Nice Subarrays**
@@ -749,6 +776,7 @@ public int NumberOfSubarrays(int[] nums, int k) {
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **25. Frequency of Most Frequent Element**
@@ -774,6 +802,7 @@ public int MaxFrequency(int[] nums, int k) {
 }
 // Time Complexity: O(N log N) | Space Complexity: O(1)
 ```
+
 * * *
 
 **26. Subarrays with K Different Integers**
@@ -802,6 +831,7 @@ private int AtMostK(int[] nums, int k) {
 }
 // Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 * * *
 
 **27. Longest Palindromic Substring**
@@ -832,6 +862,7 @@ private int Expand(string s, int L, int R) {
 }
 // Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
+
 * * *
 
 **28. 3Sum**
@@ -865,6 +896,7 @@ public IList<IList<int>> ThreeSum(int[] nums) {
 }
 // Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
+
 * * *
 
 **29. 4Sum**
@@ -901,6 +933,7 @@ public IList<IList<int>> FourSum(int[] nums, int target) {
 }
 // Time Complexity: O(N^3) | Space Complexity: O(1)
 ```
+
 * * *
 
 **30. Number of Distinct Islands**
@@ -937,6 +970,7 @@ private void Dfs(int[][] grid, int r, int c, string dir, StringBuilder sb) {
 }
 // Time Complexity: O(R * C) | Space Complexity: O(R * C)
 ```
+
 * * *
 
 ## Practice Problem Bank
