@@ -1646,7 +1646,7 @@ When you enter an interview, your ability to automate a login page proves you ca
 
 This chapter dives into three complex domains: Healthcare, Finance, and E-commerce. For each, we will explore the critical testing challenges, compliance requirements, and common interview scenarios, equipping you for the interviews of TODAY and the Quality Partner role of TOMORROW. We will ground these discussions in the MedPortal, TradeForge, and CartFlow environments introduced earlier, providing concrete, real-world context to abstract concepts.
 
-![Domain Testing Focus Areas](chapters/06-domain-specific-testing/visuals/domain_testing.png){width=85%}
+![Domain Testing Focus Areas](chapters/06-domain-specific-testing/visuals/domain_testing.jpg){width=85%}
 
 ## Healthcare Testing: The MedPortal Environment
 
@@ -3331,7 +3331,7 @@ To ace this interview---and to step into the role of a Quality Partner of tomorr
 
 This chapter is your comprehensive guide to mobile testing. We will explore the technical depths of Appium architecture, unravel the complexities of device fragmentation, and master mobile-specific non-functional testing. Throughout this chapter, we will anchor our practical examples in the **CartFlow** environment---the high-throughput retail checkout engine introduced in Chapter 2---examining how mobile context transforms an e-commerce checkout flow into a minefield of unique risks.
 
-![Mobile Testing Approaches](chapters/10-mobile-testing/visuals/mobile_testing.png){width=85%}
+![Mobile Testing Approaches](chapters/10-mobile-testing/visuals/mobile_testing.jpg){width=85%}
 
 ## The CartFlow Mobile Experience: Contextualizing Risk
 
@@ -6249,20 +6249,35 @@ Validating APIs goes far beyond checking for a 200 OK status. Robust API tests v
 Postman scripts execute in a Node.js-like sandbox. Assertions are written in the `Tests` tab.
 
 *   **Status Code Validation**:
-    *   `pm.test("Status is 200", () => { pm.response.to.have.status(200); });`
-    *   `pm.test("Status is successful", () => { pm.response.to.be.success; });`
+    ```javascript
+    pm.test("Status is 200", () => { pm.response.to.have.status(200); });
+    pm.test("Status is successful", () => { pm.response.to.be.success; });
+    ```
 
 *   **Response Time Validation**:
-    *   `pm.test("Response time < 500ms", () => { pm.expect(pm.response.responseTime).to.be.below(500); });`
+    ```javascript
+    pm.test("Response time < 500ms", () => { 
+      pm.expect(pm.response.responseTime).to.be.below(500); 
+    });
+    ```
 
 *   **Header Validation**:
-    *   `pm.test("Content-Type is JSON", () => { pm.response.to.have.header("Content-Type", "application/json"); });`
+    ```javascript
+    pm.test("Content-Type is JSON", () => { 
+      pm.response.to.have.header("Content-Type", "application/json"); 
+    });
+    ```
 
 *   **JSON Body / Data Validation**:
-    *   First, parse the response: `const jsonData = pm.response.json();`
-    *   Assert specific fields: `pm.test("Check user ID", () => { pm.expect(jsonData.user.id).to.eql(12345); });`
-    *   Assert data types: `pm.test("Is array", () => { pm.expect(jsonData.items).to.be.an('array'); });`
-    *   Assert presence of keys: `pm.test("Has token", () => { pm.expect(jsonData).to.have.property('auth_token'); });`
+    ```javascript
+    // First, parse the response:
+    const jsonData = pm.response.json();
+
+    // Assert specific fields, data types, and properties:
+    pm.test("Check user ID", () => { pm.expect(jsonData.user.id).to.eql(12345); });
+    pm.test("Is array", () => { pm.expect(jsonData.items).to.be.an('array'); });
+    pm.test("Has token", () => { pm.expect(jsonData).to.have.property('auth_token'); });
+    ```
 
 *   **JSON Schema Validation**: (Using the built-in tv4 or Ajv libraries)
     ```javascript
@@ -6292,19 +6307,27 @@ REST-assured utilizes a fluid, BDD-style Given/When/Then syntax. It heavily reli
     ```
 
 *   **Status and Time Validation**:
-    *   `.statusCode(200)`
-    *   `.time(Matchers.lessThan(500L))`
+    ```java
+    .statusCode(200)
+    .time(Matchers.lessThan(500L))
+    ```
 
 *   **Header Validation**:
-    *   `.header("Content-Type", "application/json")`
+    ```java
+    .header("Content-Type", "application/json")
+    ```
 
 *   **JSON Body / Data Validation**: (Using JsonPath)
-    *   `.body("user.id", equalTo(12345))`
-    *   `.body("items.size()", greaterThan(0))`
-    *   `.body("roles", hasItems("admin", "user"))`
+    ```java
+    .body("user.id", equalTo(12345))
+    .body("items.size()", greaterThan(0))
+    .body("roles", hasItems("admin", "user"))
+    ```
 
 *   **JSON Schema Validation**: (Requires `json-schema-validator` dependency)
-    *   `.body(matchesJsonSchemaInClasspath("user-schema.json"))`
+    ```java
+    .body(matchesJsonSchemaInClasspath("user-schema.json"))
+    ```
 
 <b>JMeter and k6 Quick Reference</b>
 

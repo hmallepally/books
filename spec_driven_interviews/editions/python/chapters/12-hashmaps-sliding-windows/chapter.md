@@ -1,5 +1,7 @@
 # Medium-Hard-tier Mastery — Dynamic Sliding Windows, HashMap Frequency Signatures, and Prefix Sum Analytics
 
+> **The Window Contract:** Every sliding window problem has a hidden invariant — a *contract* that defines when the window is valid. In Chapter 10, the window was implicit (two pointers). Here, the window becomes explicit: a `left..right` range with a HashMap frequency signature that must satisfy a constraint (e.g., "at most $k$ distinct characters"). Define this contract before coding, then expand `right` to explore and contract `left` to restore validity. At production scale, this same pattern powers rate limiters (Chapter 17, Solution 3) and streaming aggregation pipelines.
+
 ## Essential Terminology & Vocabulary
 
 **Dynamic Sliding Window**
@@ -55,7 +57,7 @@ Why it matters: It is the optimal strategy to find the first missing positive in
 
 ### Expand-Around-Center
 This technique treats each index (and the space between indices) as a potential palindrome center. It then expands outwards as long as the mirrored characters match.
-Why it matters: It is a simple and reliable O(N²) approach for the longest palindromic substring problem.
+Why it matters: It is a O(N²) approach for the longest palindromic substring problem.
 
 ### Frequency Bucket Sort
 This sorting alternative groups elements by their frequency into buckets ranging from `0` to `N`. You then scan these buckets in reverse order to collect the most frequent items.
@@ -63,7 +65,7 @@ Why it matters: It solves Top-K frequent elements problems in O(N) time without 
 
 ### Deferred Deletion / Lazy Invalidation
 Instead of immediately removing items from a data structure, this technique marks entries as invalid. The actual cleanup happens later during traversal or retrieval.
-Why it matters: It avoids ConcurrentModificationExceptions and heavily simplifies priority queue update patterns.
+Why it matters: It avoids ConcurrentModificationExceptions and eliminates priority queue update overhead.
 
 ### Contribution Counting
 Instead of iterating through all possible subarrays, this mathematical approach computes exactly how many subarrays a specific element contributes to. It aggregates the total across all individual element contributions.
@@ -72,8 +74,6 @@ Why it matters: It dramatically transforms O(N²) brute force summation logic in
 ### Greedy Interval Scheduling
 This algorithm sorts given intervals by their end times first. It then greedily picks the next non-overlapping interval to maximize total count.
 Why it matters: It is a provably optimal approach for finding the maximum number of non-overlapping intervals.
-
-* * *
 
 ## Reusable Code Templates
 
@@ -123,7 +123,6 @@ for s in strs:
     hash_map[key].append(s)
 ```
 
-* * *
 
 ## Solved Exemplar Problems
 
@@ -150,6 +149,7 @@ def length_of_longest_substring(self, s: str) -> int:
 # Time Complexity: O(N) | Space Complexity: O(min(N, M))
 ```
 
+
 * * *
 
 **2. Subarray Sum Equals K**
@@ -175,12 +175,14 @@ def subarray_sum(self, nums: list[int], k: int) -> int:
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
 
+
 * * *
 
 **3. Group Anagrams**
 **Specification:** Group strings that are anagrams of each other.
 
-**Example:** `["eat","tea","tan","ate","nat","bat"]` -> Output: `[["bat"],["nat","tan"],["ate","eat","tea"]]`
+**Example:** `["eat", "tea", "tan", "ate", "nat", "bat"]`  
+$\to$ Output: `[["bat"], ["nat", "tan"], ["ate", "eat", "tea"]]`
 
 **Pattern:** HashMap Frequency Signature
 
@@ -197,6 +199,7 @@ def group_anagrams(self, strs: list[str]) -> list[list[str]]:
     return list(hash_map.values())
 # Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
+
 
 * * *
 
@@ -221,6 +224,7 @@ def find_anagrams(self, s: str, p: str) -> list[int]:
     return res
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 
 * * *
 
@@ -250,17 +254,21 @@ def length_of_longest_substring_k_distinct(self, s: str, k: int) -> int:
 # Time Complexity: O(N) | Space Complexity: O(K)
 ```
 
+
 * * *
 
 **6. Minimum Window Substring (Hard)**
-*Note: This problem is universally classified as Hard on major platforms. While it uses the sliding window pattern from this chapter, its implementation complexity—managing two frequency maps, a `formed` counter, and a contraction loop—places it at the highest difficulty tier.*
+
+> [!IMPORTANT]
+> **Assessment Strategy Note:** Minimum Window Substring requires managing two frequency maps and a `formed` character counter. In a 70-minute assessment, if this appears as Question 3 or 4, establish your two-pointer expanding/contracting invariant in comments first before coding to secure partial credit.
+
 **Specification:** Given strings s and t, find the minimum substring of s containing all characters in t.
 
 **Example:** `s = "ADOBECODEBANC", t = "ABC"` -> Output: `"BANC"`
 
 **Pattern:** Dynamic Sliding Window
 
-**Explanation:** Track required characters in a map. Expand right until all required characters are in the window, then contract left to minimize the window.
+**Explanation:** Maintain a frequency map targetMap for string t and a dynamic window map windowMap. Track formed—the number of unique characters in t whose target frequency is met in the current window. Expand right until formed == targetMap.size(). Then contract left step-by-step to record the minimal valid window length, updating windowMap and decrementing formed when a required character count drops below target.
 ```python
 def min_window(self, s: str, t: str) -> str:
     char_map = [0] * 128
@@ -284,6 +292,7 @@ def min_window(self, s: str, t: str) -> str:
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
 
+
 * * *
 
 **7. Group Shifted Strings**
@@ -293,7 +302,7 @@ def min_window(self, s: str, t: str) -> str:
 
 **Pattern:** Difference-Based Signature
 
-**Explanation:** Calculate the relative distance between adjacent characters. Use this sequence of differences as the HashMap key.
+**Explanation:** Compute the normalized relative distance between adjacent characters using (s.charAt(i) - s.charAt(i-1) + 26) % 26. The resulting sequence of difference offsets forms a canonical HashMap key that groups all uniformly shifted strings together.
 ```python
 def group_strings(self, strings: list[str]) -> list[list[str]]:
     from collections import defaultdict
@@ -307,6 +316,7 @@ def group_strings(self, strings: list[str]) -> list[list[str]]:
     return list(hash_map.values())
 # Time Complexity: O(N * L) | Space Complexity: O(N * L)
 ```
+
 
 * * *
 
@@ -332,6 +342,7 @@ def find_max_length(self, nums: list[int]) -> int:
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
 
+
 * * *
 
 **9. Subarray Product Less Than K**
@@ -356,6 +367,7 @@ def num_subarray_product_less_than_k(self, nums: list[int], k: int) -> int:
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
 
+
 * * *
 
 **10. Permutation in String**
@@ -378,6 +390,7 @@ def check_inclusion(self, s1: str, s2: str) -> bool:
     return False
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 
 * * *
 
@@ -405,6 +418,7 @@ def maximum_unique_subarray(self, nums: list[int]) -> int:
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
 
+
 * * *
 
 **12. Longest Repeating Character Replacement**
@@ -430,6 +444,7 @@ def character_replacement(self, s: str, k: int) -> int:
     return max_len
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 
 * * *
 
@@ -458,6 +473,7 @@ def total_fruit(self, fruits: list[int]) -> int:
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
 
+
 * * *
 
 **14. Continuous Subarray Sum Multiple of K**
@@ -483,6 +499,7 @@ def check_subarray_sum(self, nums: list[int], k: int) -> bool:
 # Time Complexity: O(N) | Space Complexity: O(min(N, K))
 ```
 
+
 * * *
 
 **15. Max Consecutive Ones III**
@@ -505,6 +522,7 @@ def longest_ones(self, nums: list[int], k: int) -> int:
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
 
+
 * * *
 
 **16. Find All Duplicates in Array**
@@ -525,6 +543,7 @@ def find_duplicates(self, nums: list[int]) -> list[int]:
     return res
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 
 * * *
 
@@ -556,6 +575,7 @@ def least_interval(self, tasks: list[str], n: int) -> int:
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
 
+
 * * *
 
 **18. Insert & Merge Overlapping Intervals**
@@ -585,6 +605,7 @@ def insert(self, intervals: list[list[int]], new_interval: list[int]) -> list[li
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
 
+
 * * *
 
 **19. Top K Frequent Elements**
@@ -604,6 +625,7 @@ def top_k_frequent(self, nums: list[int], k: int) -> list[int]:
     return heapq.nlargest(k, count.keys(), key=count.get)
 # Time Complexity: O(N log K) | Space Complexity: O(N)
 ```
+
 
 * * *
 
@@ -632,6 +654,7 @@ def first_missing_positive(self, nums: list[int]) -> int:
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
 
+
 * * *
 
 **21. Minimum Size Subarray Sum**
@@ -655,6 +678,7 @@ def min_sub_array_len(self, target: int, nums: list[int]) -> int:
     return 0 if min_val == float('inf') else min_val
 # Time Complexity: O(N) | Space Complexity: O(1)
 ```
+
 
 * * *
 
@@ -692,6 +716,7 @@ def find_substring(self, s: str, words: list[str]) -> list[int]:
 # Time Complexity: O(N * M * L) | Space Complexity: O(M)
 ```
 
+
 * * *
 
 **23. Contains Duplicate II**
@@ -712,6 +737,7 @@ def contains_nearby_duplicate(self, nums: list[int], k: int) -> bool:
     return False
 # Time Complexity: O(N) | Space Complexity: O(K)
 ```
+
 
 * * *
 
@@ -737,6 +763,7 @@ def number_of_subarrays(self, nums: list[int], k: int) -> int:
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
 
+
 * * *
 
 **25. Frequency of Most Frequent Element**
@@ -760,6 +787,7 @@ def max_frequency(self, nums: list[int], k: int) -> int:
 # Time Complexity: O(N log N) | Space Complexity: O(1)
 ```
 
+
 * * *
 
 **26. Subarrays with K Different Integers**
@@ -769,7 +797,7 @@ def max_frequency(self, nums: list[int], k: int) -> int:
 
 **Pattern:** At-Most-K Trick
 
-**Explanation:** Exactly(K) = AtMost(K) - AtMost(K-1).
+**Explanation:** Counting subarrays with exactly K distinct elements directly using dynamic sliding window is difficult because contracting left can omit valid starting bounds non-monotonically. We compute exact K using cumulative bounds: Exactly(K) = AtMost(K) - AtMost(K-1), where atMost(X) uses a standard dynamic window.
 ```python
 def subarrays_with_k_distinct(self, nums: list[int], k: int) -> int:
     return self._at_most_k(nums, k) - self._at_most_k(nums, k - 1)
@@ -788,6 +816,7 @@ def _at_most_k(self, nums: list[int], k: int) -> int:
     return res
 # Time Complexity: O(N) | Space Complexity: O(N)
 ```
+
 
 * * *
 
@@ -818,6 +847,7 @@ def _expand(self, s: str, l: int, r: int) -> int:
 # Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
 
+
 * * *
 
 **28. 3Sum**
@@ -847,6 +877,7 @@ def three_sum(self, nums: list[int]) -> list[list[int]]:
     return res
 # Time Complexity: O(N^2) | Space Complexity: O(1)
 ```
+
 
 * * *
 
@@ -880,6 +911,7 @@ def four_sum(self, nums: list[int], target: int) -> list[list[int]]:
 # Time Complexity: O(N^3) | Space Complexity: O(1)
 ```
 
+
 * * *
 
 **30. Number of Distinct Islands**
@@ -889,7 +921,7 @@ def four_sum(self, nums: list[int], target: int) -> list[list[int]]:
 
 **Pattern:** DFS + Path Signature Hashing
 
-**Explanation:** Record the direction moved (U, D, L, R) during DFS traversal. Store path strings in a HashSet to deduplicate identical shapes.
+**Explanation:** Record the direction moved ('U', 'D', 'L', 'R') during DFS traversal. Crucially, append a backtrack marker (e.g., 'B') upon returning from each recursive call to prevent signature collisions between distinct island geometries. Store the resulting path strings in a HashSet.
 ```python
 def num_distinct_islands(self, grid: list[list[int]]) -> int:
     hash_set = set()
@@ -913,7 +945,6 @@ def _dfs(self, grid: list[list[int]], r: int, c: int, dir_str: str, path: list[s
 # Time Complexity: O(R * C) | Space Complexity: O(R * C)
 ```
 
-* * *
 
 ## Practice Problem Bank
 
@@ -1151,14 +1182,14 @@ def _dfs(self, grid: list[list[int]], r: int, c: int, dir_str: str, path: list[s
 
 **Strategic Hint:** Fixed size window with HashMap counting frequencies.
 
-**27. Shortest Subarray with Sum at Least K**
-**Specification:** Like minimum size subarray sum but array can have negatives!
+**27. Subarray Sums Divisible by K**
+**Specification:** Find the number of non-empty subarrays whose sum is divisible by $K$.
 
-**Example:** `[2,-1,2], k=3` -> Output: `3`
+**Example:** `nums = [4,5,0,-2,-3,1], k = 5` -> Output: `7`
 
-**Constraints:** Length $\le 10^5$.
+**Constraints:** $1 \le N \le 3 \times 10^4, 2 \le K \le 10^4$.
 
-**Strategic Hint:** Prefix sum + Monotonic Deque to maintain increasing prefix sums.
+**Strategic Hint:** Prefix Sum + Modulo Arithmetic. Two prefix sums with the same remainder modulo $K$ enclose a subarray divisible by $K$. Store remainder frequencies in a HashMap/array `count[(prefix_sum % K + K) % K]++`.
 
 **28. Make Sum Divisible by P**
 **Specification:** Remove smallest subarray so remaining array sum is divisible by P.

@@ -18,11 +18,12 @@ For professionals who have spent a decade or two in technical leadership, enterp
 
 You read an algorithmic problem, and conceptually, you understand what it asks. You know it requires a sliding window or a depth-first traversal. But when you place your hands on the keyboard to implement it, the syntax evaporates, the boundary conditions tangle, and the code fails to compile. 
 
-This happens because **algorithmic coding is like mathematics**. You cannot learn calculus or linear algebra by passively reading a textbook or watching someone else solve problems on a whiteboard. Reading a solution creates a deceptive illusion of competence—you nod along, thinking, *"Yes, that makes sense."* But when you pick up the pencil (or open the IDE) to solve a problem from scratch, you realize you have not internalised the mechanics.
+This happens because **algorithmic coding is like mathematics**. You cannot learn calculus or linear algebra by passively reading a textbook or watching someone else solve problems on a whiteboard. Reading a solution creates a deceptive illusion of competence—you nod along, thinking, *"Yes, that makes sense."* But when you pick up the pencil (or open the IDE) to solve a problem from scratch, you realize you have not internalized the mechanics.
 
 Furthermore, attempting to memorize hundreds of specific algorithm solutions is a dangerous trap. Under the stress of a high-stakes assessment, memorized snippets are the first thing to dissolve in your memory. The human brain cannot reliably retrieve hundreds of hyper-specific code blocks under time pressure.
 
 The only effective, sustainable path back to coding mastery is simple:
+
 1. **Understand the core mathematical formulas and invariant patterns** (e.g., the 3-step Sliding Window, the Monotonic Stack sentinel waiting room, the BFS level-by-level queue snapshot).
 2. **Analyze the problem structure** to map the requirements to the correct formula rather than guessing.
 3. **Practice by doing.** Write out the code independently for two or three exemplar problems of each pattern until the formula becomes pure muscle memory.
@@ -41,9 +42,9 @@ This manual is a rejection of that chaos. It is a guide to cracking coding asses
 
 ## The Spec-Driven Paradigm
 
-The spec-driven paradigm shifts the focus of the technical interview from coding to design. Instead of jumping directly into implementation, a spec-driven engineer establishes **design invariants** before writing a single line of code.
+The spec-driven paradigm shifts the focus of technical problem-solving from raw coding to rigorous specification. Instead of jumping directly into loops and condition branches, a spec-driven engineer establishes clear structural boundaries and mathematical contracts before writing a single line of implementation.
 
-An invariant is a condition that must always remain true during the execution of a program. By defining these boundaries first, you build an "Invariant Wall" that constrains your implementation, making errors mathematically impossible. When you write code, you are simply translating these formal boundaries into clean, structured prose in your programming language of choice.
+By locking down the problem's mathematical invariants upfront—establishing what must remain universally true throughout execution—you eliminate entire categories of off-by-one errors and regressions. The code you write is not a search for an answer; it is the natural translation of an airtight specification into production-grade logic.
 
 ![The Spec-Driven Path vs The Syntax Trap](visuals/spec_vs_syntax.png){width=70%}
 
@@ -68,7 +69,7 @@ This manual is organized into four comprehensive parts spanning twenty-five chap
 ### Part III: Code Performance & Algorithmic Mastery
 
 - **Chapter 8 — Designing for Performance and Concurrency:** Virtual threads, platform threads, optimistic vs. pessimistic locking, connection pool sizing, caching strategies, and cache invalidation race conditions.
-- **Chapter 9 — Core Algorithms & Assessment Tactical Blueprint:** The Assessment Time Allocation Blueprint, pattern recognition decision tree, diagnostic triggers, and canonical code skeletons. Includes an Assessment Format Variants table covering monotonic difficulty, equal-weight peers, single deep problems, take-home projects, and live pair programming.
+- **Chapter 9 — Core Algorithms & Assessment Tactical Blueprint:** The Assessment Time Allocation Blueprint, pattern recognition decision tree, diagnostic triggers, and canonical code skeletons. Includes an Assessment Format Variants table covering monotonic difficulty, equal-weight peers, single deep problems, take-home projects, and live pair programming. *(Cross-reference: Use Chapter 9's Decision Tree to rapidly categorize problems during timed assessments).*
 - **Chapter 10 — Pattern Mastery: Implementation Speed, In-Place Transformations, and String Processing:** Read/Write pointer patterns, character frequency array hashing (`int[26]` / `int[128]`), in-place mutations, and fast string building.
 - **Chapter 11 — Pattern Mastery: 2D Matrix Traversal, Grid Simulations, and State Machines:** Matrix coordinate geometry, 90° clockwise rotation formulas, spiral traversals, 2D prefix sums, and flood fill simulation.
 - **Chapter 12 — Pattern Mastery: Data Structures, HashMaps, and Sliding Windows:** Complex simulation, HashMap state management, two-pointer sliding window, and frequency tracking.
@@ -79,14 +80,15 @@ This manual is organized into four comprehensive parts spanning twenty-five chap
 ### Part IV: System Design, Architecture & Enterprise Leadership
 
 - **Chapter 16 — System Architecture and Design Fundamentals:** DDD bounded contexts, CQRS, CAP theorem trade-offs, consistent hashing, API idempotency, and a full sharded order matching engine mock interview transcript.
-- **Chapter 17 — Enterprise Integration and Resiliency:** Transactional Outbox, Saga orchestration vs. choreography, event sourcing, Redis sliding window rate limiting, Circuit Breaker state machines, and OpenTelemetry distributed tracing.
-- **Chapter 18 — Database Design, Compliance, and Security:** B-Tree vs. LSM-Tree storage engines, PCI-DSS tokenization vaults, SOC2 cryptographic audit trails, GDPR Crypto-Shredding, and sharding strategies.
-- **Chapter 19 — Behavioral and Technical Leadership Interviews:** The Technical STAR Framework, video/Teams call checklists, and three full mock responses for senior leadership scenarios.
-- **Chapter 20 — Testing and CI/CD Strategies:** The testing pyramid (unit, integration via Testcontainers, contract via Pact), and automated CI/CD release policies.
-- **Chapter 21 — Distributed Event Streaming and Message Brokers:** Apache Kafka internals, partition-key sharding for in-order delivery, consumer group rebalancing, and Exactly-Once Semantics (EOS).
-- **Chapter 22 — AI/ML System Design and LLM Integration:** Vector databases (HNSW vs. IVF indexes), Retrieval-Augmented Generation (RAG) pipelines, semantic caching, and prompt injection security filters.
-- **Chapter 23 — Appendix and Quick-Reference Cheat Sheets:** Big-O complexity tables, edge-case checklists, system design latency numbers, and day-of-interview preparation guides.
-- **Chapter 24 — Works Cited and Academic References:** Primary scholarly and technical citations supporting all architectural principles and benchmarking claims.
+- **Chapter 17 — Mastering System Design Solutions & Architectural Blueprints:** 14 complete end-to-end production designs (Payments, Order Matching, Rate Limiter, Social Video, Rideshare, Search, Cloud Storage, Web Crawler, Metrics TSDB, Chat/Presence, CRDT Editor, Task Scheduler, Notification Engine, Hotel/Flight Booking) with 7-Part blueprints and staff-level verbalization scripts.
+- **Chapter 18 — Enterprise Integration and Resiliency:** Transactional Outbox, Saga orchestration vs. choreography, event sourcing, Full Jitter vs. Decorrelated Jitter algorithms, Circuit Breaker state machines, and OpenTelemetry distributed tracing.
+- **Chapter 19 — Database Design, Compliance, and Security:** Extended Transaction Isolation Matrix (Read Uncommitted through Serializable, MVCC, Snapshot Isolation, Write Skew), B-Tree vs. LSM-Tree storage engines, PCI-DSS tokenization vaults, SOC2 cryptographic audit trails, GDPR Crypto-Shredding, and sharding strategies.
+- **Chapter 20 — Behavioral and Technical Leadership Interviews:** The Technical STAR Framework, video/Teams call checklists, and three full mock responses for senior leadership scenarios.
+- **Chapter 21 — Testing and CI/CD Strategies:** The testing pyramid (unit, integration via Testcontainers, contract via Pact), connection pool sizing models, and automated canary deployments.
+- **Chapter 22 — Distributed Event Streaming and Message Brokers:** Apache Kafka internals (partitioning, consumer group rebalancing, EOS) and RabbitMQ AMQP architecture (Exchanges, Bindings, Queues, Smart vs. Dumb broker trade-offs).
+- **Chapter 23 — AI/ML System Design and LLM Integration:** Vector databases (HNSW vs. IVF indexes), Retrieval-Augmented Generation (RAG) pipelines, semantic caching, and prompt injection security filters.
+- **Chapter 24 — Appendix and Quick-Reference Cheat Sheets:** Big-O complexity tables, edge-case checklists, system design latency numbers, and day-of-interview preparation guides.
+- **Chapter 25 — Works Cited and Academic References:** Primary scholarly and technical citations supporting all architectural principles and benchmarking claims.
 
 
 ## How to Read This Book: Persona Profiles
@@ -100,7 +102,7 @@ To maximize the value of this manual, select the path that aligns with your care
   1. Read **Chapter 1 (Invariant-First Strategy)** and **Chapter 2 (Problem Decomposition)** to learn the foundational analysis discipline.
   2. Skip to **Part III (Chapters 8 through 15)**. Master the Assessment Tactical Blueprint in Chapter 9, the Pattern Mastery deep dives in Chapters 10–13, the Capstone synthesis in Chapter 14, and complete the 20 Mock Sets in Chapter 15.
   3. Study **Part II (Chapters 4 & 6)** to learn functional stream optimizations and rich data structures.
-  4. Review **Chapter 23 (Appendix)** for the Big-O cheat sheet and edge-case checklist before your assessment.
+  4. Review **Chapter 24 (Appendix)** for the Big-O cheat sheet and edge-case checklist before your assessment.
 
 ### Persona B: The Lead / Staff Engineer (Target: System Design & Craftsmanship)
 
@@ -108,7 +110,7 @@ To maximize the value of this manual, select the path that aligns with your care
 - **Recommended Reading Path:**
   1. Read **Part I (Chapters 1–3)** to align on the invariant-first strategy, problem decomposition, and case studies.
   2. Master **Part II (Chapters 4–7)** on rich aggregate boundaries, strict SOLID inversion, and enterprise design patterns.
-  3. Deep-dive into **Part IV (Chapters 16–18 & 20–22)**. Study the sharded order matching engine mock script, distributed Saga implementations, Kafka event streaming, and security compliance (PCI-DSS, SOC2, GDPR).
+  3. Deep-dive into **Part IV (Chapters 16–19 & 21–23)**. Study the 14 Master Solutions in Chapter 17, distributed Saga implementations in Chapter 18, database isolation in Chapter 19, Kafka/RabbitMQ in Chapter 22, and security compliance.
 
 ### Persona C: The Engineering Manager / Director (Target: Architectural Strategy & Leadership)
 
@@ -116,8 +118,8 @@ To maximize the value of this manual, select the path that aligns with your care
 - **Recommended Reading Path:**
   1. Read **Chapter 3 (Case Studies)** for enterprise system context.
   2. Study **Chapter 5 (SOLID boundaries)** to establish code quality metrics for your team.
-  3. Focus on **Part IV (Chapters 16–18)**. Master the CAP theorem tradeoffs, disaster recovery models, rate-limiting patterns, and GDPR Crypto-Shredding architectures.
-  4. Read **Chapter 19 (Behavioral & Technical Leadership)** to prepare for the behavioral round with Technical STAR frameworks and full mock responses.
+  3. Focus on **Part IV (Chapters 16–19)**. Master the CAP theorem tradeoffs, 14 System Design blueprints (Chapter 17), disaster recovery models, rate-limiting patterns, and GDPR Crypto-Shredding architectures.
+  4. Read **Chapter 20 (Behavioral & Technical Leadership)** to prepare for the behavioral round with Technical STAR frameworks and full mock responses.
 
 
 > ⭐ **STAR Moment: The Invariant Principle**
@@ -220,13 +222,13 @@ For candidates targeting roles requiring thorough mastery of both coding and sys
 
 - Day 15-16: Finish Hard-Tier patterns (Ch 13) + Capstone Decomposition (Ch 14) (Persona A)
 - Day 17-18: Mock assessments (Ch 15 Sets 1-10, two per day) (Persona A)
-- Day 19-20: System Architecture (Ch 16), Resiliency (Ch 17), Database Design (Ch 18) (Persona B, C)
+- Day 19-20: System Architecture (Ch 16), System Design Blueprints (Ch 17), Resiliency (Ch 18), Database Compliance (Ch 19) (Persona B, C)
 - Day 21: Review + identify weakest algorithm pattern
 
 **Week 4: Polish & Exam Readiness (Personas B, C Focus)**
 
-- Day 22-23: Behavioral Leadership (Ch 19) + Testing/CI-CD (Ch 20)
-- Day 24-25: Message Brokers (Ch 21), AI/ML (Ch 22) + final mock assessments (Ch 15 Sets 11-20)
+- Day 22-23: Behavioral Leadership (Ch 20) + Testing/CI-CD (Ch 21)
+- Day 24-25: Message Brokers (Ch 22), AI/ML Systems (Ch 23) + final mock assessments (Ch 15 Sets 11-20)
 - Day 26-27: Full review — re-solve all problems you got wrong
 - Day 28: Final full mock assessment under strict conditions + rest
 

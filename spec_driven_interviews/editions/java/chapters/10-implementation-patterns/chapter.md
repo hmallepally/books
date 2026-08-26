@@ -1,14 +1,12 @@
 # Easy-tier Mastery — Implementation Speed, In-Place Transformations, and String Processing
 
-The first question (Easy-tier) on the automated testing platforms General Coding Assessment (general coding assessment) is designed to evaluate fundamental implementation speed, boundary correctness, and memory hygiene. You have roughly **8 minutes** to solve Easy-tier. While categorized as "Easy," Easy-tier is where candidates most frequently drop valuable points — not because the problem is hard, but because they rush and introduce off-by-one errors, forget null checks, or use inefficient string concatenation. A perfect Easy-tier score is the foundation of a 750+ general coding assessment result.
+The first question (Easy-tier) on the automated testing platforms General Coding Assessment (GCA) is designed to evaluate fundamental implementation speed, boundary correctness, and memory hygiene. You have roughly **8 minutes** to solve Easy-tier. While categorized as "Easy," Easy-tier is where candidates most frequently drop valuable points — not because the problem is hard, but because they rush and introduce off-by-one errors, forget null checks, or use inefficient string concatenation. A perfect Easy-tier score is the foundation of a 750+ GCA result.
 
-This chapter teaches you the core vocabulary, the reusable pointer archetypes, 20 fully solved exemplar problems with detailed explanations, and 30 concrete practice problems with strategic hints.
+This chapter teaches you the core vocabulary, the reusable pointer archetypes, 32 fully solved exemplar problems with detailed explanations, and 30 concrete practice problems with strategic hints.
 
-* * *
+## Essential Implementation Tactics & Foundational Vocabulary (21 Foundational Tactics + 4 Advanced Forward References)
 
-## Essential Terminology & Vocabulary
-
-Before solving any Easy-tier problem, you must internalize these foundational concepts. Each one maps directly to a class of problems you will encounter on the exam.
+Before solving any Easy-tier problem, you must internalize these foundational implementation tactics. Each one maps directly to a class of problems you will encounter on the exam. For every problem, apply the *Invariant-First* methodology from Chapter 1: identify the loop invariant before writing any code, then verify your solution preserves that invariant at every iteration.
 
 ### In-Place Mutation
 An algorithm is **in-place** if it transforms the input using $\mathcal{O}(1)$ auxiliary space (excluding the input itself). In Java, arrays are mutable references — you can overwrite `arr[i]` directly. Strings, however, are **immutable objects** — every modification creates a new heap allocation.
@@ -60,6 +58,8 @@ The XOR operator (`^`) has two key properties: `a ^ a = 0` (same values cancel) 
 ### Prefix Sum / Running Total
 A technique where you compute cumulative sums to answer range queries in $\mathcal{O}(1)$. For pivot index problems: `leftSum == totalSum - leftSum - nums[i]` identifies the balance point without nested loops.
 
+![Prefix Sum — Precomputed Cumulative Array for O(1) Range Queries](visuals/prefix_sum_pattern.png){width=85%}
+
 ### Integer Overflow & Boundary Guarding
 This involves handling `Integer.MAX_VALUE` and `Integer.MIN_VALUE` constraints. It requires implementing safe comparisons before executing arithmetic operations to prevent exceeding limits.
 Why it matters: Reverse-integer and palindrome-number problems require overflow detection.
@@ -84,6 +84,8 @@ Why it matters: You systematically test these BEFORE writing the main loop to ca
 This approach involves pushing opening delimiters onto a stack during traversal. Upon encountering a closing delimiter, you pop from the stack and verify the match.
 Why it matters: This is the universal pattern for bracket, parentheses, and tag validation problems.
 
+![Stack-Based Matching — Push/Pop Bracket Validation](visuals/stack_based_matching.png){width=85%}
+
 ### Two-Pass Strategy
 This algorithm design splits processing into two distinct phases. The first pass collects necessary data like counts, maximums, or positions, and the second pass acts on that collected information.
 Why it matters: It avoids complex single-pass logic and significantly reduces bugs.
@@ -100,7 +102,31 @@ Why it matters: It avoids floating-point arithmetic entirely and handles circula
 This is the standard programming idiom for swapping two variables using a temporary holder. It uses the `temp = a; a = b; b = temp;` pattern.
 Why it matters: It serves as a fundamental building block for partitioning, reversing, and Dutch National Flag problems.
 
-* * *
+### Sliding Window (Fixed-Size)
+A window of fixed size $K$ that slides across an array or string, computing an aggregate (sum, max, frequency count) incrementally. At each step, the window adds one element on the right and removes one on the left, maintaining the aggregate in $O(1)$ per step.
+Why it matters: Fixed-size sliding windows solve problems like "maximum sum of any $K$ consecutive elements" and "average of all subarrays of size $K$" in $O(N)$. For *variable-size* (dynamic) sliding windows — where the window expands and contracts based on a constraint — see Chapter 12.
+
+### Fast/Slow Pointers (Cycle Detection)
+Two pointers advance at different speeds through a sequence — typically one moves one step and the other two steps per iteration. If a cycle exists, the fast pointer will eventually lap and meet the slow pointer.
+Why it matters: This is the Floyd's Tortoise and Hare algorithm. It detects cycles in linked lists in $O(N)$ time and $O(1)$ space, and solves problems like finding the duplicate number in a constrained array or determining the starting node of a cycle.
+
+
+
+### Cyclic Sort
+An in-place sorting technique for arrays containing elements in the range $[0, N]$ or $[1, N]$. Each element is swapped to its "correct" index (element $k$ belongs at index $k$ or $k-1$) until all elements are placed.
+Why it matters: This pattern directly solves "Find the Missing Number," "Find All Duplicates," and "First Missing Positive" in $O(N)$ time and $O(1)$ space — a common Easy-to-Medium tier technique.
+
+### Hash Map/Set Lookup
+Using a hash-based data structure to achieve $O(1)$ average-case lookup, insertion, and deletion. A HashMap stores key-value pairs; a HashSet stores unique keys only.
+Why it matters: This pattern transforms brute-force $O(N^2)$ nested-loop problems into $O(N)$ single-pass solutions. Classic applications include Two Sum (complement lookup), group anagrams (sorted-key grouping), and detecting duplicates within a sliding window.
+
+### Advanced Algorithmic Paradigms (Chapters 12–13)
+
+The following patterns are essential for Medium-Hard and Hard tier problems and are covered in full depth with solved examples in their dedicated chapters:
+
+- **Binary Search & Variants** (Chapter 13) — Halving the search space in $O(\log N)$. Includes rotated arrays, boundary search, and answer-space binary search.
+- **Bitmasking** (Chapter 13) — Encoding boolean state with bitwise operators (`AND`, `OR`, `XOR`, `SHIFT`). Used for subset enumeration and Hamming weight.
+- **Kadane's Algorithm** (Chapter 13) — The canonical $O(N)$ Maximum Subarray DP pattern. Tracks `current_max = max(arr[i], current_max + arr[i])` at each index.
 
 ## Reusable Code Templates
 
@@ -136,8 +162,6 @@ while (left < right) {
 
 **Used by:** Palindrome Check, Reverse Array, Two Sum (sorted), Sort Colors.
 
-* * *
-
 ## Solved Exemplar Problems
 
 **1. First Non-Repeating Character**
@@ -167,6 +191,7 @@ public int firstUniqChar(String s) {
 }
 // Time: O(N), Space: O(1) — the int[256] is constant size
 ```
+
 
 * * *
 
@@ -222,6 +247,7 @@ public int compress(char[] chars) {
 | 1    | 2    | 2     | Run 'a' len 2 | `['a','2','b','b','c','c','c']` |
 | 2    | 4    | 4     | Run 'b' len 2 | `['a','2','b','2','c','c','c']` |
 | 3    | 7    | 6     | Run 'c' len 3 | `['a','2','b','2','c','3','c']` |
+
 * * *
 
 **3. Valid Palindrome with Non-Alphanumeric Skipping**
@@ -263,6 +289,7 @@ public boolean isPalindrome(String s) {
 // Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **4. Move Zeros to End**
@@ -294,6 +321,7 @@ public void moveZeroes(int[] nums) {
 // Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **5. Remove Duplicates from Sorted Array**
@@ -319,6 +347,7 @@ public int removeDuplicates(int[] nums) {
 // Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **6. Single Number (XOR Uniqueness)**
@@ -338,6 +367,7 @@ public int singleNumber(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 
 * * *
 
@@ -370,6 +400,7 @@ public boolean isValid(String s) {
 // Time: O(N), Space: O(N) worst case for the stack
 ```
 
+
 * * *
 
 **8. Reverse String In-Place**
@@ -394,6 +425,7 @@ public void reverseString(char[] s) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 
 * * *
 
@@ -423,6 +455,7 @@ public int pivotIndex(int[] nums) {
 // Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **10. Check Array Monotonicity**
@@ -448,6 +481,7 @@ public boolean isMonotonic(int[] nums) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 
 * * *
 
@@ -475,6 +509,7 @@ public int[] neighborSum(int[] a) {
 }
 // Time: O(N), Space: O(N) for output array
 ```
+
 
 * * *
 
@@ -506,6 +541,7 @@ public int maxSumSubarray(int[] nums, int k) {
 // Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **13. Find the Added Character**
@@ -524,6 +560,7 @@ public char findTheDifference(String s, String t) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 
 * * *
 
@@ -551,6 +588,7 @@ public String[] transformWords(String[] words) {
 }
 // Time: O(N * K) where K is average word length, Space: O(N * K) for output
 ```
+
 
 * * *
 
@@ -581,6 +619,7 @@ public boolean areOccurrencesEqual(String s) {
 // Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **16. Remove Element In-Place**
@@ -605,6 +644,7 @@ public int removeElement(int[] nums, int val) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 
 * * *
 
@@ -632,6 +672,7 @@ public boolean isAlternatingParity(int[] nums) {
 // Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **18. Two Sum (Unsorted Array)**
@@ -657,6 +698,7 @@ public int[] twoSum(int[] nums, int target) {
 }
 // Time: O(N), Space: O(N)
 ```
+
 
 * * *
 
@@ -688,6 +730,7 @@ public int majorityElement(int[] nums) {
 // Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **20. Plus One (Large Number as Array)**
@@ -715,6 +758,7 @@ public int[] plusOne(int[] digits) {
 }
 // Time: O(N), Space: O(1) amortized (O(N) only for all-9s edge case)
 ```
+
 
 * * *
 
@@ -750,6 +794,7 @@ public int adjacentElementsProduct(int[] inputArray) {
 // Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **22. Century From Year**
@@ -765,6 +810,7 @@ public int centuryFromYear(int year) {
 }
 // Time: O(1), Space: O(1)
 ```
+
 
 * * *
 
@@ -799,6 +845,7 @@ public String[] allLongestStrings(String[] inputArray) {
 // Time: O(N), Space: O(N) for output
 ```
 
+
 * * *
 
 **24. Common Character Count**
@@ -826,6 +873,7 @@ public int commonCharacterCount(String s1, String s2) {
 // Time: O(N + M), Space: O(1) — fixed 26-element arrays
 ```
 
+
 * * *
 
 **25. Lucky Ticket (Digit Sum Halves)**
@@ -850,6 +898,7 @@ public boolean isLucky(int n) {
 }
 // Time: O(D) where D is digit count, Space: O(D) for string conversion
 ```
+
 
 * * *
 
@@ -886,6 +935,7 @@ public int[] sortByHeight(int[] a) {
 // Time: O(N log N) for sorting, Space: O(N) for extracted list
 ```
 
+
 * * *
 
 **27. Alternating Team Sums**
@@ -911,6 +961,7 @@ public int[] alternatingSums(int[] a) {
 }
 // Time: O(N), Space: O(1)
 ```
+
 
 * * *
 
@@ -947,6 +998,7 @@ public String[] addBorder(String[] picture) {
 // Time: O(rows * cols), Space: O(rows * cols) for output
 ```
 
+
 * * *
 
 **29. Array Change (Minimum Moves for Strict Increase)**
@@ -976,6 +1028,7 @@ public int arrayChange(int[] inputArray) {
 // Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **30. Matrix Elements Sum (Haunted Rooms)**
@@ -1004,6 +1057,7 @@ public int matrixElementsSum(int[][] matrix) {
 }
 // Time: O(rows * cols), Space: O(1)
 ```
+
 
 * * *
 
@@ -1053,6 +1107,7 @@ public boolean almostIncreasingSequence(int[] sequence) {
 | 1    | 0 | 1       | 3         | No         | Continue | 0 |
 | 2    | 1 | 3       | 2         | Yes        | Check removals | 1 |
 | 3    | 2 | 2       | 1         | Yes        | Return false   | >1 |
+
 * * *
 
 **32. Reverse Parentheses (Nested String Reversal)**
@@ -1096,7 +1151,6 @@ public String reverseInParentheses(String s) {
 | 5    | ')'  | Pop & Reverse | `[""]` | `"uevol"` |
 | 6    | 'i'  | Append   | `[""]` | `"uevoli"` |
 | 7    | ')'  | Pop & Reverse | `[]` | `"iloveu"` |
-* * *
 
 ## Practice Problem Bank
 

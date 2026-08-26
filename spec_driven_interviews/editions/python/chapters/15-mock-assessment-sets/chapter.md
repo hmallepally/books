@@ -10,8 +10,6 @@ To get the most out of these mock assessments, strictly time yourself. Set a tim
 
 Remember, there is no code in this chapter—this is your practice arena. Read the specifications, analyze the test cases, check the constraints, and write your own optimal solutions.
 
-* * *
-
 ## Set 1: Warm-Up Fundamentals
 
 * **Q1 (Easy): Vowel Starting Words**
@@ -37,8 +35,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Sample Test Case:* Input: `[2, 1, 5, 6, 2, 3]` -> Output: `10` (Formed by heights 5 and 6).
   * *Constraints:* Array length $1 \le N \le 10^5$, building heights $0 \le H \le 10^4$.
   * *Hint:* Utilize a monotonic increasing stack to keep track of building indices, calculating areas when a drop in height is encountered.
-
-* * *
 
 ## Set 2: Timed Mock Assessment 2
 
@@ -66,9 +62,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* [PAT-18] Dijkstra Priority Queue
 
-
-* * *
-
 ## Set 3: Timed Mock Assessment 3
 
 * **Q1 (Easy): Palindrome Check**
@@ -94,9 +87,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Sample Test Case:* Input: `tasks -> 10 days`
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* [PAT-16] Topo Sort / DP
-
-
-* * *
 
 ## Set 4: Timed Mock Assessment 4
 
@@ -124,9 +114,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* [PAT-17] Disjoint Set Union
 
-
-* * *
-
 ## Set 5: Timed Mock Assessment 5
 
 * **Q1 (Easy): Simple Math**
@@ -152,9 +139,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Sample Test Case:* Input: `hit -> cog: 5`
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* [PAT-13] BFS Wavefront
-
-
-* * *
 
 ## Set 6: Timed Mock Assessment 6
 
@@ -182,9 +166,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* [PAT-08] Stack or Two Pointers
 
-
-* * *
-
 ## Set 7: Timed Mock Assessment 7
 
 * **Q1 (Easy): Array Intersection**
@@ -211,9 +192,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* [PAT-09] Monotonic Stack
 
-
-* * *
-
 ## Set 8: Timed Mock Assessment 8
 
 * **Q1 (Easy): Missing Number**
@@ -237,11 +215,8 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
 * **Q4 (Hard): Minimum Spanning Tree**
   * *Specification:* Given a weighted undirected graph, find the MST weight using Kruskal's algorithm with Union-Find.
   * *Sample Test Case:* Input: `edges -> weight`
-  * *Constraints:* V \le 10^4, E \le 5 \times 10^4.
+  * *Constraints:* $V \le 10^4, E \le 5 \times 10^4$.
   * *Hint:* [PAT-17] Disjoint Set Union + greedy edge sorting.
-
-
-* * *
 
 ## Set 9: Timed Mock Assessment 9
 
@@ -269,9 +244,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* Two Pointers or [PAT-09] Stack
 
-
-* * *
-
 ## Set 10: Timed Mock Assessment 10
 
 * **Q1 (Easy): Longest Prefix**
@@ -297,9 +269,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Sample Test Case:* Input: `[3,1,5,8] -> 167`
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* Divide & Conquer DP
-
-
-* * *
 
 ## Set 11: Timed Mock Assessment 11
 
@@ -327,9 +296,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* Two Heaps (Min/Max)
 
-
-* * *
-
 ## Set 12: Timed Mock Assessment 12
 
 * **Q1 (Easy): Count Elements**
@@ -355,9 +321,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Sample Test Case:* Input: `S="ADOBECODEBANC", T="ABC" -> "BANC"`
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* [PAT-04] Dynamic Sliding Window
-
-
-* * *
 
 ## Set 13: Timed Mock Assessment 13
 
@@ -385,9 +348,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* [PAT-21] 2D DP Grid
 
-
-* * *
-
 ## Set 14: Timed Mock Assessment 14
 
 * **Q1 (Easy): First Unique Character**
@@ -411,11 +371,8 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
 * **Q4 (Hard): Course Schedule III**
   * *Specification:* Given N courses with (duration, deadline), maximize courses completed.
   * *Sample Test Case:* Input: `courses -> max`
-  * *Constraints:* N \le 10^4.
+  * *Constraints:* $N \le 10^4$.
   * *Hint:* [PAT-25] Priority Queue / Greedy with heap.
-
-
-* * *
 
 ## Set 15: Timed Mock Assessment 15
 
@@ -450,11 +407,9 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
     words = ["oath","pea","eat","rain"]
     Output: ["eat","oath"]
     ```
-  * *Constraints:* M, N \le 12, words.length \le 3 \times 10^4, words[i].length \le 10.
+
+  * *Constraints:* $M, N \le 12$, $\text{words.length} \le 3 \times 10^4$, $\text{words}[i]\text{.length} \le 10$.
   * *Hint:* Combine Trie prefix tree with DFS backtracking for efficient multi-word search.
-
-
-* * *
 
 ## Set 16: Timed Mock Assessment 16
 
@@ -482,9 +437,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* DFS + Memoization
 
-
-* * *
-
 ## Set 17: Timed Mock Assessment 17
 
 * **Q1 (Easy): Contains Duplicate**
@@ -510,9 +462,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Sample Test Case:* Input: `[1,3,-1,-3,5,3], k=3 -> [3,3,5,5]`
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* [PAT-05] Monotonic Deque
-
-
-* * *
 
 ## Set 18: Timed Mock Assessment 18
 
@@ -540,9 +489,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* DFS Preorder
 
-
-* * *
-
 ## Set 19: Timed Mock Assessment 19
 
 * **Q1 (Easy): String Reversal**
@@ -569,9 +515,6 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
   * *Constraints:* Complexity bounds requiring optimal solution.
   * *Hint:* [PAT-19] DP State Machine
 
-
-* * *
-
 ## Set 20: Timed Mock Assessment 20
 
 * **Q1 (Easy): Frequency Counting**
@@ -595,11 +538,8 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
 * **Q4 (Hard): Alien Dictionary**
   * *Specification:* Given sorted alien words, derive character ordering.
   * *Sample Test Case:* Input: `words -> ordering`
-  * *Constraints:* words \le 300, word length \le 100.
+  * *Constraints:* $\text{words} \le 300$, $\text{word length} \le 100$.
   * *Hint:* Topological Sort on character graph.
-
-
-* * *
 
 ## Exam Day 10-Point Speed & Debugging Survival Guide
 
@@ -607,26 +547,34 @@ Before jumping into the 20 Mock Sets, review this executive checklist of top spe
 
 1. **String Concatenation in Loops ($O(N^2)$ TLE Trap):**  
    Never do `s += c` inside a loop in Java or C#. Creating new String objects on every iteration turns $O(N)$ into $O(N^2)$ time limit exceeded. Always use `StringBuilder` (or `char[]`).
+
 2. **Negative Modulo in Java/C#:**  
    In Java and C#, `-5 % 3` returns `-2` (preserves sign), causing negative array index crashes. Always use the circular safe modulo formula: `(index % N + N) % N`.
+
 3. **Monotonic Stack Width Invariant:**  
    In histogram / largest rectangle problems, after popping height `h = heights[stack.pop()]`, the width is **NOT** `i - poppedIdx + 1`! The true left boundary is `stack.peek()` after popping. Use: `int w = stack.isEmpty() ? i : (i - stack.peek() - 1);`.
+
 4. **Monotonic Stack Sentinel vs. `if (i < n)` Rule:**  
    - *Daily Temperatures / Next Greater:* Pop when `current > top`. Un-popped elements at `i == n` never found a warmer day—leave answer as default 0 using `if (i < n)`.
    - *Histogram Max Area:* Use ghost bar `0` at `i == n`. Do **NOT** skip calculation when `i == n`! The bar extends to the right edge `n - 1`.
+
 5. **Plus One / Add Last Digit Invariant:**  
    Don't write complex `% 10` / `/ 10` / `write--` loops. Walk right-to-left: if `digits[i] < 9`, increment and `return digits;` immediately! If loop finishes, return `new int[N+1]` with `res[0] = 1`.
-6. **Character Frequency Indexing (`int[26]` vs `int[10]` vs `int[128]`):**  
+
+6. **Character Frequency Indexing (`int[26]` vs `int[10]` vs `int[128]` / `int[256]`):**  
    - Lowercase `a-z`: `counts[c - 'a']++` (size 26).
    - Digits `'0'-'9'`: `counts[c - '0']++` (size 10).
-   - Mixed ASCII: `counts[c]++;` (size 128 direct ASCII indexing, no HashMap allocation needed).
+   - Mixed ASCII / Extended: `counts[c]++;` (use size 128 for standard ASCII or size 256 for extended ASCII direct indexing, avoiding HashMap allocations).
    - Common Character Count: `common += Math.min(count1[i], count2[i]);` across 0..25.
+
 7. **Matrix Rotation 90° Clockwise Formulas:**  
    - *Rectangular $R \times C \rightarrow C \times R$:* `target[j][R - 1 - i] = matrix[i][j]`
    - *Square $N \times N$ In-Place:* Transpose (`swap(matrix[i][j], matrix[j][i])` for `j > i`), then reverse each row horizontally (`swap(matrix[i][j], matrix[i][N - 1 - j])` for `j < N / 2`).
 8. **Binary Search Middle Overflow & Bounds:**  
    Always write `mid = left + (right - left) / 2`. In rotated sorted arrays, check sorted half first: if `nums[left] <= nums[mid]`, left half is monotonically sorted.
+
 9. **Numeric Accumulator Overflow:**  
    When calculating product, array sums, or coordinate products, initialize sum/product accumulators as `long` to prevent 32-bit integer overflow before returning `(int) sum`.
+
 10. **Array Bounds Guarding:**  
     Always check `array != null && array.length > 0` before accessing index `0`, and ensure loops end at `i < array.length` (or `i <= array.length` when using a sentinel).

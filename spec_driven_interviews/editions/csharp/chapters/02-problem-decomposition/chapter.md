@@ -30,7 +30,7 @@ Define what property must remain mathematically true across iterations. This is 
 
 ### Step 4: Pattern Matching
 
-With constraints, data flow, and invariants defined, map these characteristics to the 24 canonical patterns (Chapter 9). You are no longer inventing an algorithm; you are selecting the appropriate structural blueprint that satisfies the defined bounds.
+With constraints, data flow, and invariants defined, map these characteristics to the 25 canonical patterns (Chapter 9). You are no longer inventing an algorithm; you are selecting the appropriate structural blueprint that satisfies the defined bounds.
 
 ### Step 5: Edge Case Enumeration
 
@@ -44,36 +44,54 @@ Let us walk through a concrete example using the framework. Consider this proble
 
 
 **Step 1: Constraint Analysis**
-Assume $N \le 10^5$. This instantly rules out any $O(N^2)$ solution. We must solve this in $O(N)$ or $O(N \log N)$ time.
+
+Extract execution bounds directly from the problem statement constraints ($N$). In technical assessments and online evaluation platforms (such as LeetCode, HackerRank, CodeSignal, and General Coding Assessment), the execution runtime limit is strictly set to **1–2 seconds**. Standard CPU runners allow approximately **$10^7$ to $10^8$ basic operations per second**.
+
+By identifying the upper bound of $N$, you can mathematically deduce the target time complexity and instantly eliminate non-viable approaches before writing a single line of code.
+
+#### The Constraint-to-Complexity Deduction Matrix
+
+| Input Size ($N$) | Target Complexity | Viable Algorithmic Patterns |
+| :--- | :--- | :--- |
+| **$N \le 12$** | $\mathcal{O}(N!)$ | Backtracking, Generating Permutations, Brute Force Search |
+| **$N \le 25$** | $\mathcal{O}(2^N)$ | Bitmask DP, Subset Generation, Backtracking |
+| **$N \le 10,000$** ($10^4$) | $\mathcal{O}(N^2)$ | Nested Loops, 2D Dynamic Programming, Matrix Traversal |
+| **$N \le 100,000$** ($10^5$) | $\mathcal{O}(N \log N)$ | Sorting, Binary Search, Divide and Conquer, Priority Queues / Heaps |
+| **$N \le 10^6 - 10^8$** | $\mathcal{O}(N)$ | HashMaps, Two Pointers, Sliding Window, Single-Pass Traversal |
+| **$N \ge 10^9$** | $\mathcal{O}(\log N)$ or $\mathcal{O}(1)$ | Binary Search on Answer, Mathematical Formulas, Matrix Exponentiation |
+
+> **Key Takeaway:** For our rainwater problem, the spec declares $N \le 10^5$. Referring to the deduction matrix, any $\mathcal{O}(N^2)$ nested-loop approach requires $10^{10}$ operations and will instantly fail with a *Time Limit Exceeded (TLE)* error. We are mathematically required to engineer an $\mathcal{O}(N)$ or $\mathcal{O}(N \log N)$ algorithm.
 
 ![Constraint-to-Complexity Flowchart](visuals/constraint_flowchart.jpg){width=85%}
 
 **Step 2: Data Flow Mapping**
-Input: Array of $N$ heights. Output: A single integer (total water). This is a reduction problem. For any building `i`, the water it traps is `min(max_left, max_right) - height[i]`.
+Input: Array of $N$ heights. Output: A single integer (total water). This is a reduction problem. For any building `i`, the water it traps is `min(max_left, max_right) - heights[i]`.
 
-**The Failed Naive Approach ($O(N^2)$)**
+**The Failed Naive Approach ($\mathcal{O}(N^2)$)**
 A junior engineer might immediately code a loop within a loop: for every element `i`, iterate left to find `max_left`, and iterate right to find `max_right`. 
-*Why it fails:* Scanning the remaining array for every single element yields $O(N^2)$ time complexity. With $N=10^5$, this requires $10^{10}$ operations, which will time out on any assessment platform.
+*Why it fails:* Scanning the remaining array for every single element yields $\mathcal{O}(N^2)$ time complexity. With $N=10^5$, this requires $10^{10}$ operations, which will time out on any assessment platform.
 
 **Step 3: Invariant Identification**
-To achieve $O(N)$, we must eliminate the inner loops. The amount of water trapped depends *only on the shorter of the two maximum boundaries*. 
-*Invariant:* If we have two pointers (`left` and `right`), and `height[left] < height[right]`, the trapped water at `left` is strictly bounded by `max_left`, regardless of what happens between `left` and `right`. We can safely process `left` and move inward.
+To achieve $\mathcal{O}(N)$, we must eliminate the inner loops. The amount of water trapped depends *only on the shorter of the two maximum boundaries*. 
+*Invariant:* If we have two pointers (`left` and `right`), and `heights[left] < heights[right]`, the trapped water at `left` is strictly bounded by `max_left`, regardless of what happens between `left` and `right`. We can safely process `left` and move inward.
 
 **Step 4: Pattern Matching**
 Processing an array from the outsides inward based on boundary conditions maps perfectly to **[PAT-06] Converging Two-Pointers**.
 
 **Step 5: Edge Case Enumeration**
+
 - $N < 3$: Cannot trap water. Return 0.
 - All heights equal: Return 0.
 
 **Design Before Coding**
 *Approach (Two-Pointer Design):*
+
 - Initialize `left` at 0, `right` at $N-1$.
 - Maintain `left_max` and `right_max`.
 - While `left < right`:
   - If `heights[left] < heights[right]`, water depends on `left_max`. Update `left_max`, add `left_max - heights[left]` to total, increment `left`.
   - Else, water depends on `right_max`. Update `right_max`, add `right_max - heights[right]` to total, decrement `right`.
-- Time Complexity: $O(N)$, Space Complexity: $O(1)$.
+- Time Complexity: $\mathcal{O}(N)$, Space Complexity: $\mathcal{O}(1)$.
 
 By following the framework, a potentially paralyzing problem is reduced to a standard application of the Two-Pointer pattern.
 

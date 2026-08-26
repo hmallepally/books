@@ -1,0 +1,888 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Spec-Driven Coding Interviews - Complete Visual Assets & Prompt Registry",
+  "description": "Comprehensive registry of all visual diagrams, prompt specifications, and rendering parameters across all 25 chapters.",
+  "total_visuals": 88,
+  "visuals": [
+    {
+      "id": "spec_vs_syntax",
+      "chapter": 0,
+      "section": "0.x",
+      "title": "The Spec-Driven Path vs The Syntax Trap",
+      "filename": "spec_vs_syntax.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'The Spec-Driven Path vs The Syntax Trap'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "invariant_wall",
+      "chapter": 1,
+      "section": "1.x",
+      "title": "The Invariant Wall",
+      "filename": "invariant_wall.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'The Invariant Wall'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "loop_invariant_states",
+      "chapter": 1,
+      "section": "1.x",
+      "title": "Loop Invariant States \u2014 Boundary Contraction in Binary Search",
+      "filename": "loop_invariant_states.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Loop Invariant States \u2014 Boundary Contraction in Binary Search'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "decomposition_tree",
+      "chapter": 2,
+      "section": "2.x",
+      "title": "Problem Decomposition Tree \u2014 Breaking Complex Problems into Sub-Problems",
+      "filename": "decomposition_tree.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Problem Decomposition Tree \u2014 Breaking Complex Problems into Sub-Problems'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "constraint_flowchart",
+      "chapter": 2,
+      "section": "2.x",
+      "title": "Constraint-to-Complexity Flowchart",
+      "filename": "constraint_flowchart.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Constraint-to-Complexity Flowchart'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "enterprise_ecosystem",
+      "chapter": 3,
+      "section": "3.x",
+      "title": "Enterprise Platform Ecosystem Architecture \u2014 ChiramTrust, ZenithTrade, and AuraPay",
+      "filename": "enterprise_ecosystem.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Enterprise Platform Ecosystem Architecture \u2014 ChiramTrust, ZenithTrade, and AuraPay'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "aurapay_architecture",
+      "chapter": 3,
+      "section": "3.x",
+      "title": "AuraPay System Architecture",
+      "filename": "aurapay_architecture.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'AuraPay System Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "zenithtrade_architecture",
+      "chapter": 3,
+      "section": "3.x",
+      "title": "ZenithTrade High-Frequency Matching Engine Architecture",
+      "filename": "zenithtrade_architecture.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'ZenithTrade High-Frequency Matching Engine Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "chiramtrust_architecture",
+      "chapter": 3,
+      "section": "3.x",
+      "title": "ChiramTrust Decentralized Identity Wallet Architecture",
+      "filename": "chiramtrust_architecture.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'ChiramTrust Decentralized Identity Wallet Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "oop_to_ddd_bridge",
+      "chapter": 4,
+      "section": "4.x",
+      "title": "The OOP to DDD Architectural Bridge",
+      "filename": "oop_to_ddd_bridge.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'The OOP to DDD Architectural Bridge'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "anemic_vs_rich_architecture",
+      "chapter": 4,
+      "section": "4.x",
+      "title": "Anemic vs Rich Domain Model Architecture",
+      "filename": "anemic_vs_rich_architecture.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Anemic vs Rich Domain Model Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "composition_vs_inheritance",
+      "chapter": 4,
+      "section": "4.x",
+      "title": "Composition over Inheritance",
+      "filename": "composition_vs_inheritance.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Composition over Inheritance'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "solid_summary",
+      "chapter": 5,
+      "section": "5.x",
+      "title": "The Five SOLID Principles \u2014 Quick Reference",
+      "filename": "solid_summary.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'The Five SOLID Principles \u2014 Quick Reference'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "solid_dip",
+      "chapter": 5,
+      "section": "5.x",
+      "title": "SOLID Dependency Inversion Principle \u2014 Before and After",
+      "filename": "solid_dip.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'SOLID Dependency Inversion Principle \u2014 Before and After'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "imperative_vs_declarative",
+      "chapter": 6,
+      "section": "6.x",
+      "title": "Imperative vs Declarative Collection Processing",
+      "filename": "imperative_vs_declarative.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Imperative vs Declarative Collection Processing'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "stream_stages",
+      "chapter": 6,
+      "section": "6.x",
+      "title": "The 3 Stages of a Stream Processing Pipeline",
+      "filename": "stream_stages.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'The 3 Stages of a Stream Processing Pipeline'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "lazy_evaluation",
+      "chapter": 6,
+      "section": "6.x",
+      "title": "Lazy Evaluation and Short-Circuiting in Streams",
+      "filename": "lazy_evaluation.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Lazy Evaluation and Short-Circuiting in Streams'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "stream_pipeline",
+      "chapter": 6,
+      "section": "6.x",
+      "title": "Stream Pipeline Visualization",
+      "filename": "stream_pipeline.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Stream Pipeline Visualization'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "builder_pattern",
+      "chapter": 7,
+      "section": "7.x",
+      "title": "Builder Pattern Architecture",
+      "filename": "builder_pattern.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Builder Pattern Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "factory_pattern",
+      "chapter": 7,
+      "section": "7.x",
+      "title": "Factory Method Pattern Architecture",
+      "filename": "factory_pattern.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Factory Method Pattern Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "singleton_pattern",
+      "chapter": 7,
+      "section": "7.x",
+      "title": "Singleton Pattern & IoC Lifecycle",
+      "filename": "singleton_pattern.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Singleton Pattern & IoC Lifecycle'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "adapter_pattern",
+      "chapter": 7,
+      "section": "7.x",
+      "title": "Adapter Pattern Architecture",
+      "filename": "adapter_pattern.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Adapter Pattern Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "decorator_pattern",
+      "chapter": 7,
+      "section": "7.x",
+      "title": "Decorator Pattern Architecture",
+      "filename": "decorator_pattern.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Decorator Pattern Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "strategy_pattern",
+      "chapter": 7,
+      "section": "7.x",
+      "title": "Strategy Pattern Architecture",
+      "filename": "strategy_pattern.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Strategy Pattern Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "observer_pattern",
+      "chapter": 7,
+      "section": "7.x",
+      "title": "Observer Pattern Architecture",
+      "filename": "observer_pattern.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Observer Pattern Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "state_pattern",
+      "chapter": 7,
+      "section": "7.x",
+      "title": "State Pattern Architecture",
+      "filename": "state_pattern.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'State Pattern Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "repository_unit_of_work",
+      "chapter": 7,
+      "section": "7.x",
+      "title": "Repository and Unit of Work Patterns",
+      "filename": "repository_unit_of_work.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Repository and Unit of Work Patterns'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "active_record_vs_data_mapper",
+      "chapter": 7,
+      "section": "7.x",
+      "title": "Active Record vs Data Mapper Comparison",
+      "filename": "active_record_vs_data_mapper.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Active Record vs Data Mapper Comparison'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "thread_lifecycle",
+      "chapter": 8,
+      "section": "8.x",
+      "title": "Thread Lifecycle and Context Switching States",
+      "filename": "thread_lifecycle.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Thread Lifecycle and Context Switching States'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "virtual_threads",
+      "chapter": 8,
+      "section": "8.x",
+      "title": "Virtual Threads vs Platform Threads",
+      "filename": "virtual_threads.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Virtual Threads vs Platform Threads'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "occ_vs_pcc",
+      "chapter": 8,
+      "section": "8.x",
+      "title": "Optimistic vs Pessimistic Concurrency Control",
+      "filename": "occ_vs_pcc.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Optimistic vs Pessimistic Concurrency Control'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "deadlock_diagram",
+      "chapter": 8,
+      "section": "8.x",
+      "title": "Database Deadlock Cycle \u2014 Circular Wait Conditions",
+      "filename": "deadlock_diagram.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Database Deadlock Cycle \u2014 Circular Wait Conditions'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "hikaricp_formula",
+      "chapter": 8,
+      "section": "8.x",
+      "title": "HikariCP Connection Pool Sizing",
+      "filename": "hikaricp_formula.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'HikariCP Connection Pool Sizing'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "big_o_comparison",
+      "chapter": 9,
+      "section": "9.x",
+      "title": "Big-O Time Complexity Comparison Graph",
+      "filename": "big_o_comparison.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Big-O Time Complexity Comparison Graph'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "read_write_pointer",
+      "chapter": 10,
+      "section": "10.x",
+      "title": "Read/Write Pointer \u2014 In-Place Array Compaction",
+      "filename": "read_write_pointer.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Read/Write Pointer \u2014 In-Place Array Compaction'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "two_pointer_convergence",
+      "chapter": 10,
+      "section": "10.x",
+      "title": "Two-Pointer Convergence \u2014 Palindrome Verification",
+      "filename": "two_pointer_convergence.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Two-Pointer Convergence \u2014 Palindrome Verification'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "prefix_sum_pattern",
+      "chapter": 10,
+      "section": "10.x",
+      "title": "Prefix Sum \u2014 Precomputed Cumulative Array for O(1) Range Queries",
+      "filename": "prefix_sum_pattern.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Prefix Sum \u2014 Precomputed Cumulative Array for O(1) Range Queries'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "stack_based_matching",
+      "chapter": 10,
+      "section": "10.x",
+      "title": "Stack-Based Matching \u2014 Push/Pop Bracket Validation",
+      "filename": "stack_based_matching.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Stack-Based Matching \u2014 Push/Pop Bracket Validation'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "bfs_grid_levels",
+      "chapter": 11,
+      "section": "11.x",
+      "title": "Multi-Source BFS \u2014 Rotting Oranges Wavefront",
+      "filename": "bfs_grid_levels.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Multi-Source BFS \u2014 Rotting Oranges Wavefront'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "spiral_traversal",
+      "chapter": 11,
+      "section": "11.x",
+      "title": "Spiral Boundary Traversal \u2014 Layer-by-Layer Contraction",
+      "filename": "spiral_traversal.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Spiral Boundary Traversal \u2014 Layer-by-Layer Contraction'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "prefix_sum_construction",
+      "chapter": 11,
+      "section": "11.x",
+      "title": "2D Prefix Sum \u2014 Construction via Inclusion-Exclusion (Trace)",
+      "filename": "prefix_sum_construction.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for '2D Prefix Sum \u2014 Construction via Inclusion-Exclusion (Trace)'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "prefix_sum_2d_query",
+      "chapter": 11,
+      "section": "11.x",
+      "title": "2D Prefix Sum \u2014 Query via Inclusion-Exclusion",
+      "filename": "prefix_sum_2d_query.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for '2D Prefix Sum \u2014 Query via Inclusion-Exclusion'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "sliding_window",
+      "chapter": 12,
+      "section": "12.x",
+      "title": "Dynamic Sliding Window \u2014 Longest Substring Without Repeating Characters",
+      "filename": "sliding_window.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Dynamic Sliding Window \u2014 Longest Substring Without Repeating Characters'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "hashmap_frequency",
+      "chapter": 12,
+      "section": "12.x",
+      "title": "HashMap Frequency Signature \u2014 Anagram Detection",
+      "filename": "hashmap_frequency.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'HashMap Frequency Signature \u2014 Anagram Detection'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "rotated_sorted_array",
+      "chapter": 13,
+      "section": "13.x",
+      "title": "Binary Search on Rotated Sorted Array \u2014 Two Sorted Halves",
+      "filename": "rotated_sorted_array.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Binary Search on Rotated Sorted Array \u2014 Two Sorted Halves'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "dp_climbing_stairs",
+      "chapter": 13,
+      "section": "13.x",
+      "title": "DP State Transition \u2014 Climbing Stairs with Space Optimization",
+      "filename": "dp_climbing_stairs.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'DP State Transition \u2014 Climbing Stairs with Space Optimization'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "subsequence_vs_substring",
+      "chapter": 13,
+      "section": "13.x",
+      "title": "Subsequence vs Substring",
+      "filename": "subsequence_vs_substring.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Subsequence vs Substring'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "burst_balloons_trace",
+      "chapter": 13,
+      "section": "13.x",
+      "title": "Burst Balloons \u2014 Think Backwards",
+      "filename": "burst_balloons_trace.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Burst Balloons \u2014 Think Backwards'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "edit_distance_trace",
+      "chapter": 13,
+      "section": "13.x",
+      "title": "Edit Distance Trace",
+      "filename": "edit_distance_trace.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Edit Distance Trace'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "lru_cache_diagram",
+      "chapter": 13,
+      "section": "13.x",
+      "title": "LRU Cache \u2014 Position is the Timestamp",
+      "filename": "lru_cache_diagram.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'LRU Cache \u2014 Position is the Timestamp'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "maximal_rectangle_histogram",
+      "chapter": 13,
+      "section": "13.x",
+      "title": "Maximal Rectangle & Histogram Stack",
+      "filename": "maximal_rectangle_histogram.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Maximal Rectangle & Histogram Stack'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "problem_analysis_canvas",
+      "chapter": 14,
+      "section": "14.x",
+      "title": "Problem Analysis Canvas \u2014 Structured Decomposition Framework",
+      "filename": "problem_analysis_canvas.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Problem Analysis Canvas \u2014 Structured Decomposition Framework'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "decomposition_decision",
+      "chapter": 14,
+      "section": "14.x",
+      "title": "Pattern Selection Decision Matrix",
+      "filename": "decomposition_decision.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Pattern Selection Decision Matrix'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "pacing_strategy",
+      "chapter": 15,
+      "section": "15.x",
+      "title": "Assessment Pacing Strategy and Time Allocation",
+      "filename": "pacing_strategy.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Assessment Pacing Strategy and Time Allocation'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "ddd_contexts",
+      "chapter": 16,
+      "section": "16.x",
+      "title": "DDD Bounded Context Map",
+      "filename": "ddd_contexts.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'DDD Bounded Context Map'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_styles",
+      "chapter": 16,
+      "section": "16.x",
+      "title": "Monolithic vs Microservices vs Event-Driven Architecture",
+      "filename": "arch_styles.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Monolithic vs Microservices vs Event-Driven Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "system_evolution",
+      "chapter": 16,
+      "section": "16.x",
+      "title": "System Evolution \u2014 Scaling from Monolith to Microservices",
+      "filename": "system_evolution.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'System Evolution \u2014 Scaling from Monolith to Microservices'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "consistent_hashing",
+      "chapter": 16,
+      "section": "16.x",
+      "title": "Consistent Hashing Ring \u2014 Distributed Key Routing",
+      "filename": "consistent_hashing.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Consistent Hashing Ring \u2014 Distributed Key Routing'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "cap_theorem",
+      "chapter": 16,
+      "section": "16.x",
+      "title": "CAP Theorem \u2014 Consistency, Availability, and Partition Tolerance Trade-offs",
+      "filename": "cap_theorem.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'CAP Theorem \u2014 Consistency, Availability, and Partition Tolerance Trade-offs'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "order_lifecycle",
+      "chapter": 16,
+      "section": "16.x",
+      "title": "ZenithTrade Order Lifecycle Sequence",
+      "filename": "order_lifecycle.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'ZenithTrade Order Lifecycle Sequence'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_payment_gateway",
+      "chapter": 17,
+      "section": "17.x",
+      "title": "AuraPay Payment Gateway & Ledger Architecture",
+      "filename": "arch_payment_gateway.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'AuraPay Payment Gateway & Ledger Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_matching_engine",
+      "chapter": 17,
+      "section": "17.x",
+      "title": "ZenithTrade High-Frequency Order Matching Architecture",
+      "filename": "arch_matching_engine.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'ZenithTrade High-Frequency Order Matching Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_rate_limiter_fraud",
+      "chapter": 17,
+      "section": "17.x",
+      "title": "ChiramTrust Distributed Rate Limiter & Fraud Pipeline",
+      "filename": "arch_rate_limiter_fraud.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'ChiramTrust Distributed Rate Limiter & Fraud Pipeline'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_social_video_platform",
+      "chapter": 17,
+      "section": "17.x",
+      "title": "Consumer Social Feed & Video Streaming Architecture",
+      "filename": "arch_social_video_platform.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Consumer Social Feed & Video Streaming Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_rideshare_geospatial",
+      "chapter": 17,
+      "section": "17.x",
+      "title": "Ride-Sharing Geospatial Dispatch System",
+      "filename": "arch_rideshare_geospatial.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Ride-Sharing Geospatial Dispatch System'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_vector_rag_system",
+      "chapter": 17,
+      "section": "17.x",
+      "title": "Distributed Vector Search & RAG Architecture",
+      "filename": "arch_vector_rag_system.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Distributed Vector Search & RAG Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_drive_sync_storage",
+      "chapter": 17,
+      "section": "17.x",
+      "title": "Distributed File Storage & Sync Engine Architecture",
+      "filename": "arch_drive_sync_storage.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Distributed File Storage & Sync Engine Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_web_crawler_search",
+      "chapter": 17,
+      "section": "17.x",
+      "title": "Distributed Web Crawler & Inverted Search Indexer Architecture",
+      "filename": "arch_web_crawler_search.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Distributed Web Crawler & Inverted Search Indexer Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_chat_messaging_presence",
+      "chapter": 17,
+      "section": "17.x",
+      "title": "Real-Time Messaging & Presence Platform Architecture",
+      "filename": "arch_chat_messaging_presence.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Real-Time Messaging & Presence Platform Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_task_scheduler_workflow",
+      "chapter": 17,
+      "section": "17.x",
+      "title": "Distributed Task Scheduler & Workflow Engine Architecture",
+      "filename": "arch_task_scheduler_workflow.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Distributed Task Scheduler & Workflow Engine Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_collaborative_crdt_editor",
+      "chapter": 17,
+      "section": "17.x",
+      "title": "Real-Time Collaborative Document Editor Architecture",
+      "filename": "arch_collaborative_crdt_editor.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Real-Time Collaborative Document Editor Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_metrics_timeseries_observability",
+      "chapter": 17,
+      "section": "17.x",
+      "title": "Distributed Time-Series Metrics & Observability Platform Architecture",
+      "filename": "arch_metrics_timeseries_observability.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Distributed Time-Series Metrics & Observability Platform Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_notification_platform",
+      "chapter": 17,
+      "section": "17.x",
+      "title": "Distributed Multi-Channel Notification & Alerting Platform",
+      "filename": "arch_notification_platform.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Distributed Multi-Channel Notification & Alerting Platform'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "arch_booking_inventory",
+      "chapter": 17,
+      "section": "17.x",
+      "title": "Distributed Hotel & Flight Booking Inventory System",
+      "filename": "arch_booking_inventory.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Distributed Hotel & Flight Booking Inventory System'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "outbox_pattern",
+      "chapter": 18,
+      "section": "18.x",
+      "title": "Transactional Outbox Pattern",
+      "filename": "outbox_pattern.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Transactional Outbox Pattern'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "saga_comparison",
+      "chapter": 18,
+      "section": "18.x",
+      "title": "Saga Orchestration vs Choreography",
+      "filename": "saga_comparison.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Saga Orchestration vs Choreography'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "rate_limiter",
+      "chapter": 18,
+      "section": "18.x",
+      "title": "Redis Sliding Window Rate Limiting",
+      "filename": "rate_limiter.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Redis Sliding Window Rate Limiting'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "circuit_breaker",
+      "chapter": 18,
+      "section": "18.x",
+      "title": "Circuit Breaker State Machine",
+      "filename": "circuit_breaker.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Circuit Breaker State Machine'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "btree_vs_lsm",
+      "chapter": 19,
+      "section": "19.x",
+      "title": "B-Tree vs LSM-Tree Storage Engines",
+      "filename": "btree_vs_lsm.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'B-Tree vs LSM-Tree Storage Engines'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "sharding_strategies",
+      "chapter": 19,
+      "section": "19.x",
+      "title": "Database Sharding Strategies \u2014 Range, Hash, and Directory Based",
+      "filename": "sharding_strategies.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Database Sharding Strategies \u2014 Range, Hash, and Directory Based'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "tokenization_vault",
+      "chapter": 19,
+      "section": "19.x",
+      "title": "PCI-DSS Tokenization Vault Architecture",
+      "filename": "tokenization_vault.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'PCI-DSS Tokenization Vault Architecture'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "audit_trail",
+      "chapter": 19,
+      "section": "19.x",
+      "title": "Cryptographic Audit Trail Chain",
+      "filename": "audit_trail.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Cryptographic Audit Trail Chain'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "technical_star",
+      "chapter": 20,
+      "section": "20.x",
+      "title": "The Technical STAR Framework",
+      "filename": "technical_star.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'The Technical STAR Framework'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "testing_pyramid",
+      "chapter": 21,
+      "section": "21.x",
+      "title": "The Technical Testing Pyramid",
+      "filename": "testing_pyramid.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'The Technical Testing Pyramid'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "kafka_internals",
+      "chapter": 22,
+      "section": "22.x",
+      "title": "Apache Kafka Topic Partitions and Consumer Groups",
+      "filename": "kafka_internals.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Apache Kafka Topic Partitions and Consumer Groups'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "kafka_partitions",
+      "chapter": 22,
+      "section": "22.x",
+      "title": "Kafka Partitions and Consumer Group Parallelism",
+      "filename": "kafka_partitions.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Kafka Partitions and Consumer Group Parallelism'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "rag_architecture",
+      "chapter": 23,
+      "section": "23.x",
+      "title": "Retrieval-Augmented Generation (RAG) Architecture Pipeline",
+      "filename": "rag_architecture.png",
+      "format": "png",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Retrieval-Augmented Generation (RAG) Architecture Pipeline'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    },
+    {
+      "id": "model_serving",
+      "chapter": 23,
+      "section": "23.x",
+      "title": "Model Serving Infrastructure and Real-time Inference",
+      "filename": "model_serving.jpg",
+      "format": "jpg",
+      "aspect_ratio": "16:9",
+      "prompt": "A clean, high-resolution, professional technical software architecture diagram for 'Model Serving Infrastructure and Real-time Inference'. Minimalist corporate blueprint style on a light grid background with vibrant teal and deep navy accent colors. Crisp typography, clear directional arrows, and structured modular components."
+    }
+  ]
+}

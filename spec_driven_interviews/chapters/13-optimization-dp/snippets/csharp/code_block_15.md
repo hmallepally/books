@@ -26,7 +26,11 @@ public class LRUCache {
     
     public void Put(int key, int value) {
         if (map.ContainsKey(key)) {
-            Remove(map[key]);
+            Node node = map[key];
+            node.val = value;
+            Remove(node);
+            Insert(node);
+            return;
         }
         if (map.Count == capacity) {
             map.Remove(tail.prev.key);

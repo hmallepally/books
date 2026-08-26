@@ -11,7 +11,7 @@ A common pitfall is immediately drawing boxes for databases, load balancers, and
 
 To stand out, you must apply **Domain-Driven Design (DDD)**. Define your bounded contexts clearly, design your aggregates to protect business invariants, and construct sequence flows showing exactly how data travels across services while keeping latency low.
 
-In this chapter, we will design the architecture of **ZenithTrade**, a high-frequency order matching exchange, mapping out its service boundaries and order lifecycle.
+In this chapter, we establish the foundational principles of distributed system architecture, mapping out service boundaries, sharding, caching, and rate limiting algorithms.
 
 
 ## Domain-Driven Design (DDD) Boundaries
@@ -25,7 +25,7 @@ A bounded context defines the boundary within which a particular domain model ap
 2.  **Ledger Context (AuraPay):** Handles balance preservation, double-entry transfers, and deposit/withdrawal checks.
 3.  **Identity Context (ChiramTrust):** Manages user credentials, authentication scopes, and KYC compliance.
 
-> **Crucial Mistake:** Do not mix context models. An `Order` inside the Exchange context should not contain details about a user's ledger overdraft limits. Decouple them and bridge them using events or APIs.
+**Crucial Mistake:** Do not mix context models. An `Order` inside the Exchange context should not contain details about a user's ledger overdraft limits. Decouple them and bridge them using events or APIs.
 
 ### Aggregates, Entities, and Value Objects
 
@@ -120,13 +120,15 @@ The following sequence diagram maps out how an order is submitted, validated, ma
 
 ![ZenithTrade Order Lifecycle Sequence](visuals/order_lifecycle.png){width=95%}
 
-### Explaining the Sequence:
-
 1.  **Gateway Ingest:** The API Gateway validates rate limits, checks for duplicate requests using the `Idempotency-Key`, and passes the request to the Exchange Context.
-2.  **Order Validator:** Before an order enters the book, the validator calls the AuraPay ledger to verify that the client has sufficient funds (Pre-condition check).
-3.  **In-Memory Matching:** The OrderBook matches buy and sell orders. Since this is CPU-intensive, it runs in memory.
-4.  **Ledger Settlement:** Once matched, a double-entry transaction settles the trade inside the AuraPay database.
-5.  **Asynchronous Notification:** The client is notified via WebSockets, completely out of the blocking execution thread path.
+2.  **Order Validator & Margin Reservation:** Before an order enters the book, the validator checks the client's pre-funded available balance in an **in-memory Risk & Margin Account Cache** inside the Exchange Context, instantly reserving funds without making a synchronous remote database call on the critical path.
+3.  **In-Memory Matching:** The OrderBook matches buy and sell orders. Operating strictly in memory, the engine executes matching with sub-millisecond $p99$ latency.
+4.  **Asynchronous Ledger Settlement:** Once matched, the engine emits a `TradeExecuted` event. AuraPay's ledger service consumes this event asynchronously to execute immutable double-entry database commits. *(For details on how partition keys `accountId` enforce strict event ordering during asynchronous execution, see **Chapter 22**. For at-least-once ledger delivery via the Outbox pattern, see **Chapter 18**).*
+5.  **Asynchronous Notification:** The client is notified via WebSockets, completely decoupled from the execution path.
+
+> [!TIP]
+> **Staff-Level Architecture Nuance:**
+> Never execute synchronous network RPC calls or database queries on a sub-millisecond matching engine's critical path. In high-frequency trading (HFT) interviews, explain: *"We decouple matching from ledger settlement using in-memory margin reservations and asynchronous event streams, ensuring database write latency never degrades exchange throughput."*
 
 
 ## API Rate Limiting Strategies
@@ -159,6 +161,7 @@ The fixed window counter algorithm counts incoming requests per discrete time wi
 This approach addresses the boundary burst issue. A Sliding Window Log tracks individual request timestamps, discarding older ones to precisely enforce the rate over a rolling window. A Sliding Window Counter optimizes memory by keeping weighted counters of the previous and current overlapping windows.
 
 **Trade-off:** Higher memory usage (for logs) or slight approximations (for counters).
+
 **When to use:** Strict rate limiting scenarios where boundary bursts are unacceptable.
 
 | Algorithm | Burst Handling | Memory | Accuracy | Complexity |
@@ -192,6 +195,7 @@ With Write-Behind caching, the application writes exclusively to the cache, whic
 
 **Pros:** Ultra-low write latency and reduced database load via batching.
 **Cons:** High risk of data loss if the cache node crashes before flushing to the database.
+
 **When to use:** High-write-throughput systems where occasional data loss is an acceptable trade-off.
 
 ### Cache Eviction Policies
@@ -220,6 +224,7 @@ A cache stampede occurs when a highly requested cache entry expires (TTL elapses
 While this book's case studies emphasize financial systems with strict consistency requirements, many interviews target consumer-scale platforms. Here are the key architectural patterns for the most common system design questions:
 
 **Design a Social Media Feed (Twitter/X Timeline)**
+
 - Fan-out-on-write vs fan-out-on-read trade-off
 - Celebrity problem: hybrid approach for users with >10K followers
 - Timeline cache per user (Redis sorted sets by timestamp)
@@ -227,6 +232,7 @@ While this book's case studies emphasize financial systems with strict consisten
 - Key metric: Feed generation < 200ms for 99th percentile
 
 **Design a Ride-Sharing Service (Uber/Lyft)**
+
 - Geospatial indexing: QuadTree or Geohash for driver location
 - Driver-rider matching: nearest-neighbor search with ETA ranking
 - Real-time location updates: WebSocket with 3-second heartbeats
@@ -234,6 +240,7 @@ While this book's case studies emphasize financial systems with strict consisten
 - Key metric: Match latency < 5 seconds in urban areas
 
 **Design a Video Streaming Platform (Netflix/YouTube)**
+
 - Adaptive bitrate streaming (HLS/DASH) with multiple encodings
 - CDN edge caching: hot content pushed to 200+ PoPs globally
 - Recommendation engine: collaborative filtering + content-based hybrid
@@ -241,12 +248,13 @@ While this book's case studies emphasize financial systems with strict consisten
 - Key metric: Start-to-play < 2 seconds, rebuffer ratio < 0.5%
 
 **Design a URL Shortener (bit.ly)**
+
 - Base62 encoding of auto-increment ID (or MD5 hash truncation)
 - Read-heavy (100:1 read/write ratio) → heavy caching layer
 - 301 (permanent) vs 302 (temporary) redirect trade-offs for analytics
 - Key metric: Redirect latency < 10ms at 100K QPS
 
-For each archetype, the candidate should follow the same spec-driven approach used throughout this book: define the invariants (what must ALWAYS be true), identify the data flow, and select patterns from the canonical set.
+For deep-dive, step-by-step architectural designs with visual blueprints, API specifications, and database schemas for these and other systems, see **Chapter 17: Mastering System Design Solutions & Architectural Blueprints**.
 
 
 ## System Design Mock Interview: Sharded Order Matching Engine
@@ -327,7 +335,6 @@ message PlaceOrderRequest {
 *"Additionally, each matching partition runs as a Raft consensus group containing one Leader and two Followers. The Leader streams the WAL to the Followers. If the Leader crashes, the Followers elect a new Leader, which replays the log from its last committed index to rebuild the in-memory state. This guarantees no order loss and sub-second failover recovery."*
 
 
-
 ## Modern Infrastructure Patterns (2024+)
 
 Modern system design interviews increasingly expect familiarity with container orchestration and cloud-native patterns:
@@ -342,4 +349,21 @@ Modern system design interviews increasingly expect familiarity with container o
 
 > ⭐ **STAR Moment: Bounded Context Isolation**
 > 
-> During system design interviews, explain that microservice division should mirror DDD Bounded Contexts. Say: *"We will isolate the ZenithTrade Matching Engine from the AuraPay Ledger. If the ledger experiences a database write lag, our matching engine can continue to accept and queue orders in memory, preventing system-wide downtime."* This shows you design for fault isolation.
+> When presenting your system architecture, emphasize: *"We enforce strict Bounded Context isolation. Services communicate across context boundaries exclusively through asynchronous events or explicit API contracts. No service is permitted to query another context's database directly."*
+
+
+## Distributed Compute & Join Strategies at Scale
+
+When processing multi-terabyte datasets across distributed compute nodes, choice of join execution strategy directly determines job execution time and network shuffle cost:
+
+### Broadcast Hash Join (BHJ)
+- **Mechanics:** When joining a massive table ($N$ rows) with a small dimension table ($M \le 10\text{MB}$ to $100\text{MB}$), the query engine replicates (broadcasts) the entire small table to every worker node's in-memory hash table.
+- **Advantage:** Eliminates network shuffling of the large table completely. Reduces join runtime from hours to seconds ($\mathcal{O}(N)$ local hash lookups).
+
+### Sort-Merge Join (SMJ)
+- **Mechanics:** When joining two massive tables, both datasets are hashed on the join key, shuffled across worker partitions, sorted by join key, and merged sequentially.
+- **Advantage:** Highly robust for ultra-large datasets; handles memory pressure gracefully by spilling sorted runs to disk.
+
+### Shuffle Hash Join (SHJ)
+- **Mechanics:** Shuffles data across partitions based on join key hashes and constructs in-memory hash tables per partition without sorting.
+- **Advantage:** Faster than SMJ when partitions fit comfortably in worker execution memory.

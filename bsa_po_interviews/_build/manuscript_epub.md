@@ -4326,7 +4326,7 @@ Here is how a PO uses AI to rapidly build out specifications, moving from vague 
 *AI Prompt:* "Translate this business rule into a strict mathematical invariant and a pre-condition for the checkout API: 'Users can't buy more items than we have in stock.' Consider race conditions."
 *AI Output:*
 
-- **Invariant:** `Sum(Cart.Item[X].Quantity) <= Inventory.Item[X].AvailableToPromise`
+- **Invariant:** *Sum(Cart.Item[X].Quantity) $\le$ Inventory.Item[X].AvailableToPromise*
 - **Pre-Condition (Checkout API):** The system must place a hard lock on `Inventory.Item[X]` for the duration of the payment processing phase (max 5 minutes) to prevent concurrent checkouts of the last remaining item. 
 - **Error State:** If `Cart.Item[X].Quantity > Inventory.Item[X].AvailableToPromise` at the moment of payment execution, the system must return a 409 Conflict, release any holds, and alert the user.
 
@@ -4335,7 +4335,7 @@ Here is how a PO uses AI to rapidly build out specifications, moving from vague 
 *AI Prompt:* "Define the state transition and calculation logic for a mid-cycle subscription upgrade. Identify edge cases like upgrading on the 31st of a month."
 *AI Output:* 
 
-- **Calculation Rule:** `(NewPlan.MonthlyCost - OldPlan.MonthlyCost) * (RemainingDaysInBillingCycle / TotalDaysInCurrentMonth)`
+- **Calculation Rule:** *(NewPlan.MonthlyCost - OldPlan.MonthlyCost) $\times$ (RemainingDaysInBillingCycle / TotalDaysInCurrentMonth)*
 - **Edge Case Handled:** February leap years. `TotalDaysInCurrentMonth` must dynamically query the calendar, not hardcode 30.
 - **State Transition:** `Plan.Active` -> `Plan.PendingUpgrade` (awaiting payment) -> `Plan.Active` (new tier). 
 
@@ -4344,7 +4344,7 @@ Here is how a PO uses AI to rapidly build out specifications, moving from vague 
 *AI Prompt:* "Create an RBAC (Role-Based Access Control) matrix and invariants for this HIPAA requirement: 'Only doctors can see the patient's full chart.' Include nurses, billing staff, and system admins."
 *AI Output:*
 
-- **Invariant:** `User.Role IN [Attending_Physician, Consulting_Physician] AND User.AssignedTo == Patient.ID => Allow(View.FullChart)`
+- **Invariant:** *User.Role IN [Attending_Physician, Consulting_Physician] AND User.AssignedTo == Patient.ID $\implies$ Allow(View.FullChart)*
 - **RBAC Matrix Generated:** (AI outputs a full table showing read/write access across 10 different roles).
 
 **Worked Example 4: The Logistics Routing Logic**
@@ -4355,7 +4355,7 @@ Here is how a PO uses AI to rapidly build out specifications, moving from vague 
 - Scenario 1: Closest warehouse is out of stock.
 - Scenario 2: Closest warehouse is backlogged by 5 days, while a warehouse 50 miles further is operating at 0 delay.
 - Scenario 3: Closest warehouse cannot legally ship the item (e.g., lithium batteries via air freight vs ground).
-- **Refined Invariant:** `OptimalWarehouse = Min(Distance) WHERE Warehouse.Stock >= Order.Qty AND Warehouse.SLA <= RequiredDeliveryDate`
+- **Refined Invariant:** *OptimalWarehouse = Min(Distance) WHERE Warehouse.Stock $\ge$ Order.Qty AND Warehouse.SLA $\le$ RequiredDeliveryDate*
 
 **Worked Example 5: The FinTech Ledger**
 *Input (Stakeholder):* "Keep track of all user deposits and withdrawals."
@@ -4812,34 +4812,54 @@ Jira Query Language (JQL) is arguably the most powerful feature in Jira for a BS
 Here are 10 highly useful JQL examples that every BSA/PO should know:
 
 1.  **Find all unresolved blocker bugs in the current project:**
-    `project = "XYZ" AND issuetype = Bug AND priority = Blocker AND resolution = Unresolved`
+    ```text
+    project = "XYZ" AND issuetype = Bug AND priority = Blocker AND resolution = Unresolved
+    ```
 
 2.  **Find stories assigned to me that are in the current active sprint:**
-    `assignee = currentUser() AND issuetype = Story AND sprint in openSprints()`
+    ```text
+    assignee = currentUser() AND issuetype = Story AND sprint in openSprints()
+    ```
 
 3.  **Find epics that lack a description (quality control check):**
-    `project = "XYZ" AND issuetype = Epic AND description IS EMPTY`
+    ```text
+    project = "XYZ" AND issuetype = Epic AND description IS EMPTY
+    ```
 
 4.  **Find issues updated in the last 24 hours (great for morning standup prep):**
-    `project = "XYZ" AND updated >= -1d ORDER BY updated DESC`
+    ```text
+    project = "XYZ" AND updated >= -1d ORDER BY updated DESC
+    ```
 
 5.  **Find all stories planned for a specific release that are not yet done:**
-    `project = "XYZ" AND fixVersion = "Release 2.5" AND statusCategory != Done`
+    ```text
+    project = "XYZ" AND fixVersion = "Release 2.5" AND statusCategory != Done
+    ```
 
 6.  **Find issues that have been in the "In Progress" status for more than 5 days (identifying bottlenecks):**
-    `project = "XYZ" AND status = "In Progress" AND status changed to "In Progress" before -5d`
+    ```text
+    project = "XYZ" AND status = "In Progress" AND status changed to "In Progress" before -5d
+    ```
 
 7.  **Find stories with no story points assigned (grooming prep):**
-    `project = "XYZ" AND issuetype = Story AND "Story Points" IS EMPTY AND status = "Ready for Dev"`
+    ```text
+    project = "XYZ" AND issuetype = Story AND "Story Points" IS EMPTY AND status = "Ready for Dev"
+    ```
 
 8.  **Find all work related to a specific customer (using a custom field or label):**
-    `project = "XYZ" AND (labels = "AcmeCorp" OR "Customer Name" ~ "Acme")`
+    ```text
+    project = "XYZ" AND (labels = "AcmeCorp" OR "Customer Name" ~ "Acme")
+    ```
 
 9.  **Find issues where I am mentioned in the comments but not the assignee:**
-    `comment ~ currentUser() AND assignee != currentUser() AND resolution = Unresolved`
+    ```text
+    comment ~ currentUser() AND assignee != currentUser() AND resolution = Unresolved
+    ```
 
 10. **Find all sub-tasks belonging to a specific Epic:**
-    `"Epic Link" = XYZ-123 AND issuetype = Sub-task`
+    ```text
+    "Epic Link" = XYZ-123 AND issuetype = Sub-task
+    ```
 
 ### Dashboards and Filters
 
@@ -4967,15 +4987,21 @@ Ultimately, tool mastery is a proxy for operational excellence. A candidate who 
 Mastering Jira Query Language (JQL) transforms you from a backlog administrator into a strategic data analyst. Here are 10 of the most useful JQL queries for Business Systems Analysts and Product Owners:
 
 1. **Find Unestimated Stories:**
-   `project = "XYZ" AND issuetype = Story AND "Story Points" is EMPTY AND status = "To Do"`
+   ```text
+   project = "XYZ" AND issuetype = Story AND "Story Points" is EMPTY AND status = "To Do"
+   ```
    *Explanation: Identifies stories that need to be groomed and estimated before sprint planning.*
 
 2. **Find Blocked Items:**
-   `project = "XYZ" AND status = "Blocked" OR issueLinkType = "is blocked by"`
+   ```text
+   project = "XYZ" AND status = "Blocked" OR issueLinkType = "is blocked by"
+   ```
    *Explanation: Locates work that is currently stalled and requires your intervention to unblock.*
 
 3. **Sprint Velocity / Completed Items:**
-   `project = "XYZ" AND sprint in closedSprints() AND status = "Done" AND resolved >= startOfMonth()`
+   ```text
+   project = "XYZ" AND sprint in closedSprints() AND status = "Done" AND resolved >= startOfMonth()
+   ```
    *Explanation: Shows all completed work in recent closed sprints to help calculate velocity.*
 
 4. **Overdue Items:**
@@ -6345,7 +6371,11 @@ These sets evaluate readiness for the evolved, highly technical Product Speciali
 
 *   **Acknowledge the Gap:** Validate the engineer's catch. It's a missing edge case.
 *   **Do Not Just Say It Verbally:** "I'll update the spec" is not enough. You must define *how* you update it.
-*   **The Update:** "I will update the `POST /reset-password` endpoint section in the spec document. I will add an Error Response block specifying that if the token timestamp is > 15 minutes old, the API must return a `400 Bad Request` (or 403) with the payload `{ "error": "TOKEN_EXPIRED", "message": "Your reset link has expired." }`. I will then commit this change to our spec repository."
+*   **The Update:** "I will update the `POST /reset-password` endpoint section in the spec document. I will add an Error Response block specifying that if the token timestamp is > 15 minutes old, the API must return a `400 Bad Request` (or 403) with the payload:
+    ```json
+    { "error": "TOKEN_EXPIRED", "message": "Your reset link has expired." }
+    ```
+    I will then commit this change to our spec repository."
 
 **Scoring Rubric (1-5):**
 

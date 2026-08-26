@@ -10,6 +10,7 @@ eliminating font re-embedding bloat entirely.
 
 import sys
 import os
+import shutil
 from pypdf import PdfReader, PdfWriter
 from pypdf.generic import (
     ArrayObject, DictionaryObject, NameObject,
@@ -108,8 +109,17 @@ def stamp_pdf(pdf_path, start_page=5, output_path=None):
         temp_path = pdf_path + '.tmp'
         with open(temp_path, 'wb') as f:
             writer.write(f)
-        os.replace(temp_path, pdf_path)
-        print(f"Stamped page numbers on pages {start_page}-{len(reader.pages)} (in-place)")
+        try:
+            os.replace(temp_path, pdf_path)
+            print(f"Stamped page numbers on pages {start_page}-{len(reader.pages)} (in-place)")
+        except PermissionError:
+            fallback_path = pdf_path.replace('.pdf', '_stamped.pdf')
+            shutil.copyfile(temp_path, fallback_path)
+            try:
+                os.remove(temp_path)
+            except Exception:
+                pass
+            print(f"Warning: {pdf_path} was locked by another process. Stamped output saved to: {fallback_path}")
     else:
         with open(output_path, 'wb') as f:
             writer.write(f)

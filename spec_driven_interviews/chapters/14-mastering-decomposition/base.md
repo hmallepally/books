@@ -2,11 +2,9 @@
 
 > *"Every problem you will ever face in a technical assessment is a composition of patterns you already know. The art is in the seeing."*
 
----
-
 ## From Patterns to Synthesis
 
-Throughout the preceding chapters, you have meticulously studied and mastered the 24 Canonical Patterns. You understand Sliding Windows, Monotonic Stacks, Prefix Sums, and Topological Sorts in isolation. However, demonstrating proficiency in individual patterns is merely the baseline expectation. To excel in elite technical assessments, you must transition from pattern recognition to pattern synthesis.
+Throughout the preceding chapters, you have meticulously studied and mastered the **25 Canonical Patterns**. You understand Sliding Windows, Monotonic Stacks, Prefix Sums, and Topological Sorts in isolation. However, demonstrating proficiency in individual patterns is merely the baseline expectation. To excel in elite technical assessments, you must transition from pattern recognition to pattern synthesis.
 
 Real assessment problems—especially those found in equal-weight peer assessments and single-deep-problem architectural interviews—rarely map cleanly to a single, textbook pattern. Instead, they are complex compositions requiring the seamless integration of two, three, or even more distinct patterns. The complexity lies not in the patterns themselves, but in their orchestration.
 
@@ -58,37 +56,53 @@ Tier 1 problems form the foundation of technical assessments. They are character
 **Problem:** Given a sorted array of integers, determine if any two distinct numbers sum to a specific target value.
 
 **Analysis:**
-*   **Restatement:** Find a pair in a sorted array that equals a target sum.
-*   **Constraints:** Array is sorted. We need a solution better than $O(N^2)$.
-*   **Sub-Problems:** We need to efficiently search for a complement value for each element.
-*   **Pattern Mapping:** The array is sorted, and we are looking for a pair. This immediately triggers **[PAT-06] Converging Two-Pointers**.
-*   **Approach:** Place pointers at the start and end. If the sum is too large, decrement the right pointer. If too small, increment the left. Time $O(N)$, Space $O(1)$.
+
+**Restatement:** Find a pair in a sorted array that equals a target sum.
+
+**Constraints:** Array is sorted. We need a solution better than $O(N^2)$.
+
+**Sub-Problems:** We need to efficiently search for a complement value for each element.
+
+**Pattern Mapping:** The array is sorted, and we are looking for a pair. This immediately triggers **[PAT-06] Converging Two-Pointers**.
+
+**Approach:** Place pointers at the start and end. If the sum is too large, decrement the right pointer. If too small, increment the left. Time $O(N)$, Space $O(1)$.
 
 #### Example 2: First Unique Character
 **Problem:** Find the first non-repeating character in a string and return its index.
 
 **Analysis:**
-*   **Restatement:** Identify the earliest character in a sequence that appears exactly once.
-*   **Sub-Problems:** 1. Count occurrences of all characters. 2. Find the first character with a count of one.
-*   **Pattern Mapping:** Counting occurrences over a finite set (characters) maps to **[PAT-01] Direct Indexing & Frequency Buckets** (or Hash Map).
-*   **Approach:** One pass to populate frequency array. Second pass over the string to check frequencies and return the first index where frequency is 1. Time $O(N)$, Space $O(1)$ (bounded by alphabet size).
+
+**Restatement:** Identify the earliest character in a sequence that appears exactly once.
+
+**Sub-Problems:** 1. Count occurrences of all characters. 2. Find the first character with a count of one.
+
+**Pattern Mapping:** Counting occurrences over a finite set (characters) maps to **[PAT-01] Direct Indexing & Frequency Buckets** (or Hash Map).
+
+**Approach:** One pass to populate frequency array. Second pass over the string to check frequencies and return the first index where frequency is 1. Time $O(N)$, Space $O(1)$ (bounded by alphabet size).
 
 #### Example 3: In-Place Array Rotation
 **Problem:** Rotate an array to the right by $k$ positions, modifying the array in-place.
 
 **Analysis:**
-*   **Restatement:** Shift all elements right by $k$, wrapping around, without using extra $O(N)$ space.
-*   **Sub-Problems:** Shifting elements in-place without a buffer requires structured swaps.
-*   **Pattern Mapping:** Modifying array order in-place often utilizes **[PAT-02] In-Place Mutation & Two-Pointer Compaction**.
-*   **Approach:** Reverse the entire array. Reverse the first $k$ elements. Reverse the remaining $N-k$ elements. Time $O(N)$, Space $O(1)$.
+
+**Restatement:** Shift all elements right by $k$, wrapping around, without using extra $O(N)$ space.
+
+**Sub-Problems:** Shifting elements in-place without a buffer requires structured swaps.
+
+**Pattern Mapping:** Modifying array order in-place often utilizes **[PAT-02] In-Place Mutation & Two-Pointer Compaction**.
+
+**Approach:** Reverse the entire array. Reverse the first $k$ elements. Reverse the remaining $N-k$ elements. Time $O(N)$, Space $O(1)$.
 
 #### Example 4: The Missing Sequence
 **Problem:** Find the missing number in an array containing $n$ distinct numbers taken from the range $0$ to $n$.
 
 **Analysis:**
-*   **Restatement:** Identify the single absent integer in a contiguous sequence.
-*   **Pattern Mapping:** Comparing a sequence to an expected aggregate relies on mathematical invariants (e.g., Gauss's sum formula or XOR accumulation).
-*   **Approach:** Calculate the expected sum using $n(n+1)/2$. Subtract the actual sum of the array. The difference is the missing number. Time $O(N)$, Space $O(1)$.
+
+**Restatement:** Identify the single absent integer in a contiguous sequence.
+
+**Pattern Mapping:** Comparing a sequence to an expected aggregate relies on mathematical invariants (e.g., Gauss's sum formula or XOR accumulation).
+
+**Approach:** Calculate the expected sum using $n(n+1)/2$. Subtract the actual sum of the array. The difference is the missing number. Time $O(N)$, Space $O(1)$.
 
 ### Tier 2: Dual-Pattern Compositions (Assessment Core)
 
@@ -98,99 +112,138 @@ Tier 2 problems are the standard for rigorous technical screens. They cannot be 
 **Problem:** Find the length of the longest substring containing at most $K$ distinct characters.
 
 **Analysis:**
-*   **Restatement:** Find the maximum contiguous subarray length bounded by a character diversity constraint.
-*   **Sub-Problems:** 1. Iterate over all possible contiguous subarrays efficiently. 2. Track the number of distinct characters currently in view.
-*   **Pattern Mapping:** "Longest substring" and "contiguous" strongly imply **[PAT-04] Dynamic Sliding Window (Variable Size)**. "Tracking distinct characters" implies **[PAT-01] Direct Indexing & Frequency Buckets**.
-*   **Approach:** Use a sliding window with a left and right pointer. Expand right, updating a frequency map. If the map size exceeds $K$, increment left, decrementing frequencies until the map size is valid again. Keep track of the maximum window size.
+
+**Restatement:** Find the maximum contiguous subarray length bounded by a character diversity constraint.
+
+**Sub-Problems:** 1. Iterate over all possible contiguous subarrays efficiently. 2. Track the number of distinct characters currently in view.
+
+**Pattern Mapping:** "Longest substring" and "contiguous" strongly imply **[PAT-04] Dynamic Sliding Window (Variable Size)**. "Tracking distinct characters" implies **[PAT-01] Direct Indexing & Frequency Buckets**.
+
+**Approach:** Use a sliding window with a left and right pointer. Expand right, updating a frequency map. If the map size exceeds $K$, increment left, decrementing frequencies until the map size is valid again. Keep track of the maximum window size.
 
 #### Example 2: The Kth Largest
 **Problem:** Find the Kth largest element in an unsorted array efficiently without sorting the entire array.
 
 **Analysis:**
-*   **Restatement:** Locate a specific rank-order element in unsorted data.
-*   **Constraints:** Sorting takes $O(N \log N)$. Can we achieve $O(N)$ average time?
-*   **Sub-Problems:** 1. Partition the array around a pivot. 2. Decide which partition to explore based on the pivot's final index.
-*   **Pattern Mapping:** Partitioning logic maps to QuickSelect, which is a variation of **[PAT-11] Binary Search on Solution Range**, combined with **[PAT-02] In-Place Mutation & Two-Pointer Compaction**. Alternatively, managing the top K elements maps to **[PAT-25] Priority Queue / Min-Max Heap**.
+
+**Restatement:** Locate a specific rank-order element in unsorted data.
+
+**Constraints:** Sorting takes $O(N \log N)$. Can we achieve $O(N)$ average time?
+
+**Sub-Problems:** 1. Partition the array around a pivot. 2. Decide which partition to explore based on the pivot's final index.
+
+**Pattern Mapping:** Partitioning logic maps to QuickSelect, which is a variation of **[PAT-11] Binary Search on Solution Range**, combined with **[PAT-02] In-Place Mutation & Two-Pointer Compaction**. Alternatively, managing the top K elements maps to **[PAT-25] Priority Queue / Min-Max Heap**.
+
 *   **Approach (Heap):** Maintain a Min-Heap of size K. Iterate the array; push elements. If heap exceeds K, pop. The root of the heap is the Kth largest. Time $O(N \log K)$.
 
 #### Example 3: Merging Multiple Streams
 **Problem:** Merge $K$ sorted linked lists into a single sorted linked list.
 
 **Analysis:**
-*   **Restatement:** Combine multiple ordered sequences into one ordered sequence.
-*   **Sub-Problems:** 1. Continuously identify the smallest current element across $K$ heads. 2. Append to a new list and advance the corresponding pointer.
-*   **Pattern Mapping:** Finding the minimum among $K$ dynamic candidates is exactly what a **[PAT-25] Priority Queue / Min-Max Heap** is for. Processing them sequentially visually resembles **[PAT-13] Level-by-Level BFS Wavefront**.
-*   **Approach:** Push the head of each list into a Min-Heap. While heap is not empty, pop the smallest node, append to result, and if the popped node has a `next`, push `next` into the heap.
+
+**Restatement:** Combine multiple ordered sequences into one ordered sequence.
+
+**Sub-Problems:** 1. Continuously identify the smallest current element across $K$ heads. 2. Append to a new list and advance the corresponding pointer.
+
+**Pattern Mapping:** Finding the minimum among $K$ dynamic candidates is exactly what a **[PAT-25] Priority Queue / Min-Max Heap** is for. Processing them sequentially visually resembles **[PAT-13] Level-by-Level BFS Wavefront**.
+
+**Approach:** Push the head of each list into a Min-Heap. While heap is not empty, pop the smallest node, append to result, and if the popped node has a `next`, push `next` into the heap.
 
 #### Example 4: Substring Anagrams
 **Problem:** Given a text and a pattern string, find all starting indices in the text where the substring is an anagram of the pattern.
 
 **Analysis:**
-*   **Restatement:** Find all contiguous subarrays of length $P$ in text that have the exact same character frequencies as the pattern.
-*   **Sub-Problems:** 1. Maintain a rolling view of length $P$. 2. Compare the frequency signature of the view against the pattern's signature.
-*   **Pattern Mapping:** "Rolling view of fixed length" dictates a **[PAT-05] Fixed-Size Monotonic Deque Window** (or simply a fixed-size window approach). "Frequency signature" maps to **[PAT-01] Direct Indexing & Frequency Buckets**.
-*   **Approach:** Compute the target frequency array for the pattern. Use a sliding window of length $P$ over the text, maintaining a rolling frequency array. Compare the arrays at each step. Time $O(N)$.
+
+**Restatement:** Find all contiguous subarrays of length $P$ in text that have the exact same character frequencies as the pattern.
+
+**Sub-Problems:** 1. Maintain a rolling view of length $P$. 2. Compare the frequency signature of the view against the pattern's signature.
+
+**Pattern Mapping:** "Rolling view of fixed length" dictates a **[PAT-05] Fixed-Size Monotonic Deque Window** (or simply a fixed-size window approach). "Frequency signature" maps to **[PAT-01] Direct Indexing & Frequency Buckets**.
+
+**Approach:** Compute the target frequency array for the pattern. Use a sliding window of length $P$ over the text, maintaining a rolling frequency array. Compare the arrays at each step. Time $O(N)$.
 
 #### Example 5: Course Prerequisites
 **Problem:** Given $N$ courses and a list of prerequisite pairs, determine if it is possible to finish all courses.
 
 **Analysis:**
-*   **Restatement:** Detect if a directed graph of dependencies contains any cycles.
-*   **Sub-Problems:** 1. Model the dependencies as a graph. 2. Traverse the graph to ensure all nodes can be visited without encountering back-edges.
-*   **Pattern Mapping:** Dependency resolution strictly maps to **[PAT-16] Topological Sort (Kahn's & DFS)**. The traversal mechanism is inherently Level-by-Level BFS.
-*   **Approach:** Build an adjacency list and an in-degree array. Push nodes with in-degree 0 to a queue. Process BFS, decrementing in-degrees of neighbors. If a neighbor hits 0, queue it. If the count of processed nodes equals $N$, no cycles exist.
+
+**Restatement:** Detect if a directed graph of dependencies contains any cycles.
+
+**Sub-Problems:** 1. Model the dependencies as a graph. 2. Traverse the graph to ensure all nodes can be visited without encountering back-edges.
+
+**Pattern Mapping:** Dependency resolution strictly maps to **[PAT-16] Topological Sort (Kahn's & DFS)**. The traversal mechanism is inherently Level-by-Level BFS.
+
+**Approach:** Build an adjacency list and an in-degree array. Push nodes with in-degree 0 to a queue. Process BFS, decrementing in-degrees of neighbors. If a neighbor hits 0, queue it. If the count of processed nodes equals $N$, no cycles exist.
 
 ### Tier 3: Multi-Pattern Synthesis (Capstone Challenges)
 
-Tier 3 problems represent the apex of algorithmic assessments. These problems require deep architectural insight, combining three or more patterns, or employing a pattern in a highly unconventional manner.
+Tier 3 problems represent the most complex assessment scenarios. These problems require deep architectural insight, combining three or more patterns, or employing a pattern in a highly unconventional manner.
 
 #### Example 1: The Word Ladder
 **Problem:** Given a start word, an end word, and a dictionary, find the length of the shortest transformation sequence from start to end, where only one letter can be changed at a time.
 
 **Analysis:**
-*   **Restatement:** Find the shortest path between two nodes in an unweighted graph where edges represent single-character mutations.
-*   **Pattern Mapping:** "Shortest path in unweighted graph" guarantees **[PAT-13] Level-by-Level BFS Wavefront**. Generating valid edges requires character substitution logic. To optimize, we can use **[PAT-14] Multi-Source BFS Parallel Spreading** or Bidirectional BFS.
-*   **Approach:** Treat words as nodes. For the current word, substitute each character with 'a'-'z' to find valid neighbors in the dictionary. Enqueue valid, unseen neighbors. BFS guarantees the first time we reach the end word is the shortest path.
+
+**Restatement:** Find the shortest path between two nodes in an unweighted graph where edges represent single-character mutations.
+
+**Pattern Mapping:** "Shortest path in unweighted graph" guarantees **[PAT-13] Level-by-Level BFS Wavefront**. Generating valid edges requires character substitution logic. To optimize, we can use **[PAT-14] Multi-Source BFS Parallel Spreading** or Bidirectional BFS.
+
+**Approach:** Treat words as nodes. For the current word, substitute each character with 'a'-'z' to find valid neighbors in the dictionary. Enqueue valid, unseen neighbors. BFS guarantees the first time we reach the end word is the shortest path.
 
 #### Example 2: Trapping Rainwater
 **Problem:** Given an array representing building heights, calculate the total volume of trapped rainwater.
 
 **Analysis:** (As seen in Chapter 2, but expanded)
-*   **Restatement:** Water at index $i$ is $\min(\text{max\_left}, \text{max\_right}) - \text{height}[i]$.
-*   **Pattern Mapping:** We need boundary maximums. This can be solved via **[PAT-03] Prefix Sums & Range Query Invariants** (Time $O(N)$, Space $O(N)$). To optimize space, we synthesize it with **[PAT-06] Converging Two-Pointers** (Time $O(N)$, Space $O(1)$).
+
+**Restatement:** Water at index $i$ is $\min(\text{max\_left}, \text{max\_right}) - \text{height}[i]$.
+
+**Pattern Mapping:** We need boundary maximums. This can be solved via **[PAT-03] Prefix Sums & Range Query Invariants** (Time $O(N)$, Space $O(N)$). To optimize space, we synthesize it with **[PAT-06] Converging Two-Pointers** (Time $O(N)$, Space $O(1)$).
+
 *   **Approach (Two-Pointer):** Maintain `left`, `right`, `left_max`, `right_max`. Move the pointer corresponding to the smaller maximum, safely calculating trapped water as we guarantee the other side is bounded by a larger height.
 
 #### Example 3: Largest Rectangle in Histogram
 **Problem:** Find the area of the largest rectangle that can be formed within a histogram.
 
 **Analysis:**
-*   **Restatement:** For every bar, find the maximum contiguous width where all bars are at least as tall as the current bar. Area = height * width.
-*   **Pattern Mapping:** We need to find the "next smaller element" to the left and right to define the width boundaries. This is the textbook definition of a **[PAT-09] Monotonic Stack ("The Waiting Room")**.
-*   **Approach:** Maintain an increasing monotonic stack of indices. When encountering a shorter bar, pop from the stack. The popped bar is the height. The current index is the right boundary; the new top of the stack is the left boundary. Synthesize with sentinel logic (append a 0 height at the end) to flush the stack efficiently.
+
+**Restatement:** For every bar, find the maximum contiguous width where all bars are at least as tall as the current bar. Area = height * width.
+
+**Pattern Mapping:** We need to find the "next smaller element" to the left and right to define the width boundaries. This is the textbook definition of a **[PAT-09] Monotonic Stack ("The Waiting Room")**.
+
+**Approach:** Maintain an increasing monotonic stack of indices. When encountering a shorter bar, pop from the stack. The popped bar is the height. The current index is the right boundary; the new top of the stack is the left boundary. Synthesize with sentinel logic (append a 0 height at the end) to flush the stack efficiently.
 
 #### Example 4: Minimum Window Substring
 **Problem:** Find the minimum contiguous substring in $S$ that contains all characters of $T$ in any order.
 
 **Analysis:**
-*   **Restatement:** Find the shortest subarray that satisfies a strict subset frequency requirement.
-*   **Pattern Mapping:** "Shortest contiguous substring" → **[PAT-04] Dynamic Sliding Window (Variable Size)**. "Contains all characters" → **[PAT-01] Direct Indexing & Frequency Buckets**. Furthermore, we need a **Convergence Condition** to know when the window is valid without iterating the map every time.
-*   **Approach:** Maintain a `target_map` for $T$ and a `window_map`. Use a `matched_chars` integer to track how many unique characters in $T$ have their frequency met in the window. Expand right. When `matched_chars == target_map.size()`, the window is valid. Record length, then shrink left until it becomes invalid.
+
+**Restatement:** Find the shortest subarray that satisfies a strict subset frequency requirement.
+
+**Pattern Mapping:** "Shortest contiguous substring" → **[PAT-04] Dynamic Sliding Window (Variable Size)**. "Contains all characters" → **[PAT-01] Direct Indexing & Frequency Buckets**. Furthermore, we need a **Convergence Condition** to know when the window is valid without iterating the map every time.
+
+**Approach:** Maintain a `target_map` for $T$ and a `window_map`. Use a `matched_chars` integer to track how many unique characters in $T$ have their frequency met in the window. Expand right. When `matched_chars == target_map.size()`, the window is valid. Record length, then shrink left until it becomes invalid.
 
 #### Example 5: Median of Two Sorted Arrays
 **Problem:** Find the median of two sorted arrays of different lengths in $O(\log(M+N))$ time.
 
 **Analysis:**
-*   **Restatement:** Partition two sorted arrays such that the left halves contain the smaller half of the combined elements, and the right halves contain the larger half.
-*   **Pattern Mapping:** The $O(\log)$ constraint on sorted arrays demands **[PAT-10] Monotonic Partition Binary Search**. We are binary searching the partition index of the smaller array.
-*   **Approach:** Binary search on the smaller array to find partition $X$. The partition $Y$ in the larger array is determined by the total required elements in the left half. Check if `max(left_X, left_Y) <= min(right_X, right_Y)`. If true, median is found. If `left_X > right_Y`, move partition $X$ left.
+
+**Restatement:** Partition two sorted arrays such that the left halves contain the smaller half of the combined elements, and the right halves contain the larger half.
+
+**Pattern Mapping:** The $O(\log)$ constraint on sorted arrays demands **[PAT-10] Monotonic Partition Binary Search**. We are binary searching the partition index of the smaller array.
+
+**Approach:** Binary search on the smaller array to find partition $X$. The partition $Y$ in the larger array is determined by the total required elements in the left half: $Y = \lfloor(M + N + 1) / 2\rfloor - X$. Guard partition boundaries using $\pm\infty$ sentinels (`left_X = (X == 0) ? -∞ : nums1[X-1]`, `right_X = (X == M) ? +∞ : nums1[X]`, and symmetrically for $Y$). Check if $\max(\text{left}_X, \text{left}_Y) \le \min(\text{right}_X, \text{right}_Y)$. If true, the median is found; if $\text{left}_X > \text{right}_Y$, shift partition $X$ left.
 
 #### Example 6: Bursting Balloons
 **Problem:** Given $N$ balloons with values, bursting balloon $i$ yields `nums[i-1] * nums[i] * nums[i+1]` coins. Find the maximum coins obtainable by bursting all balloons.
 
 **Analysis:**
-*   **Restatement:** Find the optimal sequence of dependent operations that maximizes a cumulative score.
-*   **Pattern Mapping:** The outcome of bursting a balloon depends on which balloons are left. This is overlapping subproblems typically solved using **[PAT-21] 2D Grid Path Optimization** concepts adapted for intervals (Interval DP). The synthesis secret here is **Reverse Thinking**: instead of choosing which balloon to burst first, choose which balloon to burst *last* in the interval.
-*   **Approach:** DP state: $dp[i][j]$ is max coins obtained from bursting balloons between index $i$ and $j$ exclusive. Iterate over interval lengths, then start points. For each interval, guess which balloon $k$ is the *last* to burst. Transition: $dp[i][j] = \max(dp[i][j], dp[i][k] + dp[k][j] + \text{nums}[i] \times \text{nums}[k] \times \text{nums}[j])$.
+
+**Restatement:** Find the optimal sequence of dependent operations that maximizes a cumulative score.
+
+**Pattern Mapping:** The outcome of bursting a balloon depends on which balloons are left. This is overlapping subproblems typically solved using **[PAT-21] 2D Grid Path Optimization** concepts adapted for intervals (Interval DP). The core analytical insight here is **Reverse Order Formulation**: instead of choosing which balloon to burst first, choose which balloon to burst *last* in the interval.
+
+**Approach:** DP state: $dp[i][j]$ is max coins obtained from bursting balloons between index $i$ and $j$ exclusive. Iterate over interval lengths, then start points. For each interval, guess which balloon $k$ is the *last* to burst. Transition: $dp[i][j] = \max(dp[i][j], dp[i][k] + dp[k][j] + \text{nums}[i] \times \text{nums}[k] \times \text{nums}[j])$.
 
 ## The Pattern Recognition Decision Tree (Expanded)
 
@@ -242,7 +295,7 @@ To facilitate rapid decomposition during an assessment, utilize this expanded di
 
 Even with a structured framework, engineers often fall victim to specific decomposition anti-patterns under pressure. Be vigilant against these errors:
 
-*   **Jumping to Code Without Analysis:** The most fatal error. Writing code before the canvas is complete leads to structural dead-ends and unrecoverable bugs.
+*   **Jumping to Code Without Analysis:** The primary operational error. Writing code before the canvas is complete leads to structural dead-ends and unrecoverable bugs.
 *   **Over-Decomposing:** Breaking a simple problem into too many abstract layers. If a sub-problem requires only three lines of logic, it does not need a helper function or a complex object model. Keep it localized.
 *   **Pattern Forcing:** Attempting to forcefully map a problem to a familiar pattern (e.g., trying to use Dynamic Programming when a simple Greedy approach works). Let the constraints dictate the pattern, not your preference.
 *   **Ignoring Constraints:** Designing an elegant $O(N^2)$ solution when $N = 10^5$. Always validate your target complexity against the input constraints *before* committing to a pattern.

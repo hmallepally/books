@@ -2,11 +2,13 @@
 
 This chapter covers Medium-tier of the General Coding Assessments (Medium difficulty, ~15 minutes target time). Medium-tier tests multidimensional array processing, grid boundary control, BFS/DFS flood fill, and step-by-step state machine simulation.
 
+> **From 1D to 2D:** The pointer patterns from Chapter 10 (Read/Write, Two-Pointer) extend naturally to grids — a spiral traversal uses four boundary pointers (`top`, `bottom`, `left`, `right`) that contract inward, just like a Two-Pointer convergence in 1D. Before writing traversal code, define your *boundary invariant* (Chapter 1): "all cells within the current boundary are unvisited."
+
 ## Essential Terminology & Vocabulary
 
 *   **Row-Major vs Column-Major layout**: Row-major layout stores 2D arrays row by row in memory (used in Java, C/C++), while column-major stores them column by column (Fortran, MATLAB). In Java, `matrix[r][c]` means row `r`, column `c`. Traversing row-major arrays by row is cache-friendly and faster.
 *   **In-Place Matrix Transposition**: The process of flipping a matrix over its main diagonal without allocating a new matrix. Mathematical formula: $A^T[i][j] = A[j][i]$. For an $N \times N$ matrix, iterate `i` from 0 to N-1 and `j` from `i+1` to N-1, swapping `matrix[i][j]` and `matrix[j][i]`.
-*   **90-Degree Clockwise/Counter-Clockwise Rotation Theorem**: Rotating a grid 90° can be done with two simpler operations. Clockwise: Transpose the matrix, then reverse each row. Counter-Clockwise: Transpose the matrix, then reverse each column.
+*   **90-Degree Clockwise/Counter-Clockwise Rotation Theorem**: Rotating a grid 90° is achieved via two sequential operations. Clockwise: Transpose the matrix, then reverse each row. Counter-Clockwise: Transpose the matrix, then reverse each column.
 *   **Spiral Matrix Boundary Contraction**: A traversal technique using four pointer boundaries (`top`, `bottom`, `left`, `right`). We traverse the perimeter, then shrink the boundaries (e.g., `top++`, `right--`) and repeat until the boundaries overlap.
 *   **Coordinate Direction Vectors**: Pre-defined arrays to cleanly iterate through grid neighbors. Standard 4-directional setup: `int[] dr = {-1, 1, 0, 0}; int[] dc = {0, 0, -1, 1};`. This prevents writing four repetitive `if` statements for North, South, West, East.
 *   **Flood Fill / BFS vs DFS on grids**: Techniques to traverse connected components in a matrix. DFS uses recursion (call stack) to go deep, which is easier to write but can cause stack overflow on massive grids. BFS uses a `Queue` to process level-by-level, ideal for shortest path calculations.
@@ -433,7 +435,7 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(1)$
 
 **Pattern:** Matrix Traversal Property.
 
-**Explanation:** Simply check every cell `matrix[i][j]` against its top-left neighbor `matrix[i-1][j-1]`. If they mismatch, return false.
+**Explanation:** Check every cell `matrix[i][j]` against its top-left neighbor `matrix[i-1][j-1]`. If they mismatch, return false.
 
 ```java
 public boolean isToeplitzMatrix(int[][] matrix) {
@@ -866,7 +868,7 @@ Time: $\mathcal{O}(M \times N)$ | Space: $\mathcal{O}(M \times N)$
 
 **Pattern:** Top-Left Identifier Traversal.
 
-**Explanation:** Instead of a full DFS, just count the "top-left" cell of every battleship. A cell is a top-left if it is 'X' and has no 'X' above or to the left of it.
+**Explanation:** Instead of a full DFS, count only the top-left cell of every battleship. A cell is a top-left if it is 'X' and has no 'X' above or to the left of it.
 
 ```java
 public int countBattleships(char[][] board) {
@@ -1273,12 +1275,12 @@ Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M
     *Constraints*: $M, N \le 100$.
     **Strategic Hint:** Staircase search. Start at bottom-left or top-right and eliminate rows/columns.
 
-**18. Build Matrix with Conditions**
-    **Specification:** Build a $K \times K$ matrix with numbers 1 to $K$. Given row condition array and column condition array representing relative ordering (like $u$ must appear before $v$).
+**18. Diagonal Traverse (Zig-Zag Grid Scan)**
+    **Specification:** Given an $M \times N$ matrix, return all elements of the matrix in diagonal order, alternating upward-right and downward-left diagonals.
 
-**Example:** Input: `K=3, rowConditions=[[1,2]], colConditions=[[2,1]]`. Output: valid placement grid.
-    *Constraints*: $K \le 400$.
-    **Strategic Hint:** Topological Sort. Apply Kahn's Algorithm independently for rows and columns to find the exact coordinate for each number.
+**Example:** Input: `[[1,2,3],[4,5,6],[7,8,9]]`. Output: `[1,2,4,7,5,3,6,8,9]`.
+    *Constraints*: $M, N \le 500$.
+    **Strategic Hint:** Group elements by diagonal sum index `k = r + c` (where $0 \le k < M + N - 1$). For even $k$, traverse bottom-to-top; for odd $k$, traverse top-to-bottom.
 
 **19. Determine Matrix is Magic Square**
     **Specification:** Given a $3 \times 3$ grid of integers, determine if it is a magic square (distinct numbers 1-9, rows/cols/diagonals sum to 15).
@@ -1322,12 +1324,12 @@ Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M
     *Constraints*: Standard $3 \times 3$ grid.
     **Strategic Hint:** Maintain arrays `rows[3]`, `cols[3]`, `diag`, `anti_diag`. Player A adds 1, B adds -1. Check for sum == 3 or -3.
 
-**25. Maximal Square**
-    **Specification:** Find the largest square submatrix containing only 1s and return its area.
+**25. Surrounded Regions (Boundary Flood Fill)**
+    **Specification:** Given an $M \times N$ matrix containing `'X'` and `'O'`, capture all regions that are completely surrounded by `'X'`. An `'O'` is not surrounded if it connects to the four grid boundaries.
 
-**Example:** Input: `[[1,1],[1,1]]`. Output: `4`.
-    *Constraints*: $M, N \le 300$.
-    **Strategic Hint:** DP. `dp[i][j] = min(dp[i-1][j-1], dp[i][j-1], dp[i-1][j]) + 1` if cell is '1'.
+**Example:** Input: `[["X","X","X"],["X","O","X"],["X","X","X"]]`. Output: `[["X","X","X"],["X","X","X"],["X","X","X"]]`.
+    *Constraints*: $M, N \le 200$.
+    **Strategic Hint:** Reverse boundary flood fill. Traverse the 4 outer borders; whenever an `'O'` is found, run DFS/BFS marking connected `'O'`s as safe `'S'`. Finally, turn all remaining `'O'`s to `'X'` and restore `'S'` back to `'O'`.
 
 **26. Bomb Enemy**
     **Specification:** Grid with '0' (empty), 'E' (enemy), 'W' (wall). Place a bomb at an empty cell to kill max enemies in its row/col until a wall is hit.

@@ -71,8 +71,8 @@ def build_edition(lang):
 
     # Clean and recreate editions directory
     if os.path.exists(os.path.join(base_dir, 'editions', lang)):
-        shutil.rmtree(os.path.join(base_dir, 'editions', lang))
-    os.makedirs(editions_dir)
+        shutil.rmtree(os.path.join(base_dir, 'editions', lang), ignore_errors=True)
+    os.makedirs(editions_dir, exist_ok=True)
 
     chapter_folders = sorted([f for f in os.listdir(chapters_dir) if os.path.isdir(os.path.join(chapters_dir, f))])
 
@@ -106,7 +106,7 @@ def build_edition(lang):
         chapter_visuals_src = os.path.join(chapter_path, 'visuals')
         chapter_visuals_dst = os.path.join(dest_folder, 'visuals')
         if os.path.exists(chapter_visuals_src):
-            shutil.copytree(chapter_visuals_src, chapter_visuals_dst)
+            shutil.copytree(chapter_visuals_src, chapter_visuals_dst, dirs_exist_ok=True)
 
         with open(os.path.join(dest_folder, 'chapter.md'), 'w', encoding='utf-8') as f:
             f.write(content)

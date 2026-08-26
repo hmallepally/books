@@ -12,7 +12,7 @@ class LedgerAccount:
         self.currency = currency
         self._balance = initial_balance
         self.overdraft_limit = overdraft_limit
-        self._lock = threading.Lock()
+        self._lock = threading.RLock()
 
     @property
     def balance(self) -> Decimal:

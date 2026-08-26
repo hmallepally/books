@@ -1,8 +1,16 @@
 # Hard-tier Mastery — Algorithmic Optimization: Binary Search Variants, Monotonic Structures, Dynamic Programming, and Graph Algorithms
 
-This chapter covers Hard-tier of the General Coding Assessments (Hard difficulty, ~25 minutes target time). Hard-tier is the most challenging question testing optimal $\mathcal{O}(\log N)$ or $\mathcal{O}(N)$ solutions, DP state transitions, and graph algorithms.
+This chapter covers the Hard-tier of technical coding assessments (Hard difficulty, ~25 minutes target time). Hard-tier questions test optimal $\mathcal{O}(\log N)$ or $\mathcal{O}(N)$ solutions, DP state transitions, and graph traversal invariants. To eliminate cognitive overload, this masterclass is scaffolded into three distinct, self-contained modules:
+
+1. **Module 1: Advanced Search & Monotonic Structures** — Parametric Binary Search on answer spaces, Rotated Array partitions, and Monotonic Stacks/Deques for $\mathcal{O}(1)$ amortized range tracking.
+2. **Module 2: Dynamic Programming Paradigms** — 1D/2D Tabulation, Interval DP, 0/1 & Unbounded Knapsack, and state space compression from $\mathcal{O}(N \cdot M)$ to $\mathcal{O}(M)$ or $\mathcal{O}(1)$.
+3. **Module 3: Advanced Graph Theory & State Machines** — Topological Sort (Kahn's DAG ordering), Dijkstra's shortest path, Disjoint Set Union (Union-Find), and composite LRU Cache architecture.
+
+> **The Optimization Leap:** Easy and Medium problems test whether you can solve the problem at all. Hard problems test whether you can solve it *optimally*. The key insight: every binary search requires a *monotonic predicate* — a boolean function that flips exactly once across the search space. Every DP solution requires a *state transition invariant* — a recurrence relation where the optimal solution at state $i$ depends only on previously computed states. Define these invariants (Chapter 1) before writing code, and the Hard-tier problems become structured rather than intimidating.
 
 ## Essential Terminology & Vocabulary
+
+### Module 1: Search & Monotonic Vocabulary
 
 ### Rotated Sorted Array & Monotonic Partition Invariant
 
@@ -91,16 +99,25 @@ Let's trace searching for `target = 0`:
   - **Return index `4`!** (Exact $\mathcal{O}(\log N)$ solution reached in 3 steps).
 
 ### Binary Search on Answer Space (Parametric Binary Search)
-**Definition:** A technique where we search for an optimal value (the "answer") within a known range `[low, high]` instead of searching for a specific element in an array. We use a monotonic predicate function (e.g., `canFulfill(mid)`) to determine whether a given value `mid` is feasible. 
+
+**Definition:** A technique where we search for an optimal value (the "answer") within a known range `[low, high]` instead of searching for a specific element in an array. We use a monotonic predicate function (e.g., `canFulfill(mid)`) to determine whether a given value `mid` is feasible.
+
 **Why it matters:** It transforms optimization problems (e.g., "find the minimum capacity") into a series of simpler decision problems (e.g., "is capacity X sufficient?"), enabling $\mathcal{O}(N \log(\max - \min))$ solutions.
+
 **When to use:** When the answer space is bounded, the feasibility function is monotonic (if $x$ is valid, $x+1$ is also valid, or vice versa), and calculating feasibility takes linear time $\mathcal{O}(N)$.
 
 ### Monotonic Stack & Deque
-**Definition:** A stack or double-ended queue (deque) where elements are maintained in strictly increasing or strictly decreasing order. 
+
+**Definition:** A stack or double-ended queue (deque) where elements are maintained in strictly increasing or strictly decreasing order.
+
 **Why it matters:** It provides $\mathcal{O}(1)$ amortized time complexity for range maximum/minimum lookups or finding the "next greater element". Elements are pushed and popped at most once.
+
 **When to use:** Finding the next greater/smaller element, sliding window maximum/minimum, and calculating histogram areas.
 
+### Module 2: Dynamic Programming Vocabulary
+
 ### Dynamic Programming State Transition (1D, 2D, Interval DP)
+
 **Definition:** The mathematical rule or formula that relates the solution of a larger problem to its smaller overlapping subproblems. 
 
 - **1D DP:** The state depends on a single variable (e.g., index `i`). Transition: `dp[i] = dp[i-1] + dp[i-2]`.
@@ -110,6 +127,7 @@ Let's trace searching for `target = 0`:
 **Why it matters:** Properly defining the state and transition is the core of any DP solution. It turns exponential $\mathcal{O}(2^N)$ backtracking into polynomial time $\mathcal{O}(N)$ or $\mathcal{O}(N^2)$ solutions.
 
 ### Memoization vs Tabulation
+
 **Definition:** The two primary methods for implementing Dynamic Programming.
 
 | Feature | Memoization (Top-Down) | Tabulation (Bottom-Up) |
@@ -120,6 +138,7 @@ Let's trace searching for `target = 0`:
 | **When to use** | When not all subproblems need to be evaluated. | When all subproblems will definitely be evaluated. |
 
 ### Knapsack Variants
+
 **Definition:** A family of combinatorial optimization problems involving packing items into a capacity-constrained space to maximize value.
 
 - **0/1 Knapsack:** Each item can be chosen at most once. Transition relies on picking or skipping: `dp[i][w] = max(dp[i-1][w], dp[i-1][w-weight[i]] + value[i])`.
@@ -128,24 +147,38 @@ Let's trace searching for `target = 0`:
 
 **Why it matters:** They form the basis for numerous resource allocation and subset combination problems in technical interviews.
 
+### Module 3: Graph Theory & State Machines Vocabulary
+
 ### Topological Sort
+
 **Definition:** A linear ordering of vertices in a Directed Acyclic Graph (DAG) such that for every directed edge $U \rightarrow V$, vertex $U$ comes before $V$ in the ordering.
+
 **Why it matters:** Kahn's Algorithm (using an in-degree array and queue) processes dependencies efficiently in $\mathcal{O}(V + E)$ time.
+
 **When to use:** Task scheduling, resolving prerequisites (like courses or build systems), finding dependency cycles.
 
 ### BFS Shortest Path
+
 **Definition:** Breadth-First Search traversal to find the shortest path in an **unweighted** graph. It processes nodes level-by-level using a Queue.
-**Why it matters:** It guarantees that the first time a target node is reached, it is via the shortest possible path (fewest edges). 
+
+**Why it matters:** It guarantees that the first time a target node is reached, it is via the shortest possible path (fewest edges).
+
 **When to use:** Shortest path on grids or unweighted graphs, state transitions requiring fewest moves (like word ladders or minimum jumps).
 
 ### Two-pointer
-**Definition:** Using two indices (usually `left` and `right`) to traverse a sequence simultaneously. 
+
+**Definition:** Using two indices (usually `left` and `right`) to traverse a sequence simultaneously.
+
 **Why it matters:** It optimally narrows down search spaces without requiring extra memory, often reducing $\mathcal{O}(N^2)$ to $\mathcal{O}(N)$.
+
 **When to use:** Finding pairs in sorted arrays, bounding areas (like trapping rain water or container with most water), and cycle detection.
 
 ### Greedy
+
 **Definition:** Making the locally optimal choice at each step with the hope that these local choices lead to a globally optimal solution.
+
 **Why it matters:** When a greedy choice property can be proven (e.g., via contradiction or exchange arguments), the algorithm is extremely fast and space-efficient.
+
 **When to use:** Interval scheduling, jump games, Huffman coding, minimum spanning trees.
 
 ### DP State Compression
@@ -181,8 +214,6 @@ This refers to identifying when a problem's state perfectly maps to the linear r
 Why it matters: Problems like climbing stairs, decode ways, and tiling can be instantly recognized and compressed to O(1) space.
 
 ![DP State Transition — Climbing Stairs with Space Optimization](visuals/dp_climbing_stairs.png){width=85%}
-
-* * *
 
 ## Reusable Code Templates
 
@@ -287,9 +318,10 @@ def topological_sort(self, num_nodes: int, edges: list[list[int]]) -> list[int]:
     return order if len(order) == num_nodes else [] # Empty if cycle exists
 ```
 
-* * *
 
 ## Solved Exemplar Problems
+
+### Module 1 Exemplars: Search & Monotonic Structures
 
 **1. Search in Rotated Sorted Array**
 **Difficulty Classification:** This problem is classified as Medium on all major assessment platforms. It appears in this chapter because it demonstrates the advanced application of the Binary Search pattern **[PAT-10] Monotonic Partition Binary Search** with a modified invariant. For assessment preparation, treat this as a medium-tier warm-up before tackling the harder DP and graph problems in this chapter.
@@ -326,6 +358,7 @@ def search(self, nums: list[int], target: int) -> int:
 # Time Complexity: O(log N)
 # Space Complexity: O(1)
 ```
+
 
 * * *
 
@@ -366,6 +399,7 @@ def max_sliding_window(self, nums: list[int], k: int) -> list[int]:
 # Space Complexity: O(K) for the deque
 ```
 
+
 * * *
 
 **3. Longest Common Subsequence**
@@ -388,14 +422,25 @@ def max_sliding_window(self, nums: list[int], k: int) -> list[int]:
 | **""** | 0 | 0 | 0 | 0 | 0 |
 | **C** | 0 | **1** ↖ | 1 ← | 1 ← | 1 ← |
 | **A** | 0 | 1 ↑ | **2** ↖ | 2 ← | 2 ← |
-| **T** | 0 | 1 ↑ | 2 ↑ | 2 ↑ | **3** ↖ |
+> - A **substring** must be contiguous: `"bcd"` is a substring of `"abcde"`.
+> - A **subsequence** does NOT need to be contiguous, but MUST maintain relative order: `"ace"` is a subsequence of `"abcde"`.
+> 
+> *Rule of thumb:* Substring problems use **Sliding Window** (Chapter 12). Subsequence problems use **2D Dynamic Programming** (this chapter).
 
-- ↖ (diagonal + 1): Characters **match** — extend the LCS we had before both characters.
-- ← or ↑ (max of left/above): Characters **don't match** — carry forward the best LCS from skipping one character.
+![Longest Common Subsequence — 2D DP Table](visuals/lcs_dp_table.png){width=85%}
 
-The bold diagonal cells show: C matches C (1), A matches A (2), T matches T (3). The "R" in "CART" is simply skipped. **LCS = "CAT", length 3.**
+**Trace-Through (`text1 = "abcde"`, `text2 = "ace"`):**
 
-**Explanation:** `dp[i][j]` represents the LCS of the prefixes of length `i` and `j`. If characters match, we add 1 to the result of `dp[i-1][j-1]`. If not, we take the max of skipping a character in either string.
+| `dp[i][j]` | `""` (0) | `'a'` (1) | `'c'` (2) | `'e'` (3) | Transition Note |
+|:---:|:---:|:---:|:---:|:---:|:---|
+| **`""` (0)** | 0 | 0 | 0 | 0 | Base case: empty string LCS = 0 |
+| **`'a'` (1)** | 0 | **1** | 1 | 1 | Match `'a'=='a'`: `1 + dp[0][0] = 1` |
+| **`'b'` (2)** | 0 | 1 | 1 | 1 | No match: `max(dp[1][1], dp[2][0]) = 1` |
+| **`'c'` (3)** | 0 | 1 | **2** | 2 | Match `'c'=='c'`: `1 + dp[2][1] = 2` |
+| **`'d'` (4)** | 0 | 1 | 2 | 2 | No match: `max(dp[3][2], dp[4][1]) = 2` |
+| **`'e'` (5)** | 0 | 1 | 2 | **3** | Match `'e'=='e'`: `1 + dp[4][2] = 3` ✅ |
+
+**Explanation:** We use a 2D array where `dp[i][j]` is the LCS length of prefixes `text1[0..i-1]` and `text2[0..j-1]`. If `text1[i-1] == text2[j-1]`, we add 1 to the diagonal; otherwise, we take the max of top and left neighbors.
 
 ```python
 def longest_common_subsequence(self, text1: str, text2: str) -> int:
@@ -418,6 +463,7 @@ def longest_common_subsequence(self, text1: str, text2: str) -> int:
 # Space Complexity: O(min(M, N)) - Space compressed DP as taught in the vocabulary section.
 ```
 
+
 * * *
 
 **4. Burst Balloons**
@@ -429,16 +475,16 @@ def longest_common_subsequence(self, text1: str, text2: str) -> int:
 
 **Pattern:** Interval DP
 
-> ⚠️ **The Key Trick: Think BACKWARDS**
+> ⚠️ **Core Strategy: Reverse Order Formulation (Last Burst Balloon)**
 >
-> The natural instinct is to simulate bursting balloons left-to-right, but that creates dependency chaos — bursting balloon `i` changes the neighbors of balloon `i+1`. Instead, ask: **"Which balloon do I burst LAST?"** If balloon `k` is the *last* to burst in interval `(i, j)`, then at that moment only `arr[i]` and `arr[j]` remain as its neighbors. This makes the left and right subproblems *independent*.
+> The natural instinct is to simulate bursting balloons left-to-right, but that introduces variable neighbor dependencies — bursting balloon `i` changes the adjacent neighbors of balloon `i+1`. Instead, determine **which balloon is burst LAST** in the interval `(i, j)`. If balloon `k` is the *last* to burst in interval `(i, j)`, then at that moment only `arr[i]` and `arr[j]` remain as its neighbors. This makes the left and right subproblems *independent*.
 
 ![Burst Balloons — Think Backwards](visuals/burst_balloons_trace.png){width=85%}
 
 **Trace-Through:** For `nums = [3, 1, 5, 8]`, we pad with 1s: `arr = [1, 3, 1, 5, 8, 1]`.
 
 - **Interval length 1** (single balloons): burst `3` alone → `1×3×1 = 3`. Burst `1` alone → `3×1×5 = 15`. Burst `5` alone → `1×5×8 = 40`. Burst `8` alone → `5×8×1 = 40`.
-- **Interval length 2** (pairs): Try each as the *last* to burst. E.g., for `(3,1)`: if `3` is last → `1×3×5 + dp[1][2] = 15 + 15 = 30`. If `1` is last → `1×1×5 + dp[0][1] = 5 + 3 = 8`. Best = `30`.
+- **Interval length 2** (pairs bounded by $i=0, j=3$): Try each as the *last* to burst. E.g., for `(3,1)`: if `3` is last → `1×3×5 + dp[1][3] = 15 + 15 = 30`. If `1` is last → `1×1×5 + dp[0][2] = 5 + 3 = 8`. Best = `30`.
 - **Build up** to the full interval `dp[0][5]` = `167`.
 
 The three nested loops enumerate: interval length → starting position → which balloon is last.
@@ -465,6 +511,7 @@ def max_coins(self, nums: list[int]) -> int:
 # Time Complexity: O(N^3)
 # Space Complexity: O(N^2)
 ```
+
 
 * * *
 
@@ -495,6 +542,7 @@ def max_product(self, nums: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 
 * * *
 
@@ -538,6 +586,7 @@ def find_median_sorted_arrays(self, A: list[int], B: list[int]) -> float:
 # Space Complexity: O(1)
 ```
 
+
 * * *
 
 **7. Trapping Rain Water**
@@ -570,6 +619,7 @@ def trap(self, height: list[int]) -> int:
 # Space Complexity: O(1)
 ```
 
+
 * * *
 
 **8. Daily Temperatures**
@@ -599,6 +649,7 @@ def daily_temperatures(self, temperatures: list[int]) -> list[int]:
 # Time Complexity: O(N)
 # Space Complexity: O(N)
 ```
+
 
 * * *
 
@@ -656,7 +707,8 @@ def min_distance(self, word1: str, word2: str) -> int:
 # Space Complexity: O(M * N)
 ```
 
-* * *
+
+### Module 3 Exemplars: Graph Theory & State Machines
 
 **10. LRU Cache**
 **Specification:** Design a cache with Least Recently Used eviction policy supporting `get` and `put` in $\mathcal{O}(1)$ time.
@@ -709,7 +761,11 @@ class LRUCache:
 
     def put(self, key: int, value: int) -> None:
         if key in self.cache:
-            self._remove(self.cache[key])
+            node = self.cache[key]
+            node.val = value
+            self._remove(node)
+            self._insert(node)
+            return
         if len(self.cache) == self.capacity:
             lru = self.tail.prev
             self._remove(lru)
@@ -731,6 +787,7 @@ class LRUCache:
 # Time Complexity: O(1) for both get and put
 # Space Complexity: O(Capacity)
 ```
+
 
 * * *
 
@@ -810,6 +867,7 @@ def _max_histogram(self, heights: list[int]) -> int:
 # Space Complexity: O(C)
 ```
 
+
 * * *
 
 **12. Word Ladder**
@@ -848,6 +906,7 @@ def ladder_length(self, begin_word: str, end_word: str, word_list: list[str]) ->
 # Space Complexity: O(M * N)
 ```
 
+
 * * *
 
 **13. Coin Change**
@@ -873,6 +932,7 @@ def coin_change(self, coins: list[int], amount: int) -> int:
 # Time Complexity: O(Amount * N)
 # Space Complexity: O(Amount)
 ```
+
 
 * * *
 
@@ -900,6 +960,7 @@ def rob(self, nums: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 
 * * *
 
@@ -936,6 +997,7 @@ def is_match(self, s: str, p: str) -> bool:
 # Time Complexity: O(M * N)
 # Space Complexity: O(M * N)
 ```
+
 
 * * *
 
@@ -974,6 +1036,7 @@ def find_order(self, num_courses: int, prerequisites: list[list[int]]) -> list[i
 # Space Complexity: O(V + E)
 ```
 
+
 * * *
 
 **17. Partition Equal Subset Sum**
@@ -1003,6 +1066,7 @@ def can_partition(self, nums: list[int]) -> bool:
 # Time Complexity: O(N * Target)
 # Space Complexity: O(Target)
 ```
+
 
 * * *
 
@@ -1036,6 +1100,7 @@ def num_decodings(self, s: str) -> int:
 # Space Complexity: O(N) which can be optimized to O(1)
 ```
 
+
 * * *
 
 **19. Stock Span**
@@ -1063,6 +1128,7 @@ class StockSpanner:
 # Space Complexity: O(N)
 ```
 
+
 * * *
 
 **20. Longest Increasing Subsequence**
@@ -1072,7 +1138,7 @@ class StockSpanner:
 
 **Pattern:** DP + Binary Search
 
-**Explanation:** We maintain an array `tails` where `tails[i]` stores the smallest tail of all increasing subsequences of length `i+1`. We binary search the position to update in `tails`.
+**Explanation:** Maintain an array `tails` where `tails[i]` stores the smallest tail value among all strictly increasing subsequences of length `i+1` found so far. The `tails` array is guaranteed to be strictly sorted. For each element `x` in `nums`, binary search for its insertion position in `tails`. If `x` is larger than all elements in `tails`, append it (extending the max LIS length by 1). Otherwise, replace the smallest tail >= x with `x`.
 
 ```python
 def length_of_lis(self, nums: list[int]) -> int:
@@ -1092,6 +1158,7 @@ def length_of_lis(self, nums: list[int]) -> int:
 # Time Complexity: O(N log N)
 # Space Complexity: O(N)
 ```
+
 
 * * *
 
@@ -1114,6 +1181,7 @@ def find_min(self, nums: list[int]) -> int:
 # Time Complexity: O(log N)
 # Space Complexity: O(1)
 ```
+
 
 * * *
 
@@ -1149,6 +1217,7 @@ def _count_less_equal(self, matrix: list[list[int]], target: int) -> int:
 # Space Complexity: O(1)
 ```
 
+
 * * *
 
 **23. Jump Game II**
@@ -1171,6 +1240,7 @@ def jump(self, nums: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 
 * * *
 
@@ -1195,6 +1265,7 @@ def unique_paths(self, m: int, n: int) -> int:
 # Space Complexity: O(M * N) (can be optimized to O(N))
 ```
 
+
 * * *
 
 **25. Maximum Subarray / Kadane's Algorithm**
@@ -1215,6 +1286,7 @@ def max_sub_array(self, nums: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 
 * * *
 
@@ -1237,6 +1309,7 @@ def climb_stairs(self, n: int) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(1)
 ```
+
 
 * * *
 
@@ -1264,6 +1337,7 @@ def largest_rectangle_area(self, heights: list[int]) -> int:
 # Time Complexity: O(N)
 # Space Complexity: O(N)
 ```
+
 
 * * *
 
@@ -1306,6 +1380,7 @@ def merge_k_lists(self, lists: list[ListNode]) -> ListNode:
 # Space Complexity: O(K)
 ```
 
+
 * * *
 
 **29. Longest Valid Parentheses**
@@ -1332,6 +1407,7 @@ def longest_valid_parentheses(self, s: str) -> int:
 # Space Complexity: O(N)
 ```
 
+
 * * *
 
 **30. Container With Most Water**
@@ -1357,9 +1433,10 @@ def max_area(self, height: list[int]) -> int:
 # Space Complexity: O(1)
 ```
 
-* * *
 
 ## Practice Problem Bank
+
+### Module 1 Practice: Search & Monotonic Structures
 
 **31. Capacity To Ship Packages Within D Days**
 **Specification:** A conveyor belt has packages that must be shipped in D days. The i-th package has weight `weights[i]`. Each day, you load the ship with packages in the order given up to the ship's max weight capacity. Return the least weight capacity of the ship.
@@ -1406,6 +1483,8 @@ def max_area(self, height: list[int]) -> int:
 
 **Strategic Hint:** Use Binary Search on Answer Space with bounds `[1, max(piles)]`.
 
+### Module 2 Practice: Dynamic Programming Paradigms
+
 **36. Palindrome Partitioning II**
 **Specification:** Given a string, partition it such that every substring is a palindrome. Return the minimum cuts needed.
 
@@ -1413,73 +1492,73 @@ def max_area(self, height: list[int]) -> int:
 
 **Constraints:** `1 <= s.length <= 2000`
 
-**Strategic Hint:** 1D DP where `dp[i]` is min cuts for suffix `s[i..n]`. Expand from centers to find palindromes.
+**Strategic Hint:** 1D DP where `cuts[i]` is min cuts for `s[0..i]`, combined with 2D palindrome expansion table.
 
 **37. Search a 2D Matrix**
-**Specification:** Write an efficient algorithm that searches for a value in an `m x n` matrix. Each row is sorted from left to right, and the first integer of each row is greater than the last integer of the previous row.
+**Specification:** An $M \times N$ matrix sorted row-wise and first integer of each row is greater than last of previous. Search for `target`.
 
 **Example:** `matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3` $\rightarrow$ output `true`.
 
-**Constraints:** `m == matrix.length, n == matrix[i].length, 1 <= m, n <= 100`
+**Constraints:** `1 <= m, n <= 100`
 
-**Strategic Hint:** Treat the 2D matrix as a flat 1D array and use standard Binary Search.
+**Strategic Hint:** Treat the matrix as a 1D sorted array of length `M * N`. Index mapping: `row = mid / N, col = mid % N`.
 
 **38. Minimum Path Sum**
-**Specification:** Given a `m x n` grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.
+**Specification:** Find a path from top left to bottom right which minimizes the sum of all numbers along its path. You can only move down or right.
 
 **Example:** `grid = [[1,3,1],[1,5,1],[4,2,1]]` $\rightarrow$ output `7`.
 
 **Constraints:** `1 <= m, n <= 200`
 
-**Strategic Hint:** 2D DP modifying the grid in-place: `grid[i][j] += min(grid[i-1][j], grid[i][j-1])`.
+**Strategic Hint:** 2D DP `dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])` with state compression to 1D `dp[j]`.
 
 **39. Perfect Squares**
-**Specification:** Given an integer `n`, return the least number of perfect square numbers that sum to `n`.
+**Specification:** Return the least number of perfect square numbers that sum to `N`.
 
-**Example:** `n = 12` $\rightarrow$ output `3` (4 + 4 + 4).
+**Example:** `n = 12` $\rightarrow$ output `3` ($4 + 4 + 4$).
 
 **Constraints:** `1 <= n <= 10^4`
 
-**Strategic Hint:** 1D DP similar to Coin Change where coins are perfect squares up to `sqrt(n)`.
+**Strategic Hint:** 1D DP / Unbounded Knapsack: `dp[i] = min(dp[i - j*j] + 1)` for all `j*j <= i`.
 
 **40. Combination Sum IV**
-**Specification:** Given an array of distinct integers and a target, return the number of possible combinations that add up to target.
+**Specification:** Given an array of distinct integers and a target integer, return the number of possible combinations that add up to target.
 
 **Example:** `nums = [1,2,3], target = 4` $\rightarrow$ output `7`.
 
-**Constraints:** `1 <= nums.length <= 200`
+**Constraints:** `1 <= nums.length <= 200, 1 <= target <= 1000`
 
-**Strategic Hint:** 1D DP where `dp[i] += dp[i - num]` for all valid `num` in `nums`.
+**Strategic Hint:** 1D DP counting permutations: `dp[i] += dp[i - num]` for `num` in `nums`.
 
 **41. Split Array Largest Sum**
-**Specification:** Split an array into `k` non-empty contiguous subarrays such that the largest sum among these subarrays is minimized.
+**Specification:** Split array into `K` non-empty subarrays such that the largest sum of any subarray is minimized.
 
 **Example:** `nums = [7,2,5,10,8], k = 2` $\rightarrow$ output `18`.
 
-**Constraints:** `1 <= nums.length <= 1000`
+**Constraints:** `1 <= nums.length <= 1000, 1 <= k <= min(50, nums.length)`
 
-**Strategic Hint:** Binary Search on Answer Space where `left = max(nums)` and `right = sum(nums)`.
+**Strategic Hint:** Parametric Binary Search on the answer space `[max(nums), sum(nums)]`. Greedy subarray count verification in $\mathcal{O}(N)$.
 
 **42. Trapping Rain Water II**
-**Specification:** Given an `m x n` integer matrix of heights, return the volume of water it can trap after raining.
+**Specification:** Given an $M \times N$ matrix of positive integers representing height of each unit cell, compute the volume of water it can trap after raining.
 
 **Example:** `heightMap = [[1,4,3,1,3,2],[3,2,1,3,2,4],[2,3,3,2,3,1]]` $\rightarrow$ output `4`.
 
 **Constraints:** `1 <= m, n <= 200`
 
-**Strategic Hint:** Use a Min-Heap starting with boundary cells and simulate a rising water level using BFS.
+**Strategic Hint:** Min-Heap PriorityQueue starting from outer border inward (Dijkstra-like water fill).
 
 **43. Maximize Distance to Closest Person**
-**Specification:** In a row of seats, 1 means occupied, 0 means empty. Find a seat to maximize distance to the closest person.
+**Specification:** In a row of seats (0s and 1s), sit in the seat that maximizes the distance to the closest person.
 
 **Example:** `seats = [1,0,0,0,1,0,1]` $\rightarrow$ output `2`.
 
-**Constraints:** `2 <= seats.length <= 20000`
+**Constraints:** `2 <= seats.length <= 2*10^4`
 
-**Strategic Hint:** Two-pointer approach counting zeros between ones, with edge cases for edges of the array.
+**Strategic Hint:** Three cases: leading zeros, trailing zeros, and internal zeros (`(zeros + 1) / 2`).
 
 **44. Minimum Window Substring**
-**Specification:** Given two strings `s` and `t`, return the minimum window substring of `s` such that every character in `t` is included in the window.
+**Specification:** Given strings `s` and `t`, return the minimum window substring of `s` such that every character in `t` (including duplicates) is included in the window.
 
 **Example:** `s = "ADOBECODEBANC", t = "ABC"` $\rightarrow$ output `"BANC"`.
 
@@ -1504,6 +1583,8 @@ def max_area(self, height: list[int]) -> int:
 **Constraints:** `0 <= s1.length, s2.length <= 100`
 
 **Strategic Hint:** 2D DP where `dp[i][j]` means if `s3.substring(0, i+j)` can be formed by `s1.substring(0, i)` and `s2.substring(0, j)`.
+
+### Module 3 Practice: Graphs, BFS/DFS & State Machines
 
 **47. Shortest Path in Binary Matrix**
 **Specification:** Find the shortest clear path from top-left to bottom-right in a grid.

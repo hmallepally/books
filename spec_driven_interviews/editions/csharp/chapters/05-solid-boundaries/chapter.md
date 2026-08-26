@@ -103,6 +103,10 @@ namespace AuraPay.Processing
 
 Let us break down how this single class enforces all five design boundaries.
 
+> [!IMPORTANT]
+> **Architectural Note on Persistence Atomicity (Unit of Work Pattern):**
+> In Step 4 of the transaction pipeline, saving `source` and `destination` accounts via two separate `repository.save()` calls introduces a persistence risk if `save(source)` succeeds but `save(destination)` fails due to a database exception or network glitch. In production financial systems, multi-entity persistence must be wrapped in an explicit `@Transactional` boundary or a `UnitOfWork` aggregate coordinator to guarantee that debits and credits commit atomically, preserving the double-entry invariant ($\sum \text{Debits} = \sum \text{Credits}$) across storage failures.
+
 
 ## Single Responsibility Principle (SRP)
 

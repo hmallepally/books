@@ -1,14 +1,12 @@
 # Easy-tier Mastery — Implementation Speed, In-Place Transformations, and String Processing
 
-The first question (Easy-tier) on the automated testing platforms General Coding Assessment (general coding assessment) is designed to evaluate fundamental implementation speed, boundary correctness, and memory hygiene. You have roughly **8 minutes** to solve Easy-tier. While categorized as "Easy," Easy-tier is where candidates most frequently drop valuable points — not because the problem is hard, but because they rush and introduce off-by-one errors, forget null checks, or use inefficient string concatenation. A perfect Easy-tier score is the foundation of a 750+ general coding assessment result.
+The first question (Easy-tier) on the automated testing platforms General Coding Assessment (GCA) is designed to evaluate fundamental implementation speed, boundary correctness, and memory hygiene. You have roughly **8 minutes** to solve Easy-tier. While categorized as "Easy," Easy-tier is where candidates most frequently drop valuable points — not because the problem is hard, but because they rush and introduce off-by-one errors, forget null checks, or use inefficient string concatenation. A perfect Easy-tier score is the foundation of a 750+ GCA result.
 
-This chapter teaches you the core vocabulary, the reusable pointer archetypes, 20 fully solved exemplar problems with detailed explanations, and 30 concrete practice problems with strategic hints.
+This chapter teaches you the core vocabulary, the reusable pointer archetypes, 32 fully solved exemplar problems with detailed explanations, and 30 concrete practice problems with strategic hints.
 
-* * *
+## Essential Implementation Tactics & Foundational Vocabulary (21 Foundational Tactics + 4 Advanced Forward References)
 
-## Essential Terminology & Vocabulary
-
-Before solving any Easy-tier problem, you must internalize these foundational concepts. Each one maps directly to a class of problems you will encounter on the exam.
+Before solving any Easy-tier problem, you must internalize these foundational implementation tactics. Each one maps directly to a class of problems you will encounter on the exam. For every problem, apply the *Invariant-First* methodology from Chapter 1: identify the loop invariant before writing any code, then verify your solution preserves that invariant at every iteration.
 
 ### In-Place Mutation
 An algorithm is **in-place** if it transforms the input using $\mathcal{O}(1)$ auxiliary space (excluding the input itself). In Java, arrays are mutable references — you can overwrite `arr[i]` directly. Strings, however, are **immutable objects** — every modification creates a new heap allocation.
@@ -60,6 +58,8 @@ The XOR operator (`^`) has two key properties: `a ^ a = 0` (same values cancel) 
 ### Prefix Sum / Running Total
 A technique where you compute cumulative sums to answer range queries in $\mathcal{O}(1)$. For pivot index problems: `leftSum == totalSum - leftSum - nums[i]` identifies the balance point without nested loops.
 
+![Prefix Sum — Precomputed Cumulative Array for O(1) Range Queries](visuals/prefix_sum_pattern.png){width=85%}
+
 ### Integer Overflow & Boundary Guarding
 This involves handling `Integer.MAX_VALUE` and `Integer.MIN_VALUE` constraints. It requires implementing safe comparisons before executing arithmetic operations to prevent exceeding limits.
 Why it matters: Reverse-integer and palindrome-number problems require overflow detection.
@@ -84,6 +84,8 @@ Why it matters: You systematically test these BEFORE writing the main loop to ca
 This approach involves pushing opening delimiters onto a stack during traversal. Upon encountering a closing delimiter, you pop from the stack and verify the match.
 Why it matters: This is the universal pattern for bracket, parentheses, and tag validation problems.
 
+![Stack-Based Matching — Push/Pop Bracket Validation](visuals/stack_based_matching.png){width=85%}
+
 ### Two-Pass Strategy
 This algorithm design splits processing into two distinct phases. The first pass collects necessary data like counts, maximums, or positions, and the second pass acts on that collected information.
 Why it matters: It avoids complex single-pass logic and significantly reduces bugs.
@@ -100,7 +102,31 @@ Why it matters: It avoids floating-point arithmetic entirely and handles circula
 This is the standard programming idiom for swapping two variables using a temporary holder. It uses the `temp = a; a = b; b = temp;` pattern.
 Why it matters: It serves as a fundamental building block for partitioning, reversing, and Dutch National Flag problems.
 
-* * *
+### Sliding Window (Fixed-Size)
+A window of fixed size $K$ that slides across an array or string, computing an aggregate (sum, max, frequency count) incrementally. At each step, the window adds one element on the right and removes one on the left, maintaining the aggregate in $O(1)$ per step.
+Why it matters: Fixed-size sliding windows solve problems like "maximum sum of any $K$ consecutive elements" and "average of all subarrays of size $K$" in $O(N)$. For *variable-size* (dynamic) sliding windows — where the window expands and contracts based on a constraint — see Chapter 12.
+
+### Fast/Slow Pointers (Cycle Detection)
+Two pointers advance at different speeds through a sequence — typically one moves one step and the other two steps per iteration. If a cycle exists, the fast pointer will eventually lap and meet the slow pointer.
+Why it matters: This is the Floyd's Tortoise and Hare algorithm. It detects cycles in linked lists in $O(N)$ time and $O(1)$ space, and solves problems like finding the duplicate number in a constrained array or determining the starting node of a cycle.
+
+
+
+### Cyclic Sort
+An in-place sorting technique for arrays containing elements in the range $[0, N]$ or $[1, N]$. Each element is swapped to its "correct" index (element $k$ belongs at index $k$ or $k-1$) until all elements are placed.
+Why it matters: This pattern directly solves "Find the Missing Number," "Find All Duplicates," and "First Missing Positive" in $O(N)$ time and $O(1)$ space — a common Easy-to-Medium tier technique.
+
+### Hash Map/Set Lookup
+Using a hash-based data structure to achieve $O(1)$ average-case lookup, insertion, and deletion. A HashMap stores key-value pairs; a HashSet stores unique keys only.
+Why it matters: This pattern transforms brute-force $O(N^2)$ nested-loop problems into $O(N)$ single-pass solutions. Classic applications include Two Sum (complement lookup), group anagrams (sorted-key grouping), and detecting duplicates within a sliding window.
+
+### Advanced Algorithmic Paradigms (Chapters 12–13)
+
+The following patterns are essential for Medium-Hard and Hard tier problems and are covered in full depth with solved examples in their dedicated chapters:
+
+- **Binary Search & Variants** (Chapter 13) — Halving the search space in $O(\log N)$. Includes rotated arrays, boundary search, and answer-space binary search.
+- **Bitmasking** (Chapter 13) — Encoding boolean state with bitwise operators (`AND`, `OR`, `XOR`, `SHIFT`). Used for subset enumeration and Hamming weight.
+- **Kadane's Algorithm** (Chapter 13) — The canonical $O(N)$ Maximum Subarray DP pattern. Tracks `current_max = max(arr[i], current_max + arr[i])` at each index.
 
 ## Reusable Code Templates
 
@@ -116,8 +142,6 @@ These are the two most important templates to have memorized before the exam.
 {{ inject('code_block_2.md') }}
 **Used by:** Palindrome Check, Reverse Array, Two Sum (sorted), Sort Colors.
 
-* * *
-
 ## Solved Exemplar Problems
 
 **1. First Non-Repeating Character**
@@ -129,6 +153,7 @@ These are the two most important templates to have memorized before the exam.
 **Why two passes?** A single pass cannot determine uniqueness because later characters might duplicate earlier ones. The frequency array decouples counting from searching.
 
 {{ inject('code_block_3.md') }}
+
 * * *
 
 **2. In-Place String Compression (Run-Length Encoding)**
@@ -150,6 +175,7 @@ These are the two most important templates to have memorized before the exam.
 | 1    | 2    | 2     | Run 'a' len 2 | `['a','2','b','b','c','c','c']` |
 | 2    | 4    | 4     | Run 'b' len 2 | `['a','2','b','2','c','c','c']` |
 | 3    | 7    | 6     | Run 'c' len 3 | `['a','2','b','2','c','3','c']` |
+
 * * *
 
 **3. Valid Palindrome with Non-Alphanumeric Skipping**
@@ -162,6 +188,7 @@ These are the two most important templates to have memorized before the exam.
 **Common mistake:** Forgetting to check `left < right` inside the skip-while loops, causing `ArrayIndexOutOfBoundsException` on strings like `".,,"`.
 
 {{ inject('code_block_5.md') }}
+
 * * *
 
 **4. Move Zeros to End**
@@ -174,6 +201,7 @@ These are the two most important templates to have memorized before the exam.
 **Why not swap?** Swapping works too, but the two-pass approach (copy then fill) is cleaner and less error-prone under time pressure.
 
 {{ inject('code_block_6.md') }}
+
 * * *
 
 **5. Remove Duplicates from Sorted Array**
@@ -184,6 +212,7 @@ These are the two most important templates to have memorized before the exam.
 **Pattern:** Read/Write pointer. Since the array is sorted, duplicates are always adjacent. The write pointer advances only when `nums[read] != nums[write - 1]`.
 
 {{ inject('code_block_7.md') }}
+
 * * *
 
 **6. Single Number (XOR Uniqueness)**
@@ -194,6 +223,7 @@ These are the two most important templates to have memorized before the exam.
 **Pattern:** XOR accumulation. `a ^ a = 0` cancels pairs; `a ^ 0 = a` preserves the unique element.
 
 {{ inject('code_block_8.md') }}
+
 * * *
 
 **7. Valid Parentheses**
@@ -205,6 +235,7 @@ These are the two most important templates to have memorized before the exam.
 **Optimization:** Use a `char[]` as a manual stack to avoid `java.util.Stack` overhead.
 
 {{ inject('code_block_9.md') }}
+
 * * *
 
 **8. Reverse String In-Place**
@@ -215,6 +246,7 @@ These are the two most important templates to have memorized before the exam.
 **Pattern:** Symmetric converging pointers with swap.
 
 {{ inject('code_block_10.md') }}
+
 * * *
 
 **9. Pivot Index (Balance Point)**
@@ -225,6 +257,7 @@ These are the two most important templates to have memorized before the exam.
 **Pattern:** Prefix sum. Compute total sum first, then scan left-to-right maintaining a running left sum. At each index: `rightSum = totalSum - leftSum - nums[i]`.
 
 {{ inject('code_block_11.md') }}
+
 * * *
 
 **10. Check Array Monotonicity**
@@ -235,6 +268,7 @@ These are the two most important templates to have memorized before the exam.
 **Pattern:** Dual boolean flags. Track both `isIncreasing` and `isDecreasing`. If an adjacent pair violates one direction, set its flag to false. Return true if either flag survives.
 
 {{ inject('code_block_12.md') }}
+
 * * *
 
 **11. Neighbor Sum Transformation**
@@ -246,6 +280,7 @@ These are the two most important templates to have memorized before the exam.
 **Why a new array?** Modifying `A` in-place would corrupt values needed for subsequent index calculations.
 
 {{ inject('code_block_13.md') }}
+
 * * *
 
 **12. Maximum Subarray Sum of Fixed Window K**
@@ -256,6 +291,7 @@ These are the two most important templates to have memorized before the exam.
 **Pattern:** Fixed-size sliding window. Initialize window sum with first `k` elements, then slide by adding the entering element and subtracting the leaving element.
 
 {{ inject('code_block_14.md') }}
+
 * * *
 
 **13. Find the Added Character**
@@ -266,6 +302,7 @@ These are the two most important templates to have memorized before the exam.
 **Pattern:** XOR accumulation. XOR every character in both strings together. Paired characters cancel to zero; the extra character remains.
 
 {{ inject('code_block_15.md') }}
+
 * * *
 
 **14. Capitalize or Reverse by Word Length Parity**
@@ -276,6 +313,7 @@ These are the two most important templates to have memorized before the exam.
 **Pattern:** Per-element transformation with parity branching.
 
 {{ inject('code_block_16.md') }}
+
 * * *
 
 **15. Check Equal Character Frequencies**
@@ -286,6 +324,7 @@ These are the two most important templates to have memorized before the exam.
 **Pattern:** Frequency array + validation scan. Count all characters (using a size 128 array to handle the full ASCII range), then verify every non-zero count matches.
 
 {{ inject('code_block_17.md') }}
+
 * * *
 
 **16. Remove Element In-Place**
@@ -296,6 +335,7 @@ These are the two most important templates to have memorized before the exam.
 **Pattern:** Read/Write pointer — identical structure to Move Zeros.
 
 {{ inject('code_block_18.md') }}
+
 * * *
 
 **17. Parity Alternation Validation**
@@ -307,6 +347,7 @@ These are the two most important templates to have memorized before the exam.
 **Edge case with negatives:** `(-3) % 2` in Java returns `-1`, not `1`. Use `Math.abs(nums[i] % 2)` for safe parity checks.
 
 {{ inject('code_block_19.md') }}
+
 * * *
 
 **18. Two Sum (Unsorted Array)**
@@ -317,6 +358,7 @@ These are the two most important templates to have memorized before the exam.
 **Pattern:** HashMap complement lookup. For each element, check if `target - nums[i]` has been seen. If yes, return both indices. If no, store `nums[i] → i` in the map.
 
 {{ inject('code_block_20.md') }}
+
 * * *
 
 **19. Majority Element**
@@ -327,6 +369,7 @@ These are the two most important templates to have memorized before the exam.
 **Pattern:** Boyer–Moore Voting Algorithm. Maintain a candidate and a count. When count drops to zero, switch candidates. The majority element will always survive because it appears more than half the time.
 
 {{ inject('code_block_21.md') }}
+
 * * *
 
 **20. Plus One (Large Number as Array)**
@@ -338,6 +381,7 @@ These are the two most important templates to have memorized before the exam.
 **Edge case:** All 9s (`[9, 9, 9]`) require a new array of length `n + 1` with a leading 1.
 
 {{ inject('code_block_22.md') }}
+
 * * *
 
 
@@ -355,6 +399,7 @@ The following problems are drawn directly from the automated testing platforms A
 **Common mistake:** Forgetting that two large negative numbers produce a large positive product (e.g., `[-5, -4]` → `20`).
 
 {{ inject('code_block_23.md') }}
+
 * * *
 
 **22. Century From Year**
@@ -365,6 +410,7 @@ The following problems are drawn directly from the automated testing platforms A
 **Pattern:** Integer ceiling division. The formula `(year + 99) / 100` computes the ceiling of `year / 100` using only integer arithmetic, avoiding floating-point rounding errors.
 
 {{ inject('code_block_24.md') }}
+
 * * *
 
 **23. All Longest Strings**
@@ -376,6 +422,7 @@ The following problems are drawn directly from the automated testing platforms A
 **Why two passes?** A single pass would require backtracking to remove shorter strings discovered before the true maximum is known.
 
 {{ inject('code_block_25.md') }}
+
 * * *
 
 **24. Common Character Count**
@@ -386,6 +433,7 @@ The following problems are drawn directly from the automated testing platforms A
 **Pattern:** Dual frequency arrays with element-wise minimum. Build `int[26]` for each string. The number of shared instances of character `c` is `Math.min(count1[c], count2[c])`.
 
 {{ inject('code_block_26.md') }}
+
 * * *
 
 **25. Lucky Ticket (Digit Sum Halves)**
@@ -396,6 +444,7 @@ The following problems are drawn directly from the automated testing platforms A
 **Pattern:** Convert to string for digit access. Split at midpoint. Sum each half independently.
 
 {{ inject('code_block_27.md') }}
+
 * * *
 
 **26. Sort By Height (Obstacles in Place)**
@@ -408,6 +457,7 @@ The following problems are drawn directly from the automated testing platforms A
 **Invariant:** Tree positions (`-1`) are never touched. Only human positions are modified.
 
 {{ inject('code_block_28.md') }}
+
 * * *
 
 **27. Alternating Team Sums**
@@ -418,6 +468,7 @@ The following problems are drawn directly from the automated testing platforms A
 **Pattern:** Index parity accumulation. `i % 2 == 0` accumulates into Team 1, `i % 2 == 1` into Team 2.
 
 {{ inject('code_block_29.md') }}
+
 * * *
 
 **28. Add Border to Character Matrix**
@@ -428,6 +479,7 @@ The following problems are drawn directly from the automated testing platforms A
 **Pattern:** String construction with dimensional arithmetic. New width = original width + 2. New height = original height + 2. First and last rows are full asterisk strings. Middle rows are wrapped with `*` on each side.
 
 {{ inject('code_block_30.md') }}
+
 * * *
 
 **29. Array Change (Minimum Moves for Strict Increase)**
@@ -440,6 +492,7 @@ The following problems are drawn directly from the automated testing platforms A
 **Invariant:** After processing index `i`, the constraint `arr[i] > arr[i-1]` is guaranteed. The greedy minimum at each step is globally optimal because increasing `arr[i]` to `arr[i-1] + 1` (the smallest valid value) minimizes cascading costs downstream.
 
 {{ inject('code_block_31.md') }}
+
 * * *
 
 **30. Matrix Elements Sum (Haunted Rooms)**
@@ -450,6 +503,7 @@ The following problems are drawn directly from the automated testing platforms A
 **Pattern:** Column-wise top-down scan with a boolean "poisoned" flag per column. Once a `0` is encountered in a column, all values below it in that column are skipped.
 
 {{ inject('code_block_32.md') }}
+
 * * *
 
 **31. Almost Increasing Sequence**
@@ -469,6 +523,7 @@ The following problems are drawn directly from the automated testing platforms A
 | 1    | 0 | 1       | 3         | No         | Continue | 0 |
 | 2    | 1 | 3       | 2         | Yes        | Check removals | 1 |
 | 3    | 2 | 2       | 1         | Yes        | Return false   | >1 |
+
 * * *
 
 **32. Reverse Parentheses (Nested String Reversal)**
@@ -491,7 +546,6 @@ The following problems are drawn directly from the automated testing platforms A
 | 5    | ')'  | Pop & Reverse | `[""]` | `"uevol"` |
 | 6    | 'i'  | Append   | `[""]` | `"uevoli"` |
 | 7    | ')'  | Pop & Reverse | `[]` | `"iloveu"` |
-* * *
 
 ## Practice Problem Bank
 

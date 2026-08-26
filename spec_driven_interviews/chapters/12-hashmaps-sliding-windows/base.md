@@ -1,5 +1,7 @@
 # Medium-Hard-tier Mastery — Dynamic Sliding Windows, HashMap Frequency Signatures, and Prefix Sum Analytics
 
+> **The Window Contract:** Every sliding window problem has a hidden invariant — a *contract* that defines when the window is valid. In Chapter 10, the window was implicit (two pointers). Here, the window becomes explicit: a `left..right` range with a HashMap frequency signature that must satisfy a constraint (e.g., "at most $k$ distinct characters"). Define this contract before coding, then expand `right` to explore and contract `left` to restore validity. At production scale, this same pattern powers rate limiters (Chapter 17, Solution 3) and streaming aggregation pipelines.
+
 ## Essential Terminology & Vocabulary
 
 **Dynamic Sliding Window**
@@ -55,7 +57,7 @@ Why it matters: It is the optimal strategy to find the first missing positive in
 
 ### Expand-Around-Center
 This technique treats each index (and the space between indices) as a potential palindrome center. It then expands outwards as long as the mirrored characters match.
-Why it matters: It is a simple and reliable O(N²) approach for the longest palindromic substring problem.
+Why it matters: It is a O(N²) approach for the longest palindromic substring problem.
 
 ### Frequency Bucket Sort
 This sorting alternative groups elements by their frequency into buckets ranging from `0` to `N`. You then scan these buckets in reverse order to collect the most frequent items.
@@ -63,7 +65,7 @@ Why it matters: It solves Top-K frequent elements problems in O(N) time without 
 
 ### Deferred Deletion / Lazy Invalidation
 Instead of immediately removing items from a data structure, this technique marks entries as invalid. The actual cleanup happens later during traversal or retrieval.
-Why it matters: It avoids ConcurrentModificationExceptions and heavily simplifies priority queue update patterns.
+Why it matters: It avoids ConcurrentModificationExceptions and eliminates priority queue update overhead.
 
 ### Contribution Counting
 Instead of iterating through all possible subarrays, this mathematical approach computes exactly how many subarrays a specific element contributes to. It aggregates the total across all individual element contributions.
@@ -72,8 +74,6 @@ Why it matters: It dramatically transforms O(N²) brute force summation logic in
 ### Greedy Interval Scheduling
 This algorithm sorts given intervals by their end times first. It then greedily picks the next non-overlapping interval to maximize total count.
 Why it matters: It is a provably optimal approach for finding the maximum number of non-overlapping intervals.
-
-* * *
 
 ## Reusable Code Templates
 
@@ -85,7 +85,6 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 {{ inject('code_block_3.md') }}
 ### Template D: HashMap Frequency Grouping
 {{ inject('code_block_4.md') }}
-* * *
 
 ## Solved Exemplar Problems
 
@@ -98,6 +97,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** We expand the right pointer. If the character is in the set, we contract the left pointer until the duplicate is removed, ensuring the window always contains unique characters.
 {{ inject('code_block_5.md') }}
+
 * * *
 
 **2. Subarray Sum Equals K**
@@ -109,17 +109,20 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** We maintain a running sum. If `sum - k` exists in our frequency map, it means there is a subarray ending at the current index that sums to K.
 {{ inject('code_block_6.md') }}
+
 * * *
 
 **3. Group Anagrams**
 **Specification:** Group strings that are anagrams of each other.
 
-**Example:** `["eat","tea","tan","ate","nat","bat"]` -> Output: `[["bat"],["nat","tan"],["ate","eat","tea"]]`
+**Example:** `["eat", "tea", "tan", "ate", "nat", "bat"]`  
+$\to$ Output: `[["bat"], ["nat", "tan"], ["ate", "eat", "tea"]]`
 
 **Pattern:** HashMap Frequency Signature
 
 **Explanation:** Generate a 26-element character count array for each string, convert it to a string key, and use it in a HashMap to group anagrams together.
 {{ inject('code_block_7.md') }}
+
 * * *
 
 **4. Find All Anagram Start Indices**
@@ -131,6 +134,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Use a window of size `p.length()`. Keep arrays of character frequencies for `p` and the current window in `s`. If they match, add the index.
 {{ inject('code_block_8.md') }}
+
 * * *
 
 **5. Longest Substring with At Most K Distinct Characters**
@@ -142,18 +146,23 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Use a HashMap to track character frequencies. When map size exceeds K, shrink window from left until size is K again.
 {{ inject('code_block_9.md') }}
+
 * * *
 
 **6. Minimum Window Substring (Hard)**
-*Note: This problem is universally classified as Hard on major platforms. While it uses the sliding window pattern from this chapter, its implementation complexity—managing two frequency maps, a `formed` counter, and a contraction loop—places it at the highest difficulty tier.*
+
+> [!IMPORTANT]
+> **Assessment Strategy Note:** Minimum Window Substring requires managing two frequency maps and a `formed` character counter. In a 70-minute assessment, if this appears as Question 3 or 4, establish your two-pointer expanding/contracting invariant in comments first before coding to secure partial credit.
+
 **Specification:** Given strings s and t, find the minimum substring of s containing all characters in t.
 
 **Example:** `s = "ADOBECODEBANC", t = "ABC"` -> Output: `"BANC"`
 
 **Pattern:** Dynamic Sliding Window
 
-**Explanation:** Track required characters in a map. Expand right until all required characters are in the window, then contract left to minimize the window.
+**Explanation:** Maintain a frequency map targetMap for string t and a dynamic window map windowMap. Track formed—the number of unique characters in t whose target frequency is met in the current window. Expand right until formed == targetMap.size(). Then contract left step-by-step to record the minimal valid window length, updating windowMap and decrementing formed when a required character count drops below target.
 {{ inject('code_block_10.md') }}
+
 * * *
 
 **7. Group Shifted Strings**
@@ -163,8 +172,9 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Pattern:** Difference-Based Signature
 
-**Explanation:** Calculate the relative distance between adjacent characters. Use this sequence of differences as the HashMap key.
+**Explanation:** Compute the normalized relative distance between adjacent characters using (s.charAt(i) - s.charAt(i-1) + 26) % 26. The resulting sequence of difference offsets forms a canonical HashMap key that groups all uniformly shifted strings together.
 {{ inject('code_block_11.md') }}
+
 * * *
 
 **8. Contiguous Array Equal 0s and 1s**
@@ -176,6 +186,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Treat 0s as -1. If the running sum is seen again, it means the subarray between those two indices sums to 0, implying equal 0s and 1s.
 {{ inject('code_block_12.md') }}
+
 * * *
 
 **9. Subarray Product Less Than K**
@@ -187,6 +198,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Maintain a running product. If product >= k, shrink from left. Number of valid subarrays ending at `right` is `right - left + 1`.
 {{ inject('code_block_13.md') }}
+
 * * *
 
 **10. Permutation in String**
@@ -198,6 +210,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Same logic as Anagram Start Indices. Maintain a window of size `s1.length()` and compare character counts.
 {{ inject('code_block_14.md') }}
+
 * * *
 
 **11. Maximum Erasure Value**
@@ -209,6 +222,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Use a set to track uniqueness. Expand right, add to sum. If duplicate found, shrink from left, subtracting from sum until unique.
 {{ inject('code_block_15.md') }}
+
 * * *
 
 **12. Longest Repeating Character Replacement**
@@ -220,6 +234,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** If `window size - max_freq_char_count > k`, we have too many differing chars, so we shrink the window.
 {{ inject('code_block_16.md') }}
+
 * * *
 
 **13. Fruit Into Baskets**
@@ -231,6 +246,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Keep a frequency map. When distinct fruit types exceed 2, increment left pointer to shrink.
 {{ inject('code_block_17.md') }}
+
 * * *
 
 **14. Continuous Subarray Sum Multiple of K**
@@ -242,6 +258,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** If `pref[i] % k == pref[j] % k`, the sum between $i$ and $j$ is a multiple of $K$. Store remainder and its first seen index.
 {{ inject('code_block_18.md') }}
+
 * * *
 
 **15. Max Consecutive Ones III**
@@ -253,6 +270,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Expand window. If 0 encountered, decrease K. If K < 0, shrink window until a 0 is excluded.
 {{ inject('code_block_19.md') }}
+
 * * *
 
 **16. Find All Duplicates in Array**
@@ -264,6 +282,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Use the array itself as a hash table. Mark the number at index `abs(num) - 1` negative. If it's already negative, it's a duplicate.
 {{ inject('code_block_20.md') }}
+
 * * *
 
 **17. Task Scheduler CPU Units**
@@ -275,6 +294,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Calculate idle slots based on the most frequent task. `maxIdle = (maxFreq - 1) * n`. Fill slots with other tasks.
 {{ inject('code_block_21.md') }}
+
 * * *
 
 **18. Insert & Merge Overlapping Intervals**
@@ -286,6 +306,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Three phases: Add all before new, merge overlapping with new, add all after new.
 {{ inject('code_block_22.md') }}
+
 * * *
 
 **19. Top K Frequent Elements**
@@ -297,6 +318,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Count frequencies in a map, then keep a min-heap of size K based on frequencies.
 {{ inject('code_block_23.md') }}
+
 * * *
 
 **20. First Missing Positive Integer**
@@ -308,6 +330,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Place number `x` at index `x-1`. Then scan to find the first index that doesn't have `i+1`.
 {{ inject('code_block_24.md') }}
+
 * * *
 
 **21. Minimum Size Subarray Sum**
@@ -319,6 +342,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Keep expanding until sum >= target, then shrink to find minimum.
 {{ inject('code_block_25.md') }}
+
 * * *
 
 **22. Substring with Concatenation of All Words**
@@ -330,6 +354,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Use a map for word counts. Slide a window of length `words.length * wordLen` and verify word counts inside.
 {{ inject('code_block_26.md') }}
+
 * * *
 
 **23. Contains Duplicate II**
@@ -341,6 +366,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Keep a sliding set of size k. If add fails, duplicate found.
 {{ inject('code_block_27.md') }}
+
 * * *
 
 **24. Count Number of Nice Subarrays**
@@ -352,6 +378,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Treat odds as 1s, evens as 0s. Same as subarray sum equals K.
 {{ inject('code_block_28.md') }}
+
 * * *
 
 **25. Frequency of Most Frequent Element**
@@ -363,6 +390,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Sort first. To make all elements in window equal to `nums[right]`, we need `nums[right] * window_length - window_sum <= k`.
 {{ inject('code_block_29.md') }}
+
 * * *
 
 **26. Subarrays with K Different Integers**
@@ -372,8 +400,9 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Pattern:** At-Most-K Trick
 
-**Explanation:** Exactly(K) = AtMost(K) - AtMost(K-1).
+**Explanation:** Counting subarrays with exactly K distinct elements directly using dynamic sliding window is difficult because contracting left can omit valid starting bounds non-monotonically. We compute exact K using cumulative bounds: Exactly(K) = AtMost(K) - AtMost(K-1), where atMost(X) uses a standard dynamic window.
 {{ inject('code_block_30.md') }}
+
 * * *
 
 **27. Longest Palindromic Substring**
@@ -385,6 +414,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Treat each character and between-character as a center and expand outwards to check for palindrome.
 {{ inject('code_block_31.md') }}
+
 * * *
 
 **28. 3Sum**
@@ -396,6 +426,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Sort array. Iterate `i`, and use two pointers `L` and `R` to find pairs summing to `-nums[i]`. Skip duplicates.
 {{ inject('code_block_32.md') }}
+
 * * *
 
 **29. 4Sum**
@@ -407,6 +438,7 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Explanation:** Extend 3Sum by adding one more outer loop.
 {{ inject('code_block_33.md') }}
+
 * * *
 
 **30. Number of Distinct Islands**
@@ -416,9 +448,8 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Pattern:** DFS + Path Signature Hashing
 
-**Explanation:** Record the direction moved (U, D, L, R) during DFS traversal. Store path strings in a HashSet to deduplicate identical shapes.
+**Explanation:** Record the direction moved ('U', 'D', 'L', 'R') during DFS traversal. Crucially, append a backtrack marker (e.g., 'B') upon returning from each recursive call to prevent signature collisions between distinct island geometries. Store the resulting path strings in a HashSet.
 {{ inject('code_block_34.md') }}
-* * *
 
 ## Practice Problem Bank
 
@@ -656,14 +687,14 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 **Strategic Hint:** Fixed size window with HashMap counting frequencies.
 
-**27. Shortest Subarray with Sum at Least K**
-**Specification:** Like minimum size subarray sum but array can have negatives!
+**27. Subarray Sums Divisible by K**
+**Specification:** Find the number of non-empty subarrays whose sum is divisible by $K$.
 
-**Example:** `[2,-1,2], k=3` -> Output: `3`
+**Example:** `nums = [4,5,0,-2,-3,1], k = 5` -> Output: `7`
 
-**Constraints:** Length $\le 10^5$.
+**Constraints:** $1 \le N \le 3 \times 10^4, 2 \le K \le 10^4$.
 
-**Strategic Hint:** Prefix sum + Monotonic Deque to maintain increasing prefix sums.
+**Strategic Hint:** Prefix Sum + Modulo Arithmetic. Two prefix sums with the same remainder modulo $K$ enclose a subarray divisible by $K$. Store remainder frequencies in a HashMap/array `count[(prefix_sum % K + K) % K]++`.
 
 **28. Make Sum Divisible by P**
 **Specification:** Remove smallest subarray so remaining array sum is divisible by P.

@@ -1,5 +1,6 @@
 ```java
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class TokenBucket {
     private record State(long tokens, long timestampNanos) {}

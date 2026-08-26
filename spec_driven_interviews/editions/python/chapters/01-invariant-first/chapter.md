@@ -73,23 +73,22 @@ Given a sorted array of integers `nums` and a `target` value, return the index o
 ### Establish the Loop Invariant (Step 3)
 We define two pointers, `left` and `right`, defining our active search range $[left, right]$.
 
-- **The Loop Invariant:** *If target is present in the array, it must reside within the index boundaries:*
+- **The Loop Invariant:** *If the target is present in the array, it must reside within the active index boundaries $[left, right]$:*
 
-```
-Invariant P(left, right): target in nums[left...right]
-```
+$$\mathcal{P}(left, right) \iff \Big(\text{target} \in nums \implies \exists k \in [left, right] \text{ s.t. } nums[k] = \text{target}\Big)$$
 
-### Mathematical Proof of Correctness
-To prove the algorithm is correct, we must prove three properties of our loop invariant:
+### Mathematical Proof of Correctness & Total Termination
+
+To formally prove that an iterative algorithm is correct, Hoare logic requires establishing two distinct components: **Partial Correctness** (proved via the Loop Invariant $\mathcal{P}$) and **Total Termination** (proved via a Loop Variant Metric $V$).
 
 #### A. Initialization
-Before the loop starts, the invariant must hold true. We initialize `left = 0` and `right = nums.length - 1`.
+Before the loop starts, the invariant $\mathcal{P}$ must hold true. We initialize `left = 0` and `right = nums.length - 1`.
 
-- Since the array is sorted, if the target is in the array, it must be within the range $[0, nums.length - 1]$. The invariant holds.
+- Since the array is sorted, if the target is in the array, it must lie within the initial search space $[0, nums.length - 1]$. The invariant holds.
 
-#### B. Maintenance
-If the invariant is true before an iteration, we must prove it remains true after updating our pointers.
-During the loop, we calculate:
+#### B. Maintenance (Partial Correctness)
+If the invariant holds before an iteration, it must remain true after updating our pointers.
+During each iteration, we calculate:
 
 ```
 mid = left + (right - left) / 2
@@ -98,27 +97,28 @@ mid = left + (right - left) / 2
 We check three cases:
 
 **Case 1: $nums[mid] == target$**
-
-The target is found, and we return `mid`, satisfying the post-condition.
+The target is found, returning `mid` and satisfying the post-condition.
 
 **Case 2: $nums[mid] < target$**
-
-Since the array is sorted, all elements at or to the left of `mid` are strictly less than the target. Therefore, the target cannot reside in the range $[left, mid]$.
-
-We update `left = mid + 1`. The new range is $[mid + 1, right]$. If the target exists, it must lie within this new range. The invariant is maintained.
+Since the array is sorted, all elements at or to the left of `mid` are strictly less than `target` ($nums[k] \le nums[mid] < target$ for all $k \le mid$). Therefore, `target` cannot reside in $[left, mid]$. We set `left = mid + 1`, contracting the search space to $[mid + 1, right]$. The invariant $\mathcal{P}$ is maintained.
 
 **Case 3: $nums[mid] > target$**
+All elements at or to the right of `mid` are strictly greater than `target`. The target cannot reside in $[mid, right]$. We set `right = mid - 1`, contracting the search space to $[left, mid - 1]$. The invariant $\mathcal{P}$ is maintained.
 
-All elements at or to the right of `mid` are strictly greater than the target. The target cannot reside in the range $[mid, right]$.
+#### C. Termination & The Loop Variant Metric
+To guarantee that the loop cannot run indefinitely, we define the **Loop Variant Metric**:
 
-We update `right = mid - 1`. The new range is $[left, mid - 1]$. The invariant is maintained.
+$$V(left, right) = right - left + 1$$
 
-#### C. Termination
-When the loop terminates, the invariant must help us prove correctness.
-The loop terminates when `left > right`.
+1. **Well-Founded Domain:** $V \in \mathbb{N}_0$. The loop condition `left <= right` corresponds to $V > 0$.
+2. **Strict Monotonic Contraction:** At each step, because $mid = \lfloor (left + right)/2 \rfloor$, updating `left = mid + 1` or `right = mid - 1` strictly reduces $V_{t+1} \le \lfloor V_t / 2 \rfloor < V_t$.
+3. **Termination Guarantee:** Since $V$ is a strictly decreasing sequence of non-negative integers, $V$ must hit 0 in at most $\lfloor \log_2 N \rfloor + 1$ iterations, forcing loop termination when `left > right`.
 
-- If `left > right`, the search range $[left, right]$ has become empty.
-- Combining this with our loop invariant (which states that if the target is present, it must lie within $[left, right]$), we prove that the target is **not** present in the array. We return `-1` with mathematical confidence.
+When $V = 0$, the search space $[left, right]$ is empty. Combining $V = 0$ with invariant $\mathcal{P}$ proves that $\text{target} \notin nums$. Returning `-1` is mathematically sound.
+
+> [!TIP]
+> **How to Verbalize This in an Interview (30-Second Summary):**
+> Tell your interviewer: *"I define my active search space as the closed interval [left, right]. My loop invariant states that if the target exists, it MUST lie within [left, right]. At each step, I compute mid without integer overflow using left + (right - left) / 2. Depending on the comparison, I strictly contract the search space to [left, mid - 1] or [mid + 1, right], strictly reducing my loop variant metric V = right - left + 1. This guarantees O(log N) termination without off-by-one errors."*
 
 ### Implementation (Step 4)
 Because we have proved our updates mathematically, we do not need to guess the loop conditions:
@@ -151,21 +151,26 @@ By applying this invariant-first approach, we eliminate all cognitive overhead. 
 
 ### Invariant Proof #2: The Sliding Window Maximum
 
-Prove the invariant for maintaining a monotonic deque that tracks the maximum element in a sliding window of size K:
+Prove the invariant for maintaining a monotonic deque that tracks the maximum element in a sliding window of size $K$:
 
-**Invariant:** At every step, the deque contains indices in strictly decreasing order of their corresponding values, and all indices are within the current window [i-K+1, i].
+**Invariant:** At every step $i$, the deque contains indices in strictly decreasing order of their corresponding values, and all indices are contained within the current window $[i - K + 1, i]$.
 
 **Initialization:** The deque is empty before processing begins. Vacuously true.
-**Maintenance:** When processing element A[i]:
-1. Remove all indices from the back where A[deque.peekLast()] ≤ A[i] (maintains decreasing order)
-2. Remove the front if deque.peekFirst() < i-K+1 (maintains window bounds)
-3. Add i to the back
 
-After these operations, deque.peekFirst() always holds the index of the maximum element in the current window.
+**Maintenance & The Dominance Lemma:** When processing element $A[i]$:
 
-**Termination:** After processing all N elements, we have extracted N-K+1 window maximums, each in O(1) amortized time.
+1. **Dominance (Elimination) Lemma:** For any prior index $j < i$ inside the deque where $A[j] \le A[i]$, index $j$ can **never** be the maximum of the current window or any future window containing $i$. Why? Because $A[i]$ is both larger/equal in value AND has a later expiration boundary ($i + K - 1 > j + K - 1$). Thus, popping $j$ from the back preserves optimal sub-structure.
+2. **Window Bounds Guard:** Remove the front index if $deque.peekFirst() < i - K + 1$ (evicting expired elements).
+3. **Enqueue:** Push current index $i$ to the back.
 
-This proves the Monotonic Deque pattern [PAT-20] achieves O(N) total time for sliding window maximum.
+After these operations, $deque.peekFirst()$ strictly holds the index of the maximum element in the current window.
+
+**Termination & Amortized Complexity Proof ($2N$ Aggregate Method):**
+To prove the $\mathcal{O}(1)$ amortized time per element ($\mathcal{O}(N)$ total runtime), define the potential function $\Phi = |\text{deque}|$:
+
+- Each of the $N$ array elements is pushed to the deque **at most once** ($+1$ operation).
+- Each element is popped from the deque **at most once** ($-1$ operation).
+- Total deque operations across all $N$ steps $\le 2N$, strictly proving $\mathcal{O}(N)$ runtime without relying on intuition.
 
 
 > ⭐ **STAR Moment: The $O(1)$ Failure Principle**

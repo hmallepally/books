@@ -39,14 +39,28 @@ def combine_chapters(edition_dir, for_epub=False):
         # Strip LaTeX \newpage commands
         content = re.sub(r'\\newpage\r?\n?', '', content)
         
-        # Convert relative image paths to absolute or correct relative paths for building
+        # Convert relative image paths to absolute paths for Pandoc / XeLaTeX
         pattern = r'!\[(.*?)\]\((visuals/[^)]+)\)'
         def image_path_replacer(match):
             alt_text = match.group(1)
             img_rel_path = match.group(2)
-            # Make path relative to book root
-            resolved_img_path = os.path.join('editions', os.path.basename(edition_dir), 'chapters', folder, img_rel_path).replace('\\', '/')
-            return f"![{alt_text}]({resolved_img_path})"
+            
+            clean_rel = img_rel_path.split('{')[0].strip()
+            extra = "{" + img_rel_path.split('{')[1] if '{' in img_rel_path else ""
+            filename = os.path.basename(clean_rel)
+            
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            root_visual = os.path.join(base_dir, 'visuals', filename)
+            ch_visual = os.path.join(edition_dir, 'chapters', folder, 'visuals', filename)
+            
+            if os.path.exists(root_visual):
+                abs_path = os.path.abspath(root_visual).replace('\\', '/')
+                return f"![{alt_text}]({abs_path}){extra}"
+            elif os.path.exists(ch_visual):
+                abs_path = os.path.abspath(ch_visual).replace('\\', '/')
+                return f"![{alt_text}]({abs_path}){extra}"
+            else:
+                return f"![{alt_text}]({clean_rel}){extra}"
             
         content = re.sub(pattern, image_path_replacer, content)
         combined_content += f"\n\n{content}"

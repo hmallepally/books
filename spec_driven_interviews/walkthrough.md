@@ -1,88 +1,42 @@
 # Walkthrough — Spec-Driven Interviews Reference Book
 
-> **Status:** **PHASE 5 COMPLETE & VALIDATED**
-> All three language editions (Java, C#, Python) successfully compiled into publication-ready PDFs!
+> **Status:** **ALL 3 EDITIONS COMPILED & PUBLICATION READY (PDF & EPUB)**
+> All three language editions (Java, Python, C#) successfully compiled into 8.5" x 11" trim PDFs and EPUBs!
 
 ---
 
-## 1. Accomplished Tasks & Remediation Summary
+## 1. Major Enhancements & Structural Overhauls
 
-### Infrastructure & Citations
-- **Fabricated Citation Remediation:** Replaced the draft citation `Barrett et al., 2026` in `00-prologue/base.md` with the verified, real report from the **National Institute of Standards and Technology (NIST, 2002)**.
-- **Codebase Refactoring (Language Agnosticism):** Removed all remaining hardcoded code blocks from all chapters, extracting them to snippets under `snippets/java/`, `snippets/csharp/`, and `snippets/python/` respectively.
-- **Heading Cleanup:** Removed hardcoded section numbers from `H2` sub-headings across all chapters to prevent duplication with Pandoc's automatic numbering engine.
-- **References Expansion:** Expanded the references chapter (`17-references`) to **33 verified foundational and scholarly computer science sources** in APA 7th format.
+### Print Format & Typography Configuration
+- **Trim Size:** Formatted for **8.5" x 11" US Letter / Large Technical Manual** trim size.
+- **Font Size & Leading:** Configured **10pt font size** with `\setstretch{1.10}` leading and strict orphan/widow controls (`\widowpenalty=10000`, `\clubpenalty=10000`).
+- **Color Styling:** Applied custom corporate color palette (`labelteal`, `labelnavy`, `labelgold`) for callouts and headings.
 
-### Layout & Structural Fixes
-- **Visuals Rendering:** Fixed the image path resolution bug in `build_pdf.py` (which generated duplicate `editions/editions/` paths). All 30 technical diagrams and cover flows are now fully compiled and visible in the final PDFs.
-- **Part Page Numbering:** Replaced the bookdown `(PART)` syntax with native LaTeX `\part{...}` commands in the compilation builder. Parts are now formatted and numbered natively in the PDF and Table of Contents (e.g. "Part I", "Part II", etc.).
-- **Blank Page Removal:** Added `classoption: [openany, oneside]` class settings to `metadata.yaml`. This prevents LaTeX from inserting blank filler pages between chapters and parts, resulting in a clean, contiguous flow optimized for digital reading.
-- **Title Page Blank Page:** Confirmed the single blank page after the title page is standard for the `book` class format (for print formatting of the inner cover). If a completely continuous report layout is required, the document class can be configured as `report`.
+### Generative Architecture Diagrams & Visual Prompt Registry
+- **Generative Architecture Diagrams:** Replaced text/ASCII diagrams with high-resolution visual diagrams (ChiramTrust $\to$ ZenithTrade $\to$ AuraPay platform ecosystem, OOP-to-DDD Bridge, Anemic vs Rich Domain Models, Imperative vs Declarative Processing, and Stream Stages).
+- **Central Visual Prompt Registry ([`visuals/PROMPTS.json`](file:///c:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/PROMPTS.json)):** Created a master JSON registry tracking **63 visual assets**, prompt descriptions, and SVG rendering parameters across all 25 chapters.
 
-### Content Expansion (121–131 Pages Total)
-- **Prologue:** Added detailed reader persona profiles (Senior Engineer, Staff/Lead, Engineering Manager) to guide study plans.
-- **Chapter 1 (Invariant-First):** Added a full step-by-step mathematical proof of Binary Search correctness (initialization, maintenance, termination).
-- **Chapter 2 (Case Studies):** Added architecture diagrams and boilerplate coding exercise starters for ZenithTrade and ChiramTrust.
-- **Chapter 3 (OOP Principles):** Added a step-by-step refactoring walkthrough from an Anemic to a Rich Domain Model, including an OOP vs. DDD mapping table.
-- **Chapter 4 (SOLID Boundaries):** Added a SOLID Violation Detector and Remedies cheat sheet table, plus enterprise framework integration (DI, AOP).
-- **Chapter 5 (Functional Streams):** Added an Imperative vs. Stream performance comparison table, Standard vs. Reactive stream explanations, and debugging strategies.
-- **Chapter 6 (Design Patterns):** Added creational pattern deep-dive (Double-Checked Locking Singleton thread-safety), structural (Adapter/Decorator), and behavioral (State Pattern for transactions). Also added **Data Access and Enterprise Integration Patterns** (Repository, Unit of Work, DTO, Active Record vs. Data Mapper ORM strategies).
-- **Chapter 7 (Concurrency):** Added database concurrency control matrix, cache pattern deep-dive, cache invalidation race conditions, and CPU cache locality.
-- **Chapter 8 (Algorithms GCA):** Added GCA 70-minute time allocation timeline, 8 fully worked problems in all 3 languages, and 2 full timed Mock Tests (4 problems each).
-- **Chapter 9 (System Architecture):** Added CQRS, CAP, Consistent Hashing, API design, and a sharded order matching engine Mock Interview transcript.
-- **Chapter 10 (Resiliency):** Added Event Sourcing, Redis Sliding Window Rate Limiting, OpenTelemetry Distributed Tracing context propagation, and JSON logging.
-- **Chapter 11 (Database Compliance):** Added Range vs. Hash sharding, Indexing covered/composite rules, and GDPR Crypto-Shredding for immutable ledgers.
-- **Chapter 12 (Behavioral Leadership):** Developed technical STAR frameworks, video/Teams checklists, and 3 full mock responses for senior leadership interview scenarios.
-- **Chapter 13 (Testing & CI/CD):** Added the testing pyramid (unit vs integration vs contract testing), Testcontainers for local Docker database execution, and automated release policies.
-- **Chapter 14 (Event Streaming & Kafka):** Explored Apache Kafka storage logs, partition-key sharding for in-order delivery guarantees, and Exactly-Once Semantics (EOS).
-- **Chapter 15 (AI/ML & LLM Integration):** Covered Vector DBs (HNSW vs IVF indexes), RAG architectures, semantic caches, and prompt injection security filters.
-- **Chapter 16 (Appendix & Cheat Sheets):** Created Big-O complexity tables, an edge-case checklist for live coding, system design latency tables, and day-of-interview checklists.
+### Content Enrichment & CodeSignal Prep Integration
+- **Chapter 1 (Invariant Rigor):** Added binary search implication invariant, loop variant metric $V(left, right) = right - left + 1$, Monotonic Deque Dominance Lemma, and $2N$ aggregate potential function proof.
+- **Chapter 2 (Problem Decomposition):** Added **Constraint-to-Complexity Deduction Matrix** table and platform operational limit narrative ($\approx 10^7-10^8$ ops/sec).
+- **Chapter 3 (Ecosystem Context):** High-level enterprise ecosystem overview, generative visual diagram, plain-language system context, and domain code scaffolding.
+- **Chapter 4 (OOP & DDD Foundations):** Built the **OOP-to-DDD Architectural Bridge** (Entities, Value Objects, Aggregates, Domain Services), Rich Aggregate Root refactoring rules, and circular-wait deadlock elimination.
+- **Chapter 5 (SOLID & Persistence Atomicity):** Added `UnitOfWork` / `@Transactional` persistence atomicity note across repository saves.
+- **Chapter 6 (Comprehensive Functional Streams):** Complete stream API guide for job seekers, lazy evaluation, 4 essential primitives, and 4 interview pitfalls (side-effects, closed stream reuse, parallel `ForkJoinPool` thread starvation, primitive boxing overhead).
+- **Chapter 16 (System Architecture):** Decoupled HFT Order Validator from synchronous remote DB calls; added **Distributed Join Strategies** (Broadcast Hash Join BHJ vs Sort-Merge Join SMJ vs Shuffle Hash Join SHJ).
+- **Chapter 17 (Resiliency & Integration):** Added CDC (Debezium) vs Polling Outbox comparison, and Event Sourcing Snapshotting / Checkpoint Pattern to prevent $\mathcal{O}(N)$ log replay lag.
+- **Chapter 18 (Database Design & Compliance):** Detailed KMS Envelope Encryption (DEK/KEK hierarchy) for PCI-DSS tokenization at 50,000 TPS; added **Data Lakehouse Storage Formats Matrix** (CSV vs JSON vs Parquet vs Avro vs Delta Lake) with Projection/Predicate Pushdown mechanics.
+- **Chapter 21 (Message Brokers & Event Streaming):** Corrected Kafka hot-account transcript (rejected key-salting anti-pattern in financial ledgers in favor of micro-batching); added KRaft consensus metadata note.
+- **Chapter 22 (AI/ML & LLM Systems):** Added Multi-Layer LLM Guardrails security note beyond regex matching (Llama Guard / NeMo Guardrails) and **Dual-Tier Feature Store Architecture** with TreeSHAP explainability and ECOA Adverse Action Code generation.
 
 ---
 
-## 2. Visual Assets & Prompts Catalog (30 Diagrams)
+## 2. Final Build Verification & Page Counts
 
-All 30 generated diagrams use **light/white backgrounds** for high-quality book print compatibility:
+All three language editions compiled cleanly to PDF and EPUB format:
 
-1. `visuals/cover.png` - Minimalist tech cover with circuit board patterns.
-2. `aurapay_architecture.png` - AuraPay system components & bounded microservices.
-3. `circuit_breaker.png` - Circuit Breaker state machine (Closed, Open, Half-Open).
-4. `sliding_window.png` - Step-by-step array sliding window steps.
-5. `ddd_contexts.png` - Domain-Driven Design context mapping diagram.
-6. `saga_comparison.png` - Simple side-by-side comparison of Saga Orchestration vs Choreography workflows.
-7. `outbox_pattern.png` - Transactional Outbox vs Dual-Write data flows.
-8. `virtual_threads.png` - Virtual threads vs Platform threads comparison.
-9. `btree_vs_lsm.png` - B-Tree vs LSM-Tree storage engine comparisons.
-10. `tokenization_vault.png` - PCI-DSS network isolation vault.
-11. `pattern_flowchart.png` - Algorithmic pattern recognition decision flowchart.
-12. `anemic_vs_rich.png` - Anemic vs Rich domain model class structures.
-13. `observer_pattern.png` - Observer pattern UML class diagram.
-14. `solid_dip.png` - SOLID Dependency Inversion before-and-after graph.
-15. `stream_pipeline.png` - Conveyor belt Stream pipeline stages (filter, map, collect).
-16. `spec_vs_syntax.png` - Spec-Driven path vs Syntax Trap diagram.
-17. `invariant_wall.png` - Invariant Wall layers (Pre, Post, Class rules).
-18. `gca_timeline.png` - GCA 70-minute time allocation timeline.
-19. `dp_table.png` - 0/1 Knapsack DP memoization matrix.
-20. `occ_vs_pcc.png` - Optimistic vs Pessimistic database locking flow.
-21. `hikaricp_formula.png` - HikariCP pool sizing formula & database latency chart.
-22. `arch_styles.png` - Monolith vs Microservices vs Event-Driven comparison.
-23. `composition_vs_inheritance.png` - Composition over inheritance class couplings.
-24. `solid_summary.png` - SOLID 5 principles reference card.
-25. `audit_trail.png` - Cryptographic append-only log chain.
-26. `order_lifecycle.png` - ZenithTrade Order Lifecycle sequence flow.
-27. `rate_limiter.png` - Redis sliding window sorted set rate limiter flow.
-28. `testing_pyramid.png` - Software testing pyramid (Unit, Testcontainers Integration, Pact Contract).
-29. `kafka_internals.png` - Kafka Topic Partitions and Consumer Group assignments.
-30. `rag_architecture.png` - Retrieval-Augmented Generation (RAG) pipeline sequence flow.
-
----
-
-## 3. Final Build Verification & Page Counts
-
-We verified the build execution. All three editions generated correct PDFs:
-
-| Edition | Command | Manuscript File | Output PDF File | Page Count | Status |
-|---|---|---|---|---|---|
-| **Java Edition** | `python build_pdf.py --edition java` | `_build/manuscript_java.md` | `Spec_Driven_Coding_Interviews_Java_Edition.pdf` | **131 Pages** | **Passed** |
-| **C# Edition** | `python build_pdf.py --edition csharp` | `_build/manuscript_csharp.md` | `Spec_Driven_Coding_Interviews_Csharp_Edition.pdf` | **131 Pages** | **Passed** |
-| **Python Edition** | `python build_pdf.py --edition python` | `_build/manuscript_python.md` | `Spec_Driven_Coding_Interviews_Python_Edition.pdf` | **121 Pages** | **Passed** |
+| Edition | PDF File | EPUB File | Page Count | Status |
+|---|---|---|---|---|
+| **Java Edition** | [`Java_Edition.pdf`](file:///c:/Users/hari/Documents/DBA/books/spec_driven_interviews/Java_Edition.pdf) | [`Java_Edition.epub`](file:///c:/Users/hari/Documents/DBA/books/spec_driven_interviews/Java_Edition.epub) | **332 Pages** | **Passed** |
+| **Python Edition** | [`Python_Edition.pdf`](file:///c:/Users/hari/Documents/DBA/books/spec_driven_interviews/Python_Edition.pdf) | [`Python_Edition.epub`](file:///c:/Users/hari/Documents/DBA/books/spec_driven_interviews/Python_Edition.epub) | **319 Pages** | **Passed** |
+| **C# Edition** | [`CSharp_Edition.pdf`](file:///c:/Users/hari/Documents/DBA/books/spec_driven_interviews/CSharp_Edition.pdf) | [`CSharp_Edition.epub`](file:///c:/Users/hari/Documents/DBA/books/spec_driven_interviews/CSharp_Edition.epub) | **337 Pages** | **Passed** |

@@ -1,14 +1,12 @@
 # Easy-tier Mastery — Implementation Speed, In-Place Transformations, and String Processing
 
-The first question (Easy-tier) on the automated testing platforms General Coding Assessment (general coding assessment) is designed to evaluate fundamental implementation speed, boundary correctness, and memory hygiene. You have roughly **8 minutes** to solve Easy-tier. While categorized as "Easy," Easy-tier is where candidates most frequently drop valuable points — not because the problem is hard, but because they rush and introduce off-by-one errors, forget null checks, or use inefficient string concatenation. A perfect Easy-tier score is the foundation of a 750+ general coding assessment result.
+The first question (Easy-tier) on the automated testing platforms General Coding Assessment (GCA) is designed to evaluate fundamental implementation speed, boundary correctness, and memory hygiene. You have roughly **8 minutes** to solve Easy-tier. While categorized as "Easy," Easy-tier is where candidates most frequently drop valuable points — not because the problem is hard, but because they rush and introduce off-by-one errors, forget null checks, or use inefficient string concatenation. A perfect Easy-tier score is the foundation of a 750+ GCA result.
 
-This chapter teaches you the core vocabulary, the reusable pointer archetypes, 20 fully solved exemplar problems with detailed explanations, and 30 concrete practice problems with strategic hints.
+This chapter teaches you the core vocabulary, the reusable pointer archetypes, 32 fully solved exemplar problems with detailed explanations, and 30 concrete practice problems with strategic hints.
 
-* * *
+## Essential Implementation Tactics & Foundational Vocabulary (21 Foundational Tactics + 4 Advanced Forward References)
 
-## Essential Terminology & Vocabulary
-
-Before solving any Easy-tier problem, you must internalize these foundational concepts. Each one maps directly to a class of problems you will encounter on the exam.
+Before solving any Easy-tier problem, you must internalize these foundational implementation tactics. Each one maps directly to a class of problems you will encounter on the exam. For every problem, apply the *Invariant-First* methodology from Chapter 1: identify the loop invariant before writing any code, then verify your solution preserves that invariant at every iteration.
 
 ### In-Place Mutation
 An algorithm is **in-place** if it transforms the input using $\mathcal{O}(1)$ auxiliary space (excluding the input itself). In Java, arrays are mutable references — you can overwrite `arr[i]` directly. Strings, however, are **immutable objects** — every modification creates a new heap allocation.
@@ -60,6 +58,8 @@ The XOR operator (`^`) has two key properties: `a ^ a = 0` (same values cancel) 
 ### Prefix Sum / Running Total
 A technique where you compute cumulative sums to answer range queries in $\mathcal{O}(1)$. For pivot index problems: `leftSum == totalSum - leftSum - nums[i]` identifies the balance point without nested loops.
 
+![Prefix Sum — Precomputed Cumulative Array for O(1) Range Queries](visuals/prefix_sum_pattern.png){width=85%}
+
 ### Integer Overflow & Boundary Guarding
 This involves handling `Integer.MAX_VALUE` and `Integer.MIN_VALUE` constraints. It requires implementing safe comparisons before executing arithmetic operations to prevent exceeding limits.
 Why it matters: Reverse-integer and palindrome-number problems require overflow detection.
@@ -84,6 +84,8 @@ Why it matters: You systematically test these BEFORE writing the main loop to ca
 This approach involves pushing opening delimiters onto a stack during traversal. Upon encountering a closing delimiter, you pop from the stack and verify the match.
 Why it matters: This is the universal pattern for bracket, parentheses, and tag validation problems.
 
+![Stack-Based Matching — Push/Pop Bracket Validation](visuals/stack_based_matching.png){width=85%}
+
 ### Two-Pass Strategy
 This algorithm design splits processing into two distinct phases. The first pass collects necessary data like counts, maximums, or positions, and the second pass acts on that collected information.
 Why it matters: It avoids complex single-pass logic and significantly reduces bugs.
@@ -100,7 +102,31 @@ Why it matters: It avoids floating-point arithmetic entirely and handles circula
 This is the standard programming idiom for swapping two variables using a temporary holder. It uses the `temp = a; a = b; b = temp;` pattern.
 Why it matters: It serves as a fundamental building block for partitioning, reversing, and Dutch National Flag problems.
 
-* * *
+### Sliding Window (Fixed-Size)
+A window of fixed size $K$ that slides across an array or string, computing an aggregate (sum, max, frequency count) incrementally. At each step, the window adds one element on the right and removes one on the left, maintaining the aggregate in $O(1)$ per step.
+Why it matters: Fixed-size sliding windows solve problems like "maximum sum of any $K$ consecutive elements" and "average of all subarrays of size $K$" in $O(N)$. For *variable-size* (dynamic) sliding windows — where the window expands and contracts based on a constraint — see Chapter 12.
+
+### Fast/Slow Pointers (Cycle Detection)
+Two pointers advance at different speeds through a sequence — typically one moves one step and the other two steps per iteration. If a cycle exists, the fast pointer will eventually lap and meet the slow pointer.
+Why it matters: This is the Floyd's Tortoise and Hare algorithm. It detects cycles in linked lists in $O(N)$ time and $O(1)$ space, and solves problems like finding the duplicate number in a constrained array or determining the starting node of a cycle.
+
+
+
+### Cyclic Sort
+An in-place sorting technique for arrays containing elements in the range $[0, N]$ or $[1, N]$. Each element is swapped to its "correct" index (element $k$ belongs at index $k$ or $k-1$) until all elements are placed.
+Why it matters: This pattern directly solves "Find the Missing Number," "Find All Duplicates," and "First Missing Positive" in $O(N)$ time and $O(1)$ space — a common Easy-to-Medium tier technique.
+
+### Hash Map/Set Lookup
+Using a hash-based data structure to achieve $O(1)$ average-case lookup, insertion, and deletion. A HashMap stores key-value pairs; a HashSet stores unique keys only.
+Why it matters: This pattern transforms brute-force $O(N^2)$ nested-loop problems into $O(N)$ single-pass solutions. Classic applications include Two Sum (complement lookup), group anagrams (sorted-key grouping), and detecting duplicates within a sliding window.
+
+### Advanced Algorithmic Paradigms (Chapters 12–13)
+
+The following patterns are essential for Medium-Hard and Hard tier problems and are covered in full depth with solved examples in their dedicated chapters:
+
+- **Binary Search & Variants** (Chapter 13) — Halving the search space in $O(\log N)$. Includes rotated arrays, boundary search, and answer-space binary search.
+- **Bitmasking** (Chapter 13) — Encoding boolean state with bitwise operators (`AND`, `OR`, `XOR`, `SHIFT`). Used for subset enumeration and Hamming weight.
+- **Kadane's Algorithm** (Chapter 13) — The canonical $O(N)$ Maximum Subarray DP pattern. Tracks `current_max = max(arr[i], current_max + arr[i])` at each index.
 
 ## Reusable Code Templates
 
@@ -133,8 +159,6 @@ while left < right:
 
 **Used by:** Palindrome Check, Reverse Array, Two Sum (sorted), Sort Colors.
 
-* * *
-
 ## Solved Exemplar Problems
 
 **1. First Non-Repeating Character**
@@ -163,6 +187,7 @@ def first_uniq_char(self, s: str) -> int:
     return -1 # All characters repeat
 # Time: O(N), Space: O(1) — the counts list is constant size
 ```
+
 
 * * *
 
@@ -216,6 +241,7 @@ def compress(self, chars: list[str]) -> int:
 | 1    | 2    | 2     | Run 'a' len 2 | `['a','2','b','b','c','c','c']` |
 | 2    | 4    | 4     | Run 'b' len 2 | `['a','2','b','2','c','c','c']` |
 | 3    | 7    | 6     | Run 'c' len 3 | `['a','2','b','2','c','3','c']` |
+
 * * *
 
 **3. Valid Palindrome with Non-Alphanumeric Skipping**
@@ -253,6 +279,7 @@ def is_palindrome(self, s: str) -> bool:
 # Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **4. Move Zeros to End**
@@ -283,6 +310,7 @@ def move_zeroes(self, nums: list[int]) -> None:
 # Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **5. Remove Duplicates from Sorted Array**
@@ -307,6 +335,7 @@ def remove_duplicates(self, nums: list[int]) -> int:
 # Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **6. Single Number (XOR Uniqueness)**
@@ -324,6 +353,7 @@ def single_number(self, nums: list[int]) -> int:
     return result
 # Time: O(N), Space: O(1)
 ```
+
 
 * * *
 
@@ -354,6 +384,7 @@ def is_valid(self, s: str) -> bool:
 # Time: O(N), Space: O(N) worst case for the stack
 ```
 
+
 * * *
 
 **8. Reverse String In-Place**
@@ -375,6 +406,7 @@ def reverse_string(self, s: list[str]) -> None:
         right -= 1
 # Time: O(N), Space: O(1)
 ```
+
 
 * * *
 
@@ -403,6 +435,7 @@ def pivot_index(self, nums: list[int]) -> int:
 # Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **10. Check Array Monotonicity**
@@ -427,6 +460,7 @@ def is_monotonic(self, nums: list[int]) -> bool:
     return increasing or decreasing
 # Time: O(N), Space: O(1)
 ```
+
 
 * * *
 
@@ -453,6 +487,7 @@ def neighbor_sum(self, a: list[int]) -> list[int]:
     return b
 # Time: O(N), Space: O(N) for output array
 ```
+
 
 * * *
 
@@ -481,6 +516,7 @@ def max_sum_subarray(self, nums: list[int], k: int) -> int:
 # Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **13. Find the Added Character**
@@ -498,6 +534,7 @@ def find_the_difference(self, s: str, t: str) -> str:
     return chr(result) # Only the unpaired character survives
 # Time: O(N), Space: O(1)
 ```
+
 
 * * *
 
@@ -523,6 +560,7 @@ def transform_words(self, words: list[str]) -> list[str]:
     return result
 # Time: O(N * K) where K is average word length, Space: O(N * K) for output
 ```
+
 
 * * *
 
@@ -551,6 +589,7 @@ def are_occurrences_equal(self, s: str) -> bool:
 # Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **16. Remove Element In-Place**
@@ -575,6 +614,7 @@ def remove_element(self, nums: list[int], val: int) -> int:
 # Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **17. Parity Alternation Validation**
@@ -598,6 +638,7 @@ def is_alternating_parity(self, nums: list[int]) -> bool:
 # Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **18. Two Sum (Unsorted Array)**
@@ -620,6 +661,7 @@ def two_sum(self, nums: list[int], target: int) -> list[int]:
     return [] # Should not reach here per problem guarantee
 # Time: O(N), Space: O(N)
 ```
+
 
 * * *
 
@@ -648,6 +690,7 @@ def majority_element(self, nums: list[int]) -> int:
 # Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **20. Plus One (Large Number as Array)**
@@ -670,6 +713,7 @@ def plus_one(self, digits: list[int]) -> list[int]:
     return [1] + [0] * len(digits)
 # Time: O(N), Space: O(1) amortized (O(N) only for all-9s edge case)
 ```
+
 
 * * *
 
@@ -703,6 +747,7 @@ def adjacent_elements_product(self, input_array: list[int]) -> int:
 # Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **22. Century From Year**
@@ -717,6 +762,7 @@ def century_from_year(self, year: int) -> int:
     return (year + 99) // 100
 # Time: O(1), Space: O(1)
 ```
+
 
 * * *
 
@@ -746,6 +792,7 @@ def all_longest_strings(self, input_array: list[str]) -> list[str]:
 # Time: O(N), Space: O(N) for output
 ```
 
+
 * * *
 
 **24. Common Character Count**
@@ -771,6 +818,7 @@ def common_character_count(self, s1: str, s2: str) -> int:
 # Time: O(N + M), Space: O(1) — fixed 26-element lists
 ```
 
+
 * * *
 
 **25. Lucky Ticket (Digit Sum Halves)**
@@ -794,6 +842,7 @@ def is_lucky(self, n: int) -> bool:
     return sum1 == sum2
 # Time: O(D) where D is digit count, Space: O(D) for string conversion
 ```
+
 
 * * *
 
@@ -825,6 +874,7 @@ def sort_by_height(self, a: list[int]) -> list[int]:
 # Time: O(N log N) for sorting, Space: O(N) for extracted list
 ```
 
+
 * * *
 
 **27. Alternating Team Sums**
@@ -848,6 +898,7 @@ def alternating_sums(self, a: list[int]) -> list[int]:
     return [team1, team2]
 # Time: O(N), Space: O(1)
 ```
+
 
 * * *
 
@@ -880,6 +931,7 @@ def add_border(self, picture: list[str]) -> list[str]:
 # Time: O(rows * cols), Space: O(rows * cols) for output
 ```
 
+
 * * *
 
 **29. Array Change (Minimum Moves for Strict Increase)**
@@ -906,6 +958,7 @@ def array_change(self, input_array: list[int]) -> int:
 # Time: O(N), Space: O(1)
 ```
 
+
 * * *
 
 **30. Matrix Elements Sum (Haunted Rooms)**
@@ -930,6 +983,7 @@ def matrix_elements_sum(self, matrix: list[list[int]]) -> int:
     return total
 # Time: O(rows * cols), Space: O(1)
 ```
+
 
 * * *
 
@@ -974,6 +1028,7 @@ def almost_increasing_sequence(self, sequence: list[int]) -> bool:
 | 1    | 0 | 1       | 3         | No         | Continue | 0 |
 | 2    | 1 | 3       | 2         | Yes        | Check removals | 1 |
 | 3    | 2 | 2       | 1         | Yes        | Return false   | >1 |
+
 * * *
 
 **32. Reverse Parentheses (Nested String Reversal)**
@@ -1013,7 +1068,6 @@ def reverse_in_parentheses(self, s: str) -> str:
 | 5    | ')'  | Pop & Reverse | `[""]` | `"uevol"` |
 | 6    | 'i'  | Append   | `[""]` | `"uevoli"` |
 | 7    | ')'  | Pop & Reverse | `[]` | `"iloveu"` |
-* * *
 
 ## Practice Problem Bank
 
