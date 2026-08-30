@@ -52,6 +52,54 @@ By declaring operations as a stream pipeline, the code becomes an exact, self-do
 2. **Collect:** Group transactions by merchant ID and sum their decimal amounts into a result map.
 
 
+### Functors, Monads, and Railway Oriented Pipelines
+
+Functional programming concepts like `Optional`, `Stream`, and `CompletableFuture` are practical applications of category theory:
+
+1. **Functor:** A container type $F\langle T \rangle$ implementing a `map` function:
+   $$\text{map}: (T \to U) \implies F\langle T \rangle \to F\langle U \rangle$$
+   It transforms the wrapped value without altering the outer container structure.
+
+2. **Monad:** A Functor that additionally implements `unit` (instantiation) and `flatMap` (binding):
+   $$\text{flatMap}: (T \to M\langle U \rangle) \implies M\langle T \rangle \to M\langle U \rangle$$
+
+```text
+Without flatMap (Nested Monad Hell):
+Optional<User> ──► user.getAddress() ──► Optional<Optional<Address>> ──► Optional<Optional<Optional<Zip>>>
+
+With flatMap (Linear Monadic Railway):
+Optional<User> ──flatMap(getAddress)──► Optional<Address> ──flatMap(getZip)──► Optional<Zip>
+```
+
+Monadic binding automatically unwraps nested contexts, allowing developers to compose linear, null-safe data pipelines without deeply nested `if (val != null)` condition trees.
+
+### Pure Functions & Referential Transparency
+
+A function is **Pure** if:
+
+1. It is deterministic: Given identical arguments, it always returns the exact same result.
+2. It is free of side effects: It does not mutate external memory, perform I/O, or modify its inputs.
+
+A pure function exhibits **Referential Transparency**: any call to $f(x)$ can be replaced with its evaluated result without altering program behavior. This enables:
+
+- **Memoization:** Caching function evaluations safely.
+- **Compiler Optimizations:** Dead-code elimination and algebraic expression reordering.
+- **Fearless Concurrency:** Pure functions can execute across 1,000 CPU cores without synchronization locks.
+
+### Stream Pipeline Internals: The `Sink` Chaining Engine
+
+How does a stream execute lazily without allocating intermediate collections?
+
+- When stream operations are chained (`.filter().map().collect()`), the runtime constructs a linked list of **`Sink` interfaces**.
+- Each `Sink<T>` has three lifecycle methods: `begin(size)`, `accept(element)`, and `end()`.
+- On terminal operation invocation, elements from the underlying spliterator are pushed sequentially through the `Sink` chain:
+
+```text
+[Spliterator Source] ──accept()──► [FilterSink] ──(if true)──► [MapSink] ──accept()──► [CollectorSink]
+```
+Each element traverses the entire pipeline from end-to-end in a single CPU cache pass, eliminating intermediate array allocations.
+
+
 ## The 4 Essential Stream Transformations Every Candidate Must Master
 
 When solving collection and aggregation problems in interviews, map your data pipeline to one of these four core functional transformations. Regardless of your primary interview language, master the corresponding idioms across Java Streams, C# LINQ, and Python comprehensions:
@@ -100,14 +148,44 @@ To stand out in technical interviews, candidates must demonstrate an understandi
 * **Mistake:** Saving a `Stream` variable and invoking multiple terminal operations on it.
 * **Why it Fails:** Streams are single-pass pipelines. Once a terminal operation completes, the stream is consumed and closed. Subsequent calls throw an `IllegalStateException`.
 
-### Pitfall 3: Parallel Streams & Thread Pool Starvation
+### Pitfall 3: Parallel Streams & ForkJoinPool Work-Stealing Starvation
 * **Mistake:** Calling `.parallelStream()` on long-running or blocking I/O tasks (e.g., fetching network HTTP endpoints inside a `.map()`).
-* **Why it Fails:** In Java, parallel streams share the global, common thread pool (`ForkJoinPool.commonPool()`). Executing blocking I/O inside parallel streams starves worker threads across the entire JVM application.
-* **Correct Approach:** Use parallel streams strictly for CPU-bound computations, or use dedicated custom executor thread pools for I/O tasks.
+* **Under the Hood (ForkJoinPool):** Java parallel streams utilize the shared JVM-wide `ForkJoinPool.commonPool()`.
+  - Each worker thread maintains a double-ended queue (deque).
+  - The owning thread pushes and pops sub-tasks from the **LIFO Head** (cache locality).
+  - Idle worker threads steal tasks from the **FIFO Tail** of busy threads' deques.
+
+```text
+Worker Thread 1 (Busy)              Worker Thread 2 (Idle)
+┌────────────────────────┐          ┌────────────────────────┐
+│ LIFO Head (Own Task A) │          │ LIFO Head (Empty)      │
+│ Task B                 │          │                        │
+│ Task C                 │          └────────────────────────┘
+├────────────────────────┤                     ▲
+│ FIFO Tail (Stealable)  │ ════ Steal Task ════╝
+└────────────────────────┘
+```
+If a worker thread blocks on HTTP/database I/O, it remains blocked in the common pool. Because the default common pool size equals $\text{CPU Cores} - 1$, blocking just a few threads halts all parallel streams, CompletableFutures, and reactive event loops across the entire JVM.
 
 ### Pitfall 4: Primitive Boxing & Allocation Overhead (JVM Focus)
 * **Mistake:** Using generic object streams (`Stream<Double>` or `Stream<Integer>`) on the JVM for high-throughput mathematical loops.
 * **Why it Fails:** On the JVM, generic type erasure forces primitive numbers into heap-allocated wrapper objects (`java.lang.Integer`), triggering millions of short-lived allocations and GC pressure. *(Note: C# LINQ natively avoids this because the CLR supports reified generics over value-type `structs` like `IEnumerable<int>` without heap boxing).*
+
+```text
+Primitive int[] vs Boxed Integer[] Memory Layout:
+int[] arr = [ 10, 20, 30, 40 ]
+┌──────────────┬────┬────┬────┬────┐
+│ Array Header │ 10 │ 20 │ 30 │ 40 │ (Contiguous 4-byte values in L1 CPU Cache)
+└──────────────┴────┴────┴────┴────┘
+
+Integer[] arr = [ 10, 20, 30, 40 ]
+┌──────────────┬──────┬──────┬──────┬──────┐
+│ Array Header │ ptr1 │ ptr2 │ ptr3 │ ptr4 │ (Array of 8-byte heap references)
+└──────────────┴───┬──┴───┬──┴───┬──┴───┬──┘
+                   ▼      ▼      ▼      ▼
+                 [Obj1] [Obj2] [Obj3] [Obj4] (24 bytes each, scattered across DRAM)
+```
+
 * **Correct Approach (Java):** Use specialized primitive streams (`IntStream`, `LongStream`, `DoubleStream`) or primitive arrays to process numeric data directly in contiguous stack/cache memory without garbage collection overhead.
 
 

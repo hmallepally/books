@@ -43,9 +43,38 @@ Using a fixed-size array (like `int[26]` for lowercase English letters) to count
 **Modular Arithmetic in Prefix Sums**
 Using the modulo operator with prefix sums. If `pref[i] % K == pref[j] % K`, then the subarray between $i$ and $j$ has a sum divisible by $K$.
 
-### 'At Most K' to 'Exactly K' Conversion
-This mathematical reduction calculates exact occurrences using cumulative bounds. It uses the formula `exactly(K) = atMost(K) - atMost(K-1)`.
-Why it matters: This is the standard trick for counting subarrays with exactly K distinct elements.
+### 'At Most K' to 'Exactly K' Reduction & Monotonicity Proof
+
+Why cannot a standard two-pointer sliding window directly count subarrays with **exactly** $K$ distinct elements?
+
+- **Monotonicity Violation:** As window $[L, R]$ expands ($R++$), the count of distinct elements is **monotonically non-decreasing**. But the property "distinct count $== K$" is **non-monotonic** — expanding $R$ might temporarily keep it equal to $K$, or increase it to $K+1$. Contracting $L$ can decrease it back to $K$.
+- Because validity is not monotonic, a single window cannot decide when to shrink without missing valid subarrays.
+
+#### The Dual-Window Mathematical Reduction
+Instead, we express the problem using cumulative monotonic predicates:
+$$\text{Exactly}(K) \equiv \text{AtMost}(K) - \text{AtMost}(K - 1)$$
+
+- $\text{AtMost}(K)$: "Subarrays with $\le K$ distinct elements" is **strictly monotonic**. If window $[L, R]$ has $\le K$ distinct elements, then **every** subarray ending at $R$ starting from any index $j \in [L, R]$ also has $\le K$ distinct elements.
+- Number of valid subarrays added at step $R$:
+  $$\Delta = R - L + 1$$
+
+- Computing $\text{AtMost}(K)$ and $\text{AtMost}(K-1)$ requires two pure monotonic $\mathcal{O}(N)$ passes, yielding the exact answer in $\mathcal{O}(N)$ time and $\mathcal{O}(K)$ space.
+
+### Negative Modulo Arithmetic in Prefix Sums
+
+When finding subarrays whose sum is divisible by $K$ ($\sum_{m=i+1}^j A[m] \equiv 0 \pmod K$), we look for identical prefix remainders:
+$$\text{pref}[j] \equiv \text{pref}[i] \pmod K \implies (\text{pref}[j] - \text{pref}[i]) \pmod K == 0$$
+
+#### The Negative Remainder Trap
+In languages like Java, C#, and C++, the `%` operator is the **remainder operator**, not the mathematical modulo operator:
+$$-7 \mathbin{\%} 5 = -2 \quad (\text{mathematical modulo should be } +3, \text{ since } -7 = -2 \times 5 + 3)$$
+
+If $\text{pref}[i] = -2$ and $\text{pref}[j] = 3$, their difference is $3 - (-2) = 5$ (divisible by 5). But looking up $-2$ in a remainder map will fail to match $+3$!
+
+**The Canonical Non-Negative Modulo Formula:**
+$$\text{mod} = ((\text{pref} \mathbin{\%} K) + K) \mathbin{\%} K$$
+
+- If $\text{pref} = -7, K = 5$: $(-7 \mathbin{\%} 5) = -2 \implies (-2 + 5) \mathbin{\%} 5 = 3 \mathbin{\%} 5 = 3$. Correctly normalizes all remainders into the closed domain $[0, K-1]$.
 
 ### Index Negation Trick
 This technique marks elements as 'seen' by negating the value at the corresponding index, such as `nums[abs(val)-1] = -nums[abs(val)-1]`. It only works for array values bounded within the range `[1, N]`.
@@ -67,9 +96,28 @@ Why it matters: It solves Top-K frequent elements problems in O(N) time without 
 Instead of immediately removing items from a data structure, this technique marks entries as invalid. The actual cleanup happens later during traversal or retrieval.
 Why it matters: It avoids ConcurrentModificationExceptions and eliminates priority queue update overhead.
 
-### Contribution Counting
-Instead of iterating through all possible subarrays, this mathematical approach computes exactly how many subarrays a specific element contributes to. It aggregates the total across all individual element contributions.
-Why it matters: It dramatically transforms O(N²) brute force summation logic into a highly optimal O(N) pass.
+### Combinatorial Contribution Counting
+
+Instead of iterating through all $\mathcal{O}(N^2)$ possible subarrays to compute sum of subarray minimums/maximums, calculate the total contribution of each element $A[i]$ directly.
+
+#### The Combinatorial Invariant
+Let $L$ be the index of the **Strictly Previous Smaller Element** ($A[L] < A[i]$).
+Let $R$ be the index of the **Next Smaller or Equal Element** ($A[R] \le A[i]$).
+
+```text
+Subarray Range where A[i] is the Minimum:
+[ ... L ] <--- choices for start index ---> [ i ] <--- choices for end index ---> [ R ... ]
+```
+
+- Number of valid subarray start indices: $(i - L)$ (any index from $L+1$ to $i$).
+- Number of valid subarray end indices: $(R - i)$ (any index from $i$ to $R-1$).
+- Total subarrays where $A[i]$ is the minimum:
+  $$\text{Count}(i) = (i - L) \times (R - i)$$
+
+- Total contribution to answer:
+  $$\text{Contribution}(i) = A[i] \times (i - L) \times (R - i)$$
+
+Using a Monotonic Stack to find $L$ and $R$ for all elements in $\mathcal{O}(N)$ transforms an intractable $\mathcal{O}(N^2)$ problem into an elegant single pass.
 
 ### Greedy Interval Scheduling
 This algorithm sorts given intervals by their end times first. It then greedily picks the next non-overlapping interval to maximize total count.

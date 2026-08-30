@@ -102,9 +102,26 @@ Let's trace searching for `target = 0`:
 
 **Definition:** A technique where we search for an optimal value (the "answer") within a known range `[low, high]` instead of searching for a specific element in an array. We use a monotonic predicate function (e.g., `canFulfill(mid)`) to determine whether a given value `mid` is feasible.
 
-**Why it matters:** It transforms optimization problems (e.g., "find the minimum capacity") into a series of simpler decision problems (e.g., "is capacity X sufficient?"), enabling $\mathcal{O}(N \log(\max - \min))$ solutions.
+#### The Dual Templates for Parametric Optimization
 
-**When to use:** When the answer space is bounded, the feasibility function is monotonic (if $x$ is valid, $x+1$ is also valid, or vice versa), and calculating feasibility takes linear time $\mathcal{O}(N)$.
+```text
+Type 1: Minimum-Feasible (Minimize X such that Feasible(X) == TRUE)
+Feasibility Curve: [ FALSE, FALSE, ..., FALSE, TRUE, TRUE, ..., TRUE ]
+                                                ▲ (Target: First TRUE)
+
+Type 2: Maximum-Feasible (Maximize X such that Feasible(X) == TRUE)
+Feasibility Curve: [ TRUE, TRUE, ..., TRUE, FALSE, FALSE, ..., FALSE ]
+                                       ▲ (Target: Last TRUE)
+```
+
+| Optimization Goal | Target Boundary | Loop Condition | Midpoint Calculation | Feasible Branch | Infeasible Branch | Return Value |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Minimum Feasible** | First `TRUE` | `while (lo < hi)` | `mid = lo + (hi - lo) / 2` | `hi = mid` (Preserve candidate) | `lo = mid + 1` | `lo` (or `hi`) |
+| **Maximum Feasible** | Last `TRUE` | `while (lo < hi)` | `mid = lo + (hi - lo + 1) / 2` (Ceil Mid) | `lo = mid` (Preserve candidate) | `hi = mid - 1` | `lo` (or `hi`) |
+
+> [!IMPORTANT]
+> **Ceiling Midpoint in Maximum-Feasible Binary Search:**
+> When searching for Maximum-Feasible, using standard floor division `mid = lo + (hi - lo) / 2` with two elements remaining (`hi = lo + 1`) yields `mid = lo`. If `feasible(mid)` is true, setting `lo = mid` results in `lo = lo`, triggering an **infinite loop**. Adding `+ 1` (`mid = lo + (hi - lo + 1) / 2`) rounds midpoint up, guaranteeing strict loop contraction.
 
 ### Monotonic Stack & Deque
 
@@ -113,6 +130,47 @@ Let's trace searching for `target = 0`:
 **Why it matters:** It provides $\mathcal{O}(1)$ amortized time complexity for range maximum/minimum lookups or finding the "next greater element". Elements are pushed and popped at most once.
 
 **When to use:** Finding the next greater/smaller element, sliding window maximum/minimum, and calculating histogram areas.
+
+### Fenwick Tree (Binary Indexed Tree) & Two's Complement Lowest Set Bit
+
+A **Fenwick Tree** maintains dynamic prefix sums and point updates in $\mathcal{O}(\log N)$ time and $\mathcal{O}(N)$ space using bitwise arithmetic.
+
+#### The Two's Complement `x & (-x)` Isolation Proof
+Why does `x & (-x)` extract the lowest set bit ($LSB$) of integer $x$?
+
+- In two's complement binary representation, `-x` is formed by inverting all bits of $x$ (`~x`) and adding $1$.
+- Let binary representation of $x = A 1 0^k$ (where $A$ is prefix, followed by lowest set bit $1$, followed by $k$ trailing zeros).
+- Inversion: `~x = ~A 0 1^k`.
+- Adding 1: `-x = ~x + 1 = ~A 1 0^k` (carries flip all $1^k$ back to $0^k$ and set bit at position $k$).
+- Bitwise AND:
+  $$x \ \& \ (-x) = (A 1 0^k) \ \& \ (\sim A 1 0^k) = (A \ \& \sim A) 1 (0^k \ \& \ 0^k) = 00\dots 1 0^k$$
+Every cell `tree[i]` stores the sum of $2^k$ elements in range $(i - (i \ \& \ -i), i]$, enabling logarithmic tree traversal via `i += (i & -i)` (update) and `i -= (i & -i)` (query).
+
+### A* Search: Heuristic Admissibility & Consistency
+
+A* Search explores graph states by prioritizing nodes using evaluation function:
+$$f(n) = g(n) + h(n)$$
+
+- $g(n)$: Exact path cost from start to current node $n$.
+- $h(n)$: Estimated heuristic cost from $n$ to goal.
+
+#### Admissibility & Consistency Theorems
+1. **Admissibility ($h(n) \le h^*(n)$):** A heuristic is **admissible** if it *never overestimates* the true minimal cost to the goal ($h^*(n)$). An admissible heuristic guarantees A* with tree search finds the globally optimal shortest path.
+2. **Consistency / Monotonicity ($h(u) \le c(u, v) + h(v)$):** A heuristic is **consistent** if it satisfies the triangle inequality for every edge $(u, v)$. A consistent heuristic guarantees $f(n)$ is monotonically non-decreasing along any path, ensuring that when node $n$ is expanded, $g(n)$ is already optimal without requiring closed-set re-opening.
+
+### Bitmask DP: Submask Enumeration $\mathcal{O}(3^N)$ Proof
+
+When iterating over all submasks $s$ of a parent mask $m$ (`for (int s = m; s > 0; s = (s - 1) & m)`):
+
+- Iterating submasks for all $2^N$ bitmasks of length $N$ takes $\mathcal{O}(3^N)$ total operations, **NOT** $\mathcal{O}(4^N)$.
+
+#### Mathematical Binomial Expansion Proof
+For a mask $m$ with exactly $k$ set bits ($\binom{N}{k}$ choices), there are exactly $2^k$ submasks.
+Summing across all possible set bit counts $k$ from $0$ to $N$:
+$$\text{Total Submask Operations} = \sum_{k=0}^N \binom{N}{k} 2^k 1^{N-k}$$
+By Newton's Binomial Theorem $(x + y)^N = \sum_{k=0}^N \binom{N}{k} x^k y^{N-k}$ with $x = 2$ and $y = 1$:
+$$\sum_{k=0}^N \binom{N}{k} 2^k = (2 + 1)^N = 3^N$$
+For $N = 15$: $3^{15} \approx 1.43 \times 10^7$ operations (executes in $\approx 0.05\text{s}$), whereas $4^{15} \approx 1.07 \times 10^9$ would time out!
 
 ### Module 2: Dynamic Programming Vocabulary
 

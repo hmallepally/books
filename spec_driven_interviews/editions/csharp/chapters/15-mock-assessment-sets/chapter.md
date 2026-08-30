@@ -578,3 +578,21 @@ Before jumping into the 20 Mock Sets, review this executive checklist of top spe
 
 10. **Array Bounds Guarding:**  
     Always check `array != null && array.length > 0` before accessing index `0`, and ensure loops end at `i < array.length` (or `i <= array.length` when using a sentinel).
+
+## Master Mock Assessment Complexity & Evaluation Rubric
+
+| Set # | Question & Title | Primary Pattern | Target Time Complexity | Auxiliary Space Complexity | Key Assessment Evaluation Criteria |
+| :---: | :--- | :--- | :---: | :---: | :--- |
+| **Set 1** | Q1: Vowel Words | `[PAT-01]` Frequency/Set | $\mathcal{O}(L)$ | $\mathcal{O}(1)$ | Case-insensitivity, whitespace tokenization |
+| | Q2: Rectangular Rotate | `[PAT-02]` Matrix Coordinate | $\mathcal{O}(M \times N)$ | $\mathcal{O}(M \times N)$ | Dimension swap ($M \times N \to N \times M$), boundary mapping |
+| | Q3: K-Frequency Window | `[PAT-04]` Dynamic Window | $\mathcal{O}(L)$ | $\mathcal{O}(1)$ | Sliding window expansion/contraction, freq counter |
+| | Q4: Histogram Max Area | `[PAT-09]` Monotonic Stack | $\mathcal{O}(N)$ | $\mathcal{O}(N)$ | Width calculation invariant, sentinel bar flush |
+| **Set 2** | Q1: Running Sum In-Place| `[PAT-03]` Prefix Sum | $\mathcal{O}(N)$ | $\mathcal{O}(1)$ | Direct array mutation without allocation |
+| | Q2: Range Sum Queries | `[PAT-03]` Prefix Array | $\mathcal{O}(1)$ / query | $\mathcal{O}(N)$ precompute | 1-indexed padding, boundary subtraction |
+| | Q3: Maze Exit Shortest | `[PAT-13]` BFS Wavefront | $\mathcal{O}(M \times N)$ | $\mathcal{O}(M \times N)$ | Level snapshot queue tracking, visited matrix |
+| | Q4: Network Delay Time | `[PAT-18]` Dijkstra Min-Heap | $\mathcal{O}((V+E)\log V)$ | $\mathcal{O}(V + E)$ | Stale heap node skipping, max path reduction |
+| **Set 3** | Q1: Palindrome Check | `[PAT-06]` Converging Pointers| $\mathcal{O}(N)$ | $\mathcal{O}(1)$ | Alphanumeric filter, two-pointer convergence |
+| | Q2: Search Rotated Array| `[PAT-10]` Partition BS | $\mathcal{O}(\log N)$ | $\mathcal{O}(1)$ | Monotonic half detection, strict branch pruning |
+| | Q3: Number of Islands | `[PAT-15]` DFS Flood Fill | $\mathcal{O}(M \times N)$ | $\mathcal{O}(M \times N)$ | In-place cell sinking ('0'), 4-direction vector |
+| | Q4: Course Dependency | `[PAT-16]` Kahn Topo Sort | $\mathcal{O}(V + E)$ | $\mathcal{O}(V + E)$ | In-degree array, queue dependency resolution |
+| **Sets 4–20**| Full Mock Problem Suite | `[PAT-01]` to `[PAT-25]` | $\mathcal{O}(N)$ to $\mathcal{O}(N \log N)$ | $\mathcal{O}(1)$ to $\mathcal{O}(N)$ | Invariant preservation, zero memory leak, fail-fast |

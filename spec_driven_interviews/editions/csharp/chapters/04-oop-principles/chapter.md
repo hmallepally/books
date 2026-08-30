@@ -62,6 +62,26 @@ public class LedgerService
 2. **Scatter-Shot Business Logic:** Validation rules become duplicated across multiple service layers (`BillingService`, `PayoutService`, `TransferService`). When a business rule changes, developers must hunt through every service to update logic, risking logic drift and bugs.
 3. **Concurrency Vulnerability (TOCTOU):** Separating state checks from state mutation in external services creates **Time-of-Check to Time-of-Use (TOCTOU)** race conditions in multi-threaded environments, leading to negative balances and ledger corruption.
 
+#### Chronological Breakdown of a TOCTOU Race Condition
+
+```text
+Initial Database State: Account A Balance = $100.00 (Overdraft Limit = $0.00)
+
+Thread 1 (Withdraw $80.00)                 Thread 2 (Withdraw $70.00)
+─────────────────────────────────────     ─────────────────────────────────────
+
+1. Read balance from DB ($100.00)
+2. Check: $100.00 >= $80.00 (PASSES)
+                                          3. Read balance from DB ($100.00)
+                                          4. Check: $100.00 >= $70.00 (PASSES)
+5. Compute new balance = $20.00
+6. Write DB balance = $20.00
+                                          7. Compute new balance = $30.00
+                                          8. Write DB balance = $30.00 (FATAL CORRUPTION!)
+───────────────────────────────────────────────────────────────────────────────
+Result: $150.00 withdrawn from account, but final database balance shows $30.00!
+```
+
 In a senior coding or architecture interview, presenting an anemic model signals a lack of software craftsmanship. Candidates must demonstrate how to refactor anemic structures into **rich domain models**.
 
 ## Refactoring Walkthrough: Building Rich Aggregate Boundaries
@@ -185,10 +205,38 @@ namespace AuraPay.Domain
 
 Notice the synchronization logic inside `transferTo()`. In high-concurrency payment engines, locking two entities simultaneously (e.g., Account A transferring to B while Account B is transferring to A) creates a classic circular-wait deadlock.
 
-The aggregate enforces two strict invariants before locking:
+#### The 4 Coffman Deadlock Conditions & Mathematical Proof
 
-1. **Self-Transfer Precondition:** The method immediately rejects transfers where `this.accountId.equals(target.accountId)` (throwing an `InvalidTransferException`), preventing redundant reentrant lock acquisitions.
-2. **Deterministic Lock Ordering:** To eliminate circular wait deadlocks, the method compares the two account identifiers and acquires intrinsic/explicit locks in a deterministic **lexicographical ordering** (e.g., locking the account with the smaller UUID/string ID first, regardless of transfer direction). This guarantees that concurrent transfers between the same two accounts always acquire locks in identical sequence.
+Formalized by Edward G. Coffman Jr. in 1971, a deadlock can occur if and only if all four of the following conditions hold simultaneously:
+
+1. **Mutual Exclusion:** At least one resource must be held in a non-shareable mode (exclusive lock).
+2. **Hold and Wait:** A thread currently holding at least one resource is waiting to acquire additional resources held by other threads.
+3. **No Preemption:** Resources cannot be forcibly confiscated from a thread holding them until the thread voluntarily releases them.
+4. **Circular Wait:** A closed chain of threads $\{T_1, T_2, \dots, T_n\}$ exists such that $T_1$ waits for a resource held by $T_2$, $T_2$ waits for $T_3$, and $T_n$ waits for $T_1$.
+
+```text
+Circular Wait Deadlock:
+[Thread 1 (Holds Lock A)] ──────(Requests Lock B)─────► [Thread 2 (Holds Lock B)]
+          ▲                                                          │
+          └─────────────────────(Requests Lock A)────────────────────┘
+```
+
+**Mathematical Proof of Deterministic Lock Ordering:**
+By establishing a strict total order $\prec$ on all lockable resources (e.g., ordering accounts by unique `accountId` string comparison $\text{id}_A < \text{id}_B$):
+$$\text{Acquire Order} = (\min(\text{id}_A, \text{id}_B), \max(\text{id}_A, \text{id}_B))$$
+Every thread attempting to lock both Account A and Account B is forced to acquire $\text{Lock}(\min)$ *before* requesting $\text{Lock}(\max)$.
+Since no thread can request a lock of lower order while holding a lock of higher order, a cyclic dependency graph cannot form. Condition 4 (**Circular Wait**) is mathematically impossible, eliminating deadlocks entirely.
+
+### Virtual Method Table (VTable) Dynamic Dispatch Mechanics
+
+How does the runtime resolve polymorphic method calls (such as `route.settle()`) without conditional branches?
+
+- In compiled and managed runtimes (JVM, CLR, C++), every class defining or overriding virtual methods contains an internal pointer to a **Virtual Method Table (VTable)**.
+- The VTable is a contiguous array of function pointers. When `route.settle()` is called:
+  1. The CPU loads the object's VTable reference at memory offset 0 (`*vptr`).
+  2. It performs an array lookup at a fixed method index offset (e.g., `vtable[3]`).
+  3. It executes an indirect jump instruction (`CALL [vtable + offset]`) to the concrete method implementation.
+- This dynamic dispatch executes in $\approx 2\text{--}4\text{ ns}$ (1–2 pointer dereferences), replacing fragile `switch` statements with constant-time hardware branching.
 
 ## Composition over Inheritance
 

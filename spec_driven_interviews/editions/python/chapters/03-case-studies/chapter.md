@@ -24,6 +24,31 @@ AuraPay is the primary case study implemented throughout this book. It represent
 - **ACID Transaction Isolation:** The ledger must prevent race conditions and double-spending, maintaining strict serializability even under heavy concurrent load on "hot" merchant accounts.
 - **Asynchronous Settlement Routing:** Payments are routed to external financial processing networks (ACH, FedWire, Visa/Mastercard) based on speed, cost, and transaction limits without blocking the core ledger pipeline.
 
+#### Double-Entry Accounting Mechanics & Normal Balances
+
+In banking software, money is never created or destroyed; it is transferred between accounts. The fundamental accounting equation governing the ledger is:
+
+$$\text{Assets} = \text{Liabilities} + \text{Equity}$$
+
+To maintain this invariant, every ledger entry consists of balanced **Debits (DR)** and **Credits (CR)**:
+
+- **Debit (DR):** Increases Assets and Expenses; decreases Liabilities and Equity.
+- **Credit (CR):** Increases Liabilities, Equity, and Revenue; decreases Assets and Expenses.
+
+```text
+The Double-Entry Invariant:
+┌──────────────────────────────────────────────────────────┐
+│ For every transaction T:                                 │
+│ Sum(Debits) - Sum(Credits) == 0.0000                     │
+└──────────────────────────────────────────────────────────┘
+```
+
+**Why Single-Balance Database Columns Fail in Enterprise Systems:**
+A naive design uses a single balance column: `UPDATE accounts SET balance = balance - 100 WHERE id = 'A';`. If a database transaction partially crashes or network retries duplicate commands, money is created or lost with zero historical auditability.
+In AuraPay, balances are never directly updated. Balances are computed as the immutable fold over ledger postings:
+$$\text{Account Balance}(A) = \sum \text{Credits}(A) - \sum \text{Debits}(A)$$
+Every monetary transfer produces two balanced, immutable ledger entries within a single atomic database boundary.
+
 ![AuraPay System Architecture](visuals/aurapay_architecture.png){width=80%}
 
 ## ZenithTrade: High-Frequency Matching Engine (Reference Architecture)
@@ -35,6 +60,31 @@ ZenithTrade is a high-frequency, ultra-low-latency order matching engine. It is 
 - **Order Book State:** Maintains separate buy (bid) and sell (ask) order books, sorted by price-time priority (highest bid first, lowest ask first, FIFO for equal prices).
 - **Sub-Millisecond Latency:** The engine must execute order matching in memory with minimal latency, eliminating dynamic memory allocations and avoiding garbage collection pauses during trading bursts.
 - **Data Structure Mastery:** Utilizes custom priority queues, monotonic deques, and lock-free ring buffers for low-overhead internal bookkeeping.
+
+#### Order Book Mechanics & Spread Crossing
+
+The Limit Order Book (LOB) maintains two continuous priority queues:
+
+```text
+       BIDS (Buy Orders)                  ASKS (Sell Orders)
+   [Highest Price has Priority]       [Lowest Price has Priority]
+┌────────┬────────┬────────────┐     ┌────────┬────────┬────────────┐
+│ Price  │ Shares │ Time (FIFO)│     │ Price  │ Shares │ Time (FIFO)│
+├────────┼────────┼────────────┤     ├────────┼────────┼────────────┤
+│ $100.50│   200  │ 09:30:01   │     │ $100.55│   100  │ 09:30:00   │
+│ $100.50│   150  │ 09:30:02   │     │ $100.60│   400  │ 09:30:03   │
+│ $100.45│   500  │ 09:30:00   │     │ $100.75│   250  │ 09:30:01   │
+└────────┴────────┴────────────┘     └────────┴────────┴────────────┘
+           SPREAD = $100.55 - $100.50 = $0.05
+```
+
+**Step-by-Step Matching Sequence:**
+
+1. Incoming Order arrives: `BUY 250 shares @ $100.60` (Limit Order).
+2. The engine checks if the order **crosses the spread** ($\text{Bid Price} \ge \text{Lowest Ask Price} \implies \$100.60 \ge \$100.55$).
+3. **Match 1:** Fills 100 shares at the maker's price ($\$100.55$) from the top ask. Ask order is fully filled and dequeued. Remaining unfilled: 150 shares.
+4. **Match 2:** Next ask in queue is 400 shares @ $\$100.60$. Fills the remaining 150 shares at $\$100.60$. The maker ask is partially filled (250 shares remain).
+5. The incoming buy order is fully satisfied with zero resting book state, and two `TradeExecuted` events are published to the event bus.
 
 ![ZenithTrade High-Frequency Matching Engine Architecture](visuals/zenithtrade_architecture.jpg){width=85%}
 
@@ -67,6 +117,24 @@ $$S = \sum_{i=1}^T \left( y_i \prod_{j \ne i} \frac{-x_j}{x_i - x_j} \right) \pm
 Note that in finite field arithmetic over $\mathbb{F}_P$, division $\frac{a}{b}$ is computed via modular multiplicative inverse: $a \cdot b^{-1} \pmod P = a \cdot b^{P-2} \pmod P$ by Fermat's Little Theorem.
 
 2. **Any $T - 1$ or fewer guardians** possess an under-determined system of equations with infinite valid solutions, revealing zero mathematical information about the secret key $S$.
+
+#### Concrete Numerical Walkthrough of Shamir's $(T=2, N=3)$ Secret Sharing
+
+- **Parameters:** Secret key $S = 11$. Threshold $T = 2$, Total guardians $N = 3$. Prime field $\mathbb{F}_{19}$ ($P = 19$).
+- **Polynomial Construction:** Pick random degree $T - 1 = 1$ polynomial:
+  $$f(x) = S + a_1 x \pmod{19} = 11 + 4x \pmod{19}$$
+
+- **Share Generation:**
+  - Guardian 1 ($x_1 = 1$): $y_1 = 11 + 4(1) = 15 \pmod{19} \implies (1, 15)$
+  - Guardian 2 ($x_2 = 2$): $y_2 = 11 + 4(2) = 19 \equiv 0 \pmod{19} \implies (2, 0)$
+  - Guardian 3 ($x_3 = 3$): $y_3 = 11 + 4(3) = 23 \equiv 4 \pmod{19} \implies (3, 4)$
+- **Reconstruction by Guardians 1 & 3 ($x_1=1, y_1=15$ and $x_3=3, y_3=4$):**
+  $$S = y_1 \frac{-x_3}{x_1 - x_3} + y_3 \frac{-x_1}{x_3 - x_1} \pmod{19}$$
+  $$\frac{-x_3}{x_1 - x_3} = \frac{-3}{1 - 3} = \frac{-3}{-2} = \frac{3}{2} \equiv 3 \cdot 2^{-1} \pmod{19}$$
+  In $\mathbb{F}_{19}$, $2^{-1} = 10$ (since $2 \times 10 = 20 \equiv 1 \pmod{19}$). So $\frac{3}{2} \equiv 3 \times 10 = 30 \equiv 11 \pmod{19}$.
+  $$\frac{-x_1}{x_3 - x_1} = \frac{-1}{3 - 1} = \frac{-1}{2} \equiv -1 \cdot 10 = -10 \equiv 9 \pmod{19}$$
+  $$S = (15 \times 11) + (4 \times 9) = 165 + 36 = 201 \pmod{19}$$
+  $$201 = 10 \times 19 + 11 \implies S = 11 \quad \text{(Secret exactly recovered!)}$$
 
 ## Bounded Context Isolation & Inter-System Integration
 

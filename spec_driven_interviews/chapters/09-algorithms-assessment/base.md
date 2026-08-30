@@ -298,10 +298,32 @@ Head ───► [ 1 ] ───► [ 2 ] (Entrance) ◄───┐
                       [ 3 ] ───► [ 4 ] ───┘ (Meeting Point)
 Non-cyclic Tail (F=1): Node 1 -> Node 2
 Cycle (C=3): Nodes 2 -> 3 -> 4 -> 2
-
-Phase 1: Slow & Fast meet at Node 4.
-Phase 2: Reset Slow to Head (Node 1). Move both 1 step -> Meet at Node 2 (Entrance).
 ```
+
+#### Algebraic Derivation & Proof of Floyd's Cycle Detection
+
+```text
+Let:
+
+- F = Distance from Head to Cycle Entrance
+- C = Total Circumference / Length of Cycle
+- a = Distance from Cycle Entrance to Meeting Point (along cycle direction)
+```
+
+1. **Phase 1: Detecting Intersection**
+   - Slow travels distance: $d_{\text{slow}} = F + a$
+   - Fast travels distance: $d_{\text{fast}} = F + k \cdot C + a$ (where $k \ge 1$ is the number of full cycle loops fast completed).
+   - Since fast travels at twice the speed of slow:
+     $$d_{\text{fast}} = 2 \cdot d_{\text{slow}}$$
+     $$F + k C + a = 2(F + a) \implies F + k C + a = 2F + 2a \implies F + a = k C$$
+     $$F = k C - a = (k - 1) C + (C - a)$$
+
+2. **Phase 2: Finding Cycle Entrance**
+   - Notice that $(C - a)$ is the exact remaining distance from the meeting point to the cycle entrance.
+   - If we reset `slow` to `head` (position 0) and keep `fast` at the meeting point (position $a$ in the cycle), and advance **both** by 1 step per tick:
+     - When `slow` travels distance $F$, it lands exactly on the **Cycle Entrance**.
+     - In the same time, `fast` travels distance $F = (k-1)C + (C - a)$, which traverses $(k-1)$ full loops and advances $(C - a)$ steps from the meeting point, landing **identically on the Cycle Entrance**.
+   - They collide at the cycle entrance at step $F$.
 
 - **Canonical Code Skeleton:**
 {{ inject('algo_07.md') }}
@@ -645,6 +667,19 @@ Before Path Compression:          After Path Compression find(4):
 - **Canonical Code Skeleton:**
 {{ inject('algo_17.md') }}
 
+#### Mathematical Complexity & The Inverse Ackermann Function $\alpha(N)$
+
+Why does Union-Find with **Path Compression** and **Union by Rank** execute in practically $\mathcal{O}(1)$ time?
+
+1. **Union by Rank / Size:** Always attaching the shallower tree under the deeper tree guarantees tree height $h \le \lfloor \log_2 N \rfloor$.
+   - *Proof:* A tree of rank $r$ requires merging two trees of rank $r-1$. By induction, a tree of rank $r$ contains at least $2^r$ nodes. Thus $2^r \le N \implies r \le \log_2 N$.
+2. **Path Compression:** During `find(x)`, updating every traversed node to point directly to the root (`parent[x] = find(parent[x])`) flattens tree depth.
+3. **Combined Bound (Tarjan & Van Leeuwen, 1975):** Any sequence of $M$ operations on $N$ elements takes $\mathcal{O}(M \cdot \alpha(N))$ time, where $\alpha(N)$ is the **Inverse Ackermann Function**.
+   - Ackermann's function $A(i, j)$ grows astronomically faster than exponential towers:
+     $$A(4, 2) = 2^{65536} \approx 10^{19729} \gg \text{Total atoms in the observable universe } (\approx 10^{80})$$
+
+   - Consequently, for any conceivable universe scale $N \le 10^{80}$, $\alpha(N) \le 4$. Amortized time per operation is effectively constant $\mathcal{O}(1)$.
+
 - **Step-by-Step State Trace:**
 
 | Op | Union Pair | Root X | Root Y | Action | Parent Array State | Component Count |
@@ -673,6 +708,15 @@ Relax Neighbors:
   Edge 1->3 (w=4): Dist[3] = 0+4 = 4 -> Push (4, Node 3)
 Min-Heap: [(1, Node 2), (4, Node 3)]
 ```
+
+#### The Shortest Path Algorithm Comparison Matrix
+
+| Algorithm | Paradigm | Time Complexity | Space Complexity | Negative Edge Weights? | Negative Cycle Detection? |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Dijkstra** | Greedy + Min-Heap | $\mathcal{O}((V + E) \log V)$ | $\mathcal{O}(V + E)$ | **NO** (Greedy choice fails on negative edges) | No |
+| **Bellman-Ford / SPFA** | Dynamic Programming | $\mathcal{O}(V \cdot E)$ | $\mathcal{O}(V)$ | **YES** | **YES** (Detects cycle if $(V)$th relaxation decreases distance) |
+| **Floyd-Warshall** | 3D $\to$ 2D DP | $\mathcal{O}(V^3)$ | $\mathcal{O}(V^2)$ | **YES** (All-pairs shortest paths) | **YES** (Negative value on diagonal $D[i][i] < 0$) |
+| **0-1 BFS** | Deque (Push Front/Back)| $\mathcal{O}(V + E)$ | $\mathcal{O}(V)$ | Weights must be exclusively $0$ or $1$ | No |
 
 - **Canonical Code Skeleton:**
 {{ inject('algo_18.md') }}

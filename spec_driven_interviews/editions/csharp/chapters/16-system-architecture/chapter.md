@@ -79,6 +79,50 @@ Instead of traditional modulo sharding (`hash(instrumentId) % nodeCount`), which
 3.  **Key Mapping:** Incoming orders are routed based on `hash(instrumentId)` (e.g., `BTC-USD`, `ETH-EUR`). The order is handled by the first matching engine node encountered walking clockwise from the key's hash coordinate.
 4.  **Rebalancing:** When a new matching engine node is added to the cluster, it only takes a portion of keys from its immediate clockwise neighbor, keeping rebalancing traffic to a minimum.
 
+#### Mathematical Proof: Key Redistribution & Virtual Node Load Balance
+
+1. **Key Redistribution Bound:**
+   - In naive modulo sharding ($K \pmod N$), adding 1 node to $N$ existing nodes causes $\frac{N}{N+1} \approx 100\%$ of all keys to relocate.
+   - In Consistent Hashing, adding 1 node causes only **$\frac{1}{N+1}$ of all keys** to move.
+   - *Proof:* The new node takes over a segment of the ring of average size $\frac{2^{32}}{N+1}$. Only keys hashed into this segment are re-assigned; all other keys remain on their existing servers.
+
+2. **Virtual Node Load Balance Variance:**
+   - With $N$ physical nodes and $V$ virtual nodes per physical node, Karger et al. (1997) proved that the standard deviation of load across nodes satisfies:
+     $$\frac{\sigma}{\mu} \approx \frac{1}{\sqrt{V}}$$
+
+   - With $V = 1$ (no virtual nodes), load distribution is highly non-uniform ($\sigma \approx 100\%$).
+   - With $V = 200$ virtual nodes per server, load imbalance drops to $\approx \frac{1}{\sqrt{200}} \approx 7\%$, achieving nearly optimal horizontal load balancing.
+
+
+## Hardware Latency Hierarchy & The 8 Fallacies of Distributed Computing
+
+Distributed system architecture is dictated by the physical constraints of hardware and network physics:
+
+| Operation | Typical Latency | Human Scale Analogy (1 ns $\approx$ 1 sec) |
+| :--- | :--- | :--- |
+| **L1 CPU Cache Reference** | $0.5\text{ ns}$ | 0.5 seconds |
+| **Branch Mispredict** | $5\text{ ns}$ | 5 seconds |
+| **L2 CPU Cache Reference** | $7\text{ ns}$ | 7 seconds |
+| **Mutex Lock / Unlock** | $25\text{ ns}$ | 25 seconds |
+| **Main Memory DRAM Reference** | $100\text{ ns}$ | 1.5 minutes |
+| **SSD / NVMe Random Read** | $16\text{ }\mu\text{s}$ | 4.4 hours |
+| **Same Datacenter Round Trip (LAN)** | $500\text{ }\mu\text{s}$ | 5.8 days |
+| **NVMe Sequential Read (1 MB)** | $2\text{ ms}$ | 23 days |
+| **Cross-Country WAN (SF to NYC)** | $40\text{ ms}$ | 1.3 years |
+| **Trans-Atlantic WAN (NYC to London)** | $80\text{ ms}$ | 2.5 years |
+
+### The 8 Fallacies of Distributed Computing (Peter Deutsch, 1994)
+In interviews, grounding your answers in these fallacies demonstrates production maturity:
+
+1. The network is reliable.
+2. Latency is zero.
+3. Bandwidth is infinite.
+4. The network is secure.
+5. Topology doesn't change.
+6. There is one administrator.
+7. Transport cost is zero.
+8. The network is homogeneous.
+
 
 ## Command Query Responsibility Segregation (CQRS)
 
@@ -89,14 +133,49 @@ In financial systems, read traffic (users querying active order books, historica
 -   **Consistency Trade-off:** The read model is **eventually consistent** (typically lagging the command path by a few milliseconds), which is acceptable for user displays as long as the write path remains strictly consistent.
 
 
-## CAP Theorem & Distributed Trade-offs
+## CAP & PACELC Theorems: Consistency Hierarchy
 
-The CAP Theorem states that in a distributed system, you can only guarantee two out of three properties during a network partition: **Consistency (C)**, **Availability (A)**, or **Partition Tolerance (P)**. Because network partitions are inevitable in real-world infrastructure, system design is a choice between **CP** and **AP**:
+The CAP Theorem states that in a distributed system, you can only guarantee two out of three properties during a network partition: **Consistency (C)**, **Availability (A)**, or **Partition Tolerance (P)**. Because network partitions are inevitable in real-world infrastructure, system design is a choice between **CP** and **AP**.
 
-![CAP Theorem — Consistency, Availability, and Partition Tolerance Trade-offs](visuals/cap_theorem.jpg){width=85%}
+### The PACELC Extension (Daniel Abadi, 2012)
+CAP only describes behavior *during a partition*. What happens during normal operation?
+$$\mathbf{If} \text{ Partition } (\mathbf{P}) \implies \mathbf{Availability} (\mathbf{A}) \text{ vs } \mathbf{Consistency} (\mathbf{C}); \quad \mathbf{Else} (\mathbf{E}) \implies \mathbf{Latency} (\mathbf{L}) \text{ vs } \mathbf{Consistency} (\mathbf{C})$$
 
--   **The Ledger Context (CP Choice):** AuraPay is designed as a **CP** system. In financial bookkeeping, correctness is non-negotiable. If a network partition occurs between ledger replicas, we must reject transaction requests (sacrificing availability) rather than risk allowing double-spending or balance mismatch (sacrificing consistency). Consensus protocols like Raft or Paxos are used to coordinate commits across healthy replicas.
--   **The Market Feed Context (AP Choice):** The ZenithTrade public price feed (ticker data) is designed as an **AP** system. If a partition occurs, it is better to continue broadcasting the latest available price data (even if slightly stale) to users than to shut down the feed entirely.
+```text
+PACELC Classification Matrix:
+┌─────────────────┬─────────────────┬──────────────────────────────────────────┐
+│ System          │ PACELC Model    │ Architectural Rationale                  │
+├─────────────────┼─────────────────┼──────────────────────────────────────────┤
+│ **PostgreSQL / Spanner** │ **PC / EC**   │ Prioritizes strict linearizability always.│
+│ **MongoDB / MySQL**      │ **PC / EC**   │ Default primary writes prioritize consistency.│
+│ **Cassandra / DynamoDB** │ **PA / EL**   │ Optimizes for write availability & low latency.│
+│ **Redis (Replicated)**   │ **PA / EL**   │ Async replication trades consistency for speed.│
+└─────────────────┴─────────────────┴──────────────────────────────────────────┘
+```
+
+### The Formal Consistency Spectrum
+
+```text
+Strongest Guarantee ────────────────────────────────────────────────► Weakest Guarantee
+[Linearizability] ──► [Sequential] ──► [Causal] ──► [Read-Your-Writes] ──► [Eventual]
+(Global Real-Time Clock) (Logical Order) (Causal Order) (Session Monotonic) (No Time Guarantee)
+```
+
+-   **The Ledger Context (CP / PC/EC Choice):** AuraPay is designed as a **CP** system. In financial bookkeeping, correctness is non-negotiable. If a network partition occurs between ledger replicas, we must reject transaction requests (sacrificing availability) rather than risk allowing double-spending or balance mismatch (sacrificing consistency). Consensus protocols like Raft or Paxos are used to coordinate commits across healthy replicas.
+-   **The Market Feed Context (AP / PA/EL Choice):** The ZenithTrade public price feed (ticker data) is designed as an **AP** system. If a partition occurs, it is better to continue broadcasting the latest available price data (even if slightly stale) to users than to shut down the feed entirely.
+
+### Probabilistic Early Cache Expiration: The XFetch Algorithm
+
+When caching hot keys (such as top traded stock quotes), standard TTL expiration triggers a **Cache Stampede (Thundering Herd)**: thousands of concurrent requests miss simultaneously at $t = \text{TTL}$ and hammer the database.
+
+The **XFetch Algorithm** (Vattani et al., VLDB 2015) uses probabilistic early background recomputation:
+$$\text{Recompute If: } -\beta \times \delta \times \ln(\text{rand}()) > \text{TTL} - (\text{now} - \text{created})$$
+
+- $\delta$: Time taken to compute the value from the database (in ms).
+- $\beta$: Greediness multiplier ($\beta > 0$, typically $1.0$).
+- $\text{rand}() \in (0, 1]$: Uniform random float.
+
+As the key nears expiration ($\text{now} \to \text{TTL}$), the probability of triggering an asynchronous background database refresh approaches 1.0, guaranteeing that exactly one worker refreshes the cache *before* it expires without ever blocking user reads.
 
 
 ## API Design & Idempotency

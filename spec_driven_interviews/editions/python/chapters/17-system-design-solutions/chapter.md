@@ -14,10 +14,10 @@ To ensure complete clarity and zero ambiguity, every system design solution in t
 1. **Problem Statement & SLAs:** Precise functional requirements and quantitative non-functional SLAs (QPS, latency $p99$, availability, consistency).
 2. **Capacity Estimation & Hardware Math:** First-principles mathematical derivations for network ingress bandwidth, memory footprints, and daily/annual disk storage.
 3. **Visual Architecture Blueprint:** High-resolution structural diagrams illustrating Gateways, Load Balancers, Worker Pools, In-Memory Caches, Message Brokers, and Databases.
-4. **API Contracts & Interface Specs:** Production-grade REST JSON DTOs or gRPC Protobuf definitions.
-5. **Database Schema & Data Model:** Relational PostgreSQL DDL, NoSQL Document Schema, or Spatial H3 Index structures.
-6. **Step-by-Step Execution Sequence:** Detailed write path, read path, asynchronous event processing, and failover recovery.
-7. **Staff-Level Interview Verbalization Script:** Concise, high-scoring verbal script to present the design in live interviews.
+4. **Architectural Workflow & Mechanics:** Deep technical walkthrough of subsystem interactions, fault isolation boundaries, concurrency controls, and state pipelines.
+5. **API Contracts & Interface Specs:** Production-grade REST JSON DTOs or gRPC Protobuf definitions.
+6. **Database Schema & Data Model:** Relational PostgreSQL DDL, NoSQL Document Schema, or Spatial H3 Index structures.
+7. **Execution Sequence & Staff Verbalization:** Step-by-step write/read paths, failure compensation, and high-scoring 45-minute verbalization scripts.
 
 
 ## Master System Design Solutions Catalog
@@ -59,6 +59,21 @@ Design a global payment gateway and double-entry ledger capable of processing cr
 
 #### Visual Architecture Blueprint
 ![AuraPay Payment Gateway & Ledger Architecture](visuals/arch_payment_gateway.png){width=95%}
+
+#### Architectural Workflow & Mechanics
+1. **Edge Ingress & Fast Idempotency (API Gateway):**
+   - Intercepts incoming payment requests bearing an `Idempotency-Key` header.
+   - Queries a distributed fast store (Redis) to verify request state. If the key exists and is `COMPLETED`, the cached response is served immediately. If `PENDING`, concurrent duplicate calls are rejected.
+2. **Synchronous Payment Processing:**
+   - Forwards brand-new requests to the **Payment Processing Service**, which initiates an authorization call via the **Bank Adapter Service** (translating REST/JSON to legacy ISO 8583 / FIX protocols).
+3. **Transactional Outbox Pattern (Dual-Write Prevention):**
+   - The Payment Processing Service writes the updated payment entity and emits an outbox event into a single local relational database (**PostgreSQL**) within an atomic `BEGIN ... COMMIT` boundary.
+   - An asynchronous relay worker (or CDC pipeline like Debezium) tails the outbox table and reliably publishes messages (`PaymentCreated`, `PaymentAuthorized`) to **Apache Kafka**.
+4. **Decoupled Asynchronous Settlement & Double-Entry Ledger:**
+   - The **Saga Orchestrator** consumes events from Kafka and coordinates the multi-step transaction.
+   - Dispatches strict double-entry accounting commands to the **Ledger Service** (recording balanced immutable `DEBIT` and `CREDIT` rows with high-precision `NUMERIC(18, 4)` types).
+5. **Compensating Actions:**
+   - If downstream ledger validation or settlement fails, the Saga Orchestrator executes compensating transactions, marks the Redis idempotency key as `FAILED`, and issues webhook failure alerts.
 
 #### API Contracts & Interface Specs
 ```json
@@ -119,6 +134,20 @@ Design a high-frequency cryptocurrency and equity order matching exchange.
 #### Visual Architecture Blueprint
 ![ZenithTrade High-Frequency Order Matching Architecture](visuals/arch_matching_engine.png){width=95%}
 
+#### Architectural Workflow & Mechanics
+1. **Deterministic Order Partitioning:**
+   - A **Consistent Hash Ring Router** inspects the incoming `instrument_id` (e.g., `BTC-USD`, `ETH-USD`) and routes the order to the designated shard/partition, preventing cross-symbol lock contention.
+2. **Single-AZ In-Memory Matching Engine (Raft Group):**
+   - To strictly enforce sub-millisecond execution ($p99 < 1\text{ms}$), Raft consensus groups are co-located within a single Availability Zone. This bypasses cross-AZ network round-trips ($1\text{--}5\text{ms}$).
+   - Employs **DPDK (Data Plane Development Kit)** for kernel-bypass networking and direct NVMe I/O.
+   - The **Leader Node** updates in-memory limit order books (LOB) and commits sequential operations to an append-only Write-Ahead Log (WAL).
+   - Hot standby **Follower Nodes** replicate the WAL for immediate active-passive failover.
+3. **CQRS & Downstream Projections:**
+   - Trade executions bypass disk bottlenecks on the read path via CQRS projections.
+   - Matched trades stream through **Apache Kafka** out to **Redis** (for real-time order-book dashboards and ticker feeds) and **Elasticsearch** (for historical trade analytics, regulatory compliance, and user trade history).
+4. **Disaster Recovery (DR):**
+   - Asynchronous WAL shipping replicates state across geographically distinct regions without blocking the critical matching path.
+
 #### API Contracts & Interface Specs (gRPC Protobuf)
 ```protobuf
 syntax = "proto3";
@@ -167,6 +196,20 @@ Design an enterprise-grade rate limiter and real-time security fraud detection p
 #### Visual Architecture Blueprint
 ![ChiramTrust Distributed Rate Limiter & Fraud Pipeline](visuals/arch_rate_limiter_fraud.png){width=95%}
 
+#### Architectural Workflow & Mechanics
+1. **Low-Latency Edge Rate Limiting:**
+   - Built directly into the **API Gateway (NGINX / Envoy)**.
+   - Leverages a **Redis Cluster** running an atomic **Sliding Window Counter** implemented via Lua scripts (`ZREMRANGEBYSCORE`, `ZCARD`, `ZADD`, `EXPIRE`) to eliminate distributed race conditions while enforcing sliding-window rate limits.
+2. **Kernel-Level Observability via eBPF:**
+   - Embeds **eBPF (Extended Berkeley Packet Filter)** hooks directly inside the OS kernel to capture low-overhead network events (`SYN`, `ACK`, TCP/IP payloads) with zero user-space context-switching cost.
+   - A local **Telemetry Agent** gathers and streams telemetry over gRPC into Kafka.
+3. **Asynchronous ML Fraud Inference Pipeline:**
+   - High-throughput Kafka topics (`API_GATEWAY_EVENTS`, `NETWORK_TELEMETRY`) feed stream workers that extract dynamic behavioral features (e.g., velocity spikes, geo-hopping, credential stuffing).
+   - Deep learning fraud models score transactions in real time.
+4. **Closed-Loop SOAR Feedback:**
+   - High-risk fraud scores trigger the **Security Orchestration (SOAR)** platform to dynamically inject updated IP blocklists directly back into the API Gateway's edge filters.
+   - Historical logs land in a **Data Lake (S3 / HDFS)** for continuous offline model retraining.
+
 #### Redis Lua Script (Sliding Window Counter)
 ```lua
 local key = KEYS[1]
@@ -185,6 +228,18 @@ else
     return 0
 end
 ```
+
+#### Sliding Window Counter Approximation Formula
+
+To achieve sub-millisecond edge rate limiting without storing individual request timestamps in Sorted Sets, the **Sliding Window Counter** approximates rolling volume using two fixed-window counters:
+
+$$\text{Estimated Count} = M_{\text{current}} + M_{\text{previous}} \times \left(1 - \frac{t - t_{\text{start}}}{W}\right)$$
+
+- $M_{\text{current}}$: Request count in current 60-second window.
+- $M_{\text{previous}}$: Request count in previous 60-second window.
+- $t - t_{\text{start}}$: Elapsed time within current window (in seconds).
+- $W$: Window duration (60 seconds).
+- **Accuracy Bound:** Maximum error is strictly bounded below $0.05\%$ under steady traffic, consuming only 16 bytes of RAM per client key (`INCRBY` / `GET`).
 
 > **DDoS Fallback:** Under volumetric attack, `ZREMRANGEBYSCORE` complexity rises to $O(\log N + M)$ where $M$ is evicted elements. If $M$ spikes, fall back to a fixed-window counter (`INCR key; EXPIRE key window`) to protect the single-threaded Redis event loop.
 
@@ -260,15 +315,16 @@ Design a consumer social timeline (Twitter/X) and adaptive video streaming platf
 #### Visual Architecture Blueprint
 ![Consumer Social Feed & Video Streaming Architecture](visuals/arch_social_video_platform.png){width=95%}
 
-#### Hybrid Fan-Out Strategy
-- **Regular Users ($< 10,000$ followers):** **Push Model (Fan-out on Write)**. When user posts, background workers push post ID into every follower's Redis Sorted Set timeline (`ZADD timeline:follower_id timestamp post_id`).
-- **Celebrity Users ($> 10,000$ followers):** **Pull Model (Fan-out on Read)**. Posts are saved to author's outbox. When a follower requests their feed, the system pulls celebrity posts on demand and merges them into the timeline.
-
-#### Video Processing Pipeline
-1. **Chunked Upload:** Client requests presigned S3 URLs, uploading 5MB video chunks directly to S3.
-2. **Transcoding Worker Queue:** S3 `ObjectCreated` event triggers SQS message to auto-scaling FFmpeg worker cluster.
-3. **Multi-Bitrate HLS/DASH Generation:** Workers encode raw video into 1080p, 720p, 480p, 360p HLS manifest files (`.m3u8`) and `.ts` segment chunks.
-4. **CDN Edge Delivery:** Segment files are cached at 200+ PoPs worldwide.
+#### Architectural Workflow & Mechanics
+1. **Hybrid Fan-Out Feed Strategy:**
+   - **Regular Users (<10k followers) — Fan-out-on-write (Push):** Posts are pushed asynchronously into every follower's timeline stored as Redis Sorted Sets (`ZADD timeline:{follower_id} {timestamp} {post_id}`), guaranteeing ultra-fast $O(1)$ feed reads.
+   - **Celebrity / High-Follower Accounts (>10k followers) — Fan-out-on-read (Pull):** High-follower posts are saved in a scalable NoSQL store (Cassandra / DynamoDB) and merged into the user's timeline dynamically at read time, avoiding fan-out write amplification.
+2. **Adaptive Bitrate Video Processing Pipeline:**
+   - Clients upload large video payloads directly to raw S3 buckets using **S3 Presigned URLs**, keeping video data plane traffic off the API Gateway.
+   - S3 upload notifications enqueue encoding jobs into **AWS SQS**.
+   - Auto-scaling FFmpeg worker clusters transcode video into multi-bitrate HLS and DASH segments (1080p, 720p, 480p, 360p manifests `.m3u8` and `.ts` chunk segments) stored in public S3 buckets.
+3. **Global CDN Edge Distribution:**
+   - Video manifests and chunk files are aggressively cached across edge PoPs, ensuring start-to-play times under $1.5\text{s}$.
 
 > **Why Hybrid Push/Pull?** Pure push fan-out for celebrity accounts (10M+ followers) would require writing 10M Redis entries per post — a 30-second blocking storm. Pure pull adds latency for regular users. The hybrid model caps fan-out cost at the celebrity threshold while keeping regular timeline reads at $O(1)$ Redis `ZRANGEBYSCORE`.
 
@@ -327,12 +383,30 @@ Design a real-time ride-sharing dispatch system (Uber/Lyft).
 #### Visual Architecture Blueprint
 ![Ride-Sharing Geospatial Dispatch System](visuals/arch_rideshare_geospatial.png){width=95%}
 
-#### Spatial Indexing & Data Structures
-- **Geohash & Uber H3:** Divide world into hexagonal cells (H3 index resolution 8–10).
-- **Redis Spatial Index:** Store driver locations in Redis Geo / Sorted Sets (`GEOADD active_drivers lon lat driver_id`).
-- **QuadTree Memory Index:** Hierarchical 2D spatial tree for fast $k$-nearest neighbor (KNN) driver searches.
+#### Architectural Workflow & Mechanics
+1. **High-Throughput Telemetry Ingest:**
+   - Mobile driver applications stream continuous GPS coordinates (Lat/Lon, Driver ID, Status) over persistent **Secure WebSockets (WSS)** into a scalable Kafka ingest pipeline handling 3.33M location QPS.
+2. **Hierarchical Geospatial Indexing:**
+   - Converts spatial coordinates into **Uber H3 hexagonal grid cells** (resolutions 8–10) and **Geohashes**.
+   - Current driver locations and cell membership counters are cached in **Redis Hashes and Sorted Sets** (`GEOADD active_drivers:{h3_cell} lon lat driver_id`) for sub-millisecond neighborhood radius queries.
+3. **Dynamic Surge Pricing Engine:**
+   - Ingests demand signals (rider open-app searches) and supply signals (available drivers per H3 hexagon) in real time.
+   - Computes localized surge multipliers ($1.0\times\text{--}3.5\times$) to balance marketplace equilibrium:
+     $$\text{Surge Multiplier} = \min\left(3.5, \max\left(1.0, \frac{\text{Unmatched Rider Requests}}{\text{Available Drivers in H3 Cell}}\right)\right)$$
 
-> **Why H3 over Geohash or S2?** Geohash rectangles create edge discontinuities where neighbors share no prefix. S2 cells are complex to implement. Uber H3 hexagons provide uniform distance to all neighbors and smooth spatial aggregation without edge artifacts — critical for accurate surge pricing across cell boundaries.
+4. **Search & Dispatch Matching Engine:**
+   - Employs recursive spatial partitioning (Quadtrees / $k$-NN search) to identify the optimal top-ranked active drivers near the pickup point within a 3km radius.
+   - Dispatches trip offers to drivers over WebSockets; completed trip records persist into a relational **PostgreSQL Trip History DB**.
+
+> **Why H3 over Geohash or S2?** Geohash rectangles create edge discontinuities where neighbors share no prefix. S2 cells are complex to implement. Uber H3 hexagons provide uniform distance to all 6 contiguous neighbors ($122\text{ meters}$ edge length at resolution 9) and smooth spatial aggregation without edge artifacts — critical for accurate surge pricing across cell boundaries.
+
+#### Haversine Great-Circle Distance Metric
+
+To compute the spherical surface distance between rider coordinates $(\phi_1, \lambda_1)$ and driver coordinates $(\phi_2, \lambda_2)$ with earth radius $R \approx 6,371\text{ km}$:
+
+$$d = 2R \arcsin\left(\sqrt{\sin^2\left(\frac{\Delta \phi}{2}\right) + \cos\phi_1 \cos\phi_2 \sin^2\left(\frac{\Delta \lambda}{2}\right)}\right)$$
+
+Where $\Delta \phi = \phi_2 - \phi_1$ (latitude difference in radians) and $\Delta \lambda = \lambda_2 - \lambda_1$ (longitude difference in radians). Redis Geo internally computes this spherical distance via geohash integer bit-interleaving in $\mathcal{O}(1)$ time.
 
 #### API Contracts & Interface Specs
 ```json
@@ -401,11 +475,21 @@ Design an enterprise Retrieval-Augmented Generation (RAG) knowledge search syste
 #### Visual Architecture Blueprint
 ![Distributed Vector Search & RAG Architecture](visuals/arch_vector_rag_system.png){width=95%}
 
-#### Hybrid Search & Ranking Mechanics
-- **Dense Vector Search (ANN):** HNSW (Hierarchical Navigable Small World) index in Milvus for semantic similarity ($O(\log N)$ vector search).
-- **Sparse Lexical Search:** BM25 index in Elasticsearch for exact keyword/code identifier matching.
-- **Reciprocal Rank Fusion (RRF):** Combine dense and sparse candidate lists:
-  $$RRF\_Score(d) = \sum_{m \in M} \frac{1}{60 + r_m(d)}$$
+#### Architectural Workflow & Mechanics
+1. **Document Ingestion & Chunking Pipeline:**
+   - Ingestion workers scrape documents (PDFs, HTML, CMS databases), strip boilerplate, and segment text into overlapping semantic chunks (e.g., 512 tokens with 64-token overlap).
+   - Chunks are passed to embedding model worker clusters (e.g., BGE, Cohere, text-embedding-3) running on GPU inference clusters.
+2. **Dual Index Storage Architecture:**
+   - **Dense Vectors:** High-dimensional embeddings are indexed using **HNSW (Hierarchical Navigable Small World)** graphs in vector databases (Milvus / Qdrant).
+   - **Sparse Lexical Keywords:** Raw text chunks are tokenized and stored in **BM25 / Elasticsearch / OpenSearch** indexes.
+   - Chunk metadata and lineage are maintained in PostgreSQL.
+3. **Hybrid Retrieval & Reciprocal Rank Fusion (RRF):**
+   - User queries execute simultaneous dense ANN vector similarity search ($\mathcal{O}(\log N)$) and sparse BM25 keyword matching.
+   - Results are unified and reranked using Reciprocal Rank Fusion:
+     $$\text{RRF\_Score}(d) = \sum_{m \in M} \frac{1}{60 + r_m(d)}$$
+
+4. **Context Assembly & LLM Generation:**
+   - The top reranked chunks are filtered, formatted into prompt context windows, and sent to LLMs (GPT-4, Claude, Llama 3) to generate grounded, hallucination-free answers.
 
 #### API Contracts & Interface Specs
 ```json
@@ -472,6 +556,22 @@ Design a distributed file storage and sync platform capable of handling multi-gi
 #### Visual Architecture Blueprint
 ![Distributed File Storage & Sync Engine Architecture](visuals/arch_drive_sync_storage.png){width=95%}
 
+#### Architectural Workflow & Mechanics
+1. **Client-Side File Watching & Chunking:**
+   - A background OS file watcher monitors local directory changes.
+   - Modified files are partitioned into dynamic chunk boundaries using **Rabin Fingerprinting** content-defined chunking (CDC):
+     $$H(b_1, \dots, b_k) = \left(\sum_{i=1}^k b_i \cdot p^{k-i}\right) \pmod M$$
+
+   - When rolling hash $H \equiv 0 \pmod D$ (where $D = 4\text{ MB} = 2^{22}$), a chunk boundary is declared. Inserting a byte at the start of a 10GB file shifts only the first chunk boundary; all remaining chunks retain identical hashes, eliminating 99.9% of re-upload bandwidth.
+2. **Content-Addressable Storage (CAS) & Deduplication:**
+   - Each chunk generates a cryptographic hash (SHA-256).
+   - The client performs a metadata lookup against the server. If the hash exists, upload is bypassed and the server simply increments `reference_count` in the `file_blocks` table.
+3. **Chunk Upload & Block Store:**
+   - New, unique chunks are streamed directly to **Content Addressable Block Storage (AWS S3)** via presigned URLs.
+4. **Metadata & Conflict Resolution:**
+   - File trees, paths, chunk lists, and permissions are stored in a distributed relational database (PostgreSQL / CockroachDB).
+   - Background sync workers notify connected client devices over persistent WebSocket connections to pull changed chunk manifests.
+
 #### API Contracts & Interface Specs
 ```json
 // POST /v1/files/upload_chunk
@@ -530,14 +630,22 @@ Design a distributed web crawler and search indexer capable of crawling billions
 #### Visual Architecture Blueprint
 ![Distributed Web Crawler & Inverted Search Indexer Architecture](visuals/arch_web_crawler_search.png){width=95%}
 
-#### Core Data Structure: Inverted Index & Posting Lists
-- **Term-Document Mapping:**
-  ```
-  Term: "algorithm" -> PostingList:
-    [(Doc1, Pos: [14, 88]), (Doc8, Pos: [3]), (Doc104, Pos: [201])]
-  ```
+#### Architectural Workflow & Mechanics
+1. **URL Frontier & DNS Resolution:**
+   - The URL Frontier manages crawling priority queues while enforcing domain politeness rules (rate limits per host, `robots.txt` compliance).
+   - Uses an in-memory DNS caching layer to eliminate redundant DNS round trips.
+2. **HTML Parsing & Near-Duplicate Filtering (SimHash Algorithm):**
+   - Fetched documents are parsed to extract outgoing links (fed back to the frontier) and clean textual content.
+   - Computes a **64-bit SimHash fingerprint** per document:
+     $$V[i] = \sum_{w \in \text{Doc}} \text{weight}(w) \times \begin{cases} +1 & \text{if } \text{hash}(w)_i = 1 \\ -1 & \text{if } \text{hash}(w)_i = 0 \end{cases}$$
 
-- **SimHash Deduplication:** 64-bit fingerprint generated per document to filter near-duplicate web pages ($> 90\%$ text similarity).
+   - Final SimHash bit $i = 1$ if $V[i] > 0$, else $0$. Two documents are near-duplicates if their **Hamming Distance $\le 3$ bits** (calculated via bitwise XOR and `popcount`), pruning $>90\%$ of duplicate web pages.
+3. **Inverted Index Construction:**
+   - Tokenizes text into inverted posting lists mapping terms to occurrences and token offsets:
+     $$\text{"algorithm"} \rightarrow [(\text{Doc1}, [14, 88]), (\text{Doc8}, [3]), (\text{Doc104}, [201])]$$
+
+4. **PageRank & Graph Scoring:**
+   - Hyperlink structures are written to a distributed graph database. Distributed graph algorithms compute global PageRank scores, which are joined with inverted indexes during query execution.
 
 #### API Contracts & Interface Specs
 ```json
@@ -600,6 +708,18 @@ Design a real-time messaging and user presence platform supporting 1-on-1 and gr
 #### Visual Architecture Blueprint
 ![Real-Time Messaging & Presence Platform Architecture](visuals/arch_chat_messaging_presence.png){width=95%}
 
+#### Architectural Workflow & Mechanics
+1. **Stateful Connection Management:**
+   - Edge **WebSocket Gateway Clusters** maintain millions of long-lived, persistent TLS connections from web and mobile clients.
+2. **User Presence Engine:**
+   - Uses **Redis Bitmaps** and Redis Hashes to maintain real-time online/offline/last-seen heartbeats efficiently with minimal memory overhead.
+3. **Message Persistence & Channel Ordering:**
+   - Ingested messages are assigned monotonically increasing sequence IDs/timestamps and written to a distributed wide-column store (**Cassandra / ScyllaDB**), partitioned by `channel_id`.
+4. **Group Chat Fan-Out & Push Notifications:**
+   - A Group Fan-Out Engine routes messages to active WebSocket sessions for online channel members.
+   - Offline recipients are queued via Kafka/RabbitMQ to dispatch push notifications via Apple APNs and Google FCM.
+   - End-to-End Encryption (E2EE) keys are verified via a separate Key Server.
+
 #### API Contracts & Interface Specs
 ```json
 // POST /v1/messages/send
@@ -659,9 +779,16 @@ Design a distributed task scheduler and workflow orchestration engine capable of
 #### Visual Architecture Blueprint
 ![Distributed Task Scheduler & Workflow Engine Architecture](visuals/arch_task_scheduler_workflow.png){width=95%}
 
-#### Timing Engine: Hierarchical Timing Wheel
-- **In-Memory Ring Buffer:** Hierarchical Timing Wheel (ms, seconds, minutes, hours ticks) in Redis/Go memory.
-- **O(1) Insertion & Expiry:** $O(1)$ time complexity to add or expire delayed tasks compared to $O(\log N)$ min-heaps.
+#### Architectural Workflow & Mechanics
+1. **Hierarchical Timing Wheel (Delayed Scheduling Engine):**
+   - Implements multi-level in-memory ring buffers (millisecond, second, minute, hour, day wheels) in Go/Redis.
+   - Achieves **$O(1)$ insertion and expiration** complexity for delayed tasks, avoiding the $O(\log N)$ overhead of min-heap priority queues.
+2. **DAG Workflow Orchestrator:**
+   - Evaluates workflow execution graphs (Directed Acyclic Graphs), managing task dependencies, preconditions, and retry policies.
+   - Coordinates cluster state and leader elections via distributed lock managers (**etcd / Apache ZooKeeper**).
+3. **Worker Pool & Priority Dispatch:**
+   - Ready tasks enter prioritized pending queues. Distributed worker nodes pull tasks, stream heartbeats, and report execution state.
+   - Unrecoverable task failures are routed to a Dead Letter Queue (DLQ) for manual inspection and replay.
 
 #### API Contracts & Interface Specs (gRPC Protobuf)
 ```protobuf
@@ -734,9 +861,15 @@ Design a real-time collaborative document editor and interactive whiteboard allo
 #### Visual Architecture Blueprint
 ![Real-Time Collaborative Document Editor Architecture](visuals/arch_collaborative_crdt_editor.png){width=95%}
 
-#### Core Conflict Resolution Engine: CRDT vs. OT
-- **Operational Transformation (OT):** Requires central server to transform concurrent operations ($op_1 \circ op_2'$). Hard to scale for rich multi-dimensional graphics (Figma).
-- **Conflict-Free Replicated Data Types (CRDT):** State-based (LWW-Element-Set) or Operation-based (RGA / Yjs / Automerge). Every character or vector shape is assigned a unique immutable identifier `(client_id, lamport_clock)`. Operations are commutative, associative, and idempotent.
+#### Architectural Workflow & Mechanics
+1. **Conflict Resolution Strategy (CRDT vs. OT):**
+   - **CRDT (Conflict-Free Replicated Data Types):** Leverages state-based (LWW-Element-Set) and operation-based (RGA / Yjs / Automerge) algorithms. Every character and canvas shape is given an immutable unique identifier (`client_id`, `lamport_clock`). Operations are commutative, associative, and idempotent, enabling peer-to-peer convergence without a single central authority.
+   - **OT (Operational Transformation):** Used for centralized linear document editing where operations are transformed against concurrent edits ($op_1 \circ op_2'$).
+2. **State Sync & Vector Clocks:**
+   - **Vector Clock & State Sync Managers** coordinate operation streams to guarantee causal consistency across multi-client sessions.
+3. **Ephemeral Awareness & Persistence:**
+   - Transient cursor positions, live selections, and presence indicators are broadcast through low-latency **Redis Pub/Sub**.
+   - Document operations and deltas persist to an immutable distributed log store, while periodic full snapshots are stored in S3.
 
 #### API Contracts & Interface Specs
 ```json
@@ -808,11 +941,19 @@ Design a distributed time-series database (TSDB) and observability platform for 
 #### Visual Architecture Blueprint
 ![Distributed Time-Series Metrics & Observability Platform Architecture](visuals/arch_metrics_timeseries_observability.png){width=95%}
 
-#### Data Structure & Compression Mechanics
-- **Gorilla TSDB Compression:**
-  - Timestamps: Delta-of-delta encoding ($D = (t_i - t_{i-1}) - (t_{i-1} - t_{i-2})$). If $D = 0$, store single bit `0`.
-  - Floating Values: XOR floating-point encoding ($v_i \oplus v_{i-1}$). Store only leading/trailing zero bit offsets.
-- **Label Index Overhead:** High-cardinality labels (e.g., `pod_id`, `request_id`) generate inverted index entries that often exceed the compressed metric data. Budget approximately $2\times$ the Gorilla-compressed size for label index storage.
+#### Architectural Workflow & Mechanics
+1. **Metrics Collection (Push/Pull):**
+   - Metric collectors (Prometheus pushgateway, node_exporter, OpenTelemetry agents) aggregate counters, gauges, and histograms from infrastructure and application nodes.
+2. **Gorilla TSDB Compression (Facebook VLDB 2015):**
+   - **Timestamps:** Compressed using **Delta-of-Delta encoding** ($D = (t_i - t_{i-1}) - (t_{i-1} - t_{i-2})$). If $D = 0$, only a single bit `0` is stored. If $-63 \le D \le 64$, store `10` + 7 bits.
+   - **Floating-Point Values:** Compressed via **XOR Encoding** ($X = V_i \oplus V_{i-1}$):
+     - If $X = 0$ (identical value): Store single bit `0`.
+     - If $X \ne 0$: Store bit `1`. If the leading and trailing zero counts match the previous sample, store `0` + meaningful bits. Otherwise store `1` + (5 bits leading count) + (6 bits length) + meaningful bits.
+     - This reduces 64-bit IEEE 754 floats to an average of **$1.37\text{ bytes/sample}$** ($11.6 \times$ memory compression).
+3. **Tiered Storage & Rollup Aggregation:**
+   - Recent hot data is buffered in memory ring buffers before being flushed to immutable WAL blocks.
+   - Downsampling workers aggregate historical data into broader intervals (5m, 1h, 1d).
+   - Inverted label indexes map metric names and label sets to chunk IDs for rapid PromQL range queries.
 
 #### API Contracts & Interface Specs
 ```json
@@ -874,10 +1015,26 @@ Design a multi-channel notification platform supporting Email, SMS, Push (APNs/F
 #### Capacity Estimation & Hardware Math
 - **Notification Payload:** Average 1 KB per notification (template ID + user context + channel metadata).
 - **Daily Storage:** $1 \times 10^9 \text{ notifications/day} \times 1 \text{ KB} = 1 \text{ TB/day}$ delivery log.
-- **Redis Bloom Filter (Dedup):** 1 billion elements with 0.1% false positive rate $\approx 1.7 \text{ GB RAM}$.
+- **Redis Bloom Filter (Dedup Math):**
+  - Optimal bit array size $m$:
+    $$m = -\frac{n \ln p}{(\ln 2)^2} = -\frac{10^9 \cdot \ln(0.001)}{(0.6931)^2} \approx 14.37 \text{ billion bits} \approx 1.79 \text{ GB RAM}$$
+
+  - Optimal number of hash functions $k$:
+    $$k = \frac{m}{n} \ln 2 = \frac{14.37 \times 10^9}{10^9} \times 0.6931 \approx 10 \text{ hash functions}$$
 
 #### Visual Architecture Blueprint
 ![Distributed Multi-Channel Notification & Alerting Platform](visuals/arch_notification_platform.png){width=95%}
+
+#### Architectural Workflow & Mechanics
+1. **Ingress & Edge Deduplication:**
+   - API Gateway validates incoming alert payloads and evaluates deduplication keys against a **Redis Bloom Filter** (holding 1 billion items in $\approx 1.79\text{ GB RAM}$ at $0.1\%$ false-positive rate with $k = 10$).
+2. **Priority Message Routing:**
+   - Directs messages into dedicated message queues (Kafka / RabbitMQ) categorized by urgency (`HIGH`, `MEDIUM`, `LOW`) and channel (`Email`, `SMS`, `Push`, `In-App`).
+3. **Template Rendering & User Preferences:**
+   - Ingestion consumers fetch user contact preferences and locale-specific templates from PostgreSQL.
+4. **Third-Party Adapters & Delivery Tracking:**
+   - Dispatches rendered payloads through downstream provider adapters (AWS SES for Email, Twilio for SMS, APNs/FCM for Mobile Push, WebSockets for In-App).
+   - Delivery statuses and audit trails land in a NoSQL / Elasticsearch delivery store.
 
 #### API Contracts & Interface Specs
 ```json
@@ -966,6 +1123,20 @@ Design a distributed inventory reservation system for hotels and flights that pr
 
 #### Visual Architecture Blueprint
 ![Distributed Hotel & Flight Booking Inventory System](visuals/arch_booking_inventory.png){width=95%}
+
+#### Architectural Workflow & Mechanics
+1. **Search vs. Reservation Flow Separation:**
+   - Search queries are handled via cached read replicas and search services to prevent heavy search traffic from impacting inventory transaction locks.
+2. **Distributed Reservation Lock & Concurrency Control:**
+   - When a user initiates a booking, the **Reservation Saga Orchestrator** manages row-level locking via PostgreSQL `FOR UPDATE SKIP LOCKED` or fast-reject Redis locks (`SETNX lock:room:{id} EX 10`).
+3. **Transactional Inventory Allocation:**
+   - The **Inventory Availability Service** updates inventory records in **PostgreSQL** using atomic row-level locking and conditional decrement constraints (`CHECK (booked_units <= total_units)`).
+4. **Saga Orchestration & Payment Settlement:**
+   - The Saga Orchestrator directs the user through payment processing outside database transaction locks.
+   - If payment succeeds, inventory is marked permanently booked (`CONFIRMED`), and confirmation events stream to Kafka.
+   - If payment times out or fails, the Saga triggers compensating inventory restoration (Tx3 decrement `booked_units`), notifying waitlisted users via Kafka.
+5. **Third-Party Partner GDS Integration:**
+   - Integrates with hotel partner APIs and airline Global Distribution Systems (GDS like Amadeus/Sabre) via dedicated partner adapter gateways.
 
 #### API Contracts & Interface Specs
 ```json

@@ -44,6 +44,50 @@ By rigidly adhering to this canvas, you eliminate the panic of the blank screen 
 
 ![Problem Analysis Canvas — Structured Decomposition Framework](visuals/problem_analysis_canvas.jpg){width=85%}
 
+### Fully Worked Exemplar: The 9-Point Canvas in Action
+
+**Problem Statement:** Given an $M \times N$ `board` of characters and a list of strings `words`, return all words on the board. Each word must be constructed from sequentially adjacent cells (horizontally or vertically neighboring). The same letter cell cannot be used more than once in a single word.
+
+```text
+       The Problem Analysis Canvas (Word Search II Exemplar)
+┌──────────────────────┬────────────────────────────────────────────────────────┐
+│ 1. Restatement       │ Find all vocabulary words that can be traced along     │
+│                      │ 4-directional non-repeating paths on an M x N grid.   │
+├──────────────────────┼────────────────────────────────────────────────────────┤
+│ 2. Inputs            │ char[][] board (M, N <= 12), String[] words (W <= 3e4, │
+│                      │ word length L <= 10, lowercase English).               │
+├──────────────────────┼────────────────────────────────────────────────────────┤
+│ 3. Outputs           │ List<String> of unique valid words found on the board. │
+├──────────────────────┼────────────────────────────────────────────────────────┤
+│ 4. Constraints       │ M, N <= 12, W = 30,000. Running DFS for each word      │
+│                      │ independently = O(W * M * N * 4^L) -> 3.6e9 ops (TLE). │
+├──────────────────────┼────────────────────────────────────────────────────────┤
+│ 5. Edge Cases        │ Board has 1 cell; duplicate words in list; word prefix │
+│                      │ exists but full word doesn't; no words match.          │
+├──────────────────────┼────────────────────────────────────────────────────────┤
+│ 6. Sub-Problems      │ 1. Fast prefix lookup across 30,000 words.             │
+│                      │ 2. 4-directional grid path exploration.                │
+│                      │ 3. Preventing cycle revisit within current path.       │
+│                      │ 4. Eliminating duplicate match emission.               │
+├──────────────────────┼────────────────────────────────────────────────────────┤
+│ 7. Pattern Mapping   │ Sub-Problem 1 -> Prefix Tree (Trie)                    │
+│                      │ Sub-Problem 2 -> [PAT-12] 4-Directional DFS Grid Walk  │
+│                      │ Sub-Problem 3 -> In-Place Visited Marking ('#')        │
+│                      │ Sub-Problem 4 -> Nullifying Trie leaf word references  │
+├──────────────────────┼────────────────────────────────────────────────────────┤
+│ 8. Complexity Target │ Time: O(M * N * 4 * 3^(L-1)) + O(W * L). Space: O(W * L)│
+│                      │ for Trie. Max operations ~ 1.5e6 -> Runs in < 0.05s!   │
+├──────────────────────┼────────────────────────────────────────────────────────┤
+│ 9. Approach          │ 1. Build 26-ary Trie from words array.                 │
+│                      │ 2. Iterate each grid cell (r, c) as starting root.     │
+│                      │ 3. DFS(r, c, trieNode): if !inBounds or char mismatch, │
+│                      │    return; if trieNode.word != null, add to result and  │
+│                      │    set word = null (dedup).                             │
+│                      │ 4. Mark board[r][c] = '#', recurse 4 neighbors with    │
+│                      │    trieNode.next[char], then backtrack board[r][c]=char.│
+└──────────────────────┴────────────────────────────────────────────────────────┘
+```
+
 ## Decomposition Walkthroughs
 
 The following sections provide comprehensive step-by-step decomposition analyses across varying levels of complexity. We will analyze the problems, deconstruct them using the canvas methodology, and map them to our canonical patterns.

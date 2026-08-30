@@ -25,12 +25,28 @@ Reactive programming solved this by decoupling processing execution from threads
 *   **Advantage:** Extreme scalability with very low resource utilization.
 *   **Disadvantage:** Increased code complexity ("callback hell"), difficult stack traces, and complete incompatibility with standard Java threading tools like `ThreadLocal`.
 
-### The Virtual Thread Revolution
-Virtual threads are lightweight threads managed by the JVM rather than the OS. They are mounted onto a small carrier pool of platform threads. When a virtual thread blocks on I/O (e.g., executing a SQL query), the JVM unmounts the virtual thread, parking it, and assigns the carrier thread to another task.
+### The Virtual Thread Revolution & Carrier Thread Pinning
 
-![Thread Lifecycle and Context Switching States](visuals/thread_lifecycle.jpg){width=85%}
+Virtual threads are lightweight threads managed by the JVM rather than the OS. They are mounted onto a small carrier pool of platform threads (typically sizing to $\text{Runtime.getRuntime().availableProcessors()}$).
 
-*   **Impact:** You can run millions of virtual threads concurrently while writing standard, synchronous, block-on-write code that is easy to read, debug, and trace.
+```text
+Virtual Thread State Machine:
+[Virtual Thread 1] ──(Running on)──► [Carrier Platform Thread A] (CPU Active)
+      │ (Executes Blocking Socket Read / JDBC Query)
+      ▼
+[Continuation.yield()] ──(Unmounts from Carrier)──► [Carrier Thread A Freed for VT 2]
+      │ (I/O Completes: OS epoll / kqueue notification)
+      ▼
+[Continuation.run()] ──(Remounts onto ANY Available Carrier)──► [Carrier Platform Thread B]
+```
+
+#### The Carrier Thread Pinning Hazard
+A critical trap in enterprise Java 21+ applications is **Carrier Pinning**:
+
+- If a virtual thread executes a blocking operation inside a native `synchronized` block or a native C/JNI call, the underlying JVM **cannot unmount the continuation**.
+- The virtual thread remains **pinned** to its underlying carrier platform thread.
+- If multiple virtual threads enter `synchronized` blocks that block on database I/O, all carrier threads become exhausted, freezing the entire JVM application.
+- **Remedy:** Replace all `synchronized` blocks protecting I/O operations with `java.util.concurrent.locks.ReentrantLock`, which allows virtual threads to unmount safely during lock acquisition waits.
 
 ![Virtual Threads vs Platform Threads](visuals/virtual_threads.png){width=85%}
 
@@ -45,15 +61,54 @@ A **Mutex** (Mutual Exclusion) provides exclusive access to a critical section o
 ### Semaphore
 A **Semaphore** acts as a bounded counting lock that controls access to a limited pool of shared resources. Instead of a binary lock, a semaphore initializes with a set number of permits. Threads invoke the `acquire()` method to claim a permit and `release()` when the resource is freed. If all permits are exhausted, subsequent threads block or fail fast. Semaphores are the standard mechanism for building bounded connection pools, bulkhead rate limiters, and throttling bursts of traffic in upstream API clients.
 
-### Atomic Variables
-When simply incrementing a metric or flipping a single state flag, standard locking incurs unnecessary context-switching overhead. **Atomic Variables** (such as `AtomicInteger`, `AtomicLong`, and `AtomicReference`) utilize low-level **Compare-And-Swap (CAS)** operations provided directly by modern CPU architectures. The CPU checks if the memory value matches the expected state; if it does, the update succeeds, otherwise it spins and retries. This pattern is foundational for lock-free accumulators, sequence generators, and high-performance metrics aggregation.
+### Atomic Variables, CAS Assembly & The ABA Problem
+When simply incrementing a metric or flipping a single state flag, standard locking incurs unnecessary context-switching overhead. **Atomic Variables** (such as `AtomicInteger`, `AtomicLong`, and `AtomicReference`) utilize low-level **Compare-And-Swap (CAS)** operations provided directly by modern CPU architectures:
 
-### Concurrent Collections
+```text
+x86 Assembly: LOCK CMPXCHG [destination], source
+
+1. Compare: Does memory at [destination] == Expected Register Value?
+2. If YES: [destination] = New Value (Atomically updates, returns success flag)
+3. If NO:  Load current value into register, CPU bus lock released, spin-retry loop.
+```
+
+#### The ABA Anomaly & Solution
+- **The ABA Problem:** Thread 1 reads value $A$ from memory. Thread 2 preempts, mutates memory $A \to B \to A$. Thread 1 resumes and executes `CAS(expected=A, new=C)`. The CAS succeeds, even though intermediate state was modified (e.g., node reuse in lock-free linked stacks leading to dangling pointers).
+- **Solution:** Use **Versioned Pointers** or `AtomicStampedReference<T>`, which pair the memory reference with an integer version stamp, executing `CAS(expectedRef, newRef, expectedStamp, newStamp)`.
+
+### Concurrent Collections & Cache-Line False Sharing
 Wrapping a standard `HashMap` or `ArrayList` with a mutex creates immediate contention, severely degrading system throughput. Modern runtimes provide highly optimized **Concurrent Collections** designed for specific access patterns:
 
 *   `ConcurrentHashMap` relies on fine-grained bucket-level locks or CAS operations, allowing many threads to read and write simultaneously without blocking the entire data structure.
 *   `CopyOnWriteArrayList` copies the underlying array on every modification. It is heavily used in read-dominant structures, such as caching routing tables or managing event listeners.
 *   `BlockingQueue` variants are essential for thread-safe producer-consumer queues, handling backpressure between asynchronous job workers.
+
+#### CPU Cache Line False Sharing & `@Contended` Padding
+Modern CPUs fetch memory in discrete **64-byte Cache Lines**.
+
+- If Thread 1 on Core 1 writes to variable $X$, and Thread 2 on Core 2 reads variable $Y$, and *both variables reside within the same 64-byte cache line*, Core 1's write invalidates Core 2's entire L1 cache line (via the MESI cache coherence protocol).
+- Both cores spend massive CPU cycles invalidating and reloading cache lines across the inter-core interconnect, even though their data is completely unrelated.
+- **Remedy:** Cache line padding (e.g., JVM `@jdk.internal.vm.annotation.Contended` or manual 64-byte long dummy variable padding) ensures variables accessed by distinct threads reside on distinct cache lines.
+
+### Thread Pool Starvation Deadlock
+A severe production bug occurs when tasks submitted to a bounded thread pool submit child tasks to the **same thread pool** and wait on their results:
+
+```java
+// FATAL STARVATION DEADLOCK:
+ExecutorService pool = Executors.newFixedThreadPool(2);
+pool.submit(() -> {
+    // Parent Task 1 consumes Worker Thread 1
+    Future<String> child = pool.submit(() -> "Child Result"); // Queued in pool!
+    return child.get(); // BLOCKS waiting for Worker Thread 2!
+});
+pool.submit(() -> {
+    // Parent Task 2 consumes Worker Thread 2
+    Future<String> child = pool.submit(() -> "Child Result"); // Queued in pool!
+    return child.get(); // BLOCKS waiting for free worker!
+});
+// ALL WORKERS ARE BLOCKED WAITING FOR QUEUED CHILD TASKS THAT CAN NEVER RUN!
+```
+**Remedy:** Separate thread pools for parent orchestrators vs child workers, or use unbounded Virtual Thread executors (`Executors.newVirtualThreadPerTaskExecutor()`).
 
 ### async/await & Non-Blocking I/O
 While threads map execution to operating system resources, modern languages use cooperative multitasking to scale concurrency independently of OS threads. C#'s **async/await** and Python's **asyncio** allow developers to write sequential-looking code that does not block the underlying thread during I/O delays. Java takes a different approach: rather than async/await syntax, Java 21+ uses **Virtual Threads** (Project Loom) to achieve the same goal — blocking calls in virtual threads are automatically non-blocking at the OS level, preserving sequential code style. (Java's `CompletableFuture` provides similar capability but requires callback chaining via `.thenApply()` and `.thenCompose()`, losing the sequential readability.) When an I/O call yields, the execution returns control to an event loop or scheduler, allowing a single physical thread to manage thousands of simultaneous network requests.

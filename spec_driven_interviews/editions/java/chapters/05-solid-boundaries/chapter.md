@@ -135,7 +135,19 @@ Instead of adding nested `if-else` blocks inside the transaction processor, we i
 
 ## Liskov Substitution Principle (LSP)
 
-The Liskov Substitution Principle states that **subtypes must be substitutable for their base types without altering the correctness of the program.**
+The Liskov Substitution Principle was formalized by Barbara Liskov and Jeannette Wing in 1994:
+
+> *"Let $\phi(x)$ be a property provable about objects $x$ of type $T$. Then $\phi(y)$ should be true for objects $y$ of type $S$ where $S$ is a subtype of $T$."*
+
+### Formal Behavioral Subtyping Rules
+
+To guarantee that a subtype $S$ can replace base type $T$ safely without breaking client expectations, the subtype must satisfy five strict subtyping invariants:
+
+1. **Precondition Contravariance:** A subtype cannot strengthen preconditions ($\text{Pre}_T \implies \text{Pre}_S$). If a base method accepts any non-null string, the subtype cannot restrict inputs to alphanumeric strings only.
+2. **Postcondition Covariance:** A subtype cannot weaken postconditions ($\text{Post}_S \implies \text{Post}_T$). If a base method guarantees returning a positive integer ($> 0$), the subtype cannot return $\le 0$.
+3. **Class Invariant Preservation:** All domain invariants defined on the supertype must be preserved by every method of the subtype.
+4. **Exception Invariance:** A subtype method cannot throw new or broader checked exceptions than those declared by the supertype method.
+5. **History Constraint:** A subtype cannot introduce mutating operations on an immutable supertype (e.g., subclassing an immutable `Money` value object with a mutable subclass).
 
 In financial systems, this is highly relevant when modeling different account types. For example, a `SavingsAccount` might not allow overdrafts, while a `CheckingAccount` allows up to a certain limit.
 If a developer creates a subclass `BlockedAccount` that throws an `UnsupportedOperationException` whenever `debit()` is called, they violate LSP. The `TransactionProcessor` assumes that any `LedgerAccount` returned by the repository can be debited and credited.
@@ -161,6 +173,16 @@ This is the most critical principle for decoupling business logic from infrastru
 - **High-level modules:** The core business rules of your application (like transaction routing and double-entry validation).
 
 In our implementation, the `TransactionProcessor` does not import a concrete SQL database connector or Hibernate manager. It depends entirely on the `LedgerRepository` interface. The business logic is at the top of the dependency tree, and database adapters are plugged in at the bottom. This allows you to run unit tests using a mock repository in memory, completely decoupled from a database connection.
+
+### Disambiguation: DIP vs. IoC vs. DI
+
+In senior technical interviews, candidates frequently conflate these three concepts. Use this architectural matrix to articulate the exact distinction:
+
+| Concept | Architectural Level | Formal Definition | Concrete Example |
+| :--- | :--- | :--- | :--- |
+| **Dependency Inversion (DIP)** | **High-Level Design Principle** | High-level business policies must not depend on low-level infrastructure details; both depend on abstractions (interfaces). | `TransactionProcessor` depends on `LedgerRepository` interface, not `PostgresLedgerDao`. |
+| **Inversion of Control (IoC)** | **Architectural Paradigm** | The framework controls the runtime lifecycle and flow of control, calling user application code (*"Hollywood Principle: Don't call us, we'll call you"*). | Spring Boot runtime invokes application `@Controller` methods when HTTP requests arrive. |
+| **Dependency Injection (DI)** | **Tactical Design Pattern** | The mechanism of providing dependent objects to a class from an external assembler via constructors, setters, or interfaces. | `new TransactionProcessor(mockRepo, feeCalc)` or `@Autowired constructor`. |
 
 ![SOLID Dependency Inversion Principle — Before and After](visuals/solid_dip.png){width=85%}
 
@@ -202,8 +224,34 @@ Modern web frameworks are designed explicitly around SOLID principles:
 ### Dependency Injection (IoC) Containers
 Frameworks like Spring Boot (Java), ASP.NET Core (C#), and FastAPI/Dependency Injector (Python) serve as Dependency Inversion engines. By registering interfaces and their concrete implementations in the container, the framework automates constructor injection. High-level business modules declare their dependencies as constructor interfaces, completely decoupled from concrete instantiation.
 
-### Aspect-Oriented Programming (AOP)
-To adhere to OCP, frameworks use AOP to apply cross-cutting concerns (such as transactions, security, and logging) to service boundaries dynamically using **Proxy decorators**. For instance, adding `@Transactional` in Spring Boot or `[Transaction]` in ASP.NET Core wraps the service class in a proxy container, injecting commit and rollback logic without modifying the service's source code.
+### Aspect-Oriented Programming (AOP) & The Self-Invocation Trap
+To adhere to OCP, frameworks use AOP to apply cross-cutting concerns (such as transactions, security, and logging) to service boundaries dynamically using **Dynamic Proxies** (JDK Dynamic Proxy or CGLIB/ByteBuddy subclassing).
+
+```text
+Normal AOP Proxy Flow:
+[Client] ──► [Proxy (TransactionInterceptor)] ──► [Real Target (LedgerService)]
+
+             1. BEGIN TX
+             2. target.processTransfer()
+             3. COMMIT / ROLLBACK TX
+```
+
+```java
+// THE FATAL SELF-INVOCATION TRAP:
+@Service
+public class LedgerService {
+    public void executeTransfer() {
+        // Direct internal method call uses the raw 'this' pointer, BYPASSING the proxy!
+        this.saveAuditRecord(); // @Transactional is completely ignored! No TX created!
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveAuditRecord() {
+        // Unprotected write!
+    }
+}
+```
+**Remedy:** Inject the service into itself via self-referencing bean or extract the cross-cutting method into a dedicated collaborator bean.
 
 
 ### When SOLID Hurts: The Trade-off Analysis

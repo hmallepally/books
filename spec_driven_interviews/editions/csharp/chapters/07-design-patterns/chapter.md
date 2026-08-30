@@ -96,7 +96,8 @@ Certain resources (such as HikariCP database connection pools or hardware licens
 #### Protected Architectural Invariant
 **Controlled Instantiation & Thread Visibility:** Guarantees that at most one instance exists per class loader, with `volatile` references preventing instruction reordering.
 
-#### 💻 Double-Checked Locking Implementation
+#### 💻 Double-Checked Locking Implementation & CPU Instruction Reordering
+
 ```csharp
 public class LedgerConnectionPool 
 {
@@ -126,6 +127,45 @@ public class LedgerConnectionPool
 ```
 
 
+#### Why `volatile` is Mathematically Required (The 1-3-2 Reordering Hazard)
+
+In Java and C#, initializing an object `instance = new Singleton()` is compiled into three distinct low-level operations:
+
+1. `memory = allocate(sizeof(Singleton));` (Allocate raw heap memory)
+2. `ctorSingleton(memory);` (Execute constructor and initialize fields)
+3. `instance = memory;` (Assign memory pointer reference to variable `instance`)
+
+Without the `volatile` modifier on `instance`, the JIT compiler and out-of-order CPU execution engine are legally permitted to reorder instructions to **1 $\to$ 3 $\to$ 2**:
+
+- Thread A executes Step 1 and Step 3, publishing the memory address to `instance` *before* the constructor fields finish executing in Step 2.
+- Thread B enters the method, evaluates `if (instance == null)` (which evaluates to `false` because the pointer is non-null), and immediately returns `instance`.
+- Thread B accesses uninitialized fields on `instance`, causing catastrophic runtime corruption (`NullPointerException` or partially configured state).
+
+Declaring `private static volatile Singleton instance` establishes a **Happens-Before memory barrier** across CPU caches, prohibiting the processor from reordering the assignment ahead of constructor initialization.
+
+#### The Bill Pugh Initialization-on-Demand Holder Idiom
+
+To achieve lazy initialization with zero synchronization lock overhead and zero `volatile` read penalties, use the **Bill Pugh Holder Idiom**:
+
+```java
+public class LedgerRegistry {
+    private LedgerRegistry() {
+        // Enforce private constructor
+    }
+
+    // Static nested class is NOT loaded into memory when LedgerRegistry is loaded
+    private static class Holder {
+        private static final LedgerRegistry INSTANCE = new LedgerRegistry();
+    }
+
+    public static LedgerRegistry getInstance() {
+        // Holder class is loaded and initialized by JVM class loader only upon first invocation!
+        return Holder.INSTANCE;
+    }
+}
+```
+*Why it works:* In the JVM specification, a static nested class is initialized only when referenced. The JVM's internal class loading phase is guaranteed to be atomic and thread-safe, providing lazy initialization with zero locking overhead.
+
 #### Framework Reality & Cloud-Native Anti-Pattern Warning
 > [!WARNING]
 > **Cloud-Native Singleton Anti-Pattern Risks:**
@@ -136,7 +176,7 @@ public class LedgerConnectionPool
 > 4. **Python Module Idiom:** In Python, the module import cache (`sys.modules`) natively provides a thread-safe singleton per interpreter process upon initial import, rendering classical double-checked locking boilerplate unnecessary.
 
 #### 30-Second Interview Verbalization Script
-> *"While classical Singletons use double-checked locking with volatile references, in cloud-native microservices we treat static Singletons as an anti-pattern. We delegate singleton lifecycle management to Dependency Injection containers, which manage singletons within container context while remaining mockable during unit testing."*
+> *"While classical Singletons use double-checked locking with volatile references to prevent 1-3-2 instruction reordering, in cloud-native microservices we treat static Singletons as an anti-pattern. We delegate singleton lifecycle management to Dependency Injection containers or use the Bill Pugh Holder idiom, ensuring objects remain mockable during unit testing."*
 
 
 ## Structural Patterns
@@ -401,3 +441,12 @@ Selecting the wrong persistence strategy causes architectural debt. Simple CRUD 
 
 #### 30-Second Interview Verbalization Script
 > *"While Active Record combines data attributes and persistence methods in a single class for rapid CRUD development, we use Data Mapper for financial enterprise systems. Data Mapper decouples pure domain entities from database mapping, ensuring business logic remains fully testable without database dependencies."*
+
+### Enterprise Persistence Terminology Disambiguation
+
+| Pattern / Concept | Lifecycle Scope | Mutability & Identity | Primary Purpose |
+| :--- | :--- | :--- | :--- |
+| **DTO (Data Transfer Object)** | Network boundary (API / RPC) | Flat, serializable, no business methods, no identity | Decouples internal database schema from public API contracts; eliminates over-fetching. |
+| **DAO (Data Access Object)** | Persistence layer abstraction | Stateless service interface | Encapsulates raw SQL queries or ORM calls; provides CRUD methods (`findById`, `save`). |
+| **VO (Value Object)** | Domain layer (DDD) | Immutable, identified entirely by attribute values | Enforces self-validating business constraints natively (e.g., `Money`, `EmailAddress`). |
+| **Domain Entity** | Core business domain | Unique identity (`id`) that persists across mutations | Rich aggregate root enforcing business invariants and lifecycle state transitions. |

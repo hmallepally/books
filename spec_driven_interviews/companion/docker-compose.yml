@@ -1,0 +1,91 @@
+﻿version: '3.8'
+
+services:
+  # -------------------------------------------------------------------------
+  # Apache Kafka in KRaft Mode (No ZooKeeper Needed - KIP-500)
+  # -------------------------------------------------------------------------
+  kafka-1:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: kafka-kraft-node1
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka-1:29092,PLAINTEXT_HOST://localhost:9092'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka-1:29093'
+      KAFKA_LISTENERS: 'PLAINTEXT://kafka-1:29092,CONTROLLER://kafka-1:29093,PLAINTEXT_HOST://0.0.0.0:9092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+    volumes:
+      - kafka_data:/tmp/kraft-combined-logs
+
+  # -------------------------------------------------------------------------
+  # PostgreSQL 16 with pgvector & Logical Decoding (Outbox / CDC)
+  # -------------------------------------------------------------------------
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: spec-driven-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: spec_driven_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+    command: ["postgres", "-c", "wal_level=logical", "-c", "max_wal_senders=10", "-c", "max_replication_slots=10"]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # -------------------------------------------------------------------------
+  # Redis 7 (Idempotency, Sliding Window Rate Limiting, Semantic Cache)
+  # -------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: spec-driven-redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+
+  # -------------------------------------------------------------------------
+  # RabbitMQ 3 with Management UI (AMQP Exchanges, Bindings, DLX)
+  # -------------------------------------------------------------------------
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: spec-driven-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  # -------------------------------------------------------------------------
+  # Qdrant Vector Database (HNSW & Hybrid RAG Retrieval)
+  # -------------------------------------------------------------------------
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: spec-driven-qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+volumes:
+  kafka_data:
+  postgres_data:
+  redis_data:
+  rabbitmq_data:
+  qdrant_data:

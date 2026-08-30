@@ -46,19 +46,53 @@ Machine learning models degrade over time as the real-world distribution shifts 
 
 ## Model Evaluation Metrics Deep-Dive
 
-In ML system design interviews, you must explain the right evaluation metric for the use case:
+In ML system design interviews, evaluating model performance requires choosing the right mathematical objective for the specific business domain. Stating *"we measure accuracy"* in a fraud detection or search ranking system is an instant disqualifier.
 
-| Metric | Formula | Best For | Pitfall |
-|:-----------------|:--------------------------------------------|:----------------------------------------|:----------------------------------------|
-| **Precision** | `TP / (TP + FP)` | Fraud detection (minimize false alarms) | Misses real fraud if too conservative |
-| **Recall** | `TP / (TP + FN)` | Medical diagnosis (catch all positives) | Too many false positives annoy users |
-| **F1-Score** | `2 * (Precision * Recall) / (Precision + Recall)` | Balanced classification tasks | Hides class imbalance issues |
-| **AUC-ROC** | Area under the ROC curve | Ranking quality across thresholds | Misleading on heavily imbalanced datasets |
-| **NDCG** | Normalized Discounted Cumulative Gain | Recommendation/search ranking | Sensitive to the number of results evaluated |
+### 1. The Confusion Matrix Foundation
 
-*Note: In the formulas above, **TP** represents True Positives (actual positive items correctly classified), **FP** represents False Positives (actual negative items incorrectly classified as positive), and **FN** represents False Negatives (actual positive items incorrectly classified as negative).*
+Every binary classification problem maps ground-truth reality against model predictions into a $2 \times 2$ **Confusion Matrix**:
 
-> **Interview Signal:** If asked *"How do you evaluate a fraud detection model?"*, respond: *"We optimize for recall first — missing a real fraud case is far more costly than a false alarm. We track precision-recall curves rather than accuracy, since our dataset is heavily imbalanced (99.9% non-fraud). We set our classification threshold to achieve 95% recall, accepting a lower precision, and route flagged transactions to a human review queue."*
+| | **Predicted Positive ($\hat{y} = 1$)** | **Predicted Negative ($\hat{y} = 0$)** |
+| :--- | :--- | :--- |
+| **Actual Positive ($y = 1$)** | **True Positive ($\text{TP}$)**<br>*(Hit / Correct Alarm)* | **False Negative ($\text{FN}$)**<br>*(Type II Error / Missed Detection)* |
+| **Actual Negative ($y = 0$)** | **False Positive ($\text{FP}$)**<br>*(Type I Error / False Alarm)* | **True Negative ($\text{TN}$)**<br>*(Correct Rejection)* |
+
+### 2. Classification Metrics & Trade-off Formulations
+
+| Metric | Mathematical Formula | Optimal Business Use Case | Architectural Pitfall & Hazard |
+| :--- | :---: | :--- | :--- |
+| **Precision**<br>*(Positive Predictive Value)* | $\frac{\text{TP}}{\text{TP} + \text{FP}}$ | Spam filtering, search suggestions (cost of a false alarm is high). | Overly conservative threshold misses true positive cases. |
+| **Recall**<br>*(Sensitivity / True Positive Rate)* | $\frac{\text{TP}}{\text{TP} + \text{FN}}$ | Fraud detection, medical screening, cyber-attack detection. | Low threshold produces high false alarms ($\text{FP}$), overwhelming human review queues. |
+| **$F_1$-Score**<br>*(Harmonic Mean)* | $\frac{2 \cdot \text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}} = \frac{2\text{TP}}{2\text{TP} + \text{FP} + \text{FN}}$ | Balanced classification where $\text{FP}$ and $\text{FN}$ have roughly equal business cost. | Treats precision and recall with equal weight; insensitive to extreme class imbalance. |
+| **$F_\beta$-Score**<br>*(Weighted Harmonic Mean)* | $(1 + \beta^2) \cdot \frac{\text{Precision} \cdot \text{Recall}}{(\beta^2 \cdot \text{Precision}) + \text{Recall}}$ | Custom cost functions ($\beta = 2$ weights Recall $2\times$ higher than Precision for fraud). | Requires empirical alignment with business dollar costs per $\text{FN}$ vs $\text{FP}$. |
+| **Specificity**<br>*(True Negative Rate)* | $\frac{\text{TN}}{\text{TN} + \text{FP}}$ | Clinical trials, safety-critical exclusion filters. | Can appear deceptively high when negative samples vastly outnumber positives. |
+| **Accuracy** | $\frac{\text{TP} + \text{TN}}{\text{TP} + \text{TN} + \text{FP} + \text{FN}}$ | Balanced, symmetric classes ($50/50$ distribution). | **The Accuracy Paradox:** In 99.9% non-fraud traffic, a dummy model predicting all negative achieves $99.9\%$ accuracy while detecting $0\%$ fraud! |
+
+### 3. Threshold Curves: ROC-AUC vs. PR-AUC
+
+Classifiers output a continuous probability $p \in [0, 1]$. The operational decision threshold $\theta$ converts $p \ge \theta$ into $\hat{y} = 1$:
+
+- **ROC-AUC (Receiver Operating Characteristic - Area Under Curve):** Plots $\text{TPR} = \frac{\text{TP}}{\text{TP} + \text{FN}}$ against $\text{FPR} = \frac{\text{FP}}{\text{TN} + \text{FP}}$ across all thresholds $\theta \in [0, 1]$. An ideal model has $\text{AUC} = 1.0$; random guessing yields $0.5$.
+  - *Hazard:* Because $\text{FPR}$ divides by large $\text{TN}$, ROC-AUC can look deceptively high ($>0.98$) on heavily imbalanced datasets even when precision is unacceptably poor.
+- **PR-AUC (Precision-Recall Area Under Curve):** Plots $\text{Precision}$ against $\text{Recall}$.
+  - *Golden Standard:* **Always use PR-AUC for imbalanced datasets** (e.g., fraud, ad click-through rate, rare disease detection) because it ignores $\text{TN}$ and focuses exclusively on positive class retrieval quality.
+
+### 4. Information Retrieval & Ranking Metrics
+
+For search engines, vector similarity retrieval, and recommendation ranking pipelines:
+
+1. **Mean Reciprocal Rank (MRR):** Measures where the *first* relevant result appears:
+   $$\text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i}$$
+   Ideal for question answering and navigation search (where the user only cares about the top hit).
+
+2. **Mean Average Precision (MAP@K):** Evaluates precision across the top-$K$ returned items:
+   $$\text{MAP}@K = \frac{1}{|Q|} \sum_{q=1}^{|Q|} \frac{1}{\min(K, R_q)} \sum_{k=1}^K P(k) \cdot \text{rel}(k)$$
+
+3. **Normalized Discounted Cumulative Gain (NDCG@K):** The gold standard for multi-level graded relevance (e.g., highly relevant $= 3$, relevant $= 1$, irrelevant $= 0$):
+   $$\text{DCG}@K = \sum_{i=1}^K \frac{2^{\text{rel}_i} - 1}{\log_2(i + 1)}, \qquad \text{NDCG}@K = \frac{\text{DCG}@K}{\text{IDCG}@K}$$
+   Where $\text{IDCG}@K$ is the Ideal DCG obtained by sorting items in perfect descending relevance order. Logarithmic discounting penalizes relevant items that appear lower in the candidate ranking.
+
+> **Interview Signal:** If asked *"How do you evaluate a fraud detection model?"*, respond: *"We optimize for recall first — missing a real fraud case is far more costly than a false alarm. We evaluate PR-AUC (Precision-Recall curve) rather than ROC-AUC or accuracy, since our dataset is heavily imbalanced ($99.9\%$ non-fraud). We tune our decision threshold $\theta$ using an $F_2$-score objective to achieve $\ge 95\%$ recall, accepting a manageable false positive rate, and route flagged transactions to an async human triage queue."*
 
 
 ## Vector Databases & Semantic Search
@@ -70,9 +104,37 @@ For applications utilizing natural language (such as customer support search or 
 - **Embeddings:** An embedding model (e.g., OpenAI text-embedding, BERT, Sentence-BERT) transforms text into a high-dimensional vector (e.g., 1536 floating-point values) representing the semantic meaning of the words.
 - **Vector Database:** Specialized databases (Pinecone, Milvus, Qdrant, Weaviate, or Postgres with pgvector extension) store these vectors.
 - **Index Optimization:** To query millions of vectors under millisecond constraints, vector databases utilize approximate nearest neighbors (ANN) index algorithms:
-  - **HNSW (Hierarchical Navigable Small World):** A multi-layer graph index that provides extremely fast query speeds but requires high memory footprints to store the graph. Best for datasets under 50 million vectors where RAM budget permits.
+  - **HNSW (Hierarchical Navigable Small World):** A multi-layer graph index where upper layers contain sparse long-range links (skip-list concept) and layer 0 contains dense local neighbor links.
+    - **Layer Assignment Probability:** An inserted vector is assigned to maximum layer $l$ using decaying probability $l = \lfloor -\ln(\text{uniform}(0, 1)) \cdot m_L \rfloor$, where $m_L = \frac{1}{\ln(M)}$.
+    - **Hyperparameters:** $M$ (bi-directional links per node, typically $16\text{--}64$) and `efSearch` (priority queue size during greedy search, bounding query time to $\mathcal{O}(\log N)$).
   - **IVF-Flat (Inverted File Index):** Groups vectors into clusters using k-means, limiting search scope to the nearest clusters. Uses less memory than HNSW but has slightly lower search recall. Best for cost-sensitive deployments with large datasets.
   - **PQ (Product Quantization):** Compresses vectors by splitting them into sub-vectors and quantizing each independently. Dramatically reduces memory usage at the cost of some accuracy. Best for billion-scale datasets.
+
+#### KV Cache VRAM Sizing & Inference Math
+
+In auto-regressive LLM inference, regenerating Key and Value projection matrices on every newly generated token incurs $\mathcal{O}(L^2)$ redundant matrix multiplications. Modern inference engines (vLLM, TensorRT-LLM) cache past KV tensors in GPU High-Bandwidth Memory (HBM).
+
+$$\text{KV Cache Size per Request} = 2 \times 2 \times n_{\text{layers}} \times n_{\text{kv\_heads}} \times d_{\text{head}} \times L_{\text{seq}} \text{ bytes}$$
+
+- Leading factors: $2$ (Key and Value matrices) $\times 2$ bytes (FP16 / BF16 precision).
+- $n_{\text{layers}}$: Number of Transformer decoder layers.
+- $n_{\text{kv\_heads}}$: Number of KV heads (in Grouped-Query Attention, $n_{\text{kv\_heads}} \ll n_{\text{heads}}$).
+- $d_{\text{head}}$: Dimension per attention head ($\approx 128$).
+- $L_{\text{seq}}$: Total context length (prompt + generated tokens).
+
+**Concrete VRAM Example (Llama 3 70B, $L = 8,192$ tokens):**
+
+- $n_{\text{layers}} = 80$, $n_{\text{kv\_heads}} = 8$, $d_{\text{head}} = 128$.
+- $\text{KV Cache Size} = 4 \times 80 \times 8 \times 128 \times 8,192 = 2.68\text{ GB per concurrent user session}$.
+- Serving 100 concurrent user streams requires $\approx 268\text{ GB VRAM}$ purely for the KV Cache (excluding model weights), explaining why **PagedAttention** (vLLM) is essential to eliminate internal memory fragmentation.
+
+### Semantic Caching for LLM Ingress
+
+To avoid paying expensive LLM API tokens and waiting $1\text{--}3\text{ seconds}$ for recurring user queries, an LLM Gateway implements **Semantic Caching** using vector similarity:
+
+$$\text{Cosine Similarity } \cos(\theta) = \frac{\mathbf{q}_{\text{new}} \cdot \mathbf{q}_{\text{cached}}}{\|\mathbf{q}_{\text{new}}\|_2 \|\mathbf{q}_{\text{cached}}\|_2}$$
+
+- If $\cos(\theta) \ge 0.95$ (e.g., "How do I reset my password?" vs "Steps to change password"), the gateway returns the cached completion instantly in $<10\text{ms}$ with zero LLM API cost.
 
 ### Chunking Strategies for RAG
 The quality of vector search results depends heavily on how source documents are split into chunks before embedding:

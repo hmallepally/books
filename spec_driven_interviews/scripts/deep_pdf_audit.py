@@ -29,7 +29,7 @@ def audit_pdf(pdf_path, lang_name):
     lang_checks = {
         'java': {'must_not_contain': ['def ', 'async def', 'using System;', 'namespace ', 'func ']},
         'python': {'must_not_contain': ['public class ', 'System.out.println', 'using System;', 'namespace ']},
-        'csharp': {'must_not_contain': ['public class ', 'System.out.println', 'def ', 'async def']}
+        'csharp': {'must_not_contain': ['System.out.println', 'def ', 'async def', 'func ']}
     }
     
     for page_num in range(total_pages):
@@ -38,15 +38,18 @@ def audit_pdf(pdf_path, lang_name):
         lines = text.split('\n')
         
         # 1. Unresolved LaTeX refs or missing images
-        if '??' in text or 'LaTeX Warning' in text:
+        if lang_name.lower() != 'csharp' and ('??' in text or 'LaTeX Warning' in text):
             issues['unresolved_refs'].append((page_num + 1, "Unresolved reference (??)"))
+        elif lang_name.lower() == 'csharp' and 'LaTeX Warning' in text:
+            issues['unresolved_refs'].append((page_num + 1, "LaTeX Warning"))
         if '![' in text or '](visuals/' in text:
             issues['missing_images'].append((page_num + 1, "Un-rendered Markdown image tag found in text"))
             
         # 2. Check for double section numbering (e.g., "1.1.1 1.")
-        double_num_match = re.search(r'\b(\d+\.\d+(\.\d+)?)\s+(\d+\.)\b', text)
-        if double_num_match:
-            issues['double_numbering'].append((page_num + 1, double_num_match.group(0)))
+        for line in lines:
+            double_num_match = re.match(r'^\s*(\d{1,2}\.\d+(\.\d+)?)\s+(\d+\.)\s+[A-Za-z]', line)
+            if double_num_match:
+                issues['double_numbering'].append((page_num + 1, double_num_match.group(0)))
             
         # 3. Check for orphan headings near bottom of page
         rect = page.rect

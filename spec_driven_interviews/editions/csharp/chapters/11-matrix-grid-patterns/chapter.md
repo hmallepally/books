@@ -8,7 +8,22 @@ This chapter covers Medium-tier of the General Coding Assessments (Medium diffic
 
 *   **Row-Major vs Column-Major layout**: Row-major layout stores 2D arrays row by row in memory (used in Java, C/C++), while column-major stores them column by column (Fortran, MATLAB). In Java, `matrix[r][c]` means row `r`, column `c`. Traversing row-major arrays by row is cache-friendly and faster.
 *   **In-Place Matrix Transposition**: The process of flipping a matrix over its main diagonal without allocating a new matrix. Mathematical formula: $A^T[i][j] = A[j][i]$. For an $N \times N$ matrix, iterate `i` from 0 to N-1 and `j` from `i+1` to N-1, swapping `matrix[i][j]` and `matrix[j][i]`.
-*   **90-Degree Clockwise/Counter-Clockwise Rotation Theorem**: Rotating a grid 90° is achieved via two sequential operations. Clockwise: Transpose the matrix, then reverse each row. Counter-Clockwise: Transpose the matrix, then reverse each column.
+*   **90-Degree Clockwise/Counter-Clockwise Rotation Theorem**: Rotating an $N \times N$ grid 90° is achieved via two sequential operations:
+    - **Clockwise 90°:** Transpose along main diagonal ($A[i][j] \leftrightarrow A[j][i]$), then reverse each individual row ($A[i][j] \leftrightarrow A[i][N-1-j]$).
+    - **Counter-Clockwise 90°:** Transpose along main diagonal, then reverse each individual column ($A[i][j] \leftrightarrow A[N-1-i][j]$).
+
+#### Mathematical Proof: Coordinate 4-Cycle Orbit
+When an $N \times N$ matrix is rotated 90° clockwise, cell $(r, c)$ maps to $(c, N - 1 - r)$.
+Every cell belongs to a closed **4-cycle orbit**:
+$$(r, c) \longrightarrow (c, N - 1 - r) \longrightarrow (N - 1 - r, N - 1 - c) \longrightarrow (N - 1 - c, r) \longrightarrow (r, c)$$
+
+```text
+4-Cycle Orbit for N = 4:
+(0, 1) ──► (1, 3) ──► (3, 2) ──► (2, 0) ──► (0, 1)
+Top        Right      Bottom     Left
+```
+By iterating through the top-left quadrant ($r \in [0, \lfloor N/2 \rfloor - 1], c \in [r, N - 2 - r]$) and rotating the 4 elements in a 4-way temporary swap, the entire matrix rotates in-place in $\mathcal{O}(N^2)$ time and strictly $\mathcal{O}(1)$ space without allocating auxiliary buffers.
+
 *   **Spiral Matrix Boundary Contraction**: A traversal technique using four pointer boundaries (`top`, `bottom`, `left`, `right`). We traverse the perimeter, then shrink the boundaries (e.g., `top++`, `right--`) and repeat until the boundaries overlap.
 *   **Coordinate Direction Vectors**: Pre-defined arrays to cleanly iterate through grid neighbors. Standard 4-directional setup: `int[] dr = {-1, 1, 0, 0}; int[] dc = {0, 0, -1, 1};`. This prevents writing four repetitive `if` statements for North, South, West, East.
 *   **Flood Fill / BFS vs DFS on grids**: Techniques to traverse connected components in a matrix. DFS uses recursion (call stack) to go deep, which is easier to write but can cause stack overflow on massive grids. BFS uses a `Queue` to process level-by-level, ideal for shortest path calculations.
@@ -16,7 +31,21 @@ This chapter covers Medium-tier of the General Coding Assessments (Medium diffic
 
 *   **State Machine Simulation**: Problems where you process a sequence of commands or instructions step-by-step. Often requires maintaining a "current state" (e.g., direction, coordinate, phase) and applying transition logic based on the input stream.
 *   **Toeplitz Matrix**: A matrix in which every diagonal descending from left to right has constant values. Property to check: `matrix[i][j] == matrix[i-1][j-1]` for all valid $i>0, j>0$.
-*   **In-Place State Encoding**: A trick to update states simultaneously without a copy grid. We use bits or sentinel values to encode both "old state" and "new state" (e.g., 0=dead, 1=live, 2=was dead now live, 3=was live now dead) and later decode it with modulo/division.
+*   **In-Place 2-Bit State Encoding (Game of Life Mechanics)**: To update cellular automata simultaneously without allocating an $\mathcal{O}(M \times N)$ copy matrix, use the lower 2 bits of integer cells:
+    - `Bit 0` (least significant bit): Represents the **Current State** ($0 = \text{dead}, 1 = \text{alive}$).
+    - `Bit 1` (second bit): Represents the **Next State** ($0 = \text{will die}, 1 = \text{will live}$).
+
+```text
+2-Bit Cellular Encoding States:
+
+- 00 (0): Currently Dead, Will Remain Dead
+- 01 (1): Currently Alive, Will Die Next
+- 10 (2): Currently Dead, Will Become Alive Next
+- 11 (3): Currently Alive, Will Remain Alive Next
+```
+
+1. **First Pass (Evaluate Neighbors):** When counting live neighbors, read only `board[nr][nc] & 1` (extracts current state, ignoring pending transitions). If cell transitions to live, set `board[r][c] |= 2` (setting bit 1).
+2. **Second Pass (Finalize):** Shift all cells right by 1 bit: `board[r][c] >>= 1`, converting pending next states into permanent current states in $\mathcal{O}(1)$ memory.
 
 ### Row-Major Index Linearization
 This technique converts 2D coordinates into a 1D index using `index = r * cols + c`. It can also reverse the process using `r = index / cols` and `c = index % cols`.

@@ -98,9 +98,32 @@ Why it matters: It is heavily used in array change problems (like bumping each e
 This encompasses foundational modulo operations for cyclic or remainder logic. Examples include using `n % 2` for parity, `n % k` for divisibility, and `(a + b - 1) / b` for ceiling division.
 Why it matters: It avoids floating-point arithmetic entirely and handles circular increments efficiently.
 
-### In-Place Swap
-This is the standard programming idiom for swapping two variables using a temporary holder. It uses the `temp = a; a = b; b = temp;` pattern.
-Why it matters: It serves as a fundamental building block for partitioning, reversing, and Dutch National Flag problems.
+### In-Place Swap & Dutch National Flag (3-Way Partitioning)
+Swapping two variables using a temporary holder (`temp = a; a = b; b = temp;`) is the building block for in-place array partitioning.
+
+#### The Dutch National Flag 4-Region Boundary Invariant
+To sort an array of 3 distinct values (e.g., 0s, 1s, 2s) in a single pass in $\mathcal{O}(N)$ time and $\mathcal{O}(1)$ space, Edsger Dijkstra formulated the **4-Region Invariant**:
+
+```text
+The 4 Array Regions during 3-Way Partitioning:
+┌──────────────┬──────────────┬──────────────────┬──────────────┐
+│  0s (Zeros)  │   1s (Ones)  │   Unexamined ?   │  2s (Twos)   │
+└──────────────┴──────────────┴──────────────────┴──────────────┘
+0           low-1 low     mid-1 mid              high high+1    N-1
+```
+
+- **Invariant Regions:**
+  - `nums[0 .. low - 1]` contains exclusively `0`s (Region 1).
+  - `nums[low .. mid - 1]` contains exclusively `1`s (Region 2).
+  - `nums[mid .. high]` contains unexamined elements `?` (Region 3).
+  - `nums[high + 1 .. N - 1]` contains exclusively `2`s (Region 4).
+- **Execution Rules:**
+  - If `nums[mid] == 0`: Swap `nums[low]` and `nums[mid]`, advance `low++`, `mid++`.
+  - If `nums[mid] == 1`: Advance `mid++`.
+  - If `nums[mid] == 2`: Swap `nums[mid]` and `nums[high]`, decrement `high--` (do NOT advance `mid` because the swapped element from `high` is unexamined!).
+-
+
+**Termination:** When `mid > high`, the unexamined Region 3 is empty, and the array is completely sorted.
 
 ### Sliding Window (Fixed-Size)
 A window of fixed size $K$ that slides across an array or string, computing an aggregate (sum, max, frequency count) incrementally. At each step, the window adds one element on the right and removes one on the left, maintaining the aggregate in $O(1)$ per step.
@@ -110,11 +133,30 @@ Why it matters: Fixed-size sliding windows solve problems like "maximum sum of a
 Two pointers advance at different speeds through a sequence — typically one moves one step and the other two steps per iteration. If a cycle exists, the fast pointer will eventually lap and meet the slow pointer.
 Why it matters: This is the Floyd's Tortoise and Hare algorithm. It detects cycles in linked lists in $O(N)$ time and $O(1)$ space, and solves problems like finding the duplicate number in a constrained array or determining the starting node of a cycle.
 
+### Cyclic Sort & The $2N-1$ Swap Termination Proof
+An in-place sorting technique for arrays containing $N$ integers in the range $[0, N-1]$ or $[1, N]$. Each element is swapped to its target index (`target_idx = nums[i] - 1`) until all elements reside in their natural positions.
 
+#### Mathematical Termination Proof
+- **The Invariant:** An element at index $i$ is either at its correct destination ($nums[i] == i + 1$) or in an incorrect position.
+- **Cost Analysis:**
+  - Every swap places at least **one** element into its correct, permanent destination index.
+  - Once an element is placed at its correct destination, it is never swapped again.
+  - Since there are $N$ elements, at most $N-1$ swaps can occur across the entire array.
+  - Total array traversal steps: At most $N$ index increments + at most $N-1$ element swaps $\le 2N - 1 = \mathcal{O}(N)$ operations total.
 
-### Cyclic Sort
-An in-place sorting technique for arrays containing elements in the range $[0, N]$ or $[1, N]$. Each element is swapped to its "correct" index (element $k$ belongs at index $k$ or $k-1$) until all elements are placed.
-Why it matters: This pattern directly solves "Find the Missing Number," "Find All Duplicates," and "First Missing Positive" in $O(N)$ time and $O(1)$ space — a common Easy-to-Medium tier technique.
+### Mathematical Invariant: Digital Root & Casting Out Nines
+Computing the iterative sum of digits until a single digit remains (e.g., $38 \to 3+8=11 \to 1+1=2$) can be derived in $\mathcal{O}(1)$ time without loops using modular arithmetic:
+
+- In base 10: $10 \equiv 1 \pmod 9$, and by induction $10^k \equiv 1^k \equiv 1 \pmod 9$.
+- A number $N = \sum d_k 10^k \equiv \sum d_k (1) \equiv \sum d_k \pmod 9$.
+- Therefore, the digital root of any positive integer $N$ is congruent to $N \pmod 9$:
+  $$\text{Digital Root}(N) = \begin{cases} 0 & \text{if } N = 0 \\ 9 & \text{if } N \ne 0 \text{ and } N \pmod 9 == 0 \\ N \pmod 9 & \text{otherwise} \end{cases}$$
+
+### Boyer-Moore Majority Voting & Paired Cancellation Proof
+Given an array of size $N$ with a majority element occurring $> \lfloor N/2 \rfloor$ times, Boyer-Moore finds the candidate in $\mathcal{O}(N)$ time and $\mathcal{O}(1)$ space.
+
+- **The Paired-Cancellation Invariant:** If we pair up two *distinct* elements and discard both, the majority element remains the majority in the remaining array.
+- **Proof:** Suppose the majority element appears $M > N/2$ times. All other elements combined appear $N - M < N/2$ times. Each cancellation removes at most one majority element and one non-majority element. Even if every non-majority element cancels against a majority element, at least $M - (N - M) = 2M - N > 0$ majority elements remain uncancelled.
 
 ### Hash Map/Set Lookup
 Using a hash-based data structure to achieve $O(1)$ average-case lookup, insertion, and deletion. A HashMap stores key-value pairs; a HashSet stores unique keys only.

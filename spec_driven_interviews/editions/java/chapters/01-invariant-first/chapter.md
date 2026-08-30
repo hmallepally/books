@@ -30,6 +30,49 @@ When you apply this to coding assessments, you construct an "Invariant Wall" com
 By declaring these boundaries upfront, you decouple *what* the system must do from *how* it will do it. You establish a contract. Once the contract is clear, writing the code is simply a matter of executing that contract.
 
 
+### Hoare Logic & Formal Program Verification
+
+In formal computer science, program correctness is verified using **Hoare Logic** (formalized by C.A.R. Hoare in 1969). A computation step is represented as a **Hoare Triple**:
+
+$$\{ P \} \; C \; \{ Q \}$$
+
+- **$P$ (Pre-condition):** An assertion about the system state that must hold true *before* executing command block $C$.
+- **$C$ (Command Block):** The executable algorithm or method body.
+- **$Q$ (Post-condition):** An assertion about the system state guaranteed to hold true *after* executing command block $C$.
+
+```text
+               Hoare Triple Contract Execution:
+               ┌───────────────────────────────┐
+               │    Pre-condition P (Valid)    │
+               └──────────────┬────────────────┘
+                              │
+                              ▼
+               ┌───────────────────────────────┐
+               │    Command Execution (C)      │
+               └──────────────┬────────────────┘
+                              │
+                              ▼
+               ┌───────────────────────────────┐
+               │    Post-condition Q (Guaranteed)
+               └───────────────────────────────┘
+```
+
+**Total Correctness** requires establishing two distinct mathematical proofs:
+
+1. **Partial Correctness:** Proving that *if* the algorithm terminates, the final state satisfies the post-condition $Q$ (proved via Loop Invariants).
+2.
+
+**Termination:** Proving that the algorithm cannot enter an infinite loop and *must* terminate in finite steps (proved via a Loop Variant Metric).
+
+### Design by Contract (DbC) in Enterprise Software
+
+Originating from Bertrand Meyer's Eiffel programming language, **Design by Contract (DbC)** maps Hoare triples into software architecture:
+
+- **Client Obligation:** The caller must supply arguments satisfying the method's pre-conditions.
+- **Supplier Guarantee:** If the pre-conditions are met, the method guarantees to produce a state satisfying the post-conditions and preserving class invariants.
+- **Fail-Fast Enforcement:** If a pre-condition is violated, the method immediately rejects execution (e.g., throwing `IllegalArgumentException`), preventing silent state corruption.
+
+
 ## The Invariant Interview Framework
 
 When faced with a technical coding challenge in an interview, follow this four-step spec-driven framework:
@@ -67,7 +110,7 @@ Given a sorted array of integers `nums` and a `target` value, return the index o
 
 ### Define the Boundaries (Step 1)
 
-- **Pre-condition:** `nums` is sorted in ascending order.
+- **Pre-condition:** `nums` is sorted in ascending order ($nums[i] \le nums[i+1]$).
 - **Post-condition:** The returned index $idx$ satisfies $nums[idx] == target$, or if $idx == -1$, then $target \notin nums$.
 
 ### Establish the Loop Invariant (Step 3)
@@ -79,20 +122,19 @@ $$\mathcal{P}(left, right) \iff \Big(\text{target} \in nums \implies \exists k \
 
 ### Mathematical Proof of Correctness & Total Termination
 
-To formally prove that an iterative algorithm is correct, Hoare logic requires establishing two distinct components: **Partial Correctness** (proved via the Loop Invariant $\mathcal{P}$) and **Total Termination** (proved via a Loop Variant Metric $V$).
-
 #### A. Initialization
 Before the loop starts, the invariant $\mathcal{P}$ must hold true. We initialize `left = 0` and `right = nums.length - 1`.
+Since the array is sorted, if the target is in the array, it must lie within the initial search space $[0, nums.length - 1]$. The invariant holds.
 
-- Since the array is sorted, if the target is in the array, it must lie within the initial search space $[0, nums.length - 1]$. The invariant holds.
+#### B. Maintenance (Partial Correctness) & Integer Overflow Arithmetic
+During each iteration, calculating the midpoint as `(left + right) / 2` presents a dangerous 32-bit integer overflow bug:
 
-#### B. Maintenance (Partial Correctness)
-If the invariant holds before an iteration, it must remain true after updating our pointers.
-During each iteration, we calculate:
+- In two's complement 32-bit signed integers, `Integer.MAX_VALUE` is $2,147,483,647$.
+- If `left = 1,500,000,000` and `right = 2,000,000,000`, their mathematical sum is $3,500,000,000$.
+- In a 32-bit register, $3,500,000,000$ overflows to $-794,967,296$. Dividing by 2 yields $-397,483,648$, causing an instant `ArrayIndexOutOfBoundsException`.
 
-```
-mid = left + (right - left) / 2
-```
+To eliminate overflow, we use either subtraction-based allocation or unsigned logical right shift:
+$$\text{mid} = \text{left} + \frac{\text{right} - \text{left}}{2} \quad \text{or} \quad \text{mid} = (\text{left} + \text{right}) \ggg 1$$
 
 We check three cases:
 
@@ -115,6 +157,13 @@ $$V(left, right) = right - left + 1$$
 3. **Termination Guarantee:** Since $V$ is a strictly decreasing sequence of non-negative integers, $V$ must hit 0 in at most $\lfloor \log_2 N \rfloor + 1$ iterations, forcing loop termination when `left > right`.
 
 When $V = 0$, the search space $[left, right]$ is empty. Combining $V = 0$ with invariant $\mathcal{P}$ proves that $\text{target} \notin nums$. Returning `-1` is mathematically sound.
+
+### Boundary Topologies: Closed vs. Half-Open Intervals
+
+| Interval Model | Boundary Notation | Loop Condition | Left Update | Right Update | Loop Termination State |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Closed Interval** | $[left, right]$ | `while (left <= right)` | `left = mid + 1` | `right = mid - 1` | `left == right + 1` (Empty set) |
+| **Half-Open Interval** | $[left, right)$ | `while (left < right)` | `left = mid + 1` | `right = mid` | `left == right` (Points to insertion index) |
 
 > [!TIP]
 > **How to Verbalize This in an Interview (30-Second Summary):**
@@ -169,12 +218,15 @@ Prove the invariant for maintaining a monotonic deque that tracks the maximum el
 
 After these operations, $deque.peekFirst()$ strictly holds the index of the maximum element in the current window.
 
-**Termination & Amortized Complexity Proof ($2N$ Aggregate Method):**
-To prove the $\mathcal{O}(1)$ amortized time per element ($\mathcal{O}(N)$ total runtime), define the potential function $\Phi = |\text{deque}|$:
+**Termination & Amortized Complexity Proof (The Potential Method):**
+To prove the $\mathcal{O}(1)$ amortized time per element ($\mathcal{O}(N)$ total runtime), define the potential function $\Phi(S_t) = |\text{deque}_t|$:
 
-- Each of the $N$ array elements is pushed to the deque **at most once** ($+1$ operation).
-- Each element is popped from the deque **at most once** ($-1$ operation).
-- Total deque operations across all $N$ steps $\le 2N$, strictly proving $\mathcal{O}(N)$ runtime without relying on intuition.
+- Let $\Phi(S_0) = 0$. Since $|\text{deque}| \ge 0$, the non-negativity condition $\Phi(S_t) \ge 0$ holds universally.
+- At step $i$, suppose $k_i$ smaller elements are popped before $A[i]$ is enqueued.
+  - Actual computation cost: $c_i = 1 + k_i$ ($1$ push + $k_i$ pops).
+  - Potential delta: $\Delta \Phi_i = \Phi(S_i) - \Phi(S_{i-1}) = 1 - k_i$.
+  - Amortized cost: $\hat{c}_i = c_i + \Delta \Phi_i = (1 + k_i) + (1 - k_i) = 2 = \mathcal{O}(1)$.
+- Summing across all $N$ elements: $\sum c_i \le \sum \hat{c}_i = 2N = \mathcal{O}(N)$. Total work is strictly bounded.
 
 
 > ⭐ **STAR Moment: The $O(1)$ Failure Principle**
