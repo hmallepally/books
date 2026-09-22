@@ -48,7 +48,7 @@ Machine learning models degrade over time as the real-world distribution shifts 
 
 In ML system design interviews, evaluating model performance requires choosing the right mathematical objective for the specific business domain. Stating *"we measure accuracy"* in a fraud detection or search ranking system is an instant disqualifier.
 
-### 1. The Confusion Matrix Foundation
+### The Confusion Matrix Foundation
 
 Every binary classification problem maps ground-truth reality against model predictions into a $2 \times 2$ **Confusion Matrix**:
 
@@ -57,7 +57,7 @@ Every binary classification problem maps ground-truth reality against model pred
 | **Actual Positive ($y = 1$)** | **True Positive ($\text{TP}$)**<br>*(Hit / Correct Alarm)* | **False Negative ($\text{FN}$)**<br>*(Type II Error / Missed Detection)* |
 | **Actual Negative ($y = 0$)** | **False Positive ($\text{FP}$)**<br>*(Type I Error / False Alarm)* | **True Negative ($\text{TN}$)**<br>*(Correct Rejection)* |
 
-### 2. Classification Metrics & Trade-off Formulations
+### Classification Metrics & Trade-off Formulations
 
 | Metric | Mathematical Formula | Optimal Business Use Case | Architectural Pitfall & Hazard |
 | :--- | :---: | :--- | :--- |
@@ -68,7 +68,7 @@ Every binary classification problem maps ground-truth reality against model pred
 | **Specificity**<br>*(True Negative Rate)* | $\frac{\text{TN}}{\text{TN} + \text{FP}}$ | Clinical trials, safety-critical exclusion filters. | Can appear deceptively high when negative samples vastly outnumber positives. |
 | **Accuracy** | $\frac{\text{TP} + \text{TN}}{\text{TP} + \text{TN} + \text{FP} + \text{FN}}$ | Balanced, symmetric classes ($50/50$ distribution). | **The Accuracy Paradox:** In 99.9% non-fraud traffic, a dummy model predicting all negative achieves $99.9\%$ accuracy while detecting $0\%$ fraud! |
 
-### 3. Threshold Curves: ROC-AUC vs. PR-AUC
+### Threshold Curves: ROC-AUC vs. PR-AUC
 
 Classifiers output a continuous probability $p \in [0, 1]$. The operational decision threshold $\theta$ converts $p \ge \theta$ into $\hat{y} = 1$:
 
@@ -77,7 +77,7 @@ Classifiers output a continuous probability $p \in [0, 1]$. The operational deci
 - **PR-AUC (Precision-Recall Area Under Curve):** Plots $\text{Precision}$ against $\text{Recall}$.
   - *Golden Standard:* **Always use PR-AUC for imbalanced datasets** (e.g., fraud, ad click-through rate, rare disease detection) because it ignores $\text{TN}$ and focuses exclusively on positive class retrieval quality.
 
-### 4. Information Retrieval & Ranking Metrics
+### Information Retrieval & Ranking Metrics
 
 For search engines, vector similarity retrieval, and recommendation ranking pipelines:
 

@@ -140,11 +140,11 @@ Prefix Sum Array S (row 0 and column 0 are all zeros):
 
 **Cell-by-cell trace for S[2][2] = 12:**
 
-```
+```text
 S[r][c] = A[r-1][c-1] + S[r-1][c] + S[r][c-1] - S[r-1][c-1]
 ```
 
-```
+```text
 S[2][2] = A[1][1] (5) + S[1][2] (3) + S[2][1] (5) - S[1][1] (1) = 12
 ```
 
@@ -156,7 +156,7 @@ The two 5s come from different sources: `A[1][1] = 5` is the center cell of the 
 
 **Understanding the Query — Inclusion-Exclusion.** To find the sum of a sub-rectangle from `(r1, c1)` to `(r2, c2)`, we carve it out of the full prefix sum using four overlapping rectangles:
 
-```
+```text
 query(r1, c1, r2, c2) = S[r2+1][c2+1] - S[r1][c2+1] - S[r2+1][c1] + S[r1][c1]
 ```
 
@@ -171,7 +171,7 @@ query(r1, c1, r2, c2) = S[r2+1][c2+1] - S[r1][c2+1] - S[r2+1][c1] + S[r1][c1]
 
 **Worked query**: Sum of sub-rectangle `(1,1)` to `(2,2)` — cells `{5, 6, 8, 9}` = 28:
 
-```
+```text
 S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28
 ```
 

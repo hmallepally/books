@@ -54,7 +54,7 @@ Before diving into the 25 canonical patterns, ensure you have instant recall of 
 
 ![Figure 9.2: Constraint-to-Complexity Flowchart](visuals/constraint_flowchart.jpg){width=85%}
 
-# The 25 Canonical Programming Patterns
+## The 25 Canonical Programming Patterns
 
 The following catalog defines the 25 fundamental patterns of computational problem-solving. Each pattern represents a proven, invariant structure for solving a specific class of problems.
 
@@ -76,7 +76,7 @@ Every pattern is structured around a **5-Part Pedagogical Blueprint**:
 - **Concrete Tracing Exemplar:** First Non-Repeating Character in a String (e.g., `s = "leetcode"`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Input String: "leetcode"
 Character:    'l' (108)  'e' (101)  'e' (101)  't' (116)  ...
                  │          │          │          │
@@ -128,7 +128,7 @@ public int firstUniqueChar(String s) {
 - **Concrete Tracing Exemplar:** Move Zeros to End (e.g., `nums = [0, 1, 0, 3, 12]`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Initial:  [ 0 , 1 , 0 , 3 , 12 ]
             ▲   ▲
             w   r  (P(0) is false: r moves, w stays)
@@ -183,7 +183,7 @@ public int removeDuplicates(int[] nums) {
 - **Concrete Tracing Exemplar:** Subarray Sum Equals K (e.g., `nums = [1, 1, 1], k = 2`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Array A:        [  1  ,  1  ,  1  ]
 Indices:           0      1      2
 Prefix Sum P: [ 0 , 1  ,  2  ,  3  ]
@@ -234,7 +234,7 @@ public int subarraySumEqualsK(int[] nums, int k) {
 - **Concrete Tracing Exemplar:** Longest Substring Without Repeating Characters (e.g., `s = "abcabcbb"`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Expand R:   [ a  b  c ] a  b  c  b  b   (Window valid: "abc", len=3)
               L        R
 Violation:  [ a  b  c  a ] b  c  b  b   ('a' repeated! Invalid)
@@ -284,7 +284,7 @@ public int longestSubarray(int[] nums, int k) {
 - **Concrete Tracing Exemplar:** Sliding Window Maximum (e.g., `nums = [1, 3, -1, -3, 5, 3, 6, 7], k = 3`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Window [1, 3, -1]:
 Arrival '3' evicts '1' (3 > 1). Arrival '-1' appended.
 Deque (Indices): [1, 2]  -> Values: [3, -1]
@@ -334,7 +334,7 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 - **Concrete Tracing Exemplar:** Container With Most Water (e.g., `height = [1, 8, 6, 2, 5, 4, 8, 3, 7]`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Pointers:  L=0 (val:1)                                R=8 (val:7)
 Array:    [ 1 ,  8 ,  6 ,  2 ,  5 ,  4 ,  8 ,  3 ,  7 ]
 Width:     8, Height: min(1,7)=1 -> Area = 8
@@ -376,7 +376,7 @@ public int[] twoSumSorted(int[] nums, int target) {
 - **Concrete Tracing Exemplar:** Linked List Cycle II (Find Cycle Start).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Head ───► [ 1 ] ───► [ 2 ] (Entrance) ◄───┐
                        │                  │
                       [ 3 ] ───► [ 4 ] ───┘ (Meeting Point)
@@ -448,7 +448,7 @@ public boolean hasCycle(ListNode head) {
 - **Concrete Tracing Exemplar:** Valid Parentheses (e.g., `s = "{[()]}"`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Input: "{ [ ( ) ] }"
 Char '{': Push '}'  -> Stack: [ '}' ]
 Char '[': Push ']'  -> Stack: [ '}', ']' ]
@@ -495,7 +495,7 @@ public boolean isValidParentheses(String s) {
 - **Concrete Tracing Exemplar:** Next Greater Element / Daily Temperatures (e.g., `temperatures = [73, 74, 75, 71, 69, 72, 76]`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Stack holds indices of strictly decreasing values:
 Idx 2 (75), Idx 3 (71), Idx 4 (69)  <- Stack top
 
@@ -551,7 +551,7 @@ public int[] dailyTemperatures(int[] temps) {
 - **Concrete Tracing Exemplar:** Search in Rotated Sorted Array (e.g., `nums = [4, 5, 6, 7, 0, 1, 2], target = 0`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Array: [ 4 , 5 , 6 , 7 , 0 , 1 , 2 ]
          L           M           R
 Left Half [4..7] is Strictly Sorted (nums[L] <= nums[M]: 4 <= 7).
@@ -599,7 +599,7 @@ public int searchRotated(int[] nums, int target) {
 - **Concrete Tracing Exemplar:** Capacity To Ship Packages Within D Days (e.g., `weights = [1,2,3,4,5,6,7,8,9,10], D = 5`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Capacity Space:  [ 10 ... 14  |  15 ... 55 ]
 Predicate P(x):  [ F  ... F   |   T ...  T ]
                               ▲
@@ -656,7 +656,7 @@ private boolean canShip(int[] weights, int days, int capacity) {
 - **Concrete Tracing Exemplar:** Generate All Permutations (e.g., `nums = [1, 2]`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
                      []
             ┌────────┴────────┐
            [1]               [2]
@@ -710,7 +710,7 @@ public void backtrack(List<List<Integer>> res, List<Integer> path, int[] nums, b
 - **Concrete Tracing Exemplar:** Shortest Path in Unweighted Grid (e.g., $3 \times 3$ grid).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Level 0: (0,0)
 Level 1: (0,1), (1,0)
 Level 2: (0,2), (1,1), (2,0)
@@ -772,7 +772,7 @@ public int shortestPath(char[][] grid, int startR, int startC) {
 - **Concrete Tracing Exemplar:** Rotting Oranges / Multi-Source Spreading.
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 t=0:  [ S1 ]  .   .   [ S2 ]
 t=1:   S1   [1]  [1]   S2
 t=2:   S1    1    2    S2
@@ -834,7 +834,7 @@ public int orangesRotting(int[][] grid) {
 - **Concrete Tracing Exemplar:** Number of Islands.
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Grid Scan Finds '1' at (0,0) -> Increments Island Count to 1.
 Sink Component via DFS:
 (0,0) '1' -> '0'
@@ -889,7 +889,7 @@ private void dfsSink(char[][] grid, int r, int c) {
 - **Concrete Tracing Exemplar:** Course Schedule II (Task Scheduling).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 DAG Edges: 0 -> 1, 0 -> 2, 1 -> 3, 2 -> 3
 In-Degree Array: [0: 0, 1: 1, 2: 1, 3: 2]
 
@@ -947,7 +947,7 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
 - **Concrete Tracing Exemplar:** Number of Connected Components in Undirected Graph.
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Before Path Compression:          After Path Compression find(4):
          1                                      1
         /                                     / | \
@@ -1017,7 +1017,7 @@ Why does Union-Find with **Path Compression** and **Union by Rank** execute in p
 - **Concrete Tracing Exemplar:** Network Delay Time.
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Min-Heap: [(Dist:0, Node:1)]
 Pop (0, Node 1) -> Finalize Dist[1]=0.
 Relax Neighbors:
@@ -1090,7 +1090,7 @@ public int networkDelayTime(int[][] times, int n, int k) {
 - **Concrete Tracing Exemplar:** House Robber (e.g., `nums = [2, 7, 9, 3, 1]`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 State Recurrence: DP[i] = max(DP[i-1], DP[i-2] + nums[i])
 Variable Rolling:
 prev2  prev1  ->  curr  (New prev2 = old prev1, New prev1 = curr)
@@ -1134,7 +1134,7 @@ public int rob(int[] nums) {
 - **Concrete Tracing Exemplar:** Coin Change (Unbounded) (e.g., `coins = [1, 2, 5], amount = 11`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 0/1 Knapsack (Backward Iteration):
 Capacity:  W ◄───────── w   (Prevents overwriting DP state used in same pass)
 
@@ -1181,7 +1181,7 @@ public int coinChange(int[] coins, int amount) {
 - **Concrete Tracing Exemplar:** Minimum Path Sum (e.g., $3 \times 3$ grid `[[1,3,1],[1,5,1],[4,2,1]]`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Grid:
 [ 1 , 3 , 1 ]
 [ 1 , 5 , 1 ]
@@ -1234,7 +1234,7 @@ public int minPathSum(int[][] grid) {
 - **Concrete Tracing Exemplar:** Longest Common Subsequence (e.g., `s1 = "abcde", s2 = "ace"`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
        Ø   a   c   e
    Ø [ 0 , 0 , 0 , 0 ]
    a [ 0 , 1 , 1 , 1 ]  (Match 'a' -> Diagonal + 1)
@@ -1284,7 +1284,7 @@ public int longestCommonSubsequence(String text1, String text2) {
 - **Concrete Tracing Exemplar:** Meeting Rooms II (e.g., `intervals = [[0,30],[5,10],[15,20]]`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Timeline:  0 .... 5 .... 10 .... 15 .... 20 .... 30
 Mtg 1:    [========================================] (0..30)
 Mtg 2:           [========]                         (5..10)
@@ -1336,7 +1336,7 @@ public int minMeetingRooms(int[][] intervals) {
 - **Concrete Tracing Exemplar:** Implement Trie (Insert "apple", Search "app").
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Root ──► 'a' ──► 'p' ──► 'p' (isWord=true: "app")
                           │
                          'l' ──► 'e' (isWord=true: "apple")
@@ -1404,7 +1404,7 @@ public class Trie {
 - **Concrete Tracing Exemplar:** Kth Largest Element in an Array (e.g., `nums = [3, 2, 1, 5, 6, 4], k = 2`).
 - **Visual Architecture / Data-Flow Diagram:**
 
-```
+```text
 Input Stream: 3, 2, 1, 5, 6, 4 (k=2)
 
 Min-Heap of Size k=2:

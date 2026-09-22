@@ -1,4 +1,4 @@
-# 20 Timed Algorithmic Mock Assessment Sets
+# Timed Algorithmic Mock Assessment Sets
 
 ## How to Use This Chapter
 
@@ -397,7 +397,7 @@ Remember, there is no code in this chapter—this is your practice arena. Read t
 * **Q4 (Hard): Word Search II**
   * *Specification:* Given an M×N board of characters and a list of words, find all words that can be formed by sequentially adjacent cells (horizontally or vertically). Each cell may only be used once per word.
   * *Sample Test Case:* Input:
-    ```
+```text
     board = [
       ["o","a","a","n"],
       ["e","t","a","e"],

@@ -196,7 +196,7 @@ High-frequency trading engines cannot afford heap allocations, dynamic resizing,
 2. **Instantaneous $\mathcal{O}(1)$ Order Cancellations:**
    - Instead of scanning the price list ($\mathcal{O}(N)$), the engine maintains a direct pointer map: `HashMap<UUID, OrderNode>`.
    - Each `OrderNode` maintains explicit `.prev` and `.next` pointers within its price bucket. An incoming `CancelOrder` unlinks the node in $\mathcal{O}(1)$ constant time:
-     ```
+```text
      node.prev.next = node.next;
      node.next.prev = node.prev;
      ```

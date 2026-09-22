@@ -329,14 +329,14 @@ When load testing data-intensive applications, connection pool sizing is a frequ
 
 1. **Maximum Throughput & Latency Scaling Formula (HikariCP / PostgreSQL Standard):**
    To maximize database I/O throughput without overloading disk spindles or CPU context switches:
-   ```
+```text
    connections = ((core_count * 2) + effective_spindle_count)
    ```
    For example, an 8-core database server with an SSD array ($1$ spindle equivalent) reaches optimal throughput at around $17$ connections. Creating hundreds of pooled connections creates CPU thrashing rather than speed.
 
 2. **Deadlock-Free Pool Sizing Formula (Nested Transaction Safety):**
    If a single thread can execute nested operations requiring multiple simultaneous connections, use the deadlock-prevention formula:
-   ```
+```text
    Pool Size = Tn * (Cm - 1) + 1
    ```
    Where $T_n$ = maximum number of worker threads, $C_m$ = maximum concurrent connections held simultaneously by a single thread. This guarantees that at least one thread can acquire all necessary connections to complete its transaction, freeing resources for others and eliminating pool exhaustion deadlocks.

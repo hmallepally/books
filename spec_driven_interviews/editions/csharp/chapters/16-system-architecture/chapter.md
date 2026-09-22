@@ -453,7 +453,7 @@ To demonstrate how a senior candidate should navigate a system design round, her
 ### High-Level Estimations (Scale & Math)
 **Candidate:** *"Let's calculate our network and storage needs. At 100,000 RPS, if an average order payload is 200 bytes, our network ingest rate at the gateway is:"*
 
-```
+```text
 Ingest Bandwidth = 100,000 * 200 bytes = 20 MB/s = 160 Mbps
 ```
 

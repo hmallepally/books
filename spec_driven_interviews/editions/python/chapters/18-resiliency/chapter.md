@@ -199,7 +199,7 @@ COMMIT;
 
 ## Event Sourcing
 
-In high-audit domains such as financial ledgers (AuraPay), storing only the current mutable state of an entity (`Account(balance = $500.00)`) destroys historical provenance. If a balance discrepancy occurs, it is impossible to reconstruct *why* the balance changed without external log forensics.
+In high-audit domains such as financial ledgers (AuraPay), storing only the current mutable state of an entity (`Account(balance = \$500.00)`) destroys historical provenance. If a balance discrepancy occurs, it is impossible to reconstruct *why* the balance changed without external log forensics.
 
 **Event Sourcing** models state as an append-only, immutable stream of domain events over time:
 
@@ -290,7 +290,7 @@ In distributed cloud architectures, services interact over unreliable network li
 
 To isolate faults and maintain system availability, microservices employ four fundamental resiliency patterns:
 
-### 1. Circuit Breakers
+### Circuit Breakers
 
 A **Circuit Breaker** wraps remote RPC or HTTP calls, monitoring failure rates and latency percentiles over a rolling time window. Michael Nygard popularized this pattern in *Release It!*, mapping electrical safety mechanisms to distributed software:
 
@@ -307,7 +307,7 @@ Modern resilience frameworks (such as Resilience4j or Polly) compute failure rat
 1. **Count-Based Sliding Window:** Measures the last $N$ requests (e.g., $N=100$). A ring buffer stores boolean outcomes. Fast and lightweight, but less responsive during sudden traffic drop-offs.
 2. **Time-Based Sliding Window:** Measures requests over the last $T$ seconds (e.g., $T=10\text{s}$) partitioned into discrete buckets. Accurately captures temporal degradation during traffic surges.
 
-### 2. Bulkhead Isolation
+### Bulkhead Isolation
 
 Named after the watertight vertical partitions of a ship's hull that prevent a single leak from sinking the vessel, the **Bulkhead Pattern** isolates computing resources (thread pools, memory, connection pools) allocated to distinct downstream dependencies.
 
@@ -330,7 +330,7 @@ With Bulkheads (Isolated Pools):
 - **Thread Pool Bulkhead:** Assigns a dedicated thread pool and bounded queue to each remote client. Provides asynchronous execution and hard timeout preemption, but introduces CPU context-switching overhead and thread memory consumption.
 - **Semaphore Bulkhead:** Uses atomic counters (`java.util.concurrent.Semaphore`) on the calling thread. Bounded concurrency with near-zero memory overhead and no context switching, but cannot preempt hanging socket reads without socket-level timeouts.
 
-### 3. The Thundering Herd Problem and Jitter
+### The Thundering Herd Problem and Jitter
 
 When a major service or database recovers from an outage, it is frequently overwhelmed and knocked offline again by a synchronized tsunami of client retries. This failure mode is known as the **Thundering Herd**.
 
@@ -362,7 +362,7 @@ Load:  ░ ▒ ░ ▒ ░ ▒ ░ ▒ ░ ▒ ░ ▒ ░ ▒ ░ ▒ ░ ▒ �
    $$t_{\text{sleep}} = \min\left(\text{cap}, \text{random}\left(\text{base}, t_{\text{prev}} \times 3\right)\right)$$
    *Characteristics:* Each sleep duration is a random walk derived from the previous sleep value, avoiding centralized synchronization without tracking attempt counters.
 
-### 4. Dynamic Deadline & Timeout Propagation
+### Dynamic Deadline & Timeout Propagation
 
 A subtle failure mode in distributed microservices is **Dead-Work Processing**. If an API Gateway enforces a 2-second user timeout, but downstream service $D$ takes 5 seconds to process a sub-task, service $D$ will waste CPU and database resources completing a request whose client connection was already terminated 3 seconds ago.
 
@@ -385,7 +385,7 @@ At each hop, the service subtracts the elapsed time from the budget. If $\text{R
 
 A resilient architecture is impossible to operate without end-to-end visibility into execution paths across distributed nodes.
 
-### 1. W3C Distributed Trace Context Propagation
+### W3C Distributed Trace Context Propagation
 
 To trace a business transaction across 20 distinct microservices, systems implement the **W3C Distributed Tracing Standard**:
 
@@ -399,14 +399,14 @@ To trace a business transaction across 20 distinct microservices, systems implem
 - Every downstream HTTP client, gRPC interceptor, and Kafka producer propagates this `traceparent` header to outgoing requests.
 - All microservices write structured JSON logs including the current `trace_id` and `span_id`. When an outage occurs, searching for `trace_id` in Elasticsearch or Datadog instantly visualizes the complete multi-service execution tree.
 
-### 2. Metrics & Exemplars
+### Metrics & Exemplars
 
 Metrics monitor aggregate health without log volume costs:
 
 - **Four Golden Signals (Google SRE):** Latency, Traffic (QPS), Errors (5xx rate), and Saturation (CPU, memory, connection pool depth).
 - **Exemplars:** Modern time-series databases (such as Prometheus with OpenTelemetry) link specific high-latency metric data points to their corresponding distributed `trace_id`. Clicking a latency spike on a Grafana chart immediately loads the exact distributed trace that caused the anomaly.
 
-### 3. SLA, SLO, and Error Budget Math
+### SLA, SLO, and Error Budget Math
 
 - **Service Level Indicator (SLI):** A quantitative measurement of service behavior:
   $$\text{SLI} = \frac{\text{Count of Successful Requests (Latency } \le 200\text{ms and Status } < 500)}{\text{Total Valid Requests}} \times 100\%$$

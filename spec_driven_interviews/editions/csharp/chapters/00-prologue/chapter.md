@@ -22,7 +22,6 @@ This manual is engineered with uncompromising depth for working software profess
 - Beginners seeking an introductory programming tutorial. This book assumes professional fluency in object-oriented programming, data structures, and fundamental operating system concepts.
 - Candidates searching for "quick tips" or LeetCode answer keys. If you are looking for superficial shortcuts without understanding why an invariant holds, this book is not for you.
 
----
 
 ### The Multi-Language Tri-Editions Architecture
 
@@ -34,7 +33,6 @@ Engineering craftsmanship cannot be divorced from the language runtime. While di
 
 All three editions share the identical mathematical derivations, system design blueprints, and behavioral frameworks, while presenting native, idiomatic code that reflects modern production best practices.
 
----
 
 ### Typographical Conventions & Callout Legend
 
@@ -49,7 +47,6 @@ To maintain clarity across complex technical discussions, this book adopts stand
 | **STAR Interview Callouts** | ⭐ **STAR Moment** | Highlights actionable communication frameworks and verbalization strategies for interviews. |
 | **System Resiliency Alerts** | `[!NOTE]`, `[!TIP]`, `[!IMPORTANT]` | Highlights production failure modes, performance optimizations, and critical invariants. |
 
----
 
 ### Hardware & Software Prerequisites
 
@@ -59,7 +56,6 @@ To execute the code and distributed systems topologies featured in this book:
 - **Container Infrastructure:** Docker Engine 24.0+ and Docker Compose v2.20+.
 - **Recommended Hardware:** A multi-core machine (8+ vCPUs) with at least $16\text{ GB}$ of RAM to run the multi-node distributed playground (Kafka KRaft, PostgreSQL CDC, Redis Cluster, RabbitMQ, and Qdrant).
 
----
 
 ## The Coding Round Panic
 

@@ -60,7 +60,7 @@ While **writes** must always route to the single partition leader, modern Kafka 
 
 A core architectural milestone in distributed systems is how Kafka manages cluster coordination, broker membership, and partition leadership state.
 
-### 1. The Classic Architecture: Apache ZooKeeper Ensemble
+### The Classic Architecture: Apache ZooKeeper Ensemble
 
 In Kafka versions prior to 3.0, an external **Apache ZooKeeper** ensemble (typically 3 or 5 nodes) was mandatory for cluster coordination:
 
@@ -71,7 +71,7 @@ In Kafka versions prior to 3.0, an external **Apache ZooKeeper** ensemble (typic
 | `/brokers/topics/[topic]/partitions/[p]/state` | **Partition Leadership & ISR Set:** Stores the leader broker ID, leader epoch, and active In-Sync Replicas (ISR) list. | Persistent |
 | `/config/changes` | **Dynamic Configuration:** Propagates topic-level config overrides, quotas, and ACL updates across all brokers via ZooKeeper watches. | Persistent |
 
-### 2. Why Kafka Replaced ZooKeeper: The Metadata Bottleneck
+### Why Kafka Replaced ZooKeeper: The Metadata Bottleneck
 While ZooKeeper was reliable, it introduced severe architectural bottlenecks at enterprise scale:
 
 1. **Dual-State Synchronization Latency:** Metadata existed in two places—ZooKeeper and the Controller broker memory. Propagating updates required multi-hop serialization RPCs.
@@ -79,7 +79,7 @@ While ZooKeeper was reliable, it introduced severe architectural bottlenecks at 
 3. **Partition Scalability Ceiling:** Clusters were constrained to $\approx 200,000$ partitions per cluster because of ZooKeeper watch memory and network serialization overhead.
 4. **Operational Overhead:** Running, monitoring, securing, and backing up two distinct distributed consensus systems (ZooKeeper + Kafka) created significant DevOps complexity.
 
-### 3. The Modern Architecture: KRaft (Kafka Raft Metadata Mode - KIP-500)
+### The Modern Architecture: KRaft (Kafka Raft Metadata Mode - KIP-500)
 In modern Kafka (v3.0+ and production-default in v3.3+), ZooKeeper is completely removed. Kafka manages its own metadata using an internal **Raft consensus quorum (KRaft)**:
 
 - **Event-Sourced Metadata Log:** Cluster metadata is stored as an internal, append-only Kafka topic named `@metadata`.
@@ -117,7 +117,7 @@ To support enterprise workloads scaling from $10,000\text{ msg/sec}$ to $>10,000
 | **Storage Strategy** | Tiered Storage (KIP-405) offloading cold segments to S3. | Multiple physical NVMe mounts configured in `log.dirs`. |
 | **Concurrency Tuning** | KRaft metadata quorum supporting $10^6$ partitions. | Sizing `num.network.threads` ($2\times \text{cores}$) and `num.io.threads` ($2\times \text{disks}$). |
 
-### 1. Horizontal Scaling Strategies (Scale-Out)
+### Horizontal Scaling Strategies (Scale-Out)
 
 1. **Adding Brokers & Partition Reassignment:**
    - When CPU, network, or disk utilization on existing brokers exceeds safe thresholds ($>70\%$), add new broker nodes to the cluster.
@@ -139,7 +139,7 @@ To support enterprise workloads scaling from $10,000\text{ msg/sec}$ to $>10,000
    - Inactive historical segments are asynchronously offloaded to cheap object storage (Amazon S3, Google Cloud Storage).
    - This allows brokers to retain years of event history without requiring massive local disk arrays, cutting storage infrastructure costs by up to $70\%$.
 
-### 2. Vertical Scaling Strategies (Scale-Up)
+### Vertical Scaling Strategies (Scale-Up)
 
 1. **OS Page Cache vs. Small JVM Heap Tuning:**
    - **The Anti-Pattern:** Allocating a massive 64 GB JVM heap to Kafka. This causes catastrophic multi-second Garbage Collection (GC) pauses.
@@ -287,7 +287,7 @@ To guarantee in-order delivery, Kafka enforces a strict rule: **messages written
 - If you publish messages without a key (null key), Kafka distributes them across partitions using a round-robin algorithm, losing all ordering guarantees.
 - **The Solution:** Publish messages with a **Partition Key** (e.g., `accountId`). Kafka hashes the key to determine the partition:
 
-```
+```text
 Partition ID = hash(accountId) % Number of Partitions
 ```
 
@@ -371,7 +371,7 @@ Consumer 3: (Joins)  ───────────────────�
                                                  │ Zero Processing Interruption on P0, P2, P3!
 ```
 
-#### 1. The Classical Eager Rebalance Protocol (Stop-the-World)
+#### The Classical Eager Rebalance Protocol (Stop-the-World)
 Under legacy assignors (`RangeAssignor`, `RoundRobinAssignor`):
 
 1. **Total Partition Revocation:** The moment the Group Coordinator broker detects a group membership change, it instructs all consumers to revoke **all** assigned partitions.
@@ -380,7 +380,7 @@ Under legacy assignors (`RangeAssignor`, `RoundRobinAssignor`):
 4. **The Latency Penalty:** If even a single consumer takes 30 seconds to flush its internal buffers before revoking, **the entire consumer group is stalled for 30 seconds**. In large consumer groups (100+ nodes), this causes severe backlog spikes and violates end-to-end SLAs.
 5. **Loss of Locality:** Partitions that could have remained on their original node are revoked and re-assigned, destroying in-memory caches and forcing stateful stream processors (such as Kafka Streams or RocksDB) to reload terabytes of state over the network.
 
-#### 2. The Modern Incremental Cooperative Rebalance Protocol (KIP-429)
+#### The Modern Incremental Cooperative Rebalance Protocol (KIP-429)
 Configured via `partition.assignment.strategy = org.apache.kafka.clients.consumer.CooperativeStickyAssignor`:
 
 1. **Non-Blocking Operation:** When a rebalance begins, consumers **do NOT revoke** their partitions. They continue fetching and processing messages from their existing partitions throughout the negotiation phase.
@@ -390,7 +390,6 @@ Configured via `partition.assignment.strategy = org.apache.kafka.clients.consume
    - **Round 2 (Reassignment):** The newly freed partitions are assigned to the target consumer.
 3. **State Preservation:** Consumers retain ownership of untouched partitions, maintaining local cache locality and eliminating RocksDB state recreation pauses.
 
----
 
 ### Diagnosing & Mitigating Rebalance Storms
 

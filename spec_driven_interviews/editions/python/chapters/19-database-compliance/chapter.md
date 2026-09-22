@@ -122,7 +122,6 @@ In enterprise payment systems, Write Skew manifests in catastrophic scenarios:
 - **Flight Seat Reservations:** Two passengers reserving seats on opposite sides of an aircraft, violating an emergency weight-distribution invariant.
 - **Meeting Room Double-Booking:** Two users concurrently booking a room for overlapping time slices after querying `SELECT COUNT(*) WHERE room_id = 'A' AND [time overlap]`.
 
----
 
 ### PostgreSQL Serializable Snapshot Isolation (SSI) Internals
 
@@ -130,20 +129,20 @@ How does modern PostgreSQL prevent Write Skew at high throughput without resorti
 
 PostgreSQL implements **Serializable Snapshot Isolation (SSI)** based on the research of Cahill, Röhm, and Fekete (2008). Rather than locking rows and blocking concurrent readers, SSI allows transactions to execute concurrently under standard Snapshot Isolation while an in-memory lock manager tracks **dependency graphs** to detect serialization anomalies.
 
-#### 1. SIREAD Locks (Predicate Locks)
+#### SIREAD Locks (Predicate Locks)
 When a transaction running under `SERIALIZABLE` isolation reads a row or an index page, the database engine acquires a non-blocking, in-memory **`SIREAD` lock**:
 
 - `SIREAD` locks **never block writes or reads**. They consume zero disk I/O and do not halt concurrent threads.
 - Their sole purpose is to serve as an informational marker indicating: *"Transaction $T$ read this data."*
 - `SIREAD` locks are tracked at three granularities: individual tuple, page level ($8\text{ KB}$), or entire table relation (lock escalation occurs automatically if memory exceeds `max_pred_locks_per_transaction`).
 
-#### 2. Tracking $rw$-Antidependencies
+#### Tracking $rw$-Antidependencies
 The SSI engine continuously inspects conflicting reads and writes to detect **$rw$-antidependency edges** (denoted $T_1 \xrightarrow{rw} T_2$):
 
 - If transaction $T_1$ reads a row via an `SIREAD` lock, and transaction $T_2$ subsequently writes or updates that same row, $T_1$ must have executed *before* $T_2$ in any valid equivalent serial history.
 - An $rw$-antidependency edge is drawn from $T_1$ to $T_2$.
 
-#### 3. Detecting Dangerous Structures & Abort Policy
+#### Detecting Dangerous Structures & Abort Policy
 Mathematical graph theory proves that a serializability anomaly (such as Write Skew) can occur if and only if the serialization dependency graph contains a cycle. Specifically, SSI searches for **Dangerous Structures**: two consecutive $rw$-antidependency edges:
 
 $$T_{\text{in}} \xrightarrow{rw} T_{\text{pivot}} \xrightarrow{rw} T_{\text{out}}$$
@@ -169,7 +168,6 @@ When two concurrent transactions form a dangerous cycle:
 
 3. **Application Responsibility:** Applications using `SERIALIZABLE` isolation must implement an automated **Retry Loop with Exponential Backoff** to catch SQL state `40001` and replay the business logic.
 
----
 
 ### PostgreSQL MVCC Tuple Headers (`xmin`, `xmax`, `ctid`) & TXID Wraparound
 
@@ -203,7 +201,6 @@ How does Google Cloud Spanner provide global serializable transactions across mu
 
 - **The Commit Wait Rule:** A transaction with timestamp $s$ must wait for at least $2\epsilon$ time before committing, guaranteeing that $s$ has elapsed in absolute real-time across the entire globe. This provides **External Consistency (Linearizability)** without cross-region two-phase locking.
 
----
 
 ### Cryptographic Security: AES-256-GCM Nonce Reuse Catastrophe
 

@@ -46,22 +46,22 @@ To present your career achievements with clarity and executive presence, structu
 
 ![Figure 20.1: The Technical STAR Framework](visuals/technical_star.png){width=90%}
 
-### 1. Situation (S) — The Business Context & Scale
+### Situation (S) — The Business Context & Scale
 - Establish the business opportunity, customer scale, and technical constraints.
 - Frame the problem positively: acknowledge the prior success that brought the system to its current scale.
 - *Example:* *"At ZenithTrade, our trading platform was growing rapidly, surging to $5\times$ transaction volume ($50,000\text{ QPS}$ peak). This growth was exciting for the business, but our existing order matching engine was approaching thread saturation."*
 
-### 2. Task (T) — The Architectural Objective & Ownership
+### Task (T) — The Architectural Objective & Ownership
 - Define your exact role, the quantitative SLA/SLO target, and the business timeline.
 - Clarify why this task was critical for the company's strategic roadmap.
 - *Example:* *"As the Staff Technical Lead, my objective was to scale the matching engine to support $100,000\text{ QPS}$ with $p99 < 5\text{ms}$ latency, while maintaining $99.999\%$ uptime during a 3-month promotional window."*
 
-### 3. Action & Trade-offs (A) — Collaboration, Engineering & Decision-Making
+### Action & Trade-offs (A) — Collaboration, Engineering & Decision-Making
 - Walk through the options evaluated, the data-driven trade-offs, and how you built consensus.
 - Highlight team enablement: how you paired with peers, mentored junior developers, and aligned cross-functional partners.
 - *Example:* *"Rather than debating theoretical frameworks, I led a 3-day prototyping bake-off comparing Project Loom Virtual Threads against Reactive WebFlux. I partnered with our senior engineer to benchmark CPU utilization and debuggability, presenting the empirical findings in an Architecture Decision Record (ADR) that aligned the entire engineering council."*
 
-### 4. Result & Compounding Impact (R) — Metrics, Business ROI & Team Growth
+### Result & Compounding Impact (R) — Metrics, Business ROI & Team Growth
 - Quantify the outcome using hard metrics: latency reduction, dollar savings, developer velocity hours saved, and regulatory compliance.
 - Always include the **compounding human impact**: how the team grew, what automated playbooks were created, and how psychological safety was strengthened.
 - *Example:* *"We launched on schedule with zero downtime, handling $120,000\text{ QPS}$ peak at $p99 = 3.2\text{ms}$ while reducing compute infrastructure costs by $35\%$ (\$180,000/year). Furthermore, the benchmarking framework we built became the company-wide standard for all subsequent service modernizations."*
@@ -305,23 +305,23 @@ To project executive presence and clear senior leadership rounds, implement thes
 └──────────────────────────┴──────────────────────────────────────────────────┘
 ```
 
-### 1. The Pyramid Principle (Answer-First Delivery)
+### The Pyramid Principle (Answer-First Delivery)
 When asked a behavioral question, never ramble through 5 minutes of backstory before revealing the punchline. State the top-line result in the very first sentence:
 
 - *"The short answer is that we achieved 99.999% uptime and reduced write latency by 45% by shifting from distributed two-phase locking to a Saga orchestration model with PostgreSQL. Let me walk you through how we aligned the team, evaluated the trade-offs, and executed the rollout."*
 
-### 2. The Rule of Three
+### The Rule of Three
 The human brain retains information best when structured in triads. Group your explanations into three clean dimensions:
 
 - *"We tackled this challenge across three pillars: **First**, architectural decoupling via transactional outbox; **Second**, automated canary deployments; and **Third**, establishing team-wide blameless post-mortem cadences."*
 
-### 3. The Interactive Virtual Whiteboard Technique
+### The Interactive Virtual Whiteboard Technique
 On video calls (Teams, Zoom, Google Meet), do not remain a static talking head. When explaining a complex distributed incident or refactor:
 
 - Ask: *"Would it be helpful if I shared my screen and sketched the component boundaries on Excalidraw / Miro?"*
 - Drawing real-time architecture boxes, queue boundaries, and fallback paths transforms a dry conversation into an engaging, collaborative working session that leaves a lasting positive impression.
 
-### 4. The Engineering-to-Executive Metrics Translation Matrix
+### The Engineering-to-Executive Metrics Translation Matrix
 
 | What the Candidate Did (Engineering) | What the Executive Hears (Business ROI) |
 | :--- | :--- |

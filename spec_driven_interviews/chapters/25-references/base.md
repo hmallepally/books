@@ -8,9 +8,8 @@ When an interviewer asks why Apache Kafka scales writes so effectively, reciting
 
 This annotated bibliography catalogs the seminal papers, foundational texts, and regulatory standards underpinning this volume. Each entry contextualizes the original computer science breakthrough and highlights its direct application to modern high-stakes system design and technical interviews.
 
----
 
-## 1. Distributed Consensus, Clocks & Fault Tolerance
+## Distributed Consensus, Clocks & Fault Tolerance
 
 ### Lamport, L. (1978). Time, clocks, and the ordering of events in a distributed system. *Communications of the ACM*, 21(7), 558–565. https://doi.org/10.1145/359545.359563
 
@@ -47,9 +46,8 @@ This annotated bibliography catalogs the seminal papers, foundational texts, and
 - **Core Contribution & Theoretical Context:** Yahoo! Research recognized that developers repeatedly write fragile, bug-ridden custom coordination code for leader election, distributed locking, and configuration management. ZooKeeper introduced a centralized, highly reliable coordination service organized as a hierarchical in-memory tree of data nodes (**znodes**), backed by the **Zab (ZooKeeper Atomic Broadcast)** consensus protocol. ZooKeeper guarantees FIFO client request ordering and linearizable writes while providing asynchronous epoll-like event notifications (**Watches**).
 - **Practitioner Takeaway & Interview Application:** ZooKeeper became the architectural backbone of first-generation big data systems (Hadoop, HBase, Apache Solr, and early Kafka). In interviews, discuss the trade-offs of the "herd effect" when hundreds of clients watch the same znode, and how ephemeral sequential znodes solve the herd problem during distributed lock acquisition.
 
----
 
-## 2. Storage Engines, Transaction Isolation & Data Models
+## Storage Engines, Transaction Isolation & Data Models
 
 ### O'Neil, P., Cheng, E., Gawlick, D., & O'Neil, E. (1996). The log-structured merge-tree (LSM-tree). *Acta Informatica*, 33(4), 351–385. https://doi.org/10.1007/s002360050048
 
@@ -76,9 +74,8 @@ This annotated bibliography catalogs the seminal papers, foundational texts, and
 - **Core Contribution & Theoretical Context:** A retrospective on the ten-year operational evolution of AWS DynamoDB. Unlike the original 2007 Dynamo paper (which prioritized availability over consistency via eventual consistency and vector clocks), modern DynamoDB evolved into a multi-tenant, strictly Paxos-based storage service providing predictable single-digit millisecond latency at massive scale. The paper details how Amazon decoupled storage nodes from request routers, implemented partition heat-management (Global Admission Control), and replaced node-local storage with Paxos replication groups running over storage-optimized hardware.
 - **Practitioner Takeaway & Interview Application:** Essential reading for real-world cloud capacity planning. In system design interviews, explain DynamoDB's partition key hashing mechanics, why hot-partition throttling occurs when query volume concentrates on a single key, and how DynamoDB Global Tables leverage asynchronous multi-region replication.
 
----
 
-## 3. High-Throughput Streaming, Batch Processing & Distributed Storage
+## High-Throughput Streaming, Batch Processing & Distributed Storage
 
 ### Kreps, J., Narkhede, N., & Rao, J. (2011). Kafka: A distributed messaging system for log processing. *Proceedings of NetDB*, 1–7. https://jkreps.files.wordpress.com/2011/09/kafka_netdb11.pdf
 
@@ -95,9 +92,8 @@ This annotated bibliography catalogs the seminal papers, foundational texts, and
 - **Core Contribution & Theoretical Context:** GFS radically departed from traditional POSIX enterprise storage (SAN/NAS) by embracing commodity hardware failure as a certainty rather than an exception. Designed for massive sequential read/append workloads (such as web indexing), GFS decoupled metadata control (a single Master managing chunk metadata in RAM) from data payloads (Chunkservers storing data in 64MB chunks replicated $3\times$). GFS introduced atomic, concurrent appends (**Record Append**) allowing hundreds of worker nodes to write simultaneously without distributed lock contention.
 - **Practitioner Takeaway & Interview Application:** GFS served as the design blueprint for the open-source Hadoop Distributed File System (HDFS). In interviews, discuss the trade-off of a centralized metadata master: maintaining metadata in RAM achieves microsecond namespace operations, but caps overall cluster namespace scale (limiting the maximum number of small files a cluster can support).
 
----
 
-## 4. Software Craftsmanship, Correctness & Architectural Rigor
+## Software Craftsmanship, Correctness & Architectural Rigor
 
 ### Hoare, C. A. R. (1969). An axiomatic basis for computer programming. *Communications of the ACM*, 12(10), 576–580. https://doi.org/10.1145/363235.363259
 
@@ -154,9 +150,8 @@ This annotated bibliography catalogs the seminal papers, foundational texts, and
 - **Core Contribution & Theoretical Context:** Nicole Forsgren, Jez Humble, and Gene Kim conducted four years of rigorous statistical research into software delivery performance across thousands of global engineering organizations. They proved that software delivery velocity and stability are not opposing trade-offs; high-performing organizations achieve superior deployment frequency *and* lower change failure rates simultaneously. The authors identified the **Four DORA Metrics**: Deployment Frequency, Lead Time for Changes, Change Failure Rate, and Mean Time to Restore (MTTR).
 - **Practitioner Takeaway & Interview Application:** In Chapter 21 (Testing & CI/CD) and Chapter 20 (Behavioral Leadership), use DORA metrics to articulate engineering excellence, justify CI/CD automation investments, and demonstrate organizational leadership.
 
----
 
-## 5. Modern Artificial Intelligence & Information Retrieval
+## Modern Artificial Intelligence & Information Retrieval
 
 ### Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017). Attention is all you need. *Advances in Neural Information Processing Systems*, 30, 5998–6008. https://arxiv.org/abs/1706.03762
 
@@ -170,9 +165,8 @@ This annotated bibliography catalogs the seminal papers, foundational texts, and
 - **Core Contribution & Theoretical Context:** Patrick Lewis and Meta AI introduced **Retrieval-Augmented Generation (RAG)**, a hybrid neural architecture that combines pre-trained parametric memory (the weights of an LLM) with non-parametric retrieval memory (a dense vector index of enterprise documents). By retrieving relevant text passages at inference time and conditioning generation on the retrieved context, RAG dramatically reduces hallucinations, allows real-time knowledge updates without costly model fine-tuning, and provides direct provenance citations.
 - **Practitioner Takeaway & Interview Application:** In Chapter 23, we design a production enterprise RAG pipeline. In interviews, detail the end-to-end RAG architecture: document chunking with semantic boundaries, dense embedding generation, approximate nearest neighbor (ANN) vector indexing (HNSW), reciprocal rank fusion (RRF), and cross-encoder re-ranking.
 
----
 
-## 6. Industry Standards, Security & Regulatory Specifications
+## Industry Standards, Security & Regulatory Specifications
 
 ### PCI Security Standards Council. (2024). *Payment Card Industry Data Security Standard (PCI-DSS) v4.0.1*. PCI SSC. https://www.pcisecuritystandards.org
 

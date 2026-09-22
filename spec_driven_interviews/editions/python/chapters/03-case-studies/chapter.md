@@ -80,7 +80,7 @@ The Limit Order Book (LOB) maintains two continuous priority queues:
 
 **Step-by-Step Matching Sequence:**
 
-1. Incoming Order arrives: `BUY 250 shares @ $100.60` (Limit Order).
+1. Incoming Order arrives: `BUY 250 shares @ \$100.60` (Limit Order).
 2. The engine checks if the order **crosses the spread** ($\text{Bid Price} \ge \text{Lowest Ask Price} \implies \$100.60 \ge \$100.55$).
 3. **Match 1:** Fills 100 shares at the maker's price ($\$100.55$) from the top ask. Ask order is fully filled and dequeued. Remaining unfilled: 150 shares.
 4. **Match 2:** Next ask in queue is 400 shares @ $\$100.60$. Fills the remaining 150 shares at $\$100.60$. The maker ask is partially filled (250 shares remain).

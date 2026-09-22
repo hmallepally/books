@@ -13,7 +13,7 @@ When designing large-scale enterprise systems, core OOP principles map directly 
 ### Core DDD Definitions Every Candidate Must Master:
 
 1. **Entities:** Objects defined by a unique, enduring identity that persists across state changes (e.g., a `LedgerAccount` identified by a unique `accountId`). Two entities with identical balances are distinct if their IDs differ.
-2. **Value Objects:** Immutable objects defined entirely by their attribute values, possessing no conceptual identity (e.g., `Money`, `Currency`, or `Address`). If two `Money` objects both represent `$100 USD`, they are completely interchangeable.
+2. **Value Objects:** Immutable objects defined entirely by their attribute values, possessing no conceptual identity (e.g., `Money`, `Currency`, or `Address`). If two `Money` objects both represent `\$100 USD`, they are completely interchangeable.
 3. **Aggregates & Aggregate Roots:** A cluster of associated domain objects (Entities and Value Objects) treated as a single unit for data changes. The **Aggregate Root** is the sole gateway through which external code interacts with internal objects, guaranteeing that all domain invariants remain valid across operations.
 4. **Domain Services:** Operations or business transformations that do not naturally belong to a single Entity or Value Object (e.g., cross-account fund routing engines).
 
@@ -131,7 +131,6 @@ This yields the strict inequality:
 $$A_1 \prec A_1$$
 Because $\prec$ is an irreflexive partial order, no element can precede itself ($A_1 \not\prec A_1$). This contradiction proves that a cyclic dependency graph cannot form. Condition 4 (**Circular Wait**) is mathematically impossible, eliminating deadlocks entirely.
 
----
 
 ## Domain Events: Decoupling Aggregates in Event-Driven Architectures
 
@@ -193,7 +192,6 @@ public void debit(BigDecimal amount) {
 
 The application service layer (or repository) persists the aggregate and flushes the events atomically into the database Outbox table within the same transaction. This guarantees zero lost events without coupling the domain to message brokers.
 
----
 
 ## The 3 Golden Rules of DDD Aggregate Boundaries
 
@@ -221,7 +219,6 @@ Adhere to the **3 Golden Invariant Rules of Aggregate Design** (Vernon, 2013):
 
 > **The Single-Transaction Rule:** *A single database transaction should modify exactly ONE aggregate instance.* If a business workflow spans multiple aggregates (e.g., deducting inventory from `Product` and charging `LedgerAccount`), use asynchronous Domain Events and a Saga Orchestrator to achieve eventual consistency rather than distributed two-phase locking.
 
----
 
 ## Virtual Method Table (VTable) Dynamic Dispatch Mechanics
 
@@ -268,7 +265,6 @@ Modern JIT compilers (HotSpot C2, CLR RyuJIT) monitor polymorphic call sites dur
 3. **Megamorphic Call Site ($\ge 3$ Receiver Types):**  
    When three or more distinct classes pass through the same call site, the JIT gives up on inlining and falls back to a full indirect VTable lookup (`CALL [vtable + offset]`). This incurs a $2\text{--}4\text{ ns}$ penalty and can cause CPU branch target buffer (BTB) cache misses in ultra-low-latency loops.
 
----
 
 ## Composition over Inheritance
 
@@ -283,7 +279,6 @@ The golden rule of enterprise OOP design is to **favor composition over inherita
 
 ![Figure 4.3: Composition over Inheritance](visuals/composition_vs_inheritance.png){width=85%}
 
----
 
 ## Polymorphism over Conditional Branching
 
@@ -304,7 +299,6 @@ The main transaction processor can then execute settlements via a clean, extensi
 
 {{ inject('code_block_4.md') }}
 
----
 
 ## When NOT to Use Rich Models: The CQRS Command-Query Duality
 
