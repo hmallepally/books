@@ -11,7 +11,7 @@ Junior candidates treat AI as magic, describing prompt calls without considering
 
 In this chapter, we outline a structured approach to AI/ML system design, focusing on the ML system design framework, vector databases, RAG architecture pipelines, agentic tool-use patterns, and prompt gateway security.
 
-![Retrieval-Augmented Generation (RAG) Architecture Pipeline](visuals/rag_architecture.png){width=90%}
+![Figure 23.1: Retrieval-Augmented Generation (RAG) Architecture Pipeline](visuals/rag_architecture.png){width=90%}
 
 
 ## The AI/ML System Design Framework
@@ -33,7 +33,7 @@ When asked to design a machine learning system (e.g., real-time recommendation),
 - **Ranking:** Run a lighter model online to rank these 100 candidate items, returning the top 10 to the user.
 - **Model Serving:** Deploy models behind low-latency serving infrastructure (TensorFlow Serving, Triton Inference Server, or custom gRPC endpoints).
 
-![Model Serving Infrastructure and Real-time Inference](visuals/model_serving.jpg){width=85%}
+![Figure 23.2: Model Serving Infrastructure and Real-time Inference](visuals/model_serving.jpg){width=85%}
 
 ### The Evaluation & Monitoring Pipeline
 Machine learning models degrade over time as the real-world distribution shifts away from the training data:

@@ -21,7 +21,7 @@ A two-pointer technique where:
 
 After the loop, `arr[0..write-1]` contains the filtered result. This pattern solves: *Remove Element*, *Move Zeros*, *Remove Duplicates from Sorted Array*, and *String Compression*.
 
-![Read/Write Pointer — In-Place Array Compaction](visuals/read_write_pointer.png){width=85%}
+![Figure 10.1: Read/Write Pointer — In-Place Array Compaction](visuals/read_write_pointer.png){width=85%}
 
 ### Character Frequency Array (Fixed-Size, 256 or 26 Slots)
 A fixed-size integer array indexed by character code point. Incrementing the counter at a character's index provides:
@@ -44,7 +44,7 @@ Use a 26-slot array when input is guaranteed lowercase English letters only (off
 ### Symmetrical Two-Pointer Convergence
 Two pointers start at opposite ends (`left = 0`, `right = len - 1`) and move toward each other. The loop condition is `while (left < right)`. This pattern solves: *Palindrome Check*, *Reverse String*, *Two Sum in Sorted Array*, and *Container With Most Water*.
 
-![Two-Pointer Convergence — Palindrome Verification](visuals/two_pointer_convergence.png){width=85%}
+![Figure 10.2: Two-Pointer Convergence — Palindrome Verification](visuals/two_pointer_convergence.png){width=85%}
 
 ### Run-Length Encoding (RLE)
 Compress consecutive identical elements into `(element, count)` pairs. `"aaabbc"` becomes `"a3b2c1"`. The read pointer tracks the current run; the write pointer emits compressed output. This is a classic Easy-tier problem that combines the Read/Write pattern with counting.
@@ -58,7 +58,7 @@ The XOR operator (`^`) has two key properties: `a ^ a = 0` (same values cancel) 
 ### Prefix Sum / Running Total
 A technique where you compute cumulative sums to answer range queries in $\mathcal{O}(1)$. For pivot index problems: `leftSum == totalSum - leftSum - nums[i]` identifies the balance point without nested loops.
 
-![Prefix Sum — Precomputed Cumulative Array for O(1) Range Queries](visuals/prefix_sum_pattern.png){width=85%}
+![Figure 10.3: Prefix Sum — Precomputed Cumulative Array for O(1) Range Queries](visuals/prefix_sum_pattern.png){width=85%}
 
 ### Integer Overflow & Boundary Guarding
 This involves handling `Integer.MAX_VALUE` and `Integer.MIN_VALUE` constraints. It requires implementing safe comparisons before executing arithmetic operations to prevent exceeding limits.
@@ -84,7 +84,7 @@ Why it matters: You systematically test these BEFORE writing the main loop to ca
 This approach involves pushing opening delimiters onto a stack during traversal. Upon encountering a closing delimiter, you pop from the stack and verify the match.
 Why it matters: This is the universal pattern for bracket, parentheses, and tag validation problems.
 
-![Stack-Based Matching — Push/Pop Bracket Validation](visuals/stack_based_matching.png){width=85%}
+![Figure 10.4: Stack-Based Matching — Push/Pop Bracket Validation](visuals/stack_based_matching.png){width=85%}
 
 ### Two-Pass Strategy
 This algorithm design splits processing into two distinct phases. The first pass collects necessary data like counts, maximums, or positions, and the second pass acts on that collected information.
@@ -177,6 +177,13 @@ These are the two most important templates to have memorized before the exam.
 ### Template A: Read/Write In-Place Filter
 
 {{ inject('code_block_1.md') }}
+
+- `<1>` **Write Boundary Pointer:** Tracks the destination index for the next valid element; always satisfies $0 \le \text{write} \le \text{read}$.
+- `<2>` **Read Scanner Loop:** Linearly traverses the entire sequence without skipping elements, preserving original sequence ordering.
+- `<3>` **Filter Predicate:** Evaluates whether the element at `read` satisfies the preservation invariant (e.g., non-zero, non-duplicate, or non-target).
+- `<4>` **In-Place Compaction:** Overwrites the slot at `write` with `arr[read]`. When `write == read` (before any elements are discarded), this safely re-assigns the slot to itself without auxiliary memory allocation.
+- `<5>` **Advance Write Boundary:** Increments the valid prefix size, guaranteeing that `arr[0..\text{write}-1]` contains exclusively preserved elements.
+
 **Used by:** Remove Element, Move Zeros, Remove Duplicates, Squeeze Spaces.
 
 ### Template B: Symmetric Converging Pointers

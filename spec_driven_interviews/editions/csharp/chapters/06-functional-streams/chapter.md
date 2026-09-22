@@ -10,7 +10,7 @@ While functional imperative code can be correct, it forces the reader to track *
 
 Modern software engineering favors the **declarative functional paradigm** (Java Streams, C# LINQ, Python Generators & Comprehensions). Using functional pipelines, data transformations are expressed as a sequence of pure, side-effect-free operations.
 
-![Imperative vs Declarative Collection Processing](visuals/imperative_vs_declarative.png){width=90%}
+![Figure 6.1: Imperative vs Declarative Collection Processing](visuals/imperative_vs_declarative.png){width=90%}
 
 ### The Imperative Loop Anti-Pattern
 
@@ -41,7 +41,7 @@ foreach (var tx in transactions) {
 
 Every stream processing pipeline consists of three distinct stages:
 
-![The 3 Stages of a Stream Processing Pipeline](visuals/stream_stages.png){width=90%}
+![Figure 6.2: The 3 Stages of a Stream Processing Pipeline](visuals/stream_stages.png){width=90%}
 
 ### The Power of Lazy Evaluation
 
@@ -49,7 +49,7 @@ Intermediate operations (such as `.filter()` and `.map()`) are **lazy**. They do
 
 Lazy evaluation allows the runtime engine to optimize processing, merging multiple map operations into a single pass and performing **short-circuiting** (stopping iteration as soon as a matching element is found).
 
-![Lazy Evaluation and Short-Circuiting in Streams](visuals/lazy_evaluation.jpg){width=85%}
+![Figure 6.3: Lazy Evaluation and Short-Circuiting in Streams](visuals/lazy_evaluation.jpg){width=85%}
 
 ## The AuraPay Batch Processing Pipeline
 
@@ -115,7 +115,7 @@ Let us examine the mechanical steps executing within `aggregateMerchantVolumes()
 - **`<3>` Collector Merge Reducer (`Collectors.toMap` with `BigDecimal::add`):**  
   Instead of instantiating an external mutable map and calling `map.merge()`, the terminal operation uses a thread-safe downstream reduction. When duplicate merchant IDs appear in the stream, the binary operator `BigDecimal::add` merges conflicting values atomically without locking.
 
-![Stream Pipeline Visualization](visuals/stream_pipeline.png){width=90%}
+![Figure 6.4: Stream Pipeline Visualization](visuals/stream_pipeline.png){width=90%}
 
 By declaring operations as a stream pipeline, the code becomes an exact, self-documenting translation of the business specification:
 

@@ -107,7 +107,7 @@ The following code illustrates a production-grade Transactional Outbox publisher
 
 {{ inject('code_block_1.md') }}
 
-![Transactional Outbox Pattern](visuals/outbox_pattern.png){width=85%}
+![Figure 18.1: Transactional Outbox Pattern](visuals/outbox_pattern.png){width=85%}
 
 ### The Idempotent Consumer Pattern
 
@@ -212,7 +212,7 @@ Senior architects classify saga steps into three distinct categories:
 | **Auditability & Observability** | Difficult; requires distributed trace reconstruction | Instant; orchestrator database tracks exact workflow state |
 | **Best Suited For** | Simple linear workflows ($\le 3$ service steps) | Complex enterprise workflows, financial transactions, multi-branch logic |
 
-![Saga Orchestration vs Choreography](visuals/saga_comparison.png){width=90%}
+![Figure 18.2: Saga Orchestration vs Choreography](visuals/saga_comparison.png){width=90%}
 
 
 ## Microservice Resiliency Patterns
@@ -236,7 +236,7 @@ A **Circuit Breaker** wraps remote RPC or HTTP calls, monitoring failure rates a
 - **Open State (Failing Fast):** When the failure rate exceeds a configurable threshold (e.g., $> 50\%$ failures over a 10-second window with minimum 20 requests), the circuit trips to **OPEN**. Subsequent calls fail immediately with a local fallback or `503 Service Unavailable`, bypassing the network call entirely and protecting upstream thread pools from blocking.
 - **Half-Open State (Canary Probing):** After a reset timeout (e.g., 30 seconds), the breaker transitions to **HALF-OPEN**, allowing a limited number of probe requests (e.g., 5 calls) to reach the downstream service. If all probe requests succeed, the breaker returns to **CLOSED**; if any probe fails, it trips back to **OPEN** for another sleep interval.
 
-![Circuit Breaker State Machine](visuals/circuit_breaker.png){width=85%}
+![Figure 18.3: Circuit Breaker State Machine](visuals/circuit_breaker.png){width=85%}
 
 #### Sliding Window Metric Mechanics
 

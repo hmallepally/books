@@ -71,7 +71,7 @@ Why it matters: It eliminates repetitive boundary checks and significantly reduc
 Instead of running BFS individually from each source, this technique seeds the initial queue with ALL starting positions simultaneously. The search then expands outwards concurrently from multiple origins.
 Why it matters: It solves rotting oranges and walls-and-gates problems in a single, highly efficient BFS pass.
 
-![Multi-Source BFS — Rotting Oranges Wavefront](visuals/bfs_grid_levels.png){width=85%}
+![Figure 11.1: Multi-Source BFS — Rotting Oranges Wavefront](visuals/bfs_grid_levels.png){width=85%}
 
 ## Reusable Code Templates
 
@@ -95,7 +95,7 @@ while (top <= bottom && left <= right) {
 }
 ```
 
-![Spiral Boundary Traversal — Layer-by-Layer Contraction](visuals/spiral_traversal.png){width=85%}
+![Figure 11.2: Spiral Boundary Traversal — Layer-by-Layer Contraction](visuals/spiral_traversal.png){width=85%}
 
 ### Template B: 4-Directional BFS/DFS Grid Walk
 ```csharp
@@ -159,7 +159,7 @@ The two 5s come from different sources: `A[1][1] = 5` is the center cell of the 
 
 **Sanity check**: `S[3][3] = 45` equals `1+2+3+4+5+6+7+8+9 = 45`. ✓
 
-![2D Prefix Sum — Construction via Inclusion-Exclusion (Trace)](visuals/prefix_sum_construction.png){width=85%}
+![Figure 11.3: 2D Prefix Sum — Construction via Inclusion-Exclusion (Trace)](visuals/prefix_sum_construction.png){width=85%}
 
 **Understanding the Query — Inclusion-Exclusion.** To find the sum of a sub-rectangle from `(r1, c1)` to `(r2, c2)`, we carve it out of the full prefix sum using four overlapping rectangles:
 
@@ -182,7 +182,7 @@ query(r1, c1, r2, c2) = S[r2+1][c2+1] - S[r1][c2+1] - S[r2+1][c1] + S[r1][c1]
 S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28
 ```
 
-![2D Prefix Sum — Query via Inclusion-Exclusion](visuals/prefix_sum_2d_query.png){width=85%}
+![Figure 11.4: 2D Prefix Sum — Query via Inclusion-Exclusion](visuals/prefix_sum_2d_query.png){width=85%}
 
 ## Solved Exemplar Problems
 

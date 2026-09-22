@@ -11,13 +11,12 @@ def binary_search(nums: list[int], target: int) -> int:
 
 # Binary Search on Answer Space (Leftmost valid)
 def binary_search_answer_space(min_val: int, max_val: int) -> int:
-    left, right = min_val, max_val
-    best = -1
+    left, right, best = min_val, max_val, -1 # <1>
     while left <= right:
-        mid = left + (right - left) // 2
-        if is_valid(mid):
+        mid = left + (right - left) // 2 # <2>
+        if is_valid(mid): # <3>
             best = mid
-            right = mid - 1 # Try to find a smaller valid answer
+            right = mid - 1 # <4> Try to find a smaller valid answer
         else:
             left = mid + 1
     return best

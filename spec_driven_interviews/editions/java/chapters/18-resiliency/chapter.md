@@ -120,6 +120,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
+
  * Represents an Outbox event record stored in the same database as the business entities.
  */
 public record OutboxEvent(
@@ -133,6 +134,7 @@ public record OutboxEvent(
 ) {}
 
 /**
+
  * Interface representing the Message Broker client (e.g., Kafka, RabbitMQ).
  */
 interface MessageBrokerClient {
@@ -140,6 +142,7 @@ interface MessageBrokerClient {
 }
 
 /**
+
  * Service that polls the database Outbox table and publishes events to the broker.
  * Guarantees At-Least-Once delivery of domain events.
  */
@@ -153,6 +156,7 @@ public class TransactionalOutboxPublisher {
     }
 
     /**
+
      * Polling worker method. In production, this would be executed by a background 
      * scheduler or transaction log tailer (Debezium/CDC).
      */
@@ -179,6 +183,7 @@ public class TransactionalOutboxPublisher {
 }
 
 /**
+
  * Interface representing database operations for the Outbox table.
  */
 interface OutboxRepository {
@@ -188,7 +193,7 @@ interface OutboxRepository {
 ```
 
 
-![Transactional Outbox Pattern](visuals/outbox_pattern.png){width=85%}
+![Figure 18.1: Transactional Outbox Pattern](visuals/outbox_pattern.png){width=85%}
 
 ### The Idempotent Consumer Pattern
 
@@ -293,7 +298,7 @@ Senior architects classify saga steps into three distinct categories:
 | **Auditability & Observability** | Difficult; requires distributed trace reconstruction | Instant; orchestrator database tracks exact workflow state |
 | **Best Suited For** | Simple linear workflows ($\le 3$ service steps) | Complex enterprise workflows, financial transactions, multi-branch logic |
 
-![Saga Orchestration vs Choreography](visuals/saga_comparison.png){width=90%}
+![Figure 18.2: Saga Orchestration vs Choreography](visuals/saga_comparison.png){width=90%}
 
 
 ## Microservice Resiliency Patterns
@@ -317,7 +322,7 @@ A **Circuit Breaker** wraps remote RPC or HTTP calls, monitoring failure rates a
 - **Open State (Failing Fast):** When the failure rate exceeds a configurable threshold (e.g., $> 50\%$ failures over a 10-second window with minimum 20 requests), the circuit trips to **OPEN**. Subsequent calls fail immediately with a local fallback or `503 Service Unavailable`, bypassing the network call entirely and protecting upstream thread pools from blocking.
 - **Half-Open State (Canary Probing):** After a reset timeout (e.g., 30 seconds), the breaker transitions to **HALF-OPEN**, allowing a limited number of probe requests (e.g., 5 calls) to reach the downstream service. If all probe requests succeed, the breaker returns to **CLOSED**; if any probe fails, it trips back to **OPEN** for another sleep interval.
 
-![Circuit Breaker State Machine](visuals/circuit_breaker.png){width=85%}
+![Figure 18.3: Circuit Breaker State Machine](visuals/circuit_breaker.png){width=85%}
 
 #### Sliding Window Metric Mechanics
 

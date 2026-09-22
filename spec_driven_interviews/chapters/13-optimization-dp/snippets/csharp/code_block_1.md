@@ -13,13 +13,12 @@ int BinarySearch(int[] nums, int target) {
 
 // Binary Search on Answer Space (Leftmost valid)
 int BinarySearchAnswerSpace(int min, int max) {
-    int left = min, right = max;
-    int best = -1;
+    int left = min, right = max, best = -1; // <1>
     while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (IsValid(mid)) {
+        int mid = left + (right - left) / 2; // <2>
+        if (IsValid(mid)) { // <3>
             best = mid;
-            right = mid - 1; // Try to find a smaller valid answer
+            right = mid - 1; // <4> Try to find a smaller valid answer
         } else {
             left = mid + 1;
         }

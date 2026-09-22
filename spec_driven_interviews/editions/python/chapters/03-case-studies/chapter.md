@@ -6,7 +6,7 @@
 
 Throughout this book, we ground abstract algorithms, design patterns, and concurrency primitives in three enterprise-grade reference architectures. Rather than analyzing isolated code snippets in a vacuum, every problem and pattern is mapped to one of three core pillars of modern enterprise software:
 
-![Enterprise Platform Ecosystem Architecture — ChiramTrust, ZenithTrade, and AuraPay](visuals/enterprise_ecosystem.png){width=90%}
+![Figure 3.1: Enterprise Platform Ecosystem Architecture — ChiramTrust, ZenithTrade, and AuraPay](visuals/enterprise_ecosystem.png){width=90%}
 
 ### The System Interactions in Production:
 
@@ -49,7 +49,7 @@ In AuraPay, balances are never directly updated. Balances are computed as the im
 $$\text{Account Balance}(A) = \sum \text{Credits}(A) - \sum \text{Debits}(A)$$
 Every monetary transfer produces two balanced, immutable ledger entries within a single atomic database boundary.
 
-![AuraPay System Architecture](visuals/aurapay_architecture.png){width=80%}
+![Figure 3.2: AuraPay System Architecture](visuals/aurapay_architecture.png){width=80%}
 
 ## ZenithTrade: High-Frequency Matching Engine (Reference Architecture)
 
@@ -86,7 +86,7 @@ The Limit Order Book (LOB) maintains two continuous priority queues:
 4. **Match 2:** Next ask in queue is 400 shares @ $\$100.60$. Fills the remaining 150 shares at $\$100.60$. The maker ask is partially filled (250 shares remain).
 5. The incoming buy order is fully satisfied with zero resting book state, and two `TradeExecuted` events are published to the event bus.
 
-![ZenithTrade High-Frequency Matching Engine Architecture](visuals/zenithtrade_architecture.jpg){width=85%}
+![Figure 3.3: ZenithTrade High-Frequency Matching Engine Architecture](visuals/zenithtrade_architecture.jpg){width=85%}
 
 ## ChiramTrust: Decentralized Identity Consent Wallet (Reference Architecture)
 
@@ -98,7 +98,7 @@ ChiramTrust is a decentralized identity wallet that allows users to store creden
 - **Granular Consent Engine:** Enforces user-defined access scopes, ensuring verifiers only receive requested claims (e.g., verifying age over 21 without revealing the exact birth date or home address).
 - **Consensus Key Recovery:** Shares cryptographic key shards across a network of trusted guardians using threshold secret sharing (Shamir's Scheme) to recover lost keys without single points of compromise.
 
-![ChiramTrust Decentralized Identity Wallet Architecture](visuals/chiramtrust_architecture.jpg){width=85%}
+![Figure 3.4: ChiramTrust Decentralized Identity Wallet Architecture](visuals/chiramtrust_architecture.jpg){width=85%}
 
 ### The Mechanics of Threshold Consensus (Shamir's Secret Sharing)
 

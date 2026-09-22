@@ -25,7 +25,7 @@ When you apply this to coding assessments, you construct an "Invariant Wall" com
 2.  **Post-conditions:** Guarantees that the method promises to satisfy upon successful execution. This defines what "correctness" means for the operation.
 3.  **Class/Data Invariants:** State rules that must always hold true for a domain object throughout its entire lifecycle.
 
-![The Invariant Wall](visuals/invariant_wall.png){width=70%}
+![Figure 1.1: The Invariant Wall](visuals/invariant_wall.png){width=70%}
 
 By declaring these boundaries upfront, you decouple *what* the system must do from *how* it will do it. You establish a contract. Once the contract is clear, writing the code is simply a matter of executing that contract.
 
@@ -103,7 +103,7 @@ Write the code, beginning with explicit checks for your pre-conditions. Use mode
 
 To demonstrate the mathematical power of invariants, let us examine the classic binary search algorithm. Many developers struggle with binary search, often getting trapped in infinite loops or off-by-one errors because they guess the boundary updates (e.g., `right = mid` vs. `right = mid - 1`).
 
-![Loop Invariant States — Boundary Contraction in Binary Search](visuals/loop_invariant_states.jpg){width=85%}
+![Figure 1.2: Loop Invariant States — Boundary Contraction in Binary Search](visuals/loop_invariant_states.jpg){width=85%}
 
 ### The Challenge
 Given a sorted array of integers `nums` and a `target` value, return the index of the `target` if it exists in the array, or `-1` if it does not.

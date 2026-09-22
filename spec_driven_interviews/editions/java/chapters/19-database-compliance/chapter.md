@@ -37,7 +37,7 @@ Why does executing an `fsync()` system call on every single database transaction
 - **`fdatasync()` vs `fsync()`:** `fsync()` flushes both data and file metadata (such as modification timestamps, requiring two disk writes). `fdatasync()` flushes only modified data blocks, halving write overhead.
 - **Group Commit:** The database engine buffers concurrent commit requests from hundreds of worker threads into a single batch, executing a single `fdatasync()` call that durably writes all transactions in one physical disk round-trip, boosting throughput to $>100,000\text{ TPS}$.
 
-![B-Tree vs LSM-Tree Storage Engines](visuals/btree_vs_lsm.png){width=85%}
+![Figure 19.1: B-Tree vs LSM-Tree Storage Engines](visuals/btree_vs_lsm.png){width=85%}
 
 > **Why is it called \"PostgreSQL\"?** The name traces back to the 1970s. UC Berkeley professor Michael Stonebraker created a relational database called **Ingres**. In 1986, he started a successor project called **Post-Ingres** (i.e., \"after Ingres\"), later shortened to **Postgres**. When SQL support was added in 1996, the name became **PostgreSQL** \u2014 literally \"Post-Ingres with SQL.\" The elephant logo? Chosen simply because elephants *never forget* \u2014 a fitting mascot for a database.
 
@@ -265,7 +265,7 @@ When database size or write throughput exceeds the limits of a single master ser
 
 **Trade-off:** Flexible and dynamic, but introduces a single point of failure and potential query latency bottleneck at the lookup layer.
 
-![Database Sharding Strategies — Range, Hash, and Directory Based](visuals/sharding_strategies.jpg){width=85%}
+![Figure 19.2: Database Sharding Strategies — Range, Hash, and Directory Based](visuals/sharding_strategies.jpg){width=85%}
 
 
 ## Indexing Deep-Dive & Performance Optimization
@@ -296,7 +296,7 @@ To minimize audit scope, you must implement **Tokenization**:
 2.  **Encryption:** Inside the Vault, PAN data is encrypted using AES-256-GCM before storage.
 3.  **Application Separation:** The main billing and ledger applications only store and reference the token. Since they never store, process, or transmit raw card data, they are kept outside the scope of PCI-DSS regulations.
 
-![PCI-DSS Tokenization Vault Architecture](visuals/tokenization_vault.png){width=85%}
+![Figure 19.3: PCI-DSS Tokenization Vault Architecture](visuals/tokenization_vault.png){width=85%}
 
 The following utility demonstrates the encryption standard (AES-256 in Galois/Counter Mode) required for encrypting PANs or PII:
 
@@ -312,6 +312,7 @@ import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
+
  * Utility for AES-GCM 256-bit encryption/decryption of sensitive PII or PAN data,
  * adhering to PCI-DSS requirements.
  */
@@ -323,6 +324,7 @@ public class TokenizationUtility {
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     /**
+
      * Encrypts the plaintext data using the provided 256-bit key.
      * Returns a URL-safe Base64-encoded string containing [IV][Ciphertext][Tag].
      */
@@ -355,6 +357,7 @@ public class TokenizationUtility {
     }
 
     /**
+
      * Decrypts the Base64-encoded payload using the provided 256-bit key.
      */
     public static String decrypt(String base64Payload, byte[] keyBytes) throws Exception {
@@ -467,7 +470,7 @@ For compliance frameworks like SOC2, you must maintain a tamper-proof audit trai
 2.  **Cryptographic Chaining:** Each audit log row should contain a cryptographic hash of the current row and the previous row's hash (similar to a blockchain ledger). If an attacker modifies a historical row, the chain break is instantly detectable during audit validation.
 3.  **Immutable Databases:** Utilize native ledger databases (like Amazon QLDB) or WORM (Write Once, Read Many) storage to mathematically guarantee data immutability.
 
-![Cryptographic Audit Trail Chain](visuals/audit_trail.png){width=85%}
+![Figure 19.4: Cryptographic Audit Trail Chain](visuals/audit_trail.png){width=85%}
 
 
 ### Mock Interview Transcript: PCI-DSS and GDPR Compliance

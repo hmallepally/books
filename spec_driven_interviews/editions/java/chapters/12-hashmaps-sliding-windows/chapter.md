@@ -7,7 +7,7 @@
 **Dynamic Sliding Window**
 A technique where a window expands to the right to include elements and contracts from the left when a specific invariant or constraint is violated. It matters because it optimizes $\mathcal{O}(N^2)$ brute-force subarray checks into $\mathcal{O}(N)$ operations by avoiding redundant recalculations. Use when searching for the longest/shortest contiguous subarray satisfying a condition.
 
-![Dynamic Sliding Window — Longest Substring Without Repeating Characters](visuals/sliding_window.png){width=85%}
+![Figure 12.1: Dynamic Sliding Window — Longest Substring Without Repeating Characters](visuals/sliding_window.png){width=85%}
 
 **Fixed-Size Sliding Window vs Dynamic Sliding Window**
 
@@ -20,7 +20,7 @@ A technique where a window expands to the right to include elements and contract
 **HashMap Frequency Signature**
 Creating a unique key for a group of items (like anagrams) based on their character frequencies rather than sorting. Usually represented as a mapped string of an `int[26]` array. This avoids the $\mathcal{O}(N \log N)$ sorting cost, providing an $\mathcal{O}(N)$ way to group items.
 
-![HashMap Frequency Signature — Anagram Detection](visuals/hashmap_frequency.png){width=85%}
+![Figure 12.2: HashMap Frequency Signature — Anagram Detection](visuals/hashmap_frequency.png){width=85%}
 
 **Prefix Sum Array & Cumulative Matching**
 An array where `pref[i]` stores the sum of elements from index $0$ to $i$. The trick `pref[j] - pref[i] = K` allows finding a subarray sum $K$ in $\mathcal{O}(1)$ time by rearranging to `pref[i] = pref[j] - K` and looking up previously seen prefix sums.
@@ -127,30 +127,42 @@ Why it matters: It is a provably optimal approach for finding the maximum number
 
 ### Template A: Dynamic Sliding Window
 ```java
-int left = 0, maxLen = 0;
-for (int right = 0; right < arr.length; right++) {
-    // 1. Add arr[right] to window state
-    while (/* window state violates invariant */) {
-        // 2. Remove arr[left] from window state
-        left++;
+int left = 0, maxLen = 0; // <1>
+for (int right = 0; right < arr.length; right++) { // <2>
+    // Ingest arr[right] into window state
+    while (/* window state violates invariant */) { // <3>
+        // Remove arr[left] from window state
+        left++; // <4>
     }
-    // 3. Update maxLen or minLen
-    maxLen = Math.max(maxLen, right - left + 1);
+    maxLen = Math.max(maxLen, right - left + 1); // <5>
 }
 ```
+
+
+- `<1>` **Window Boundaries & State:** Initializes the contracting boundary `left = 0` and metric accumulator `maxLen = 0`.
+- `<2>` **Expansion Loop:** The expanding boundary `right` sweeps forward one element at a time, ingesting `arr[right]` into the window's state (e.g., frequency map or running sum).
+- `<3>` **Contracting Invariant Guard:** When the ingested element causes the window state to violate the problem invariant (e.g., distinct characters $> K$ or duplicate detected), the contraction loop executes.
+- `<4>` **Window Contraction:** Evicts `arr[left]` from the internal state and advances `left++` until the window contract is fully restored.
+- `<5>` **Result Recording:** Updates `maxLen` with the current valid window width (`right - left + 1`). Because `<3>`-`<4>` restore validity before this step, every recorded window is provably valid.
 
 ### Template B: Fixed-Size Sliding Window
 ```java
-int k = 3, sum = 0, max = 0;
-for (int i = 0; i < arr.length; i++) {
-    sum += arr[i]; // Add current element
-    if (i >= k - 1) {
-        max = Math.max(max, sum); // Update result
-        sum -= arr[i - (k - 1)];  // Remove leftmost element for next iteration
+int k = 3, sum = 0, max = 0; // <1>
+for (int i = 0; i < arr.length; i++) { // <2>
+    sum += arr[i]; // <3>
+    if (i >= k - 1) { // <4>
+        max = Math.max(max, sum);
+        sum -= arr[i - (k - 1)]; // <5>
     }
 }
 ```
 
+
+- `<1>` **Fixed Window Parameters:** Establishes the static window breadth $K$ alongside running accumulator `sum` and global optimum `max`.
+- `<2>` **Linear Ingestion Traversal:** Single-pass iteration across array indices $i \in [0, N-1]$.
+- `<3>` **State Accumulation:** Ingests the incoming rightmost element `arr[i]` into `sum`.
+- `<4>` **Window Saturation Check:** The window reaches full capacity once $i \ge K - 1$. Updates global maximum with the current complete window.
+- `<5>` **Left Boundary Eviction:** Subtracts the departing element at `arr[i - (K - 1)]` from `sum`, shifting the fixed-size window forward for the next iteration in $\mathcal{O}(1)$ time.
 ### Template C: Prefix Sum + HashMap Counter
 ```java
 Map<Integer, Integer> map = new HashMap<>();

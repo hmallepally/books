@@ -35,7 +35,7 @@ When constructing complex enterprise domain objects (such as AuraPay's `Transact
 *Cognitive Metaphor:* A custom assembly line. Instead of dumping all raw parts into a single machine at once, you configure options step-by-step and trigger final quality inspection (`build()`) only when ready.
 
 #### Visual Architecture Diagram
-![Builder Pattern Architecture](visuals/builder_pattern.png){width=90%}
+![Figure 7.1: Builder Pattern Architecture](visuals/builder_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **State Immutability & Construction Safety:** The target domain object is instantiated only inside `build()` with `final` / read-only fields. Once built, state cannot be mutated by external components, preserving thread safety natively.
@@ -70,7 +70,7 @@ A payment processor needs to execute settlements across diverse networks (Visa, 
 *Cognitive Metaphor:* A specialized logistics dispatcher. The central office receives a package label, selects the appropriate transport provider (air, rail, sea), and hands off delivery without knowing internal vehicle mechanics.
 
 #### Visual Architecture Diagram
-![Factory Method Pattern Architecture](visuals/factory_pattern.png){width=90%}
+![Figure 7.2: Factory Method Pattern Architecture](visuals/factory_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Polymorphic Open-Closed Principle (OCP):** New concrete products can be introduced without modifying existing client code or routing pipelines.
@@ -91,7 +91,7 @@ Certain resources (such as HikariCP database connection pools or hardware licens
 *Cognitive Metaphor:* A single vault door key held by a security warden. Multiple guards can request access through the warden, but only one key exists.
 
 #### Visual Architecture Diagram
-![Singleton Pattern & IoC Lifecycle](visuals/singleton_pattern.png){width=90%}
+![Figure 7.3: Singleton Pattern & IoC Lifecycle](visuals/singleton_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Controlled Instantiation & Thread Visibility:** Guarantees that at most one instance exists per class loader, with `volatile` references preventing instruction reordering.
@@ -100,7 +100,7 @@ Certain resources (such as HikariCP database connection pools or hardware licens
 
 ```java
 public class LedgerConnectionPool {
-    private static volatile LedgerConnectionPool instance;
+    private static volatile LedgerConnectionPool instance; // <1>
     
     private LedgerConnectionPool() {
         // Prevent reflection instantiation
@@ -110,10 +110,10 @@ public class LedgerConnectionPool {
     }
     
     public static LedgerConnectionPool getInstance() {
-        if (instance == null) { // First check (no lock)
-            synchronized (LedgerConnectionPool.class) {
-                if (instance == null) { // Second check (with lock)
-                    instance = new LedgerConnectionPool();
+        if (instance == null) { // <2>
+            synchronized (LedgerConnectionPool.class) { // <3>
+                if (instance == null) { // <4>
+                    instance = new LedgerConnectionPool(); // <5>
                 }
             }
         }
@@ -122,6 +122,12 @@ public class LedgerConnectionPool {
 }
 ```
 
+
+- `<1>` **Volatile Memory Fence:** Enforces acquire-release memory ordering semantics across CPU caches, preventing the compiler and hardware out-of-order engine from reordering pointer assignment ahead of object initialization.
+- `<2>` **First Check (Unsynchronized Read):** Avoids synchronizing when the singleton has already been initialized, eliminating lock acquisition overhead on the hot read path.
+- `<3>` **Monitor Lock Acquisition:** Synchronizes on the class monitor or shared lock object only during the initial one-time instantiation race.
+- `<4>` **Second Check (Guarded Re-Verification):** Prevents a secondary thread from instantiating a duplicate singleton if it was blocked waiting for the monitor while the primary thread was constructing the instance.
+- `<5>` **Safe Publication:** Atomically instantiates and publishes the reference. Paired with `<1>`, all written fields are guaranteed visible to any thread reading `<2>`.
 
 #### Why `volatile` is Mathematically Required (The 1-3-2 Reordering Hazard)
 
@@ -145,21 +151,27 @@ To achieve lazy initialization with zero synchronization lock overhead and zero 
 
 ```java
 public class LedgerRegistry {
-    private LedgerRegistry() {
+    private LedgerRegistry() { // <1>
         // Enforce private constructor
     }
 
     // Static nested class is NOT loaded into memory when LedgerRegistry is loaded
-    private static class Holder {
-        private static final LedgerRegistry INSTANCE = new LedgerRegistry();
+    private static class Holder { // <2>
+        private static final LedgerRegistry INSTANCE = new LedgerRegistry(); // <3>
     }
 
     public static LedgerRegistry getInstance() {
         // Holder class is loaded and initialized by JVM class loader only upon first invocation!
-        return Holder.INSTANCE;
+        return Holder.INSTANCE; // <4>
     }
 }
 ```
+
+- `<1>` **Private Constructor:** Blocks direct instantiation from external callers or subclasses, protecting the singleton invariant.
+- `<2>` **Static Nested Holder Class:** Defers class loading; the JVM ClassLoader ignores `Holder` when `LedgerRegistry` is initially referenced.
+- `<3>` **Atomic Class-Loading Instantiation:** The JVM's class-initialization lock ensures `INSTANCE` is created exactly once in a thread-safe manner without explicit language locks.
+- `<4>` **Zero-Synchronization Access:** Returns the pre-initialized constant with zero lock acquisition, zero contention, and zero `volatile` read overhead.
+
 *Why it works:* In the JVM specification, a static nested class is initialized only when referenced. The JVM's internal class loading phase is guaranteed to be atomic and thread-safe, providing lazy initialization with zero locking overhead.
 
 #### Framework Reality & Cloud-Native Anti-Pattern Warning
@@ -187,7 +199,7 @@ A modern microservice platform (AuraPay) must integrate with legacy banking main
 *Cognitive Metaphor:* An international power plug adapter. The wall socket supplies 220V AC via three round pins, while your laptop expects 110V DC via a USB-C cable. The adapter translates physical pins and electrical current without modifying the laptop or wall socket.
 
 #### Visual Architecture Diagram
-![Adapter Pattern Architecture](visuals/adapter_pattern.png){width=90%}
+![Figure 7.4: Adapter Pattern Architecture](visuals/adapter_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Domain Context Isolation:** Protects the domain model from vendor-specific data contracts and legacy communication protocols.
@@ -208,7 +220,7 @@ Adding cross-cutting concerns (auditing, Prometheus metrics, retries, distribute
 *Cognitive Metaphor:* Layered winter clothing. You wear a base thermal shirt (core logic), add a fleece jacket (metrics collection), and wrap a waterproof raincoat (audit logging). Each layer adds capabilities without altering your body.
 
 #### Visual Architecture Diagram
-![Decorator Pattern Architecture](visuals/decorator_pattern.png){width=90%}
+![Figure 7.5: Decorator Pattern Architecture](visuals/decorator_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Single Responsibility Principle (SRP):** Core business logic remains unpolluted by telemetry, auditing, or operational infrastructure.
@@ -243,7 +255,7 @@ AuraPay calculates transaction fees based on dynamic merchant agreements (Flat F
 *Cognitive Metaphor:* A GPS navigation system. Depending on user preference (Fastest Route, Avoid Tolls, Eco-Friendly), the GPS swaps the routing algorithm at runtime while keeping the destination constant.
 
 #### Visual Architecture Diagram
-![Strategy Pattern Architecture](visuals/strategy_pattern.png){width=90%}
+![Figure 7.6: Strategy Pattern Architecture](visuals/strategy_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Algorithm Encapsulation & Substitution:** Encapsulates algorithms into interchangeable classes conforming to a common strategy interface.
@@ -264,7 +276,7 @@ When a transaction settles, external systems (audit index, fraud classifier, SMS
 *Cognitive Metaphor:* A newspaper subscription. The publisher prints news and delivers copies to all subscribed readers automatically. The publisher doesn't care how each reader consumes the news.
 
 #### Visual Architecture Diagram
-![Observer Pattern Architecture](visuals/observer_pattern.png){width=90%}
+![Figure 7.7: Observer Pattern Architecture](visuals/observer_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Publish-Subscribe Loose Coupling:** Subject manages event publication without maintaining compile-time dependencies on concrete observer implementations.
@@ -284,6 +296,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+
  * Interface defining the Observer contract for transaction events.
  */
 public interface TransactionObserver {
@@ -292,6 +305,7 @@ public interface TransactionObserver {
 }
 
 /**
+
  * Concrete Observer that writes a persistent audit trail for security compliance.
  */
 public class AuditTrailObserver implements TransactionObserver {
@@ -315,6 +329,7 @@ public class AuditTrailObserver implements TransactionObserver {
 }
 
 /**
+
  * Subject class managing observers and publishing transaction status updates.
  */
 public class TransactionEventPublisher {
@@ -362,7 +377,7 @@ Payment transactions move through a strict lifecycle (`CREATED` $\to$ `PENDING` 
 *Cognitive Metaphor:* A vending machine state machine. Inserting coins transitions the machine from `IdleState` to `HasCoinState`. Pushing a button in `IdleState` does nothing, enforcing valid operational rules natively.
 
 #### Visual Architecture Diagram
-![State Pattern Architecture](visuals/state_pattern.png){width=90%}
+![Figure 7.8: State Pattern Architecture](visuals/state_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **State Transition Integrity:** Invalid state jumps are blocked at compile-time or runtime by encapsulating state behavior inside concrete state classes.
@@ -388,7 +403,7 @@ Exposing raw SQL or database queries inside business logic tightly couples domai
 *Cognitive Metaphor:* A shopping cart and checkout cashier. You place items in your cart (Repository operations), and the cashier scans everything and processes payment in a single atomic transaction (Unit of Work commit).
 
 #### Visual Architecture Diagram
-![Repository and Unit of Work Patterns](visuals/repository_unit_of_work.png){width=90%}
+![Figure 7.9: Repository and Unit of Work Patterns](visuals/repository_unit_of_work.png){width=90%}
 
 #### Protected Architectural Invariant
 **Transactional Atomicity & Persistence Ignorance:** Multi-entity persistence operations are grouped into a single atomic transaction context (`@Transactional` or `DbContext.SaveChanges()`).
@@ -409,7 +424,7 @@ Selecting the wrong persistence strategy causes architectural debt. Simple CRUD 
 *Cognitive Metaphor:* A self-contained Swiss Army Knife (Active Record) vs. a Specialized Medical Surgical Kit (Data Mapper).
 
 #### Visual Architecture Diagram
-![Active Record vs Data Mapper Comparison](visuals/active_record_vs_data_mapper.png){width=90%}
+![Figure 7.10: Active Record vs Data Mapper Comparison](visuals/active_record_vs_data_mapper.png){width=90%}
 
 #### Protected Architectural Invariant
 **Separation of Data Access from Domain Logic:** Data Mapper keeps domain entities database-ignorant (POCO/POJO), preventing database schema changes from leaking into business rules.

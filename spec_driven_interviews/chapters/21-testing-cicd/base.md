@@ -9,7 +9,7 @@ In technical interviews for lead, staff, or engineering manager roles, coding ch
 
 Many candidates respond with simple unit tests. However, a senior candidate must present a structured **Testing Pyramid** strategy, showing how they balance unit tests with Testcontainers-based integration tests, API contract tests, and continuous delivery (CI/CD) verification.
 
-![The Technical Testing Pyramid](visuals/testing_pyramid.png){width=80%}
+![Figure 21.1: The Technical Testing Pyramid](visuals/testing_pyramid.png){width=80%}
 
 
 ## The Testing Pyramid

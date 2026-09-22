@@ -48,7 +48,7 @@ A critical trap in enterprise Java 21+ applications is **Carrier Pinning**:
 - If multiple virtual threads enter `synchronized` blocks that block on database I/O, all carrier threads become exhausted, freezing the entire JVM application.
 - **Remedy:** Replace all `synchronized` blocks protecting I/O operations with `java.util.concurrent.locks.ReentrantLock`, which allows virtual threads to unmount safely during lock acquisition waits.
 
-![Virtual Threads vs Platform Threads](visuals/virtual_threads.png){width=85%}
+![Figure 8.1: Virtual Threads vs Platform Threads](visuals/virtual_threads.png){width=85%}
 
 
 ## Application-Level Concurrency Primitives
@@ -95,19 +95,30 @@ A severe production bug occurs when tasks submitted to a bounded thread pool sub
 
 ```java
 // FATAL STARVATION DEADLOCK:
-ExecutorService pool = Executors.newFixedThreadPool(2);
-pool.submit(() -> {
+ExecutorService pool = Executors.newFixedThreadPool(2); // <1>
+
+pool.submit(() -> { // <2>
     // Parent Task 1 consumes Worker Thread 1
-    Future<String> child = pool.submit(() -> "Child Result"); // Queued in pool!
-    return child.get(); // BLOCKS waiting for Worker Thread 2!
+    Future<String> child = pool.submit(() -> "Child Result"); // <3>
+    return child.get(); // <4>
 });
-pool.submit(() -> {
+
+pool.submit(() -> { // <5>
     // Parent Task 2 consumes Worker Thread 2
-    Future<String> child = pool.submit(() -> "Child Result"); // Queued in pool!
-    return child.get(); // BLOCKS waiting for free worker!
+    Future<String> child = pool.submit(() -> "Child Result"); // <6>
+    return child.get(); // <7>
 });
 // ALL WORKERS ARE BLOCKED WAITING FOR QUEUED CHILD TASKS THAT CAN NEVER RUN!
 ```
+
+- `<1>` **Bounded Worker Pool:** Allocates a fixed pool of exactly 2 OS platform threads to service all asynchronous tasks.
+- `<2>` **Parent Task 1 Ingestion:** Dispatches the first orchestration task, immediately acquiring Worker Thread 1 from the pool.
+- `<3>` **Subtask Enqueueing:** Parent Task 1 submits a required subtask back into the *same* pool's internal work queue.
+- `<4>` **Synchronous Stall:** Parent Task 1 calls `child.get()`, blocking Worker Thread 1 indefinitely until the subtask finishes.
+- `<5>` **Parent Task 2 Ingestion:** Concurrently dispatches the second orchestration task, which acquires Worker Thread 2.
+- `<6>` **Second Subtask Enqueueing:** Parent Task 2 submits its own subtask to the work queue, where it sits behind Subtask 1.
+- `<7>` **Total Coffman Deadlock:** Parent Task 2 calls `child.get()`, blocking Worker Thread 2. Both worker threads are now blocked waiting on queued child tasks, and no threads remain to dequeue them—causing a permanent deadlock without burning CPU.
+
 **Remedy:** Separate thread pools for parent orchestrators vs child workers, or use unbounded Virtual Thread executors (`Executors.newVirtualThreadPerTaskExecutor()`).
 
 ### async/await & Non-Blocking I/O
@@ -133,7 +144,7 @@ SELECT * FROM accounts WHERE id = ? FOR UPDATE;
 ### Optimistic Concurrency Control (OCC)
 Optimistic locking assumes conflicts are rare. It allows concurrent threads to read and edit records without blocking. When saving the entity, the engine verifies that the record has not been modified by checking a `version` field (`WHERE id = ? AND version = ?`).
 
-![Optimistic vs Pessimistic Concurrency Control](visuals/occ_vs_pcc.png){width=70%}
+![Figure 8.2: Optimistic vs Pessimistic Concurrency Control](visuals/occ_vs_pcc.png){width=70%}
 
 - **Pros:** High throughput; no database locks are held while executing business logic.
 - **Cons:** If a conflict occurs, one of the transactions fails, forcing the application to catch the exception and retry the entire workflow.
@@ -155,7 +166,7 @@ When designing financial ledgers, selecting the right locking paradigm is critic
 | **Scale Limits** | Scales with DB capacity | Hard limit based on DB connection pool size | Scales horizontally with distributed key store |
 | **Deadlock Risk** | Zero | High (requires deterministic lexicographical ordering of resources) | Medium (depends on lock lease expiration / release logic) |
 
-![Database Deadlock Cycle — Circular Wait Conditions](visuals/deadlock_diagram.jpg){width=85%}
+![Figure 8.3: Database Deadlock Cycle — Circular Wait Conditions](visuals/deadlock_diagram.jpg){width=85%}
 
 
 ## Caching Patterns & Consistency Architectural Overview
@@ -209,7 +220,7 @@ Setting the pool size to 17 will yield *higher* overall throughput than setting 
 
 **Important Context:** This formula was derived empirically by the PostgreSQL community for spinning disk (HDD) workloads where 'Effective Spindle Count' represents physical disk heads. For modern NVMe SSDs and cloud-managed databases (e.g., Aurora, Cloud SQL), this formula is a starting point, not a universal law. Cloud databases often recommend pool sizes of 2-5× CPU cores. Always benchmark with your specific database engine and storage backend.
 
-![HikariCP Connection Pool Sizing](visuals/hikaricp_formula.png){width=85%}
+![Figure 8.4: HikariCP Connection Pool Sizing](visuals/hikaricp_formula.png){width=85%}
 
 
 

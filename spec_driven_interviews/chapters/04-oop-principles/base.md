@@ -8,7 +8,7 @@ In enterprise software engineering and senior-level technical interviews, Object
 
 When designing large-scale enterprise systems, core OOP principles map directly to **Domain-Driven Design (DDD)** tactical patterns. Understanding this bridge prevents code from degenerating into unmaintainable scripts:
 
-![The OOP to DDD Architectural Bridge](visuals/oop_to_ddd_bridge.png){width=90%}
+![Figure 4.1: The OOP to DDD Architectural Bridge](visuals/oop_to_ddd_bridge.png){width=90%}
 
 ### Core DDD Definitions Every Candidate Must Master:
 
@@ -23,7 +23,7 @@ Despite understanding basic OOP syntax, many enterprise applications fall into a
 
 When domain models are anemic, business logic escapes into external, stateless service classes (e.g., `LedgerService`). The service pulls raw data out of the domain object, validates it externally, mutates the fields via setters, and pushes the modified object back to storage.
 
-![Anemic vs Rich Domain Model Architecture](visuals/anemic_vs_rich_architecture.png){width=90%}
+![Figure 4.2: Anemic vs Rich Domain Model Architecture](visuals/anemic_vs_rich_architecture.png){width=90%}
 
 The following code illustrates this fragile, anemic design:
 
@@ -281,7 +281,7 @@ This introduces tight coupling and brittle hierarchies:
 
 The golden rule of enterprise OOP design is to **favor composition over inheritance**. Instead of subclassing, compose the routing engine by injecting a collection of independent strategy routes:
 
-![Composition over Inheritance](visuals/composition_vs_inheritance.png){width=85%}
+![Figure 4.3: Composition over Inheritance](visuals/composition_vs_inheritance.png){width=85%}
 
 ---
 

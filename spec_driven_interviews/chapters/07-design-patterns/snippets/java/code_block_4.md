@@ -1,6 +1,6 @@
 ```java
 public class LedgerConnectionPool {
-    private static volatile LedgerConnectionPool instance;
+    private static volatile LedgerConnectionPool instance; // <1>
     
     private LedgerConnectionPool() {
         // Prevent reflection instantiation
@@ -10,10 +10,10 @@ public class LedgerConnectionPool {
     }
     
     public static LedgerConnectionPool getInstance() {
-        if (instance == null) { // First check (no lock)
-            synchronized (LedgerConnectionPool.class) {
-                if (instance == null) { // Second check (with lock)
-                    instance = new LedgerConnectionPool();
+        if (instance == null) { // <2>
+            synchronized (LedgerConnectionPool.class) { // <3>
+                if (instance == null) { // <4>
+                    instance = new LedgerConnectionPool(); // <5>
                 }
             }
         }

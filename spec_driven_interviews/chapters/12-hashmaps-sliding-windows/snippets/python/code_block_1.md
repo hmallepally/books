@@ -1,10 +1,9 @@
 ```python
-left = max_len = 0
-for right in range(len(arr)):
-    # 1. Add arr[right] to window state
-    while False: # window state violates invariant
-        # 2. Remove arr[left] from window state
-        left += 1
-    # 3. Update maxLen or minLen
-    max_len = max(max_len, right - left + 1)
+left = max_len = 0 # <1>
+for right in range(len(arr)): # <2>
+    # Ingest arr[right] into window state
+    while False: # window state violates invariant <3>
+        # Remove arr[left] from window state
+        left += 1 # <4>
+    max_len = max(max_len, right - left + 1) # <5>
 ```
