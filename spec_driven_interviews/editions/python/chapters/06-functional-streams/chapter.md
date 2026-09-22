@@ -89,12 +89,94 @@ class TransactionAnalytics:
 ```
 
 
+### Granular Code Dissection & Stream Pipeline Annotations
+
+Let us examine the mechanical steps executing within `aggregateMerchantVolumes()`:
+
+- **`<1>` Fail-Fast Input Invariants (`Objects.requireNonNull`):**  
+  Eliminates defensive checks inside intermediate stream lambdas. If `transactions` is null, the method fails instantly before pipeline construction begins.
+
+- **`<2>` Non-Mutating Stateless Filter (`.filter(...)`):**  
+  Evaluates each `TransactionRecord` against the threshold. Because `t.amount()` is an immutable `BigDecimal` and the lambda produces no side effects, this operation is referentially transparent and can be reordered or parallelized safely.
+
+- **`<3>` Collector Merge Reducer (`Collectors.toMap` with `BigDecimal::add`):**  
+  Instead of instantiating an external mutable map and calling `map.merge()`, the terminal operation uses a thread-safe downstream reduction. When duplicate merchant IDs appear in the stream, the binary operator `BigDecimal::add` merges conflicting values atomically without locking.
+
 ![Stream Pipeline Visualization](visuals/stream_pipeline.png){width=90%}
 
 By declaring operations as a stream pipeline, the code becomes an exact, self-documenting translation of the business specification:
 
 1. **Filter:** Retain only transaction records exceeding the minimum threshold.
 2. **Collect:** Group transactions by merchant ID and sum their decimal amounts into a result map.
+
+
+## Spliterator Splitting Mechanics & Parallel Efficiency Matrix
+
+How does a parallel stream (`.parallelStream()`) divide a dataset across multiple CPU cores without thread synchronization locks?
+
+Every stream is backed by a **`Spliterator<T>`** (Splitable Iterator). The runtime uses a divide-and-conquer strategy:
+
+1. The coordinator thread invokes `spliterator.trySplit()`.
+2. If the collection can be partitioned, `trySplit()` returns a new `Spliterator` covering roughly half the elements, while the original `Spliterator` adjusts its range to cover the remaining half.
+3. Sub-tasks are pushed into the `ForkJoinPool` until task chunks reach a minimum threshold, after which worker threads process leaf tasks sequentially.
+
+```text
+Spliterator Divide-and-Conquer Decomposition:
+                    [Root Spliterator: 0 .. 100,000]
+                                  │
+                 ┌────────────────┴────────────────┐
+                 ▼                                 ▼
+      [Sub-Spliterator: 0 .. 50,000]    [Sub-Spliterator: 50,001 .. 100,000]
+                 │                                 │
+           ┌─────┴─────┐                     ┌─────┴─────┐
+           ▼           ▼                     ▼           ▼
+      [0 .. 25k]  [25k .. 50k]          [50k .. 75k] [75k .. 100k]
+```
+
+### Collection Splitting Performance Characteristics
+
+Not all data structures split equally. Parallel stream performance is fundamentally governed by the time complexity of `trySplit()`:
+
+| Backing Collection | `trySplit()` Complexity | Splitting Quality & Balance | Parallel Scaling Recommendation |
+| :--- | :---: | :--- | :--- |
+| **`ArrayList` / Primitive Array** | $\mathcal{O}(1)$ | **Perfect:** Array midpoint split via index arithmetic ($mid = \frac{start + end}{2}$). Zero pointer chasing. | **Ideal for Parallel Streams:** Scales linearly across CPU cores. |
+| **`ArrayDeque`** | $\mathcal{O}(1)$ | **Excellent:** Circular buffer index splitting. Fast and cache-friendly. | Highly efficient for parallel batch aggregation. |
+| **`HashSet` / `TreeSet`** | $\mathcal{O}(\log N)$ | **Good:** Tree or hash bucket partition splitting. Occasional imbalance. | Moderately efficient for large collections ($N > 50,000$). |
+| **`LinkedList`** | $\mathcal{O}(N)$ | **Catastrophic:** Splitting requires traversing half the linked nodes sequentially to find the midpoint! | **NEVER parallelize over `LinkedList`:** Parallel overhead is slower than a single-threaded loop. |
+| **`Files.lines()` / I/O Stream** | $\mathcal{O}(N)$ | **Poor:** Line delimiters are variable length. Stream must read sequentially from disk to find line breaks. | Inefficient; parallel threads stall on disk I/O bottlenecks. |
+
+
+## Hardware SIMD Vectorization: When Imperative Loops Beat Streams
+
+In high-performance computing, low-latency financial order routing, and algorithmic assessments, a crucial staff-level question is: *When should you deliberately reject functional streams in favor of a raw imperative `for` loop?*
+
+The answer lies in **CPU L1 Cache Locality** and **Single Instruction, Multiple Data (SIMD) Vectorization**:
+
+### How Modern Compilers Auto-Vectorize Primitive Loops
+When the HotSpot C2 compiler or LLVM inspects a simple, contiguous array loop:
+
+```java
+// Hardware-Friendly Imperative Loop
+long sum = 0;
+for (int i = 0; i < prices.length; i++) {
+    sum += prices[i];
+}
+```
+
+The compiler unrolls the loop and compiles it into hardware **AVX-512** or **ARM NEON vector instructions**. Instead of adding one 64-bit integer per cycle:
+
+- A single 512-bit ZMM register loads **eight 64-bit integers simultaneously**.
+- A single `VPADDQ` CPU instruction executes eight additions in **1 clock cycle**!
+
+### Why Functional Object Streams Break SIMD Vectorization
+If the same loop is written using an object stream (`transactions.stream().mapToLong(...).sum()`):
+
+1. **Lambda Virtual Call Overhead:** Even when inlined, the `accept()` method call chain inside the `Sink` pipeline prevents the JIT compiler from guaranteeing simple memory stride alignments.
+2. **Pointer Indirection:** In object streams, elements are heap references (`TransactionRecord`). The CPU cannot prefetch sequential memory blocks into the L1 cache because each object pointer points to an arbitrary DRAM memory address. Cache miss stalls dominate execution time.
+
+> **Engineering Rule of Thumb:**  
+> - Use **Functional Streams** for enterprise business domain pipelines: where readability, declarative transformation, and expressiveness outweigh nanosecond latency.  
+> - Use **Imperative Loops over Primitive Arrays** (`int[]`, `long[]`, or `Span<T>`) for inner-loop mathematical bottlenecks, financial matching engines, and competitive algorithmic challenges where SIMD vectorization and L1 cache hits are required.
 
 
 ### Functors, Monads, and Railway Oriented Pipelines

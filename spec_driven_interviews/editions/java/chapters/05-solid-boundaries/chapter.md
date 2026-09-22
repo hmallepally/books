@@ -16,7 +16,6 @@ In this chapter, we will implement the core processing pipeline of AuraPay using
 ## The SOLID Transaction Pipeline
 
 To illustrate SOLID, we will examine the `TransactionProcessor` in AuraPay. This component is responsible for retrieving ledger accounts, calculating fees, updating account balances, persisting the changes to storage, and notifying external systems.
-
 Here is the decoupled, SOLID-compliant transaction execution flow:
 
 ```java
@@ -107,16 +106,35 @@ public class TransactionProcessor {
 ```
 
 
-Let us break down how this single class enforces all five design boundaries.
+### Granular Code Dissection & SOLID Annotations
+
+Let us analyze how each architectural boundary in `TransactionProcessor` prevents structural erosion:
+
+- **`<1>` Abstraction Inversion (`LedgerRepository`):**  
+  The processor depends strictly on an interface. Notice that `process()` contains zero database connectivity strings, SQL statements, or ORM annotations (`@Entity`). If the persistent store migrates from Amazon Aurora PostgreSQL to a globally distributed CockroachDB cluster, the processor remains completely untouched.
+
+- **`<2>` Behavioral Extension without Mutation (`FeeCalculator`):**  
+  Calculating transaction fees is an evolving business policy. By delegating this logic to the `FeeCalculator` strategy, new fee schedules (e.g., cross-border interchange rates, weekend volume discounts) can be introduced by injecting new polymorphic implementations without altering a single line of core coordination logic.
+
+- **`<3>` Domain Invariant Delegation (`source.debit(totalDebit)`):**  
+  Notice that the processor does *not* execute:
+  ```java
+  // ANTI-PATTERN: Invariant leakage into application service
+  if (source.getBalance().subtract(totalDebit).compareTo(overdraftLimit) < 0) { ... }
+  ```
+  Instead, it commands the rich aggregate `source.debit(totalDebit)`. The aggregate root internally protects its own overdraft boundaries and thread safety.
+
+- **`<4>` Segregated Notification Dispatch (`TransactionNotificationSender`):**  
+  The processor does not depend on a bloated `OmniChannelCommunicationManager` with 40 methods for WhatsApp, SMS, and Slack webhooks. It depends solely on a focused single-method contract tailored to transaction receipts.
 
 > [!IMPORTANT]
-> **Architectural Note on Persistence Atomicity (Unit of Work Pattern):**
+> **Architectural Note on Persistence Atomicity (Unit of Work Pattern):**  
 > In Step 4 of the transaction pipeline, saving `source` and `destination` accounts via two separate `repository.save()` calls introduces a persistence risk if `save(source)` succeeds but `save(destination)` fails due to a database exception or network glitch. In production financial systems, multi-entity persistence must be wrapped in an explicit `@Transactional` boundary or a `UnitOfWork` aggregate coordinator to guarantee that debits and credits commit atomically, preserving the double-entry invariant ($\sum \text{Debits} = \sum \text{Credits}$) across storage failures.
 
 
 ## Single Responsibility Principle (SRP)
 
-The Single Responsibility Principle is often summarized as "a class should do only one thing." A more precise architectural definition is: **"a module should have one, and only one, reason to change."**
+The Single Responsibility Principle is often summarized as *"a class should do only one thing."* A more precise architectural definition is: **"a module should have one, and only one, reason to change."**
 
 In our transaction pipeline, the `TransactionProcessor` has one responsibility: coordinating the business workflow of a transaction. It does not contain database queries, does not know how to format SMS or Email notifications, and does not hardcode fee calculation percentages.
 
@@ -130,6 +148,7 @@ In our transaction pipeline, the `TransactionProcessor` has one responsibility: 
 The Open/Closed Principle states that **software entities should be open for extension, but closed for modification.**
 
 In AuraPay, we must support multiple fee models (e.g., flat fees for retail clients, percentage-based fees for merchants, waived fees for corporate accounts). 
+
 Instead of adding nested `if-else` blocks inside the transaction processor, we inject the `FeeCalculator` interface. If we need to add a new fee model, we simply write a new class implementing `FeeCalculator` and pass it to the processor. The core processor is closed to modifications, yet the fee behavior is infinitely extendable.
 
 
@@ -143,24 +162,109 @@ The Liskov Substitution Principle was formalized by Barbara Liskov and Jeannette
 
 To guarantee that a subtype $S$ can replace base type $T$ safely without breaking client expectations, the subtype must satisfy five strict subtyping invariants:
 
-1. **Precondition Contravariance:** A subtype cannot strengthen preconditions ($\text{Pre}_T \implies \text{Pre}_S$). If a base method accepts any non-null string, the subtype cannot restrict inputs to alphanumeric strings only.
+1. **Precondition Contravariance:** A subtype cannot strengthen preconditions ($\text{Pre}_T \implies \text{Pre}_S$). If a base method accepts any non-null integer, the subtype cannot restrict inputs to positive integers only.
 2. **Postcondition Covariance:** A subtype cannot weaken postconditions ($\text{Post}_S \implies \text{Post}_T$). If a base method guarantees returning a positive integer ($> 0$), the subtype cannot return $\le 0$.
 3. **Class Invariant Preservation:** All domain invariants defined on the supertype must be preserved by every method of the subtype.
 4. **Exception Invariance:** A subtype method cannot throw new or broader checked exceptions than those declared by the supertype method.
 5. **History Constraint:** A subtype cannot introduce mutating operations on an immutable supertype (e.g., subclassing an immutable `Money` value object with a mutable subclass).
 
-In financial systems, this is highly relevant when modeling different account types. For example, a `SavingsAccount` might not allow overdrafts, while a `CheckingAccount` allows up to a certain limit.
-If a developer creates a subclass `BlockedAccount` that throws an `UnsupportedOperationException` whenever `debit()` is called, they violate LSP. The `TransactionProcessor` assumes that any `LedgerAccount` returned by the repository can be debited and credited.
-LSP ensures that subclass behaviors remain consistent with the contracts defined on their parent classes, preventing runtime crashes.
+### The Mathematical Proof: Why Square Cannot Extend Rectangle
+
+The classic textbook example of an LSP violation is modeling a `Square` as an inheritance subtype of `Rectangle`:
+
+```java
+public class Rectangle {
+    protected int width;
+    protected int height;
+
+    public void setWidth(int w) { this.width = w; }
+    public void setHeight(int h) { this.height = h; }
+    public int getArea() { return this.width * this.height; }
+}
+
+public class Square extends Rectangle {
+    @Override
+    public void setWidth(int w) {
+        this.width = w;
+        this.height = w; // Enforce square invariant
+    }
+    @Override
+    public void setHeight(int h) {
+        this.width = h;  // Enforce square invariant
+        this.height = h;
+    }
+}
+```
+
+Now consider a client verification method:
+
+```java
+void verifyArea(Rectangle r) {
+    r.setWidth(5);
+    r.setHeight(4);
+    assert r.getArea() == 20 : "Area invariant broken!";
+}
+```
+
+When passing an instance of `Rectangle`, `r.getArea()` returns $20$ (passes).  
+When passing an instance of `Square`, `r.setHeight(4)` mutates both width and height to 4. `r.getArea()` returns $16$, triggering an assertion failure!
+
+```text
+Liskov Substitution Proof of Contradiction:
+Supertype Contract (Rectangle):
+  Property φ(r): { r.setWidth(5); r.setHeight(4); } ⟹ r.getArea() == 20
+Subtype Behavior (Square):
+  Property φ(s): { s.setWidth(5); s.setHeight(4); } ⟹ s.getArea() == 16
+Conclusion: φ(r) is true, but φ(s) is FALSE.
+            Square is NOT a behavioral subtype of Rectangle!
+```
+
+In financial domain modeling, this error appears frequently: subclassing `LedgerAccount` with a `FrozenAccount` that throws `UnsupportedOperationException` on `debit()`. The `TransactionProcessor` assumes that any `LedgerAccount` can accept debits. If an operation is unsupported, it must be represented through an explicit state pattern or a separate type hierarchy, not an exception-throwing subclass.
 
 
 ## Interface Segregation Principle (ISP)
 
 The Interface Segregation Principle states that **clients should not be forced to depend on interfaces they do not use.**
 
-In a large enterprise system, you might have a broad `NotificationService` that handles email, Slack channels, internal logging, and mobile push alerts. 
-If the `TransactionProcessor` injected a giant `NotificationService` interface containing twenty unrelated methods, it would be coupled to changes in mobile app push logic. 
-Instead, we define a small, segregated interface: `TransactionNotificationSender`, containing only the single `sendNotification` method. The processor only knows about what it needs to execute its task.
+### The "Fat Interface" Anti-Pattern in Microservice SDKs
+
+In enterprise distributed architectures, platform teams often build shared client SDKs. A common disaster is the "Fat Interface" SDK:
+
+```java
+// ANTI-PATTERN: The 60-Method Fat Platform Client
+public interface PaymentGatewayClient {
+    // Core payment methods
+    ChargeResponse charge(ChargeRequest req);
+    RefundResponse refund(RefundRequest req);
+    
+    // Merchant onboarding methods
+    void onboardMerchant(MerchantDetails details);
+    void updateBankRouting(BankDetails bank);
+    
+    // Analytics & reporting methods
+    MonthlyLedgerReport generateMonthlyAuditReport(UUID merchantId);
+    void streamFraudMetricsToKinesis(MetricsBatch batch);
+}
+```
+
+When an automated `CheckoutService` needs only `charge()`, it is forced to depend on this monolithic 60-method interface:
+
+1. **Binary Incompatibility & Deployment Lock-Step:** Whenever the platform team updates the signature of `generateMonthlyAuditReport()`, the `CheckoutService` must recompile, test, and deploy, even though it has zero relationship with monthly audit reporting.
+2. **Mocking Bloat in Unit Tests:** Writing unit tests for `CheckoutService` requires mocking 59 unused methods or maintaining fragile dummy stubs.
+
+The ISP solution is **Role Interfaces (Consumer-Driven Segregation)**:
+
+```java
+public interface TransactionCharger {
+    ChargeResponse charge(ChargeRequest req);
+}
+
+public interface TransactionRefunder {
+    RefundResponse refund(RefundRequest req);
+}
+```
+
+The underlying concrete `StripePaymentAdapter` can implement both interfaces, but the `CheckoutService` injects only `TransactionCharger`. The dependency footprint is minimized.
 
 
 ## Dependency Inversion Principle (DIP)
