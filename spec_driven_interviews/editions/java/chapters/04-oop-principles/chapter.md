@@ -112,7 +112,6 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
-
  * Demonstrates a rich domain model encapsulating transfer logic and enforcing 
  * cross-entity invariants.
  */
@@ -151,7 +150,6 @@ public class LedgerAccount {
     }
 
     /**
-
      * Executes a thread-safe transfer to a target account, enforcing business invariants.
      * Prevents mismatched currencies (pre-condition) and double-debiting.
      */
@@ -423,7 +421,6 @@ import com.aurapay.domain.TransactionRecord;
 import java.math.BigDecimal;
 
 /**
-
  * Interface defining the polymorphic contract for payment settlement networks.
  */
 public interface SettlementRoute {
@@ -433,7 +430,6 @@ public interface SettlementRoute {
 }
 
 /**
-
  * Concrete implementation for the ACH network (low cost, delayed).
  */
 public class AchRoute implements SettlementRoute {
@@ -457,7 +453,6 @@ public class AchRoute implements SettlementRoute {
 }
 
 /**
-
  * Concrete implementation for the FedWire network (instant, high cost).
  */
 public class FedWireRoute implements SettlementRoute {

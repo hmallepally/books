@@ -284,7 +284,6 @@ import java.util.List;
 import java.util.Objects;
 
 /**
-
  * Interface defining the Observer contract for transaction events.
  */
 public interface TransactionObserver {
@@ -293,7 +292,6 @@ public interface TransactionObserver {
 }
 
 /**
-
  * Concrete Observer that writes a persistent audit trail for security compliance.
  */
 public class AuditTrailObserver implements TransactionObserver {
@@ -317,7 +315,6 @@ public class AuditTrailObserver implements TransactionObserver {
 }
 
 /**
-
  * Subject class managing observers and publishing transaction status updates.
  */
 public class TransactionEventPublisher {

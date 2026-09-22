@@ -28,7 +28,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
-
  * Abstraction for database operations (Dependency Inversion Principle).
  */
 public interface LedgerRepository {
@@ -37,7 +36,6 @@ public interface LedgerRepository {
 }
 
 /**
-
  * Abstraction for fee calculations (Open/Closed Principle).
  */
 public interface FeeCalculator {
@@ -45,7 +43,6 @@ public interface FeeCalculator {
 }
 
 /**
-
  * Interface Segregation Principle: Focused notification dispatch interface.
  */
 public interface TransactionNotificationSender {
@@ -53,7 +50,6 @@ public interface TransactionNotificationSender {
 }
 
 /**
-
  * Core transaction processor showing SOLID compliance.
  */
 public class TransactionProcessor {
@@ -72,7 +68,6 @@ public class TransactionProcessor {
     }
 
     /**
-
      * Processes a transaction. Decoupled from repository, fee, and notification details.
      */
     public void process(TransactionRecord transaction) {

@@ -65,13 +65,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
-
  * Demonstrates high-performance batch transaction analytics using Java Streams.
  */
 public class TransactionAnalytics {
 
     /**
-
      * Processes a list of transactions to aggregate total volume per merchant,
      * filtering out high-risk or low-value records.
      */
@@ -96,7 +94,6 @@ public class TransactionAnalytics {
     }
 
     /**
-
      * Finds the transaction IDs of all transfers exceeding a safety limit, 
      * sorted chronologically.
      */
