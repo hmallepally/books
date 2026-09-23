@@ -68,7 +68,7 @@ Design a global payment gateway and double-entry ledger capable of processing cr
 | **Kafka Broker Cluster**| 6 $\times$ `i3en.2xlarge` (KRaft) | 8 vCPU, 64 GB RAM, NVMe | 2.5 TB NVMe SSD per node, zero-copy DMA streaming, `min.insync.replicas=2` |
 
 #### Visual Architecture Blueprint
-![Figure 17.1: AuraPay Payment Gateway & Ledger Architecture](visuals/arch_payment_gateway.png){width=95%}
+![AuraPay Payment Gateway & Ledger Architecture](visuals/arch_payment_gateway.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Edge Ingress & Fast Idempotency (API Gateway):**
@@ -171,7 +171,7 @@ Design a high-frequency cryptocurrency and equity order matching exchange.
 | **Historical & Audit Store** | 6 $\times$ `r6i.2xlarge` (Distributed SQL) | 16 vCPU, 128 GB RAM | CockroachDB/TimescaleDB for trade settlement reconciliation and regulatory audit |
 
 #### Visual Architecture Blueprint
-![Figure 17.2: ZenithTrade High-Frequency Order Matching Architecture](visuals/arch_matching_engine.png){width=95%}
+![ZenithTrade High-Frequency Order Matching Architecture](visuals/arch_matching_engine.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Deterministic Order Partitioning:**
@@ -319,7 +319,7 @@ Design an enterprise-grade rate limiter and real-time security fraud detection p
 | **Security Policy & Event DB** | 1 Primary + 2 Replicas | `db.r6i.4xlarge` (128 GB RAM) | Aurora PostgreSQL, monthly partitioned fraud log, dynamic policy distribution |
 
 #### Visual Architecture Blueprint
-![Figure 17.3: ChiramTrust Distributed Rate Limiter & Fraud Pipeline](visuals/arch_rate_limiter_fraud.png){width=95%}
+![ChiramTrust Distributed Rate Limiter & Fraud Pipeline](visuals/arch_rate_limiter_fraud.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Low-Latency Edge Rate Limiting:**
@@ -476,7 +476,7 @@ Design a consumer social timeline (Twitter/X) and adaptive video streaming platf
 | **Metadata & Feed DB** | 1 Primary + 3 Read Replicas | `db.r6i.8xlarge` (256 GB RAM) | Aurora PostgreSQL for user graphs, post metadata, and partitioned video assets |
 
 #### Visual Architecture Blueprint
-![Figure 17.4: Consumer Social Feed & Video Streaming Architecture](visuals/arch_social_video_platform.png){width=95%}
+![Consumer Social Feed & Video Streaming Architecture](visuals/arch_social_video_platform.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Hybrid Fan-Out Feed Strategy (Celebrity Cutoff):**
@@ -598,7 +598,7 @@ Design a real-time ride-sharing dispatch system (Uber/Lyft).
 | **Trip Lifecycle DB** | 1 Primary + 3 Read Replicas | `db.r6i.8xlarge` (256 GB RAM) | Aurora PostgreSQL with PostGIS extension, monthly partitioned trip history |
 
 #### Visual Architecture Blueprint
-![Figure 17.5: Ride-Sharing Geospatial Dispatch System](visuals/arch_rideshare_geospatial.png){width=95%}
+![Ride-Sharing Geospatial Dispatch System](visuals/arch_rideshare_geospatial.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **High-Throughput Telemetry Ingest:**
@@ -723,7 +723,7 @@ Design an enterprise Retrieval-Augmented Generation (RAG) knowledge search syste
 | **Metadata & Chunk Store** | 1 Primary + 1 Replica | `db.r6i.4xlarge` (128 GB RAM) | Aurora PostgreSQL for chunk text, parent doc metadata, and lineage |
 
 #### Visual Architecture Blueprint
-![Figure 17.6: Distributed Vector Search & RAG Architecture](visuals/arch_vector_rag_system.png){width=95%}
+![Distributed Vector Search & RAG Architecture](visuals/arch_vector_rag_system.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Document Ingestion & Chunking Pipeline:**
@@ -859,7 +859,7 @@ Design a distributed file storage and sync platform capable of handling multi-gi
 | **Block Storage (CAS)** | AWS S3 Standard + Glacier | Multi-AZ Durability | Content-addressable storage bucket for immutable 4MB encrypted chunks |
 
 #### Visual Architecture Blueprint
-![Figure 17.7: Distributed File Storage & Sync Engine Architecture](visuals/arch_drive_sync_storage.png){width=95%}
+![Distributed File Storage & Sync Engine Architecture](visuals/arch_drive_sync_storage.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Client-Side Content-Defined Chunking (Rabin Fingerprinting):**
@@ -989,7 +989,7 @@ Design a distributed web crawler and search indexer capable of crawling billions
 | **PageRank Spark Cluster** | 20 $\times$ `r6i.4xlarge` (Spot EMR) | 16 vCPU, 128 GB RAM | Nightly distributed graph power-iteration computing global PageRank authority |
 
 #### Visual Architecture Blueprint
-![Figure 17.8: Distributed Web Crawler & Inverted Search Indexer Architecture](visuals/arch_web_crawler_search.png){width=95%}
+![Distributed Web Crawler & Inverted Search Indexer Architecture](visuals/arch_web_crawler_search.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **URL Frontier & Politeness Scheduling:**
@@ -1103,7 +1103,7 @@ Design a real-time messaging and user presence platform supporting 1-on-1 and gr
 | **Mobile Push Dispatchers** | 24 $\times$ `c6i.xlarge` (EKS Workers) | 4 vCPU, 8 GB RAM | HTTP/2 multiplexed dispatch to Apple APNs and Google FCM v1 |
 
 #### Visual Architecture Blueprint
-![Figure 17.9: Real-Time Messaging & Presence Platform Architecture](visuals/arch_chat_messaging_presence.png){width=95%}
+![Real-Time Messaging & Presence Platform Architecture](visuals/arch_chat_messaging_presence.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Stateful Connection Management (Linux C10M Epoll):**
@@ -1231,7 +1231,7 @@ Design a distributed task scheduler and workflow orchestration engine capable of
 | **Lock & Lease Manager** | 5-node `etcd` / ZooKeeper Cluster | 4 vCPU, 16 GB RAM, NVMe | Distributed leasing, fencing tokens, and dynamic worker heartbeat leases |
 
 #### Visual Architecture Blueprint
-![Figure 17.10: Distributed Task Scheduler & Workflow Engine Architecture](visuals/arch_task_scheduler_workflow.png){width=95%}
+![Distributed Task Scheduler & Workflow Engine Architecture](visuals/arch_task_scheduler_workflow.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Hierarchical Timing Wheel (Delayed Scheduling Engine):**
@@ -1358,7 +1358,7 @@ Design a real-time collaborative document editor and interactive whiteboard allo
 | **Snapshot Block Store** | AWS S3 Standard | Object Storage | Houses immutable zstd-compressed full document snapshots every 1,000 ops |
 
 #### Visual Architecture Blueprint
-![Figure 17.11: Real-Time Collaborative Document Editor Architecture](visuals/arch_collaborative_crdt_editor.png){width=95%}
+![Real-Time Collaborative Document Editor Architecture](visuals/arch_collaborative_crdt_editor.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Conflict Resolution Strategy (CRDT vs. OT):**
@@ -1482,7 +1482,7 @@ Design a distributed time-series database (TSDB) and observability platform for 
 | **Long-Term Block Store** | AWS S3 Standard + Glacier | Object Storage | Houses compressed 2-hour historical TSDB blocks and downsampled parquet |
 
 #### Visual Architecture Blueprint
-![Figure 17.12: Distributed Time-Series Metrics & Observability Platform Architecture](visuals/arch_metrics_timeseries_observability.png){width=95%}
+![Distributed Time-Series Metrics & Observability Platform Architecture](visuals/arch_metrics_timeseries_observability.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Metrics Collection & Ingress (Push / Pull):**
@@ -1620,7 +1620,7 @@ Design a multi-channel notification platform supporting Email, SMS, Push (APNs/F
 | **Notification Audit Log DB** | 1 Primary + 3 Read Replicas | `db.r6i.4xlarge` (128 GB RAM) | Aurora PostgreSQL, monthly partitioned delivery logs with GIN indexes |
 
 #### Visual Architecture Blueprint
-![Figure 17.13: Distributed Multi-Channel Notification & Alerting Platform](visuals/arch_notification_platform.png){width=95%}
+![Distributed Multi-Channel Notification & Alerting Platform](visuals/arch_notification_platform.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Ingress & Edge Deduplication:**
@@ -1748,7 +1748,7 @@ Design a distributed inventory reservation system for hotels and flights that pr
 | **Kafka Event Stream** | 6 $\times$ `i3en.xlarge` (KRaft) | 4 vCPU, 32 GB RAM, NVMe | Broadcasts `ReservationConfirmed` and `InventoryUpdated` events to read caches |
 
 #### Visual Architecture Blueprint
-![Figure 17.14: Distributed Hotel & Flight Booking Inventory System](visuals/arch_booking_inventory.png){width=95%}
+![Distributed Hotel & Flight Booking Inventory System](visuals/arch_booking_inventory.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Search vs. Reservation Flow Separation (CQRS):**

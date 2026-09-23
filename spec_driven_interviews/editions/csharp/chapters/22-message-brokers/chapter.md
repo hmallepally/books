@@ -11,7 +11,7 @@ If you stop there, you miss the opportunity to demonstrate depth. A senior syste
 
 In this chapter, we deep-dive into Apache Kafka's storage internals and partition routing mechanics, showing how AuraPay shards event streams to maintain ledger correctness.
 
-![Figure 22.1: Apache Kafka Topic Partitions and Consumer Groups](visuals/kafka_internals.png){width=90%}
+![Apache Kafka Topic Partitions and Consumer Groups](visuals/kafka_internals.png){width=90%}
 
 
 ## Apache Kafka Internals & Sharding
@@ -237,7 +237,7 @@ Kafka completely bypasses user-space memory when serving consumer read requests.
 - **Cache Preservation:** L1/L2/L3 CPU caches remain pristine, dedicated entirely to network protocol framing and security.
 - **Line-Rate Saturation:** A broker can saturate $40\text{ Gbps}$ or $100\text{ Gbps}$ network interfaces at line rate with under $10\%$ CPU utilization.
 
-![Figure 22.2: Kafka Partitions and Consumer Group Parallelism](visuals/kafka_partitions.jpg){width=85%}
+![Kafka Partitions and Consumer Group Parallelism](visuals/kafka_partitions.jpg){width=85%}
 
 ### Replication and Durability
 Each partition is replicated across multiple brokers for fault tolerance:
@@ -451,7 +451,7 @@ Unlike Kafka—where producers publish directly to topic partitions—in RabbitM
 3. **Binding:** A configuration link that attaches a Queue to an Exchange with a **Binding Key** (routing rule).
 4. **Queue:** A FIFO buffer in memory (or backed by disk) that holds messages until consumed.
 
-![Figure 22.3: RabbitMQ AMQP Architecture — Exchanges, Bindings, and Queues](visuals/message_brokers.jpg){width=85%}
+![RabbitMQ AMQP Architecture — Exchanges, Bindings, and Queues](visuals/message_brokers.jpg){width=85%}
 
 ### The 4 Canonical Exchange Types
 

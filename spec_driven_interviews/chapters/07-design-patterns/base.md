@@ -35,7 +35,7 @@ When constructing complex enterprise domain objects (such as AuraPay's `Transact
 *Cognitive Metaphor:* A custom assembly line. Instead of dumping all raw parts into a single machine at once, you configure options step-by-step and trigger final quality inspection (`build()`) only when ready.
 
 #### Visual Architecture Diagram
-![Figure 7.1: Builder Pattern Architecture](visuals/builder_pattern.png){width=90%}
+![Builder Pattern Architecture](visuals/builder_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **State Immutability & Construction Safety:** The target domain object is instantiated only inside `build()` with `final` / read-only fields. Once built, state cannot be mutated by external components, preserving thread safety natively.
@@ -59,7 +59,7 @@ A payment processor needs to execute settlements across diverse networks (Visa, 
 *Cognitive Metaphor:* A specialized logistics dispatcher. The central office receives a package label, selects the appropriate transport provider (air, rail, sea), and hands off delivery without knowing internal vehicle mechanics.
 
 #### Visual Architecture Diagram
-![Figure 7.2: Factory Method Pattern Architecture](visuals/factory_pattern.png){width=90%}
+![Factory Method Pattern Architecture](visuals/factory_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Polymorphic Open-Closed Principle (OCP):** New concrete products can be introduced without modifying existing client code or routing pipelines.
@@ -80,7 +80,7 @@ Certain resources (such as HikariCP database connection pools or hardware licens
 *Cognitive Metaphor:* A single vault door key held by a security warden. Multiple guards can request access through the warden, but only one key exists.
 
 #### Visual Architecture Diagram
-![Figure 7.3: Singleton Pattern & IoC Lifecycle](visuals/singleton_pattern.png){width=90%}
+![Singleton Pattern & IoC Lifecycle](visuals/singleton_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Controlled Instantiation & Thread Visibility:** Guarantees that at most one instance exists per class loader, with `volatile` references preventing instruction reordering.
@@ -165,7 +165,7 @@ A modern microservice platform (AuraPay) must integrate with legacy banking main
 *Cognitive Metaphor:* An international power plug adapter. The wall socket supplies 220V AC via three round pins, while your laptop expects 110V DC via a USB-C cable. The adapter translates physical pins and electrical current without modifying the laptop or wall socket.
 
 #### Visual Architecture Diagram
-![Figure 7.4: Adapter Pattern Architecture](visuals/adapter_pattern.png){width=90%}
+![Adapter Pattern Architecture](visuals/adapter_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Domain Context Isolation:** Protects the domain model from vendor-specific data contracts and legacy communication protocols.
@@ -186,7 +186,7 @@ Adding cross-cutting concerns (auditing, Prometheus metrics, retries, distribute
 *Cognitive Metaphor:* Layered winter clothing. You wear a base thermal shirt (core logic), add a fleece jacket (metrics collection), and wrap a waterproof raincoat (audit logging). Each layer adds capabilities without altering your body.
 
 #### Visual Architecture Diagram
-![Figure 7.5: Decorator Pattern Architecture](visuals/decorator_pattern.png){width=90%}
+![Decorator Pattern Architecture](visuals/decorator_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Single Responsibility Principle (SRP):** Core business logic remains unpolluted by telemetry, auditing, or operational infrastructure.
@@ -215,7 +215,7 @@ AuraPay calculates transaction fees based on dynamic merchant agreements (Flat F
 *Cognitive Metaphor:* A GPS navigation system. Depending on user preference (Fastest Route, Avoid Tolls, Eco-Friendly), the GPS swaps the routing algorithm at runtime while keeping the destination constant.
 
 #### Visual Architecture Diagram
-![Figure 7.6: Strategy Pattern Architecture](visuals/strategy_pattern.png){width=90%}
+![Strategy Pattern Architecture](visuals/strategy_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Algorithm Encapsulation & Substitution:** Encapsulates algorithms into interchangeable classes conforming to a common strategy interface.
@@ -236,7 +236,7 @@ When a transaction settles, external systems (audit index, fraud classifier, SMS
 *Cognitive Metaphor:* A newspaper subscription. The publisher prints news and delivers copies to all subscribed readers automatically. The publisher doesn't care how each reader consumes the news.
 
 #### Visual Architecture Diagram
-![Figure 7.7: Observer Pattern Architecture](visuals/observer_pattern.png){width=90%}
+![Observer Pattern Architecture](visuals/observer_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Publish-Subscribe Loose Coupling:** Subject manages event publication without maintaining compile-time dependencies on concrete observer implementations.
@@ -260,7 +260,7 @@ Payment transactions move through a strict lifecycle (`CREATED` $\to$ `PENDING` 
 *Cognitive Metaphor:* A vending machine state machine. Inserting coins transitions the machine from `IdleState` to `HasCoinState`. Pushing a button in `IdleState` does nothing, enforcing valid operational rules natively.
 
 #### Visual Architecture Diagram
-![Figure 7.8: State Pattern Architecture](visuals/state_pattern.png){width=90%}
+![State Pattern Architecture](visuals/state_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **State Transition Integrity:** Invalid state jumps are blocked at compile-time or runtime by encapsulating state behavior inside concrete state classes.
@@ -286,7 +286,7 @@ Exposing raw SQL or database queries inside business logic tightly couples domai
 *Cognitive Metaphor:* A shopping cart and checkout cashier. You place items in your cart (Repository operations), and the cashier scans everything and processes payment in a single atomic transaction (Unit of Work commit).
 
 #### Visual Architecture Diagram
-![Figure 7.9: Repository and Unit of Work Patterns](visuals/repository_unit_of_work.png){width=90%}
+![Repository and Unit of Work Patterns](visuals/repository_unit_of_work.png){width=90%}
 
 #### Protected Architectural Invariant
 **Transactional Atomicity & Persistence Ignorance:** Multi-entity persistence operations are grouped into a single atomic transaction context (`@Transactional` or `DbContext.SaveChanges()`).
@@ -307,7 +307,7 @@ Selecting the wrong persistence strategy causes architectural debt. Simple CRUD 
 *Cognitive Metaphor:* A self-contained Swiss Army Knife (Active Record) vs. a Specialized Medical Surgical Kit (Data Mapper).
 
 #### Visual Architecture Diagram
-![Figure 7.10: Active Record vs Data Mapper Comparison](visuals/active_record_vs_data_mapper.png){width=90%}
+![Active Record vs Data Mapper Comparison](visuals/active_record_vs_data_mapper.png){width=90%}
 
 #### Protected Architectural Invariant
 **Separation of Data Access from Domain Logic:** Data Mapper keeps domain entities database-ignorant (POCO/POJO), preventing database schema changes from leaking into business rules.

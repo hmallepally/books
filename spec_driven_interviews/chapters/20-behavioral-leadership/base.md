@@ -44,7 +44,7 @@ Interviewers are **not** interested in listening to workplace grievances, person
 
 To present your career achievements with clarity and executive presence, structure every narrative around the **Technical STAR (Situation, Task, Action, Result)** model:
 
-![Figure 20.1: The Technical STAR Framework](visuals/technical_star.png){width=90%}
+![The Technical STAR Framework](visuals/technical_star.png){width=90%}
 
 ### Situation (S) — The Business Context & Scale
 - Establish the business opportunity, customer scale, and technical constraints.

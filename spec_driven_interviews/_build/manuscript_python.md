@@ -121,7 +121,7 @@ The spec-driven paradigm shifts the focus of technical problem-solving from raw 
 
 By locking down the problem's mathematical invariants upfront—establishing what must remain universally true throughout execution—you eliminate entire categories of off-by-one errors and regressions. The code you write is not a search for an answer; it is the natural translation of an airtight specification into production-grade logic.
 
-![Figure 0.1: The Spec-Driven Path vs The Syntax Trap](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/00-prologue/visuals/spec_vs_syntax.png){width=70%}
+![The Spec-Driven Path vs The Syntax Trap](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/00-prologue/visuals/spec_vs_syntax.png){width=70%}
 
 
 ## What This Book Covers
@@ -367,7 +367,7 @@ When you apply this to coding assessments, you construct an "Invariant Wall" com
 2.  **Post-conditions:** Guarantees that the method promises to satisfy upon successful execution. This defines what "correctness" means for the operation.
 3.  **Class/Data Invariants:** State rules that must always hold true for a domain object throughout its entire lifecycle.
 
-![Figure 1.1: The Invariant Wall](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/01-invariant-first/visuals/invariant_wall.png){width=70%}
+![The Invariant Wall](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/01-invariant-first/visuals/invariant_wall.png){width=70%}
 
 By declaring these boundaries upfront, you decouple *what* the system must do from *how* it will do it. You establish a contract. Once the contract is clear, writing the code is simply a matter of executing that contract.
 
@@ -382,29 +382,13 @@ $$\{ P \} \; C \; \{ Q \}$$
 - **$C$ (Command Block):** The executable algorithm or method body.
 - **$Q$ (Post-condition):** An assertion about the system state guaranteed to hold true *after* executing command block $C$.
 
-```text
-               Hoare Triple Contract Execution:
-               ┌───────────────────────────────┐
-               │    Pre-condition P (Valid)    │
-               └──────────────┬────────────────┘
-                              │
-                              ▼
-               ┌───────────────────────────────┐
-               │    Command Execution (C)      │
-               └──────────────┬────────────────┘
-                              │
-                              ▼
-               ┌───────────────────────────────┐
-               │    Post-condition Q (Guaranteed)
-               └───────────────────────────────┘
-```
+![Hoare Triple Program Verification Contract](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/hoare_triple_contract.png){width=85%}
 
 **Total Correctness** requires establishing two distinct mathematical proofs:
 
 1. **Partial Correctness:** Proving that *if* the algorithm terminates, the final state satisfies the post-condition $Q$ (proved via Loop Invariants).
-2.
+2. **Termination:** Proving that the algorithm cannot enter an infinite loop and *must* terminate in finite steps (proved via a Loop Variant Metric).
 
-**Termination:** Proving that the algorithm cannot enter an infinite loop and *must* terminate in finite steps (proved via a Loop Variant Metric).
 
 ### Design by Contract (DbC) in Enterprise Software
 
@@ -445,7 +429,7 @@ Write the code, beginning with explicit checks for your pre-conditions. Use mode
 
 To demonstrate the mathematical power of invariants, let us examine the classic binary search algorithm. Many developers struggle with binary search, often getting trapped in infinite loops or off-by-one errors because they guess the boundary updates (e.g., `right = mid` vs. `right = mid - 1`).
 
-![Figure 1.2: Loop Invariant States — Boundary Contraction in Binary Search](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/01-invariant-first/visuals/loop_invariant_states.jpg){width=85%}
+![Loop Invariant States — Boundary Contraction in Binary Search](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/01-invariant-first/visuals/loop_invariant_states.jpg){width=85%}
 
 ### The Challenge
 Given a sorted array of integers `nums` and a `target` value, return the index of the `target` if it exists in the array, or `-1` if it does not.
@@ -580,7 +564,7 @@ To prove the $\mathcal{O}(1)$ amortized time per element ($\mathcal{O}(N)$ total
 
 In the high-stakes environment of technical assessments, the most common trap engineers fall into is the pursuit of memorization. Memorizing solutions to hundreds of common interview questions might give a false sense of security, but it invariably fails when confronted with novel, unique, or subtly modified problems. The real skill—the one that distinguishes top-tier candidates—is not recall, but the ability to break any complex, unfamiliar problem into a series of recognizable, solvable sub-problems that map directly to known patterns.
 
-![Figure 2.1: Problem Decomposition Tree — Breaking Complex Problems into Sub-Problems](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/02-problem-decomposition/visuals/decomposition_tree.jpg){width=85%}
+![Problem Decomposition Tree — Breaking Complex Problems into Sub-Problems](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/02-problem-decomposition/visuals/decomposition_tree.jpg){width=85%}
 
 This principle applies universally across all assessment formats. Whether you are facing a monotonically increasing difficulty curve, equal-weight peer questions, a single deep architectural problem, or a live whiteboard interview, decomposition remains your primary analytical tool. When you encounter a question you have never seen before, your memorized catalog of answers is useless. However, your ability to dismantle that question into its atomic components is exactly what the assessment is designed to measure.
 
@@ -630,20 +614,19 @@ A modern CPU operates at a clock frequency of approximately $3.0\text{ GHz}$ ($3
 3. **Memory Hierarchy Stalls:** Fetching data from L1 cache takes $\approx 1\text{ ns}$ (4 cycles). A cache miss to main memory DRAM takes $\approx 60\text{--}100\text{ ns}$ (200–300 stalled cycles).
 4. **Runtime & GC Overhead:** Managed environments (JVM, .NET CLR, Python interpreter) introduce garbage collection safepoint checks, dynamic dispatch, array bounds checking, and interpreter loop dispatch.
 
-```text
-CPU Clock Tick (3.0 GHz): 0.33 ns
-┌──────────────────────────────────────────────────────────┐
-│ L1 Data Cache Access:   ~1.0 ns  (4 cycles)               │
-│ L2 Cache Access:        ~4.0 ns  (14 cycles)              │
-│ L3 Cache Access:        ~15.0 ns (50 cycles)              │
-│ DRAM Main Memory Stall: ~80.0 ns (250 cycles)             │
-└──────────────────────────────────────────────────────────┘
-Execution Speed Rules of Thumb:
+| Memory Hierarchy Level | Typical Latency | Equivalent CPU Cycles (3.0 GHz Clock) |
+| :--- | :--- | :--- |
+| **L1 Data Cache Access** | $\approx 1.0\text{ ns}$ | $4\text{ cycles}$ |
+| **L2 Cache Access** | $\approx 4.0\text{ ns}$ | $14\text{ cycles}$ |
+| **L3 Cache Access** | $\approx 15.0\text{ ns}$ | $50\text{ cycles}$ |
+| **DRAM Main Memory Stall** | $\approx 80.0\text{ ns}$ | $250\text{ cycles}$ |
 
-- Compiled (C / C++ / Rust): ~ 10^8 to 5 * 10^8 basic ops/sec
-- Managed JIT (Java / C# / Go): ~ 10^7 to 10^8 basic ops/sec
-- Interpreted (Python / Ruby): ~ 10^6 to 5 * 10^6 basic ops/sec
-```
+**Execution Speed Rules of Thumb:**
+
+- **Compiled Native (C, C++, Rust):** $\approx 10^8 \text{ to } 5 \times 10^8\text{ basic operations/sec}$
+- **Managed JIT (Java, C#, Go):** $\approx 10^7 \text{ to } 10^8\text{ basic operations/sec}$
+- **Interpreted Bytecode (Python, Ruby):** $\approx 10^6 \text{ to } 5 \times 10^6\text{ basic operations/sec}$
+
 
 #### Memory Budgeting & Object Overhead Calculations
 
@@ -672,7 +655,7 @@ Assessment platforms typically impose a strict memory limit of **256 MB or 512 M
 
 > **Key Takeaway:** For our rainwater problem, the spec declares $N \le 10^5$. Referring to the deduction matrix, any $\mathcal{O}(N^2)$ nested-loop approach requires $10^{10}$ operations and will instantly fail with a *Time Limit Exceeded (TLE)* error. We are mathematically required to engineer an $\mathcal{O}(N)$ or $\mathcal{O}(N \log N)$ algorithm.
 
-![Figure 2.2: Constraint-to-Complexity Flowchart](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/02-problem-decomposition/visuals/constraint_flowchart.jpg){width=85%}
+![Constraint-to-Complexity Flowchart](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/02-problem-decomposition/visuals/constraint_flowchart.jpg){width=85%}
 
 **Step 2: Data Flow Mapping**
 Input: Array of $N$ heights. Output: A single integer (total water). This is a reduction problem. For any building `i`, the water it traps is:
@@ -746,7 +729,7 @@ When confronted with novel, never-before-seen problems—problems explicitly des
 
 Throughout this book, we ground abstract algorithms, design patterns, and concurrency primitives in three enterprise-grade reference architectures. Rather than analyzing isolated code snippets in a vacuum, every problem and pattern is mapped to one of three core pillars of modern enterprise software:
 
-![Figure 3.1: Enterprise Platform Ecosystem Architecture — ChiramTrust, ZenithTrade, and AuraPay](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/enterprise_ecosystem.png){width=90%}
+![Enterprise Platform Ecosystem Architecture — ChiramTrust, ZenithTrade, and AuraPay](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/enterprise_ecosystem.png){width=90%}
 
 ### The System Interactions in Production:
 
@@ -775,13 +758,10 @@ To maintain this invariant, every ledger entry consists of balanced **Debits (DR
 - **Debit (DR):** Increases Assets and Expenses; decreases Liabilities and Equity.
 - **Credit (CR):** Increases Liabilities, Equity, and Revenue; decreases Assets and Expenses.
 
-```text
-The Double-Entry Invariant:
-┌──────────────────────────────────────────────────────────┐
-│ For every transaction T:                                 │
-│ Sum(Debits) - Sum(Credits) == 0.0000                     │
-└──────────────────────────────────────────────────────────┘
-```
+> **The Double-Entry Invariant:**
+> For every transaction $T$:
+> $$\sum \text{Debits} - \sum \text{Credits} = 0.0000$$
+
 
 **Why Single-Balance Database Columns Fail in Enterprise Systems:**
 A naive design uses a single balance column: `UPDATE accounts SET balance = balance - 100 WHERE id = 'A';`. If a database transaction partially crashes or network retries duplicate commands, money is created or lost with zero historical auditability.
@@ -789,7 +769,7 @@ In AuraPay, balances are never directly updated. Balances are computed as the im
 $$\text{Account Balance}(A) = \sum \text{Credits}(A) - \sum \text{Debits}(A)$$
 Every monetary transfer produces two balanced, immutable ledger entries within a single atomic database boundary.
 
-![Figure 3.2: AuraPay System Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/03-case-studies/visuals/aurapay_architecture.png){width=80%}
+![AuraPay System Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/03-case-studies/visuals/aurapay_architecture.png){width=80%}
 
 ## ZenithTrade: High-Frequency Matching Engine (Reference Architecture)
 
@@ -805,18 +785,24 @@ ZenithTrade is a high-frequency, ultra-low-latency order matching engine. It is 
 
 The Limit Order Book (LOB) maintains two continuous priority queues:
 
-```text
-       BIDS (Buy Orders)                  ASKS (Sell Orders)
-   [Highest Price has Priority]       [Lowest Price has Priority]
-┌────────┬────────┬────────────┐     ┌────────┬────────┬────────────┐
-│ Price  │ Shares │ Time (FIFO)│     │ Price  │ Shares │ Time (FIFO)│
-├────────┼────────┼────────────┤     ├────────┼────────┼────────────┤
-│ $100.50│   200  │ 09:30:01   │     │ $100.55│   100  │ 09:30:00   │
-│ $100.50│   150  │ 09:30:02   │     │ $100.60│   400  │ 09:30:03   │
-│ $100.45│   500  │ 09:30:00   │     │ $100.75│   250  │ 09:30:01   │
-└────────┴────────┴────────────┘     └────────┴────────┴────────────┘
-           SPREAD = $100.55 - $100.50 = $0.05
-```
+**Bids (Buy Orders — Highest Price Priority):**
+
+| Price | Shares | Timestamp (FIFO) |
+| :--- | :---: | :---: |
+| \$100.50 | 200 | 09:30:01 |
+| \$100.50 | 150 | 09:30:02 |
+| \$100.45 | 500 | 09:30:00 |
+
+**Asks (Sell Orders — Lowest Price Priority):**
+
+| Price | Shares | Timestamp (FIFO) |
+| :--- | :---: | :---: |
+| \$100.55 | 100 | 09:30:00 |
+| \$100.60 | 400 | 09:30:03 |
+| \$100.75 | 250 | 09:30:01 |
+
+$$\text{Market Spread} = \text{Lowest Ask} - \text{Highest Bid} = \$100.55 - \$100.50 = \$0.05$$
+
 
 **Step-by-Step Matching Sequence:**
 
@@ -826,7 +812,7 @@ The Limit Order Book (LOB) maintains two continuous priority queues:
 4. **Match 2:** Next ask in queue is 400 shares @ $\$100.60$. Fills the remaining 150 shares at $\$100.60$. The maker ask is partially filled (250 shares remain).
 5. The incoming buy order is fully satisfied with zero resting book state, and two `TradeExecuted` events are published to the event bus.
 
-![Figure 3.3: ZenithTrade High-Frequency Matching Engine Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/03-case-studies/visuals/zenithtrade_architecture.jpg){width=85%}
+![ZenithTrade High-Frequency Matching Engine Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/03-case-studies/visuals/zenithtrade_architecture.jpg){width=85%}
 
 ## ChiramTrust: Decentralized Identity Consent Wallet (Reference Architecture)
 
@@ -838,7 +824,7 @@ ChiramTrust is a decentralized identity wallet that allows users to store creden
 - **Granular Consent Engine:** Enforces user-defined access scopes, ensuring verifiers only receive requested claims (e.g., verifying age over 21 without revealing the exact birth date or home address).
 - **Consensus Key Recovery:** Shares cryptographic key shards across a network of trusted guardians using threshold secret sharing (Shamir's Scheme) to recover lost keys without single points of compromise.
 
-![Figure 3.4: ChiramTrust Decentralized Identity Wallet Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/03-case-studies/visuals/chiramtrust_architecture.jpg){width=85%}
+![ChiramTrust Decentralized Identity Wallet Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/03-case-studies/visuals/chiramtrust_architecture.jpg){width=85%}
 
 ### The Mechanics of Threshold Consensus (Shamir's Secret Sharing)
 
@@ -916,7 +902,7 @@ In enterprise software engineering and senior-level technical interviews, Object
 
 When designing large-scale enterprise systems, core OOP principles map directly to **Domain-Driven Design (DDD)** tactical patterns. Understanding this bridge prevents code from degenerating into unmaintainable scripts:
 
-![Figure 4.1: The OOP to DDD Architectural Bridge](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/oop_to_ddd_bridge.png){width=90%}
+![The OOP to DDD Architectural Bridge](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/oop_to_ddd_bridge.png){width=90%}
 
 ### Core DDD Definitions Every Candidate Must Master:
 
@@ -931,7 +917,7 @@ Despite understanding basic OOP syntax, many enterprise applications fall into a
 
 When domain models are anemic, business logic escapes into external, stateless service classes (e.g., `LedgerService`). The service pulls raw data out of the domain object, validates it externally, mutates the fields via setters, and pushes the modified object back to storage.
 
-![Figure 4.2: Anemic vs Rich Domain Model Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/anemic_vs_rich_architecture.png){width=90%}
+![Anemic vs Rich Domain Model Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/anemic_vs_rich_architecture.png){width=90%}
 
 The following code illustrates this fragile, anemic design:
 
@@ -1189,21 +1175,11 @@ Giant aggregates cause catastrophic concurrency contention: every time an order 
 
 Adhere to the **3 Golden Invariant Rules of Aggregate Design** (Vernon, 2013):
 
-```text
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                        THE 3 GOLDEN RULES OF AGGREGATE BOUNDARIES                      │
-├────────────────────────────────┬───────────────────────────────────────────────────────┤
-│ Rule                           │ Architectural Mandate & Enforcement Mechanism         │
-├────────────────────────────────┼───────────────────────────────────────────────────────┤
-│ 1. Model True Invariants       │ An aggregate encapsulates only those fields that must │
-│                                │ remain consistently valid in real time. If data can   │
-│                                │ be eventually consistent, it belongs in another aggregate.│
-│ 2. Design Small Aggregates     │ Small aggregates maximize throughput and eliminate    │
-│                                │ multi-row database lock contention.                   │
-│ 3. Reference by Identity Only  │ Aggregates never hold direct object references to     │
-│                                │ other aggregates; they reference them solely by ID.   │
-└────────────────────────────────┴───────────────────────────────────────────────────────┘
-```
+| Rule | Architectural Mandate & Enforcement Mechanism |
+| :--- | :--- |
+| **1. Model True Invariants** | An aggregate encapsulates only those fields that must remain consistently valid in real time. If data can be eventually consistent, it belongs in another aggregate. |
+| **2. Design Small Aggregates** | Small aggregates maximize throughput and eliminate multi-row database lock contention. |
+| **3. Reference by Identity Only** | Aggregates never hold direct object references to other aggregates; they reference them solely by ID. |
 
 > **The Single-Transaction Rule:** *A single database transaction should modify exactly ONE aggregate instance.* If a business workflow spans multiple aggregates (e.g., deducting inventory from `Product` and charging `LedgerAccount`), use asynchronous Domain Events and a Saga Orchestrator to achieve eventual consistency rather than distributed two-phase locking.
 
@@ -1220,18 +1196,8 @@ In compiled and managed runtimes (JVM HotSpot, .NET CLR, C++), every class defin
   2. It performs an indexed array lookup at a fixed method offset (e.g., `vtable[3]`).
   3. It executes an indirect jump instruction (`CALL [vtable + offset]`) to the concrete method implementation.
 
-```text
-Object Memory Layout & VTable Dispatch:
-[Route Instance in Heap]
-┌─────────────────────────┐
-│ *vptr (Offset 0)        │───────► [VTable for VisaSettlementRoute]
-├─────────────────────────┤         ┌─────────────────────────────────┐
-│ accountId (Offset 8)    │         │ Index 0: hashCode()             │
-├─────────────────────────┤         │ Index 1: equals()               │
-│ networkId (Offset 16)   │         │ Index 2: toString()             │
-└─────────────────────────┘         │ Index 3: settle() ──────────────┼──► Machine Code
-                                    └─────────────────────────────────┘
-```
+![Object Memory Layout & VTable Dispatch Mechanics](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/vtable_memory_layout.png){width=90%}
+
 
 ### JIT Call-Site Optimization: Monomorphic vs. Bimorphic vs. Megamorphic
 
@@ -1265,7 +1231,7 @@ This introduces tight coupling and brittle hierarchies:
 
 The golden rule of enterprise OOP design is to **favor composition over inheritance**. Instead of subclassing, compose the routing engine by injecting a collection of independent strategy routes:
 
-![Figure 4.3: Composition over Inheritance](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/04-oop-principles/visuals/composition_vs_inheritance.png){width=85%}
+![Composition over Inheritance](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/04-oop-principles/visuals/composition_vs_inheritance.png){width=85%}
 
 
 ## Polymorphism over Conditional Branching
@@ -1400,7 +1366,7 @@ If you stop there, you fail to show architectural maturity. An interviewer wants
 
 In this chapter, we will implement the core processing pipeline of AuraPay using a design that strictly conforms to all five SOLID principles.
 
-![Figure 5.1: The Five SOLID Principles — Quick Reference](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/05-solid-boundaries/visuals/solid_summary.png){width=70%}
+![The Five SOLID Principles — Quick Reference](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/05-solid-boundaries/visuals/solid_summary.png){width=70%}
 
 ## The SOLID Transaction Pipeline
 
@@ -1659,7 +1625,7 @@ In senior technical interviews, candidates frequently conflate these three conce
 | **Inversion of Control (IoC)** | **Architectural Paradigm** | The framework controls the runtime lifecycle and flow of control, calling user application code (*"Hollywood Principle: Don't call us, we'll call you"*). | Spring Boot runtime invokes application `@Controller` methods when HTTP requests arrive. |
 | **Dependency Injection (DI)** | **Tactical Design Pattern** | The mechanism of providing dependent objects to a class from an external assembler via constructors, setters, or interfaces. | `new TransactionProcessor(mockRepo, feeCalc)` or `@Autowired constructor`. |
 
-![Figure 5.2: SOLID Dependency Inversion Principle — Before and After](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/05-solid-boundaries/visuals/solid_dip.png){width=85%}
+![SOLID Dependency Inversion Principle — Before and After](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/05-solid-boundaries/visuals/solid_dip.png){width=85%}
 
 
 ## SOLID Violation Detector & Remedies
@@ -1761,7 +1727,7 @@ While functional imperative code can be correct, it forces the reader to track *
 
 Modern software engineering favors the **declarative functional paradigm** (Java Streams, C# LINQ, Python Generators & Comprehensions). Using functional pipelines, data transformations are expressed as a sequence of pure, side-effect-free operations.
 
-![Figure 6.1: Imperative vs Declarative Collection Processing](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/imperative_vs_declarative.png){width=90%}
+![Imperative vs Declarative Collection Processing](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/imperative_vs_declarative.png){width=90%}
 
 ### The Imperative Loop Anti-Pattern
 
@@ -1787,7 +1753,7 @@ for tx in transactions:
 
 Every stream processing pipeline consists of three distinct stages:
 
-![Figure 6.2: The 3 Stages of a Stream Processing Pipeline](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/stream_stages.png){width=90%}
+![The 3 Stages of a Stream Processing Pipeline](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/stream_stages.png){width=90%}
 
 ### The Power of Lazy Evaluation
 
@@ -1795,7 +1761,7 @@ Intermediate operations (such as `.filter()` and `.map()`) are **lazy**. They do
 
 Lazy evaluation allows the runtime engine to optimize processing, merging multiple map operations into a single pass and performing **short-circuiting** (stopping iteration as soon as a matching element is found).
 
-![Figure 6.3: Lazy Evaluation and Short-Circuiting in Streams](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/06-functional-streams/visuals/lazy_evaluation.jpg){width=85%}
+![Lazy Evaluation and Short-Circuiting in Streams](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/06-functional-streams/visuals/lazy_evaluation.jpg){width=85%}
 
 ## The AuraPay Batch Processing Pipeline
 
@@ -1853,7 +1819,7 @@ Let us examine the mechanical steps executing within `aggregateMerchantVolumes()
 - **`<3>` Collector Merge Reducer (`Collectors.toMap` with `BigDecimal::add`):**  
   Instead of instantiating an external mutable map and calling `map.merge()`, the terminal operation uses a thread-safe downstream reduction. When duplicate merchant IDs appear in the stream, the binary operator `BigDecimal::add` merges conflicting values atomically without locking.
 
-![Figure 6.4: Stream Pipeline Visualization](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/stream_pipeline.png){width=90%}
+![Stream Pipeline Visualization](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/stream_pipeline.png){width=90%}
 
 By declaring operations as a stream pipeline, the code becomes an exact, self-documenting translation of the business specification:
 
@@ -2130,7 +2096,7 @@ When constructing complex enterprise domain objects (such as AuraPay's `Transact
 *Cognitive Metaphor:* A custom assembly line. Instead of dumping all raw parts into a single machine at once, you configure options step-by-step and trigger final quality inspection (`build()`) only when ready.
 
 #### Visual Architecture Diagram
-![Figure 7.1: Builder Pattern Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/builder_pattern.png){width=90%}
+![Builder Pattern Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/builder_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **State Immutability & Construction Safety:** The target domain object is instantiated only inside `build()` with `final` / read-only fields. Once built, state cannot be mutated by external components, preserving thread safety natively.
@@ -2165,7 +2131,7 @@ A payment processor needs to execute settlements across diverse networks (Visa, 
 *Cognitive Metaphor:* A specialized logistics dispatcher. The central office receives a package label, selects the appropriate transport provider (air, rail, sea), and hands off delivery without knowing internal vehicle mechanics.
 
 #### Visual Architecture Diagram
-![Figure 7.2: Factory Method Pattern Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/factory_pattern.png){width=90%}
+![Factory Method Pattern Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/factory_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Polymorphic Open-Closed Principle (OCP):** New concrete products can be introduced without modifying existing client code or routing pipelines.
@@ -2186,7 +2152,7 @@ Certain resources (such as HikariCP database connection pools or hardware licens
 *Cognitive Metaphor:* A single vault door key held by a security warden. Multiple guards can request access through the warden, but only one key exists.
 
 #### Visual Architecture Diagram
-![Figure 7.3: Singleton Pattern & IoC Lifecycle](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/singleton_pattern.png){width=90%}
+![Singleton Pattern & IoC Lifecycle](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/singleton_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Controlled Instantiation & Thread Visibility:** Guarantees that at most one instance exists per class loader, with `volatile` references preventing instruction reordering.
@@ -2285,7 +2251,7 @@ A modern microservice platform (AuraPay) must integrate with legacy banking main
 *Cognitive Metaphor:* An international power plug adapter. The wall socket supplies 220V AC via three round pins, while your laptop expects 110V DC via a USB-C cable. The adapter translates physical pins and electrical current without modifying the laptop or wall socket.
 
 #### Visual Architecture Diagram
-![Figure 7.4: Adapter Pattern Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/adapter_pattern.png){width=90%}
+![Adapter Pattern Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/adapter_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Domain Context Isolation:** Protects the domain model from vendor-specific data contracts and legacy communication protocols.
@@ -2306,7 +2272,7 @@ Adding cross-cutting concerns (auditing, Prometheus metrics, retries, distribute
 *Cognitive Metaphor:* Layered winter clothing. You wear a base thermal shirt (core logic), add a fleece jacket (metrics collection), and wrap a waterproof raincoat (audit logging). Each layer adds capabilities without altering your body.
 
 #### Visual Architecture Diagram
-![Figure 7.5: Decorator Pattern Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/decorator_pattern.png){width=90%}
+![Decorator Pattern Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/decorator_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Single Responsibility Principle (SRP):** Core business logic remains unpolluted by telemetry, auditing, or operational infrastructure.
@@ -2341,7 +2307,7 @@ AuraPay calculates transaction fees based on dynamic merchant agreements (Flat F
 *Cognitive Metaphor:* A GPS navigation system. Depending on user preference (Fastest Route, Avoid Tolls, Eco-Friendly), the GPS swaps the routing algorithm at runtime while keeping the destination constant.
 
 #### Visual Architecture Diagram
-![Figure 7.6: Strategy Pattern Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/strategy_pattern.png){width=90%}
+![Strategy Pattern Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/strategy_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Algorithm Encapsulation & Substitution:** Encapsulates algorithms into interchangeable classes conforming to a common strategy interface.
@@ -2362,7 +2328,7 @@ When a transaction settles, external systems (audit index, fraud classifier, SMS
 *Cognitive Metaphor:* A newspaper subscription. The publisher prints news and delivers copies to all subscribed readers automatically. The publisher doesn't care how each reader consumes the news.
 
 #### Visual Architecture Diagram
-![Figure 7.7: Observer Pattern Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/07-design-patterns/visuals/observer_pattern.png){width=90%}
+![Observer Pattern Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/07-design-patterns/visuals/observer_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **Publish-Subscribe Loose Coupling:** Subject manages event publication without maintaining compile-time dependencies on concrete observer implementations.
@@ -2434,7 +2400,7 @@ Payment transactions move through a strict lifecycle (`CREATED` $\to$ `PENDING` 
 *Cognitive Metaphor:* A vending machine state machine. Inserting coins transitions the machine from `IdleState` to `HasCoinState`. Pushing a button in `IdleState` does nothing, enforcing valid operational rules natively.
 
 #### Visual Architecture Diagram
-![Figure 7.8: State Pattern Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/state_pattern.png){width=90%}
+![State Pattern Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/state_pattern.png){width=90%}
 
 #### Protected Architectural Invariant
 **State Transition Integrity:** Invalid state jumps are blocked at compile-time or runtime by encapsulating state behavior inside concrete state classes.
@@ -2460,7 +2426,7 @@ Exposing raw SQL or database queries inside business logic tightly couples domai
 *Cognitive Metaphor:* A shopping cart and checkout cashier. You place items in your cart (Repository operations), and the cashier scans everything and processes payment in a single atomic transaction (Unit of Work commit).
 
 #### Visual Architecture Diagram
-![Figure 7.9: Repository and Unit of Work Patterns](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/repository_unit_of_work.png){width=90%}
+![Repository and Unit of Work Patterns](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/repository_unit_of_work.png){width=90%}
 
 #### Protected Architectural Invariant
 **Transactional Atomicity & Persistence Ignorance:** Multi-entity persistence operations are grouped into a single atomic transaction context (`@Transactional` or `DbContext.SaveChanges()`).
@@ -2481,7 +2447,7 @@ Selecting the wrong persistence strategy causes architectural debt. Simple CRUD 
 *Cognitive Metaphor:* A self-contained Swiss Army Knife (Active Record) vs. a Specialized Medical Surgical Kit (Data Mapper).
 
 #### Visual Architecture Diagram
-![Figure 7.10: Active Record vs Data Mapper Comparison](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/active_record_vs_data_mapper.png){width=90%}
+![Active Record vs Data Mapper Comparison](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/active_record_vs_data_mapper.png){width=90%}
 
 #### Protected Architectural Invariant
 **Separation of Data Access from Domain Logic:** Data Mapper keeps domain entities database-ignorant (POCO/POJO), preventing database schema changes from leaking into business rules.
@@ -2558,7 +2524,7 @@ A critical trap in enterprise Java 21+ applications is **Carrier Pinning**:
 - If multiple virtual threads enter `synchronized` blocks that block on database I/O, all carrier threads become exhausted, freezing the entire JVM application.
 - **Remedy:** Replace all `synchronized` blocks protecting I/O operations with `java.util.concurrent.locks.ReentrantLock`, which allows virtual threads to unmount safely during lock acquisition waits.
 
-![Figure 8.1: Virtual Threads vs Platform Threads](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/08-concurrency-performance/visuals/virtual_threads.png){width=85%}
+![Virtual Threads vs Platform Threads](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/08-concurrency-performance/visuals/virtual_threads.png){width=85%}
 
 
 ## Application-Level Concurrency Primitives
@@ -2654,7 +2620,7 @@ SELECT * FROM accounts WHERE id = ? FOR UPDATE;
 ### Optimistic Concurrency Control (OCC)
 Optimistic locking assumes conflicts are rare. It allows concurrent threads to read and edit records without blocking. When saving the entity, the engine verifies that the record has not been modified by checking a `version` field (`WHERE id = ? AND version = ?`).
 
-![Figure 8.2: Optimistic vs Pessimistic Concurrency Control](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/08-concurrency-performance/visuals/occ_vs_pcc.png){width=70%}
+![Optimistic vs Pessimistic Concurrency Control](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/08-concurrency-performance/visuals/occ_vs_pcc.png){width=70%}
 
 - **Pros:** High throughput; no database locks are held while executing business logic.
 - **Cons:** If a conflict occurs, one of the transactions fails, forcing the application to catch the exception and retry the entire workflow.
@@ -2676,7 +2642,7 @@ When designing financial ledgers, selecting the right locking paradigm is critic
 | **Scale Limits** | Scales with DB capacity | Hard limit based on DB connection pool size | Scales horizontally with distributed key store |
 | **Deadlock Risk** | Zero | High (requires deterministic lexicographical ordering of resources) | Medium (depends on lock lease expiration / release logic) |
 
-![Figure 8.3: Database Deadlock Cycle — Circular Wait Conditions](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/08-concurrency-performance/visuals/deadlock_diagram.jpg){width=85%}
+![Database Deadlock Cycle — Circular Wait Conditions](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/08-concurrency-performance/visuals/deadlock_diagram.jpg){width=85%}
 
 
 ## Caching Patterns & Consistency Architectural Overview
@@ -2730,7 +2696,7 @@ Setting the pool size to 17 will yield *higher* overall throughput than setting 
 
 **Important Context:** This formula was derived empirically by the PostgreSQL community for spinning disk (HDD) workloads where 'Effective Spindle Count' represents physical disk heads. For modern NVMe SSDs and cloud-managed databases (e.g., Aurora, Cloud SQL), this formula is a starting point, not a universal law. Cloud databases often recommend pool sizes of 2-5× CPU cores. Always benchmark with your specific database engine and storage backend.
 
-![Figure 8.4: HikariCP Connection Pool Sizing](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/08-concurrency-performance/visuals/hikaricp_formula.png){width=85%}
+![HikariCP Connection Pool Sizing](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/08-concurrency-performance/visuals/hikaricp_formula.png){width=85%}
 
 
 
@@ -2793,11 +2759,11 @@ Before diving into the 25 canonical patterns, ensure you have instant recall of 
 
 | Big-O Time Complexity Comparison Graph |
 |---|
-| ![Figure 9.1: Big-O Time Complexity Comparison Graph](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/09-algorithms-assessment/visuals/big_o_comparison.jpg){width=85%} |
+| ![Big-O Time Complexity Comparison Graph](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/09-algorithms-assessment/visuals/big_o_comparison.jpg){width=85%} |
 
 **The Constraint-to-Complexity Rule:** Read the problem constraints FIRST. If N ≤ 10^4, O(N²) is acceptable. If N ≤ 10^5, you need O(N log N) or better. If N ≤ 10^6, you need O(N). This single rule eliminates 50% of wrong algorithm choices before you write a line of code.
 
-![Figure 9.2: Constraint-to-Complexity Flowchart](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/09-algorithms-assessment/visuals/constraint_flowchart.jpg){width=85%}
+![Constraint-to-Complexity Flowchart](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/09-algorithms-assessment/visuals/constraint_flowchart.jpg){width=85%}
 
 ## The 25 Canonical Programming Patterns
 
@@ -4211,7 +4177,7 @@ A two-pointer technique where:
 
 After the loop, `arr[0..write-1]` contains the filtered result. This pattern solves: *Remove Element*, *Move Zeros*, *Remove Duplicates from Sorted Array*, and *String Compression*.
 
-![Figure 10.1: Read/Write Pointer — In-Place Array Compaction](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/10-implementation-patterns/visuals/read_write_pointer.png){width=85%}
+![Read/Write Pointer — In-Place Array Compaction](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/10-implementation-patterns/visuals/read_write_pointer.png){width=85%}
 
 ### Character Frequency Array (Fixed-Size, 256 or 26 Slots)
 A fixed-size integer array indexed by character code point. Incrementing the counter at a character's index provides:
@@ -4234,7 +4200,7 @@ Use a 26-slot array when input is guaranteed lowercase English letters only (off
 ### Symmetrical Two-Pointer Convergence
 Two pointers start at opposite ends (`left = 0`, `right = len - 1`) and move toward each other. The loop condition is `while (left < right)`. This pattern solves: *Palindrome Check*, *Reverse String*, *Two Sum in Sorted Array*, and *Container With Most Water*.
 
-![Figure 10.2: Two-Pointer Convergence — Palindrome Verification](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/10-implementation-patterns/visuals/two_pointer_convergence.png){width=85%}
+![Two-Pointer Convergence — Palindrome Verification](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/10-implementation-patterns/visuals/two_pointer_convergence.png){width=85%}
 
 ### Run-Length Encoding (RLE)
 Compress consecutive identical elements into `(element, count)` pairs. `"aaabbc"` becomes `"a3b2c1"`. The read pointer tracks the current run; the write pointer emits compressed output. This is a classic Easy-tier problem that combines the Read/Write pattern with counting.
@@ -4248,7 +4214,7 @@ The XOR operator (`^`) has two key properties: `a ^ a = 0` (same values cancel) 
 ### Prefix Sum / Running Total
 A technique where you compute cumulative sums to answer range queries in $\mathcal{O}(1)$. For pivot index problems: `leftSum == totalSum - leftSum - nums[i]` identifies the balance point without nested loops.
 
-![Figure 10.3: Prefix Sum — Precomputed Cumulative Array for O(1) Range Queries](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/prefix_sum_pattern.png){width=85%}
+![Prefix Sum — Precomputed Cumulative Array for O(1) Range Queries](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/prefix_sum_pattern.png){width=85%}
 
 ### Integer Overflow & Boundary Guarding
 This involves handling `Integer.MAX_VALUE` and `Integer.MIN_VALUE` constraints. It requires implementing safe comparisons before executing arithmetic operations to prevent exceeding limits.
@@ -4274,7 +4240,7 @@ Why it matters: You systematically test these BEFORE writing the main loop to ca
 This approach involves pushing opening delimiters onto a stack during traversal. Upon encountering a closing delimiter, you pop from the stack and verify the match.
 Why it matters: This is the universal pattern for bracket, parentheses, and tag validation problems.
 
-![Figure 10.4: Stack-Based Matching — Push/Pop Bracket Validation](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/stack_based_matching.png){width=85%}
+![Stack-Based Matching — Push/Pop Bracket Validation](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/stack_based_matching.png){width=85%}
 
 ### Two-Pass Strategy
 This algorithm design splits processing into two distinct phases. The first pass collects necessary data like counts, maximums, or positions, and the second pass acts on that collected information.
@@ -5716,7 +5682,7 @@ Why it matters: It eliminates repetitive boundary checks and significantly reduc
 Instead of running BFS individually from each source, this technique seeds the initial queue with ALL starting positions simultaneously. The search then expands outwards concurrently from multiple origins.
 Why it matters: It solves rotting oranges and walls-and-gates problems in a single, highly efficient BFS pass.
 
-![Figure 11.1: Multi-Source BFS — Rotting Oranges Wavefront](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/11-matrix-grid-patterns/visuals/bfs_grid_levels.png){width=85%}
+![Multi-Source BFS — Rotting Oranges Wavefront](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/11-matrix-grid-patterns/visuals/bfs_grid_levels.png){width=85%}
 
 ## Reusable Code Templates
 
@@ -5737,7 +5703,7 @@ while top <= bottom and left <= right:
         left += 1
 ```
 
-![Figure 11.2: Spiral Boundary Traversal — Layer-by-Layer Contraction](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/11-matrix-grid-patterns/visuals/spiral_traversal.png){width=85%}
+![Spiral Boundary Traversal — Layer-by-Layer Contraction](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/11-matrix-grid-patterns/visuals/spiral_traversal.png){width=85%}
 
 ### Template B: 4-Directional BFS/DFS Grid Walk
 ```python
@@ -5797,7 +5763,7 @@ The two 5s come from different sources: `A[1][1] = 5` is the center cell of the 
 
 **Sanity check**: `S[3][3] = 45` equals `1+2+3+4+5+6+7+8+9 = 45`. ✓
 
-![Figure 11.3: 2D Prefix Sum — Construction via Inclusion-Exclusion (Trace)](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/11-matrix-grid-patterns/visuals/prefix_sum_construction.png){width=85%}
+![2D Prefix Sum — Construction via Inclusion-Exclusion (Trace)](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/11-matrix-grid-patterns/visuals/prefix_sum_construction.png){width=85%}
 
 **Understanding the Query — Inclusion-Exclusion.** To find the sum of a sub-rectangle from `(r1, c1)` to `(r2, c2)`, we carve it out of the full prefix sum using four overlapping rectangles:
 
@@ -5820,7 +5786,7 @@ query(r1, c1, r2, c2) = S[r2+1][c2+1] - S[r1][c2+1] - S[r2+1][c1] + S[r1][c1]
 S[3][3] - S[1][3] - S[3][1] + S[1][1] = 45 - 6 - 12 + 1 = 28
 ```
 
-![Figure 11.4: 2D Prefix Sum — Query via Inclusion-Exclusion](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/11-matrix-grid-patterns/visuals/prefix_sum_2d_query.png){width=85%}
+![2D Prefix Sum — Query via Inclusion-Exclusion](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/11-matrix-grid-patterns/visuals/prefix_sum_2d_query.png){width=85%}
 
 ## Solved Exemplar Problems
 
@@ -6889,7 +6855,7 @@ Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M
 **25. Surrounded Regions (Boundary Flood Fill)**
     **Specification:** Given an $M \times N$ matrix containing `'X'` and `'O'`, capture all regions that are completely surrounded by `'X'`. An `'O'` is not surrounded if it connects to the four grid boundaries.
 
-**Example:** Input: `[["X","X","X"],["X","O","X"],["X","X","X"]]`. Output: `[["X","X","X"],["X","X","X"],["X","X","X"]]`.
+**Example:** Input: `[["X","X","X"], ["X","O","X"], ["X","X","X"]]`. Output: `[["X","X","X"], ["X","X","X"], ["X","X","X"]]`.
     *Constraints*: $M, N \le 200$.
     **Strategic Hint:** Reverse boundary flood fill. Traverse the 4 outer borders; whenever an `'O'` is found, run DFS/BFS marking connected `'O'`s as safe `'S'`. Finally, turn all remaining `'O'`s to `'X'` and restore `'S'` back to `'O'`.
 
@@ -6938,7 +6904,7 @@ Time: $\mathcal{O}(M \times N \times \log(\text{MaxH}))$ | Space: $\mathcal{O}(M
 **Dynamic Sliding Window**
 A technique where a window expands to the right to include elements and contracts from the left when a specific invariant or constraint is violated. It matters because it optimizes $\mathcal{O}(N^2)$ brute-force subarray checks into $\mathcal{O}(N)$ operations by avoiding redundant recalculations. Use when searching for the longest/shortest contiguous subarray satisfying a condition.
 
-![Figure 12.1: Dynamic Sliding Window — Longest Substring Without Repeating Characters](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/12-hashmaps-sliding-windows/visuals/sliding_window.png){width=85%}
+![Dynamic Sliding Window — Longest Substring Without Repeating Characters](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/12-hashmaps-sliding-windows/visuals/sliding_window.png){width=85%}
 
 **Fixed-Size Sliding Window vs Dynamic Sliding Window**
 
@@ -6951,7 +6917,7 @@ A technique where a window expands to the right to include elements and contract
 **HashMap Frequency Signature**
 Creating a unique key for a group of items (like anagrams) based on their character frequencies rather than sorting. Usually represented as a mapped string of an `int[26]` array. This avoids the $\mathcal{O}(N \log N)$ sorting cost, providing an $\mathcal{O}(N)$ way to group items.
 
-![Figure 12.2: HashMap Frequency Signature — Anagram Detection](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/12-hashmaps-sliding-windows/visuals/hashmap_frequency.png){width=85%}
+![HashMap Frequency Signature — Anagram Detection](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/12-hashmaps-sliding-windows/visuals/hashmap_frequency.png){width=85%}
 
 **Prefix Sum Array & Cumulative Matching**
 An array where `pref[i]` stores the sum of elements from index $0$ to $i$. The trick `pref[j] - pref[i] = K` allows finding a subarray sum $K$ in $\mathcal{O}(1)$ time by rearranging to `pref[i] = pref[j] - K` and looking up previously seen prefix sums.
@@ -8245,7 +8211,7 @@ Notice what happened:
 - The single monotonically increasing sequence is split into **two sorted sub-arrays**: $[4, 5, 6, 7]$ (the left segment) and $[0, 1, 2]$ (the right segment).
 - The array is no longer sorted overall, so standard Binary Search (which assumes `nums[left] <= nums[right]`) fails if implemented naively.
 
-![Figure 13.1: Binary Search on Rotated Sorted Array — Two Sorted Halves](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/13-optimization-dp/visuals/rotated_sorted_array.png){width=85%}
+![Binary Search on Rotated Sorted Array — Two Sorted Halves](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/13-optimization-dp/visuals/rotated_sorted_array.png){width=85%}
 
 * * *
 
@@ -8483,7 +8449,7 @@ Why it matters: It allows O(1) get and put operations by seamlessly combining ha
 This refers to identifying when a problem's state perfectly maps to the linear recurrence `dp[i] = dp[i-1] + dp[i-2]`. The entire array state can be compressed into two variables.
 Why it matters: Problems like climbing stairs, decode ways, and tiling can be instantly recognized and compressed to O(1) space.
 
-![Figure 13.2: DP State Transition — Climbing Stairs with Space Optimization](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/13-optimization-dp/visuals/dp_climbing_stairs.png){width=85%}
+![DP State Transition — Climbing Stairs with Space Optimization](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/13-optimization-dp/visuals/dp_climbing_stairs.png){width=85%}
 
 ## Reusable Code Templates
 
@@ -8693,7 +8659,7 @@ def max_sliding_window(self, nums: list[int], k: int) -> list[int]:
 >
 > A **substring** must be contiguous (`"BCD"` from `"ABCDE"`). A **subsequence** can skip characters but must preserve order (`"ACE"` from `"ABCDE"` — pick A, skip B, pick C, skip D, pick E). The order matters: `"ECA"` is **not** a valid subsequence of `"ABCDE"` because the characters appear in the wrong order.
 
-![Figure 13.3: Subsequence vs Substring](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/13-optimization-dp/visuals/subsequence_vs_substring.png){width=85%}
+![Subsequence vs Substring](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/13-optimization-dp/visuals/subsequence_vs_substring.png){width=85%}
 
 **Trace-Through:** For `text1 = "CAT"`, `text2 = "CART"`, the DP table builds the answer cell by cell. Each cell asks: "What is the longest common subsequence using only the first *i* characters of text1 and first *j* characters of text2?"
 
@@ -8707,7 +8673,7 @@ def max_sliding_window(self, nums: list[int], k: int) -> list[int]:
 > 
 > *Rule of thumb:* Substring problems use **Sliding Window** (Chapter 12). Subsequence problems use **2D Dynamic Programming** (this chapter).
 
-![Figure 13.4: Longest Common Subsequence — 2D DP Table](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/lcs_dp_table.png){width=85%}
+![Longest Common Subsequence — 2D DP Table](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/lcs_dp_table.png){width=85%}
 
 **Trace-Through (`text1 = "abcde"`, `text2 = "ace"`):**
 
@@ -8759,7 +8725,7 @@ def longest_common_subsequence(self, text1: str, text2: str) -> int:
 >
 > The natural instinct is to simulate bursting balloons left-to-right, but that introduces variable neighbor dependencies — bursting balloon `i` changes the adjacent neighbors of balloon `i+1`. Instead, determine **which balloon is burst LAST** in the interval `(i, j)`. If balloon `k` is the *last* to burst in interval `(i, j)`, then at that moment only `arr[i]` and `arr[j]` remain as its neighbors. This makes the left and right subproblems *independent*.
 
-![Figure 13.5: Burst Balloons — Think Backwards](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/13-optimization-dp/visuals/burst_balloons_trace.png){width=85%}
+![Burst Balloons — Think Backwards](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/13-optimization-dp/visuals/burst_balloons_trace.png){width=85%}
 
 **Trace-Through:** For `nums = [3, 1, 5, 8]`, we pad with 1s: `arr = [1, 3, 1, 5, 8, 1]`.
 
@@ -8944,7 +8910,7 @@ def daily_temperatures(self, temperatures: list[int]) -> list[int]:
 >
 > At each cell, you choose the cheapest of three operations: **Replace** (↖ diagonal + 1), **Delete** from word1 (↑ up + 1), **Insert** into word1 (← left + 1). If characters already match, the diagonal costs 0 (no operation needed).
 
-![Figure 13.6: Edit Distance Trace](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/13-optimization-dp/visuals/edit_distance_trace.png){width=85%}
+![Edit Distance Trace](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/13-optimization-dp/visuals/edit_distance_trace.png){width=85%}
 
 **Trace-Through:** Convert `"CAT"` → `"CUT"` (answer: 1 — just replace A with U).
 
@@ -8999,7 +8965,7 @@ def min_distance(self, word1: str, word2: str) -> int:
 >
 > A common question is: "Shouldn't we store a timestamp for when each item was last used?" The answer is no — the **position in the linked list** is the timestamp. The node closest to HEAD was used most recently. The node closest to TAIL was used longest ago. Every `get()` or `put()` moves that node to the HEAD. No clock needed — the list order *is* the chronological record.
 
-![Figure 13.7: LRU Cache — Position is the Timestamp](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/13-optimization-dp/visuals/lru_cache_diagram.png){width=85%}
+![LRU Cache — Position is the Timestamp](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/13-optimization-dp/visuals/lru_cache_diagram.png){width=85%}
 
 **Trace-Through:** Cache capacity = 2.
 
@@ -9095,7 +9061,7 @@ class LRUCache:
 > - $\text{Width} = i - \text{stack.peek()} - 1$. $\text{Area} = h \times \text{width}$.
 > - A dummy bar of height `0` at `i = n` forces all remaining bars off the stack at the end.
 
-![Figure 13.8: Maximal Rectangle & Histogram Stack](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/13-optimization-dp/visuals/maximal_rectangle_histogram.png){width=85%}
+![Maximal Rectangle & Histogram Stack](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/13-optimization-dp/visuals/maximal_rectangle_histogram.png){width=85%}
 
 **Trace-Through (Monotonic Stack for Heights `[3, 1, 3, 2, 2]`):**
 
@@ -10037,7 +10003,7 @@ To navigate complex problem spaces effectively, we must formalize the 5-step dec
 
 By rigidly adhering to this canvas, you eliminate the panic of the blank screen and replace it with a systematic diagnostic process.
 
-![Figure 14.1: Problem Analysis Canvas — Structured Decomposition Framework](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/14-mastering-decomposition/visuals/problem_analysis_canvas.jpg){width=85%}
+![Problem Analysis Canvas — Structured Decomposition Framework](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/14-mastering-decomposition/visuals/problem_analysis_canvas.jpg){width=85%}
 
 ### Fully Worked Exemplar: The 9-Point Canvas in Action
 
@@ -10286,7 +10252,7 @@ Tier 3 problems represent the most complex assessment scenarios. These problems 
 
 ## The Pattern Recognition Decision Tree (Expanded)
 
-![Figure 14.2: Pattern Selection Decision Matrix](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/14-mastering-decomposition/visuals/decomposition_decision.jpg){width=85%}
+![Pattern Selection Decision Matrix](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/14-mastering-decomposition/visuals/decomposition_decision.jpg){width=85%}
 
 To facilitate rapid decomposition during an assessment, utilize this expanded diagnostic decision tree. When analyzing a problem, ask yourself these guiding questions in sequence:
 
@@ -10373,7 +10339,7 @@ This chapter provides 20 full, four-question exam mock sets (80 problems total) 
 
 To get the most out of these mock assessments, strictly time yourself. Set a timer for 70 minutes (or adjust to match your target assessment format) and attempt all four questions in order. Do not look up syntax or external resources. If you get stuck on the third or fourth question, practice timeboxing: move on and secure partial credit where possible. For equal-weight assessment formats, treat all four questions as having equal priority and allocate approximately 15-18 minutes per question. After time expires, review your performance. Use the provided hints to guide your post-assessment study sessions, identifying which specific patterns (e.g., sliding window, BFS, monotonic stack) require further review.
 
-![Figure 15.1: Assessment Pacing Strategy and Time Allocation](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/15-mock-assessment-sets/visuals/pacing_strategy.jpg){width=85%}
+![Assessment Pacing Strategy and Time Allocation](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/15-mock-assessment-sets/visuals/pacing_strategy.jpg){width=85%}
 
 Remember, there is no code in this chapter—this is your practice arena. Read the specifications, analyze the test cases, check the constraints, and write your own optimal solutions.
 
@@ -11003,7 +10969,7 @@ A bounded context defines the boundary within which a particular domain model ap
 -   **Entities:** Objects with a distinct identity that persists over time (e.g., a `LedgerAccount` with a unique UUID).
 -   **Value Objects:** Immutable objects with no identity defined solely by their attributes (e.g., a `Money` value object containing `amount` and `currency`). Value objects have no setters; they are replaced entirely, making them thread-safe.
 
-![Figure 16.1: DDD Bounded Context Map](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/16-system-architecture/visuals/ddd_contexts.png){width=85%}
+![DDD Bounded Context Map](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/16-system-architecture/visuals/ddd_contexts.png){width=85%}
 
 
 ## Monolithic vs. Microservices vs. Event-Driven
@@ -11029,9 +10995,9 @@ Choosing an architectural style is a trade-off between latency, complexity, and 
 -   **Pros:** High decoupling, loose runtime dependencies, and high resilience.
 -   **Cons:** Eventual consistency. If the matching engine publishes a "TradeExecuted" event, the ledger balances might not update for several milliseconds.
 
-![Figure 16.2: Monolithic vs Microservices vs Event-Driven Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/16-system-architecture/visuals/arch_styles.png){width=80%}
+![Monolithic vs Microservices vs Event-Driven Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/16-system-architecture/visuals/arch_styles.png){width=80%}
 
-![Figure 16.3: System Evolution — Scaling from Monolith to Microservices](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/16-system-architecture/visuals/system_evolution.jpg){width=85%}
+![System Evolution — Scaling from Monolith to Microservices](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/16-system-architecture/visuals/system_evolution.jpg){width=85%}
 
 
 ## Scaling Out: Partitioning & Consistent Hashing
@@ -11040,7 +11006,7 @@ A single matching engine instance cannot handle all trading instruments globally
 
 ### Consistent Hashing for Instrument Sharding
 
-![Figure 16.4: Consistent Hashing Ring — Distributed Key Routing](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/16-system-architecture/visuals/consistent_hashing.jpg){width=85%}
+![Consistent Hashing Ring — Distributed Key Routing](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/16-system-architecture/visuals/consistent_hashing.jpg){width=85%}
 
 Instead of traditional modulo sharding (`hash(instrumentId) % nodeCount`), which causes massive data reshuffling when nodes are added or removed, ZenithTrade utilizes a **Consistent Hash Ring**:
 
@@ -11167,7 +11133,7 @@ When designing APIs for microservices, you must handle network failures graceful
 
 The following sequence diagram maps out how an order is submitted, validated, matched inside the memory buffer, and settled inside the ledger:
 
-![Figure 16.5: ZenithTrade Order Lifecycle Sequence](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/16-system-architecture/visuals/order_lifecycle.png){width=95%}
+![ZenithTrade Order Lifecycle Sequence](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/16-system-architecture/visuals/order_lifecycle.png){width=95%}
 
 1.  **Gateway Ingest:** The API Gateway validates rate limits, checks for duplicate requests using the `Idempotency-Key`, and passes the request to the Exchange Context.
 2.  **Order Validator & Margin Reservation:** Before an order enters the book, the validator checks the client's pre-funded available balance in an **in-memory Risk & Margin Account Cache** inside the Exchange Context, instantly reserving funds without making a synchronous remote database call on the critical path.
@@ -11534,7 +11500,7 @@ Design a global payment gateway and double-entry ledger capable of processing cr
 | **Kafka Broker Cluster**| 6 $\times$ `i3en.2xlarge` (KRaft) | 8 vCPU, 64 GB RAM, NVMe | 2.5 TB NVMe SSD per node, zero-copy DMA streaming, `min.insync.replicas=2` |
 
 #### Visual Architecture Blueprint
-![Figure 17.1: AuraPay Payment Gateway & Ledger Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_payment_gateway.png){width=95%}
+![AuraPay Payment Gateway & Ledger Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_payment_gateway.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Edge Ingress & Fast Idempotency (API Gateway):**
@@ -11637,7 +11603,7 @@ Design a high-frequency cryptocurrency and equity order matching exchange.
 | **Historical & Audit Store** | 6 $\times$ `r6i.2xlarge` (Distributed SQL) | 16 vCPU, 128 GB RAM | CockroachDB/TimescaleDB for trade settlement reconciliation and regulatory audit |
 
 #### Visual Architecture Blueprint
-![Figure 17.2: ZenithTrade High-Frequency Order Matching Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_matching_engine.png){width=95%}
+![ZenithTrade High-Frequency Order Matching Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_matching_engine.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Deterministic Order Partitioning:**
@@ -11785,7 +11751,7 @@ Design an enterprise-grade rate limiter and real-time security fraud detection p
 | **Security Policy & Event DB** | 1 Primary + 2 Replicas | `db.r6i.4xlarge` (128 GB RAM) | Aurora PostgreSQL, monthly partitioned fraud log, dynamic policy distribution |
 
 #### Visual Architecture Blueprint
-![Figure 17.3: ChiramTrust Distributed Rate Limiter & Fraud Pipeline](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_rate_limiter_fraud.png){width=95%}
+![ChiramTrust Distributed Rate Limiter & Fraud Pipeline](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_rate_limiter_fraud.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Low-Latency Edge Rate Limiting:**
@@ -11942,7 +11908,7 @@ Design a consumer social timeline (Twitter/X) and adaptive video streaming platf
 | **Metadata & Feed DB** | 1 Primary + 3 Read Replicas | `db.r6i.8xlarge` (256 GB RAM) | Aurora PostgreSQL for user graphs, post metadata, and partitioned video assets |
 
 #### Visual Architecture Blueprint
-![Figure 17.4: Consumer Social Feed & Video Streaming Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_social_video_platform.png){width=95%}
+![Consumer Social Feed & Video Streaming Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_social_video_platform.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Hybrid Fan-Out Feed Strategy (Celebrity Cutoff):**
@@ -12064,7 +12030,7 @@ Design a real-time ride-sharing dispatch system (Uber/Lyft).
 | **Trip Lifecycle DB** | 1 Primary + 3 Read Replicas | `db.r6i.8xlarge` (256 GB RAM) | Aurora PostgreSQL with PostGIS extension, monthly partitioned trip history |
 
 #### Visual Architecture Blueprint
-![Figure 17.5: Ride-Sharing Geospatial Dispatch System](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_rideshare_geospatial.png){width=95%}
+![Ride-Sharing Geospatial Dispatch System](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_rideshare_geospatial.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **High-Throughput Telemetry Ingest:**
@@ -12189,7 +12155,7 @@ Design an enterprise Retrieval-Augmented Generation (RAG) knowledge search syste
 | **Metadata & Chunk Store** | 1 Primary + 1 Replica | `db.r6i.4xlarge` (128 GB RAM) | Aurora PostgreSQL for chunk text, parent doc metadata, and lineage |
 
 #### Visual Architecture Blueprint
-![Figure 17.6: Distributed Vector Search & RAG Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_vector_rag_system.png){width=95%}
+![Distributed Vector Search & RAG Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_vector_rag_system.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Document Ingestion & Chunking Pipeline:**
@@ -12325,7 +12291,7 @@ Design a distributed file storage and sync platform capable of handling multi-gi
 | **Block Storage (CAS)** | AWS S3 Standard + Glacier | Multi-AZ Durability | Content-addressable storage bucket for immutable 4MB encrypted chunks |
 
 #### Visual Architecture Blueprint
-![Figure 17.7: Distributed File Storage & Sync Engine Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_drive_sync_storage.png){width=95%}
+![Distributed File Storage & Sync Engine Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_drive_sync_storage.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Client-Side Content-Defined Chunking (Rabin Fingerprinting):**
@@ -12455,7 +12421,7 @@ Design a distributed web crawler and search indexer capable of crawling billions
 | **PageRank Spark Cluster** | 20 $\times$ `r6i.4xlarge` (Spot EMR) | 16 vCPU, 128 GB RAM | Nightly distributed graph power-iteration computing global PageRank authority |
 
 #### Visual Architecture Blueprint
-![Figure 17.8: Distributed Web Crawler & Inverted Search Indexer Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_web_crawler_search.png){width=95%}
+![Distributed Web Crawler & Inverted Search Indexer Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_web_crawler_search.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **URL Frontier & Politeness Scheduling:**
@@ -12569,7 +12535,7 @@ Design a real-time messaging and user presence platform supporting 1-on-1 and gr
 | **Mobile Push Dispatchers** | 24 $\times$ `c6i.xlarge` (EKS Workers) | 4 vCPU, 8 GB RAM | HTTP/2 multiplexed dispatch to Apple APNs and Google FCM v1 |
 
 #### Visual Architecture Blueprint
-![Figure 17.9: Real-Time Messaging & Presence Platform Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_chat_messaging_presence.png){width=95%}
+![Real-Time Messaging & Presence Platform Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_chat_messaging_presence.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Stateful Connection Management (Linux C10M Epoll):**
@@ -12697,7 +12663,7 @@ Design a distributed task scheduler and workflow orchestration engine capable of
 | **Lock & Lease Manager** | 5-node `etcd` / ZooKeeper Cluster | 4 vCPU, 16 GB RAM, NVMe | Distributed leasing, fencing tokens, and dynamic worker heartbeat leases |
 
 #### Visual Architecture Blueprint
-![Figure 17.10: Distributed Task Scheduler & Workflow Engine Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_task_scheduler_workflow.png){width=95%}
+![Distributed Task Scheduler & Workflow Engine Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_task_scheduler_workflow.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Hierarchical Timing Wheel (Delayed Scheduling Engine):**
@@ -12824,7 +12790,7 @@ Design a real-time collaborative document editor and interactive whiteboard allo
 | **Snapshot Block Store** | AWS S3 Standard | Object Storage | Houses immutable zstd-compressed full document snapshots every 1,000 ops |
 
 #### Visual Architecture Blueprint
-![Figure 17.11: Real-Time Collaborative Document Editor Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_collaborative_crdt_editor.png){width=95%}
+![Real-Time Collaborative Document Editor Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_collaborative_crdt_editor.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Conflict Resolution Strategy (CRDT vs. OT):**
@@ -12948,7 +12914,7 @@ Design a distributed time-series database (TSDB) and observability platform for 
 | **Long-Term Block Store** | AWS S3 Standard + Glacier | Object Storage | Houses compressed 2-hour historical TSDB blocks and downsampled parquet |
 
 #### Visual Architecture Blueprint
-![Figure 17.12: Distributed Time-Series Metrics & Observability Platform Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_metrics_timeseries_observability.png){width=95%}
+![Distributed Time-Series Metrics & Observability Platform Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_metrics_timeseries_observability.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Metrics Collection & Ingress (Push / Pull):**
@@ -13086,7 +13052,7 @@ Design a multi-channel notification platform supporting Email, SMS, Push (APNs/F
 | **Notification Audit Log DB** | 1 Primary + 3 Read Replicas | `db.r6i.4xlarge` (128 GB RAM) | Aurora PostgreSQL, monthly partitioned delivery logs with GIN indexes |
 
 #### Visual Architecture Blueprint
-![Figure 17.13: Distributed Multi-Channel Notification & Alerting Platform](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_notification_platform.png){width=95%}
+![Distributed Multi-Channel Notification & Alerting Platform](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_notification_platform.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Ingress & Edge Deduplication:**
@@ -13214,7 +13180,7 @@ Design a distributed inventory reservation system for hotels and flights that pr
 | **Kafka Event Stream** | 6 $\times$ `i3en.xlarge` (KRaft) | 4 vCPU, 32 GB RAM, NVMe | Broadcasts `ReservationConfirmed` and `InventoryUpdated` events to read caches |
 
 #### Visual Architecture Blueprint
-![Figure 17.14: Distributed Hotel & Flight Booking Inventory System](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_booking_inventory.png){width=95%}
+![Distributed Hotel & Flight Booking Inventory System](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/arch_booking_inventory.png){width=95%}
 
 #### Architectural Workflow & Mechanics
 1. **Search vs. Reservation Flow Separation (CQRS):**
@@ -13523,7 +13489,7 @@ class TransactionalOutboxPublisher:
 ```
 
 
-![Figure 18.1: Transactional Outbox Pattern](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/18-resiliency/visuals/outbox_pattern.png){width=85%}
+![Transactional Outbox Pattern](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/18-resiliency/visuals/outbox_pattern.png){width=85%}
 
 ### The Idempotent Consumer Pattern
 
@@ -13628,7 +13594,7 @@ Senior architects classify saga steps into three distinct categories:
 | **Auditability & Observability** | Difficult; requires distributed trace reconstruction | Instant; orchestrator database tracks exact workflow state |
 | **Best Suited For** | Simple linear workflows ($\le 3$ service steps) | Complex enterprise workflows, financial transactions, multi-branch logic |
 
-![Figure 18.2: Saga Orchestration vs Choreography](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/18-resiliency/visuals/saga_comparison.png){width=90%}
+![Saga Orchestration vs Choreography](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/18-resiliency/visuals/saga_comparison.png){width=90%}
 
 
 ## Microservice Resiliency Patterns
@@ -13652,7 +13618,7 @@ A **Circuit Breaker** wraps remote RPC or HTTP calls, monitoring failure rates a
 - **Open State (Failing Fast):** When the failure rate exceeds a configurable threshold (e.g., $> 50\%$ failures over a 10-second window with minimum 20 requests), the circuit trips to **OPEN**. Subsequent calls fail immediately with a local fallback or `503 Service Unavailable`, bypassing the network call entirely and protecting upstream thread pools from blocking.
 - **Half-Open State (Canary Probing):** After a reset timeout (e.g., 30 seconds), the breaker transitions to **HALF-OPEN**, allowing a limited number of probe requests (e.g., 5 calls) to reach the downstream service. If all probe requests succeed, the breaker returns to **CLOSED**; if any probe fails, it trips back to **OPEN** for another sleep interval.
 
-![Figure 18.3: Circuit Breaker State Machine](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/18-resiliency/visuals/circuit_breaker.png){width=85%}
+![Circuit Breaker State Machine](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/18-resiliency/visuals/circuit_breaker.png){width=85%}
 
 #### Sliding Window Metric Mechanics
 
@@ -13995,7 +13961,7 @@ Why does executing an `fsync()` system call on every single database transaction
 - **`fdatasync()` vs `fsync()`:** `fsync()` flushes both data and file metadata (such as modification timestamps, requiring two disk writes). `fdatasync()` flushes only modified data blocks, halving write overhead.
 - **Group Commit:** The database engine buffers concurrent commit requests from hundreds of worker threads into a single batch, executing a single `fdatasync()` call that durably writes all transactions in one physical disk round-trip, boosting throughput to $>100,000\text{ TPS}$.
 
-![Figure 19.1: B-Tree vs LSM-Tree Storage Engines](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/19-database-compliance/visuals/btree_vs_lsm.png){width=85%}
+![B-Tree vs LSM-Tree Storage Engines](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/19-database-compliance/visuals/btree_vs_lsm.png){width=85%}
 
 > **Why is it called \"PostgreSQL\"?** The name traces back to the 1970s. UC Berkeley professor Michael Stonebraker created a relational database called **Ingres**. In 1986, he started a successor project called **Post-Ingres** (i.e., \"after Ingres\"), later shortened to **Postgres**. When SQL support was added in 1996, the name became **PostgreSQL** \u2014 literally \"Post-Ingres with SQL.\" The elephant logo? Chosen simply because elephants *never forget* \u2014 a fitting mascot for a database.
 
@@ -14220,7 +14186,7 @@ When database size or write throughput exceeds the limits of a single master ser
 
 **Trade-off:** Flexible and dynamic, but introduces a single point of failure and potential query latency bottleneck at the lookup layer.
 
-![Figure 19.2: Database Sharding Strategies — Range, Hash, and Directory Based](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/19-database-compliance/visuals/sharding_strategies.jpg){width=85%}
+![Database Sharding Strategies — Range, Hash, and Directory Based](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/19-database-compliance/visuals/sharding_strategies.jpg){width=85%}
 
 
 ## Indexing Deep-Dive & Performance Optimization
@@ -14251,7 +14217,7 @@ To minimize audit scope, you must implement **Tokenization**:
 2.  **Encryption:** Inside the Vault, PAN data is encrypted using AES-256-GCM before storage.
 3.  **Application Separation:** The main billing and ledger applications only store and reference the token. Since they never store, process, or transmit raw card data, they are kept outside the scope of PCI-DSS regulations.
 
-![Figure 19.3: PCI-DSS Tokenization Vault Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/19-database-compliance/visuals/tokenization_vault.png){width=85%}
+![PCI-DSS Tokenization Vault Architecture](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/19-database-compliance/visuals/tokenization_vault.png){width=85%}
 
 The following utility demonstrates the encryption standard (AES-256 in Galois/Counter Mode) required for encrypting PANs or PII:
 
@@ -14383,7 +14349,7 @@ For compliance frameworks like SOC2, you must maintain a tamper-proof audit trai
 2.  **Cryptographic Chaining:** Each audit log row should contain a cryptographic hash of the current row and the previous row's hash (similar to a blockchain ledger). If an attacker modifies a historical row, the chain break is instantly detectable during audit validation.
 3.  **Immutable Databases:** Utilize native ledger databases (like Amazon QLDB) or WORM (Write Once, Read Many) storage to mathematically guarantee data immutability.
 
-![Figure 19.4: Cryptographic Audit Trail Chain](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/19-database-compliance/visuals/audit_trail.png){width=85%}
+![Cryptographic Audit Trail Chain](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/19-database-compliance/visuals/audit_trail.png){width=85%}
 
 
 ### Mock Interview Transcript: PCI-DSS and GDPR Compliance
@@ -14474,7 +14440,7 @@ Interviewers are **not** interested in listening to workplace grievances, person
 
 To present your career achievements with clarity and executive presence, structure every narrative around the **Technical STAR (Situation, Task, Action, Result)** model:
 
-![Figure 20.1: The Technical STAR Framework](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/20-behavioral-leadership/visuals/technical_star.png){width=90%}
+![The Technical STAR Framework](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/20-behavioral-leadership/visuals/technical_star.png){width=90%}
 
 ### Situation (S) — The Business Context & Scale
 - Establish the business opportunity, customer scale, and technical constraints.
@@ -14777,7 +14743,7 @@ In technical interviews for lead, staff, or engineering manager roles, coding ch
 
 Many candidates respond with simple unit tests. However, a senior candidate must present a structured **Testing Pyramid** strategy, showing how they balance unit tests with Testcontainers-based integration tests, API contract tests, and continuous delivery (CI/CD) verification.
 
-![Figure 21.1: The Technical Testing Pyramid](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/21-testing-cicd/visuals/testing_pyramid.png){width=80%}
+![The Technical Testing Pyramid](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/21-testing-cicd/visuals/testing_pyramid.png){width=80%}
 
 
 ## The Testing Pyramid
@@ -15116,7 +15082,7 @@ If you stop there, you miss the opportunity to demonstrate depth. A senior syste
 
 In this chapter, we deep-dive into Apache Kafka's storage internals and partition routing mechanics, showing how AuraPay shards event streams to maintain ledger correctness.
 
-![Figure 22.1: Apache Kafka Topic Partitions and Consumer Groups](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/22-message-brokers/visuals/kafka_internals.png){width=90%}
+![Apache Kafka Topic Partitions and Consumer Groups](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/22-message-brokers/visuals/kafka_internals.png){width=90%}
 
 
 ## Apache Kafka Internals & Sharding
@@ -15342,7 +15308,7 @@ Kafka completely bypasses user-space memory when serving consumer read requests.
 - **Cache Preservation:** L1/L2/L3 CPU caches remain pristine, dedicated entirely to network protocol framing and security.
 - **Line-Rate Saturation:** A broker can saturate $40\text{ Gbps}$ or $100\text{ Gbps}$ network interfaces at line rate with under $10\%$ CPU utilization.
 
-![Figure 22.2: Kafka Partitions and Consumer Group Parallelism](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/22-message-brokers/visuals/kafka_partitions.jpg){width=85%}
+![Kafka Partitions and Consumer Group Parallelism](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/22-message-brokers/visuals/kafka_partitions.jpg){width=85%}
 
 ### Replication and Durability
 Each partition is replicated across multiple brokers for fault tolerance:
@@ -15550,7 +15516,7 @@ Unlike Kafka—where producers publish directly to topic partitions—in RabbitM
 3. **Binding:** A configuration link that attaches a Queue to an Exchange with a **Binding Key** (routing rule).
 4. **Queue:** A FIFO buffer in memory (or backed by disk) that holds messages until consumed.
 
-![Figure 22.3: RabbitMQ AMQP Architecture — Exchanges, Bindings, and Queues](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/message_brokers.jpg){width=85%}
+![RabbitMQ AMQP Architecture — Exchanges, Bindings, and Queues](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/visuals/message_brokers.jpg){width=85%}
 
 ### The 4 Canonical Exchange Types
 
@@ -15616,7 +15582,7 @@ Junior candidates treat AI as magic, describing prompt calls without considering
 
 In this chapter, we outline a structured approach to AI/ML system design, focusing on the ML system design framework, vector databases, RAG architecture pipelines, agentic tool-use patterns, and prompt gateway security.
 
-![Figure 23.1: Retrieval-Augmented Generation (RAG) Architecture Pipeline](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/23-aiml-llm/visuals/rag_architecture.png){width=90%}
+![Retrieval-Augmented Generation (RAG) Architecture Pipeline](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/23-aiml-llm/visuals/rag_architecture.png){width=90%}
 
 
 ## The AI/ML System Design Framework
@@ -15638,7 +15604,7 @@ When asked to design a machine learning system (e.g., real-time recommendation),
 - **Ranking:** Run a lighter model online to rank these 100 candidate items, returning the top 10 to the user.
 - **Model Serving:** Deploy models behind low-latency serving infrastructure (TensorFlow Serving, Triton Inference Server, or custom gRPC endpoints).
 
-![Figure 23.2: Model Serving Infrastructure and Real-time Inference](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/23-aiml-llm/visuals/model_serving.jpg){width=85%}
+![Model Serving Infrastructure and Real-time Inference](C:/Users/hari/Documents/DBA/books/spec_driven_interviews/editions/python/chapters/23-aiml-llm/visuals/model_serving.jpg){width=85%}
 
 ### The Evaluation & Monitoring Pipeline
 Machine learning models degrade over time as the real-world distribution shifts away from the training data:
@@ -16064,7 +16030,7 @@ Before entering a live call (Teams/Zoom) or in-person evaluation, ensure you hav
 - [ ] **Boundary Verification:** Write your pre-conditions, post-conditions, and invariants *first* before implementing any code. Protect the boundary.
 
 
-# Annotated Scholarly Bibliography & Practitioner Canon {.unnumbered}
+# Annotated Scholarly Bibliography & Practitioner Canon
 
 > *"If I have seen further, it is by standing on the shoulders of giants."* — Sir Isaac Newton
 

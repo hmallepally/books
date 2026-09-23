@@ -6,7 +6,7 @@
 
 Throughout this book, we ground abstract algorithms, design patterns, and concurrency primitives in three enterprise-grade reference architectures. Rather than analyzing isolated code snippets in a vacuum, every problem and pattern is mapped to one of three core pillars of modern enterprise software:
 
-![Figure 3.1: Enterprise Platform Ecosystem Architecture — ChiramTrust, ZenithTrade, and AuraPay](visuals/enterprise_ecosystem.png){width=90%}
+![Enterprise Platform Ecosystem Architecture — ChiramTrust, ZenithTrade, and AuraPay](visuals/enterprise_ecosystem.png){width=90%}
 
 ### The System Interactions in Production:
 
@@ -35,13 +35,10 @@ To maintain this invariant, every ledger entry consists of balanced **Debits (DR
 - **Debit (DR):** Increases Assets and Expenses; decreases Liabilities and Equity.
 - **Credit (CR):** Increases Liabilities, Equity, and Revenue; decreases Assets and Expenses.
 
-```text
-The Double-Entry Invariant:
-┌──────────────────────────────────────────────────────────┐
-│ For every transaction T:                                 │
-│ Sum(Debits) - Sum(Credits) == 0.0000                     │
-└──────────────────────────────────────────────────────────┘
-```
+> **The Double-Entry Invariant:**
+> For every transaction $T$:
+> $$\sum \text{Debits} - \sum \text{Credits} = 0.0000$$
+
 
 **Why Single-Balance Database Columns Fail in Enterprise Systems:**
 A naive design uses a single balance column: `UPDATE accounts SET balance = balance - 100 WHERE id = 'A';`. If a database transaction partially crashes or network retries duplicate commands, money is created or lost with zero historical auditability.
@@ -49,7 +46,7 @@ In AuraPay, balances are never directly updated. Balances are computed as the im
 $$\text{Account Balance}(A) = \sum \text{Credits}(A) - \sum \text{Debits}(A)$$
 Every monetary transfer produces two balanced, immutable ledger entries within a single atomic database boundary.
 
-![Figure 3.2: AuraPay System Architecture](visuals/aurapay_architecture.png){width=80%}
+![AuraPay System Architecture](visuals/aurapay_architecture.png){width=80%}
 
 ## ZenithTrade: High-Frequency Matching Engine (Reference Architecture)
 
@@ -65,18 +62,24 @@ ZenithTrade is a high-frequency, ultra-low-latency order matching engine. It is 
 
 The Limit Order Book (LOB) maintains two continuous priority queues:
 
-```text
-       BIDS (Buy Orders)                  ASKS (Sell Orders)
-   [Highest Price has Priority]       [Lowest Price has Priority]
-┌────────┬────────┬────────────┐     ┌────────┬────────┬────────────┐
-│ Price  │ Shares │ Time (FIFO)│     │ Price  │ Shares │ Time (FIFO)│
-├────────┼────────┼────────────┤     ├────────┼────────┼────────────┤
-│ $100.50│   200  │ 09:30:01   │     │ $100.55│   100  │ 09:30:00   │
-│ $100.50│   150  │ 09:30:02   │     │ $100.60│   400  │ 09:30:03   │
-│ $100.45│   500  │ 09:30:00   │     │ $100.75│   250  │ 09:30:01   │
-└────────┴────────┴────────────┘     └────────┴────────┴────────────┘
-           SPREAD = $100.55 - $100.50 = $0.05
-```
+**Bids (Buy Orders — Highest Price Priority):**
+
+| Price | Shares | Timestamp (FIFO) |
+| :--- | :---: | :---: |
+| \$100.50 | 200 | 09:30:01 |
+| \$100.50 | 150 | 09:30:02 |
+| \$100.45 | 500 | 09:30:00 |
+
+**Asks (Sell Orders — Lowest Price Priority):**
+
+| Price | Shares | Timestamp (FIFO) |
+| :--- | :---: | :---: |
+| \$100.55 | 100 | 09:30:00 |
+| \$100.60 | 400 | 09:30:03 |
+| \$100.75 | 250 | 09:30:01 |
+
+$$\text{Market Spread} = \text{Lowest Ask} - \text{Highest Bid} = \$100.55 - \$100.50 = \$0.05$$
+
 
 **Step-by-Step Matching Sequence:**
 
@@ -86,7 +89,7 @@ The Limit Order Book (LOB) maintains two continuous priority queues:
 4. **Match 2:** Next ask in queue is 400 shares @ $\$100.60$. Fills the remaining 150 shares at $\$100.60$. The maker ask is partially filled (250 shares remain).
 5. The incoming buy order is fully satisfied with zero resting book state, and two `TradeExecuted` events are published to the event bus.
 
-![Figure 3.3: ZenithTrade High-Frequency Matching Engine Architecture](visuals/zenithtrade_architecture.jpg){width=85%}
+![ZenithTrade High-Frequency Matching Engine Architecture](visuals/zenithtrade_architecture.jpg){width=85%}
 
 ## ChiramTrust: Decentralized Identity Consent Wallet (Reference Architecture)
 
@@ -98,7 +101,7 @@ ChiramTrust is a decentralized identity wallet that allows users to store creden
 - **Granular Consent Engine:** Enforces user-defined access scopes, ensuring verifiers only receive requested claims (e.g., verifying age over 21 without revealing the exact birth date or home address).
 - **Consensus Key Recovery:** Shares cryptographic key shards across a network of trusted guardians using threshold secret sharing (Shamir's Scheme) to recover lost keys without single points of compromise.
 
-![Figure 3.4: ChiramTrust Decentralized Identity Wallet Architecture](visuals/chiramtrust_architecture.jpg){width=85%}
+![ChiramTrust Decentralized Identity Wallet Architecture](visuals/chiramtrust_architecture.jpg){width=85%}
 
 ### The Mechanics of Threshold Consensus (Shamir's Secret Sharing)
 

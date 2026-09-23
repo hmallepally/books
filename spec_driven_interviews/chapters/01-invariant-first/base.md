@@ -25,7 +25,7 @@ When you apply this to coding assessments, you construct an "Invariant Wall" com
 2.  **Post-conditions:** Guarantees that the method promises to satisfy upon successful execution. This defines what "correctness" means for the operation.
 3.  **Class/Data Invariants:** State rules that must always hold true for a domain object throughout its entire lifecycle.
 
-![Figure 1.1: The Invariant Wall](visuals/invariant_wall.png){width=70%}
+![The Invariant Wall](visuals/invariant_wall.png){width=70%}
 
 By declaring these boundaries upfront, you decouple *what* the system must do from *how* it will do it. You establish a contract. Once the contract is clear, writing the code is simply a matter of executing that contract.
 
@@ -40,29 +40,13 @@ $$\{ P \} \; C \; \{ Q \}$$
 - **$C$ (Command Block):** The executable algorithm or method body.
 - **$Q$ (Post-condition):** An assertion about the system state guaranteed to hold true *after* executing command block $C$.
 
-```text
-               Hoare Triple Contract Execution:
-               ┌───────────────────────────────┐
-               │    Pre-condition P (Valid)    │
-               └──────────────┬────────────────┘
-                              │
-                              ▼
-               ┌───────────────────────────────┐
-               │    Command Execution (C)      │
-               └──────────────┬────────────────┘
-                              │
-                              ▼
-               ┌───────────────────────────────┐
-               │    Post-condition Q (Guaranteed)
-               └───────────────────────────────┘
-```
+![Hoare Triple Program Verification Contract](visuals/hoare_triple_contract.png){width=85%}
 
 **Total Correctness** requires establishing two distinct mathematical proofs:
 
 1. **Partial Correctness:** Proving that *if* the algorithm terminates, the final state satisfies the post-condition $Q$ (proved via Loop Invariants).
-2.
+2. **Termination:** Proving that the algorithm cannot enter an infinite loop and *must* terminate in finite steps (proved via a Loop Variant Metric).
 
-**Termination:** Proving that the algorithm cannot enter an infinite loop and *must* terminate in finite steps (proved via a Loop Variant Metric).
 
 ### Design by Contract (DbC) in Enterprise Software
 
@@ -103,7 +87,7 @@ Write the code, beginning with explicit checks for your pre-conditions. Use mode
 
 To demonstrate the mathematical power of invariants, let us examine the classic binary search algorithm. Many developers struggle with binary search, often getting trapped in infinite loops or off-by-one errors because they guess the boundary updates (e.g., `right = mid` vs. `right = mid - 1`).
 
-![Figure 1.2: Loop Invariant States — Boundary Contraction in Binary Search](visuals/loop_invariant_states.jpg){width=85%}
+![Loop Invariant States — Boundary Contraction in Binary Search](visuals/loop_invariant_states.jpg){width=85%}
 
 ### The Challenge
 Given a sorted array of integers `nums` and a `target` value, return the index of the `target` if it exists in the array, or `-1` if it does not.

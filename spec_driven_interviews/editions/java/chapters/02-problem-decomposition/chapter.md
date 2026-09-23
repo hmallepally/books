@@ -6,7 +6,7 @@
 
 In the high-stakes environment of technical assessments, the most common trap engineers fall into is the pursuit of memorization. Memorizing solutions to hundreds of common interview questions might give a false sense of security, but it invariably fails when confronted with novel, unique, or subtly modified problems. The real skill—the one that distinguishes top-tier candidates—is not recall, but the ability to break any complex, unfamiliar problem into a series of recognizable, solvable sub-problems that map directly to known patterns.
 
-![Figure 2.1: Problem Decomposition Tree — Breaking Complex Problems into Sub-Problems](visuals/decomposition_tree.jpg){width=85%}
+![Problem Decomposition Tree — Breaking Complex Problems into Sub-Problems](visuals/decomposition_tree.jpg){width=85%}
 
 This principle applies universally across all assessment formats. Whether you are facing a monotonically increasing difficulty curve, equal-weight peer questions, a single deep architectural problem, or a live whiteboard interview, decomposition remains your primary analytical tool. When you encounter a question you have never seen before, your memorized catalog of answers is useless. However, your ability to dismantle that question into its atomic components is exactly what the assessment is designed to measure.
 
@@ -56,20 +56,19 @@ A modern CPU operates at a clock frequency of approximately $3.0\text{ GHz}$ ($3
 3. **Memory Hierarchy Stalls:** Fetching data from L1 cache takes $\approx 1\text{ ns}$ (4 cycles). A cache miss to main memory DRAM takes $\approx 60\text{--}100\text{ ns}$ (200–300 stalled cycles).
 4. **Runtime & GC Overhead:** Managed environments (JVM, .NET CLR, Python interpreter) introduce garbage collection safepoint checks, dynamic dispatch, array bounds checking, and interpreter loop dispatch.
 
-```text
-CPU Clock Tick (3.0 GHz): 0.33 ns
-┌──────────────────────────────────────────────────────────┐
-│ L1 Data Cache Access:   ~1.0 ns  (4 cycles)               │
-│ L2 Cache Access:        ~4.0 ns  (14 cycles)              │
-│ L3 Cache Access:        ~15.0 ns (50 cycles)              │
-│ DRAM Main Memory Stall: ~80.0 ns (250 cycles)             │
-└──────────────────────────────────────────────────────────┘
-Execution Speed Rules of Thumb:
+| Memory Hierarchy Level | Typical Latency | Equivalent CPU Cycles (3.0 GHz Clock) |
+| :--- | :--- | :--- |
+| **L1 Data Cache Access** | $\approx 1.0\text{ ns}$ | $4\text{ cycles}$ |
+| **L2 Cache Access** | $\approx 4.0\text{ ns}$ | $14\text{ cycles}$ |
+| **L3 Cache Access** | $\approx 15.0\text{ ns}$ | $50\text{ cycles}$ |
+| **DRAM Main Memory Stall** | $\approx 80.0\text{ ns}$ | $250\text{ cycles}$ |
 
-- Compiled (C / C++ / Rust): ~ 10^8 to 5 * 10^8 basic ops/sec
-- Managed JIT (Java / C# / Go): ~ 10^7 to 10^8 basic ops/sec
-- Interpreted (Python / Ruby): ~ 10^6 to 5 * 10^6 basic ops/sec
-```
+**Execution Speed Rules of Thumb:**
+
+- **Compiled Native (C, C++, Rust):** $\approx 10^8 \text{ to } 5 \times 10^8\text{ basic operations/sec}$
+- **Managed JIT (Java, C#, Go):** $\approx 10^7 \text{ to } 10^8\text{ basic operations/sec}$
+- **Interpreted Bytecode (Python, Ruby):** $\approx 10^6 \text{ to } 5 \times 10^6\text{ basic operations/sec}$
+
 
 #### Memory Budgeting & Object Overhead Calculations
 
@@ -98,7 +97,7 @@ Assessment platforms typically impose a strict memory limit of **256 MB or 512 M
 
 > **Key Takeaway:** For our rainwater problem, the spec declares $N \le 10^5$. Referring to the deduction matrix, any $\mathcal{O}(N^2)$ nested-loop approach requires $10^{10}$ operations and will instantly fail with a *Time Limit Exceeded (TLE)* error. We are mathematically required to engineer an $\mathcal{O}(N)$ or $\mathcal{O}(N \log N)$ algorithm.
 
-![Figure 2.2: Constraint-to-Complexity Flowchart](visuals/constraint_flowchart.jpg){width=85%}
+![Constraint-to-Complexity Flowchart](visuals/constraint_flowchart.jpg){width=85%}
 
 **Step 2: Data Flow Mapping**
 Input: Array of $N$ heights. Output: A single integer (total water). This is a reduction problem. For any building `i`, the water it traps is:

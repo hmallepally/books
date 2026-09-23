@@ -33,7 +33,7 @@ A bounded context defines the boundary within which a particular domain model ap
 -   **Entities:** Objects with a distinct identity that persists over time (e.g., a `LedgerAccount` with a unique UUID).
 -   **Value Objects:** Immutable objects with no identity defined solely by their attributes (e.g., a `Money` value object containing `amount` and `currency`). Value objects have no setters; they are replaced entirely, making them thread-safe.
 
-![Figure 16.1: DDD Bounded Context Map](visuals/ddd_contexts.png){width=85%}
+![DDD Bounded Context Map](visuals/ddd_contexts.png){width=85%}
 
 
 ## Monolithic vs. Microservices vs. Event-Driven
@@ -59,9 +59,9 @@ Choosing an architectural style is a trade-off between latency, complexity, and 
 -   **Pros:** High decoupling, loose runtime dependencies, and high resilience.
 -   **Cons:** Eventual consistency. If the matching engine publishes a "TradeExecuted" event, the ledger balances might not update for several milliseconds.
 
-![Figure 16.2: Monolithic vs Microservices vs Event-Driven Architecture](visuals/arch_styles.png){width=80%}
+![Monolithic vs Microservices vs Event-Driven Architecture](visuals/arch_styles.png){width=80%}
 
-![Figure 16.3: System Evolution — Scaling from Monolith to Microservices](visuals/system_evolution.jpg){width=85%}
+![System Evolution — Scaling from Monolith to Microservices](visuals/system_evolution.jpg){width=85%}
 
 
 ## Scaling Out: Partitioning & Consistent Hashing
@@ -70,7 +70,7 @@ A single matching engine instance cannot handle all trading instruments globally
 
 ### Consistent Hashing for Instrument Sharding
 
-![Figure 16.4: Consistent Hashing Ring — Distributed Key Routing](visuals/consistent_hashing.jpg){width=85%}
+![Consistent Hashing Ring — Distributed Key Routing](visuals/consistent_hashing.jpg){width=85%}
 
 Instead of traditional modulo sharding (`hash(instrumentId) % nodeCount`), which causes massive data reshuffling when nodes are added or removed, ZenithTrade utilizes a **Consistent Hash Ring**:
 
@@ -197,7 +197,7 @@ When designing APIs for microservices, you must handle network failures graceful
 
 The following sequence diagram maps out how an order is submitted, validated, matched inside the memory buffer, and settled inside the ledger:
 
-![Figure 16.5: ZenithTrade Order Lifecycle Sequence](visuals/order_lifecycle.png){width=95%}
+![ZenithTrade Order Lifecycle Sequence](visuals/order_lifecycle.png){width=95%}
 
 1.  **Gateway Ingest:** The API Gateway validates rate limits, checks for duplicate requests using the `Idempotency-Key`, and passes the request to the Exchange Context.
 2.  **Order Validator & Margin Reservation:** Before an order enters the book, the validator checks the client's pre-funded available balance in an **in-memory Risk & Margin Account Cache** inside the Exchange Context, instantly reserving funds without making a synchronous remote database call on the critical path.

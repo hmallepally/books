@@ -107,19 +107,12 @@ def build_pdf(edition):
             '--pdf-engine=xelatex',
             '--toc',
             '--toc-depth=2',
-            '--number-sections',
-            '--variable', 'geometry:margin=1in'
+            '--number-sections'
         ]
         
         result = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding='utf-8', errors='replace')
-        print("PDF generated successfully!")
-        
-        # 3. Stamp page numbers if stamp_pages.py is available
-        stamp_script = os.path.join(base_dir, 'stamp_pages.py')
-        if os.path.exists(stamp_script):
-            print("Stamping page numbers...")
-            subprocess.run(['python', stamp_script, pdf_output_path, '6'], check=True)
-            print("Page numbers stamped successfully.")
+        print("PDF generated successfully with native XeLaTeX page numbering!")
+
             
     except subprocess.CalledProcessError as e:
         print(f"Pandoc compilation failed: {e}")

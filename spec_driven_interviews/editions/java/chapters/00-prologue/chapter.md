@@ -116,7 +116,7 @@ The spec-driven paradigm shifts the focus of technical problem-solving from raw 
 
 By locking down the problem's mathematical invariants upfront—establishing what must remain universally true throughout execution—you eliminate entire categories of off-by-one errors and regressions. The code you write is not a search for an answer; it is the natural translation of an airtight specification into production-grade logic.
 
-![Figure 0.1: The Spec-Driven Path vs The Syntax Trap](visuals/spec_vs_syntax.png){width=70%}
+![The Spec-Driven Path vs The Syntax Trap](visuals/spec_vs_syntax.png){width=70%}
 
 
 ## What This Book Covers

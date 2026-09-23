@@ -7,7 +7,7 @@
 **Dynamic Sliding Window**
 A technique where a window expands to the right to include elements and contracts from the left when a specific invariant or constraint is violated. It matters because it optimizes $\mathcal{O}(N^2)$ brute-force subarray checks into $\mathcal{O}(N)$ operations by avoiding redundant recalculations. Use when searching for the longest/shortest contiguous subarray satisfying a condition.
 
-![Figure 12.1: Dynamic Sliding Window — Longest Substring Without Repeating Characters](visuals/sliding_window.png){width=85%}
+![Dynamic Sliding Window — Longest Substring Without Repeating Characters](visuals/sliding_window.png){width=85%}
 
 **Fixed-Size Sliding Window vs Dynamic Sliding Window**
 
@@ -20,7 +20,7 @@ A technique where a window expands to the right to include elements and contract
 **HashMap Frequency Signature**
 Creating a unique key for a group of items (like anagrams) based on their character frequencies rather than sorting. Usually represented as a mapped string of an `int[26]` array. This avoids the $\mathcal{O}(N \log N)$ sorting cost, providing an $\mathcal{O}(N)$ way to group items.
 
-![Figure 12.2: HashMap Frequency Signature — Anagram Detection](visuals/hashmap_frequency.png){width=85%}
+![HashMap Frequency Signature — Anagram Detection](visuals/hashmap_frequency.png){width=85%}
 
 **Prefix Sum Array & Cumulative Matching**
 An array where `pref[i]` stores the sum of elements from index $0$ to $i$. The trick `pref[j] - pref[i] = K` allows finding a subarray sum $K$ in $\mathcal{O}(1)$ time by rearranging to `pref[i] = pref[j] - K` and looking up previously seen prefix sums.

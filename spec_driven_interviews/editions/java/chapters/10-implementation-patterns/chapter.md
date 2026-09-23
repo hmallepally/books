@@ -21,7 +21,7 @@ A two-pointer technique where:
 
 After the loop, `arr[0..write-1]` contains the filtered result. This pattern solves: *Remove Element*, *Move Zeros*, *Remove Duplicates from Sorted Array*, and *String Compression*.
 
-![Figure 10.1: Read/Write Pointer — In-Place Array Compaction](visuals/read_write_pointer.png){width=85%}
+![Read/Write Pointer — In-Place Array Compaction](visuals/read_write_pointer.png){width=85%}
 
 ### Character Frequency Array (Fixed-Size, 256 or 26 Slots)
 A fixed-size integer array indexed by character code point. Incrementing the counter at a character's index provides:
@@ -44,7 +44,7 @@ Use a 26-slot array when input is guaranteed lowercase English letters only (off
 ### Symmetrical Two-Pointer Convergence
 Two pointers start at opposite ends (`left = 0`, `right = len - 1`) and move toward each other. The loop condition is `while (left < right)`. This pattern solves: *Palindrome Check*, *Reverse String*, *Two Sum in Sorted Array*, and *Container With Most Water*.
 
-![Figure 10.2: Two-Pointer Convergence — Palindrome Verification](visuals/two_pointer_convergence.png){width=85%}
+![Two-Pointer Convergence — Palindrome Verification](visuals/two_pointer_convergence.png){width=85%}
 
 ### Run-Length Encoding (RLE)
 Compress consecutive identical elements into `(element, count)` pairs. `"aaabbc"` becomes `"a3b2c1"`. The read pointer tracks the current run; the write pointer emits compressed output. This is a classic Easy-tier problem that combines the Read/Write pattern with counting.
@@ -58,7 +58,7 @@ The XOR operator (`^`) has two key properties: `a ^ a = 0` (same values cancel) 
 ### Prefix Sum / Running Total
 A technique where you compute cumulative sums to answer range queries in $\mathcal{O}(1)$. For pivot index problems: `leftSum == totalSum - leftSum - nums[i]` identifies the balance point without nested loops.
 
-![Figure 10.3: Prefix Sum — Precomputed Cumulative Array for O(1) Range Queries](visuals/prefix_sum_pattern.png){width=85%}
+![Prefix Sum — Precomputed Cumulative Array for O(1) Range Queries](visuals/prefix_sum_pattern.png){width=85%}
 
 ### Integer Overflow & Boundary Guarding
 This involves handling `Integer.MAX_VALUE` and `Integer.MIN_VALUE` constraints. It requires implementing safe comparisons before executing arithmetic operations to prevent exceeding limits.
@@ -84,7 +84,7 @@ Why it matters: You systematically test these BEFORE writing the main loop to ca
 This approach involves pushing opening delimiters onto a stack during traversal. Upon encountering a closing delimiter, you pop from the stack and verify the match.
 Why it matters: This is the universal pattern for bracket, parentheses, and tag validation problems.
 
-![Figure 10.4: Stack-Based Matching — Push/Pop Bracket Validation](visuals/stack_based_matching.png){width=85%}
+![Stack-Based Matching — Push/Pop Bracket Validation](visuals/stack_based_matching.png){width=85%}
 
 ### Two-Pass Strategy
 This algorithm design splits processing into two distinct phases. The first pass collects necessary data like counts, maximums, or positions, and the second pass acts on that collected information.

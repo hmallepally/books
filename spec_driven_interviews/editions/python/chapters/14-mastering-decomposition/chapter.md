@@ -42,7 +42,7 @@ To navigate complex problem spaces effectively, we must formalize the 5-step dec
 
 By rigidly adhering to this canvas, you eliminate the panic of the blank screen and replace it with a systematic diagnostic process.
 
-![Figure 14.1: Problem Analysis Canvas — Structured Decomposition Framework](visuals/problem_analysis_canvas.jpg){width=85%}
+![Problem Analysis Canvas — Structured Decomposition Framework](visuals/problem_analysis_canvas.jpg){width=85%}
 
 ### Fully Worked Exemplar: The 9-Point Canvas in Action
 
@@ -291,7 +291,7 @@ Tier 3 problems represent the most complex assessment scenarios. These problems 
 
 ## The Pattern Recognition Decision Tree (Expanded)
 
-![Figure 14.2: Pattern Selection Decision Matrix](visuals/decomposition_decision.jpg){width=85%}
+![Pattern Selection Decision Matrix](visuals/decomposition_decision.jpg){width=85%}
 
 To facilitate rapid decomposition during an assessment, utilize this expanded diagnostic decision tree. When analyzing a problem, ask yourself these guiding questions in sequence:
 

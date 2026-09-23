@@ -48,11 +48,11 @@ Before diving into the 25 canonical patterns, ensure you have instant recall of 
 
 | Big-O Time Complexity Comparison Graph |
 |---|
-| ![Figure 9.1: Big-O Time Complexity Comparison Graph](visuals/big_o_comparison.jpg){width=85%} |
+| ![Big-O Time Complexity Comparison Graph](visuals/big_o_comparison.jpg){width=85%} |
 
 **The Constraint-to-Complexity Rule:** Read the problem constraints FIRST. If N ≤ 10^4, O(N²) is acceptable. If N ≤ 10^5, you need O(N log N) or better. If N ≤ 10^6, you need O(N). This single rule eliminates 50% of wrong algorithm choices before you write a line of code.
 
-![Figure 9.2: Constraint-to-Complexity Flowchart](visuals/constraint_flowchart.jpg){width=85%}
+![Constraint-to-Complexity Flowchart](visuals/constraint_flowchart.jpg){width=85%}
 
 ## The 25 Canonical Programming Patterns
 

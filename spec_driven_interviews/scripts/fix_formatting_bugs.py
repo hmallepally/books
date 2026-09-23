@@ -24,13 +24,18 @@ KEYWORDS = [
 ]
 
 def fix_content(content):
-    # 1. Separate inline keyword labels (e.g. "... true. **Maintenance:** ...") onto a fresh line
-    for kw in KEYWORDS:
-        # If keyword is preceded by non-newline text (e.g. "something. **Maintenance:**")
-        pattern = r'([^\n])\s+(' + kw + r')'
-        content = re.sub(pattern, r'\1\n\n\2', content)
+    # 1. Separate inline keyword labels (e.g. "... true. **Maintenance:** ...") onto a fresh line,
+    # but NEVER split when preceded by a list marker (e.g. "1. **Termination:**" or "- **Trade-off:**")
+    lines_step1 = []
+    for line in content.split('\n'):
+        for kw in KEYWORDS:
+            m_list = re.match(r'^\s*(?:\d+\.|[\*\-])\s*' + kw, line)
+            if not m_list:
+                line = re.sub(r'([^\n])\s+(' + kw + r')', r'\1\n\n\2', line)
+        lines_step1.append(line)
+    lines = lines_step1
+    content = '\n'.join(lines_step1)
 
-    lines = content.split('\n')
     fixed_lines = []
     
     list_num_re = re.compile(r'^\s*\d+\.\s+')

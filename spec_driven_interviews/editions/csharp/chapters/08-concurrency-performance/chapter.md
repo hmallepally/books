@@ -48,7 +48,7 @@ A critical trap in enterprise Java 21+ applications is **Carrier Pinning**:
 - If multiple virtual threads enter `synchronized` blocks that block on database I/O, all carrier threads become exhausted, freezing the entire JVM application.
 - **Remedy:** Replace all `synchronized` blocks protecting I/O operations with `java.util.concurrent.locks.ReentrantLock`, which allows virtual threads to unmount safely during lock acquisition waits.
 
-![Figure 8.1: Virtual Threads vs Platform Threads](visuals/virtual_threads.png){width=85%}
+![Virtual Threads vs Platform Threads](visuals/virtual_threads.png){width=85%}
 
 
 ## Application-Level Concurrency Primitives
@@ -144,7 +144,7 @@ SELECT * FROM accounts WHERE id = ? FOR UPDATE;
 ### Optimistic Concurrency Control (OCC)
 Optimistic locking assumes conflicts are rare. It allows concurrent threads to read and edit records without blocking. When saving the entity, the engine verifies that the record has not been modified by checking a `version` field (`WHERE id = ? AND version = ?`).
 
-![Figure 8.2: Optimistic vs Pessimistic Concurrency Control](visuals/occ_vs_pcc.png){width=70%}
+![Optimistic vs Pessimistic Concurrency Control](visuals/occ_vs_pcc.png){width=70%}
 
 - **Pros:** High throughput; no database locks are held while executing business logic.
 - **Cons:** If a conflict occurs, one of the transactions fails, forcing the application to catch the exception and retry the entire workflow.
@@ -166,7 +166,7 @@ When designing financial ledgers, selecting the right locking paradigm is critic
 | **Scale Limits** | Scales with DB capacity | Hard limit based on DB connection pool size | Scales horizontally with distributed key store |
 | **Deadlock Risk** | Zero | High (requires deterministic lexicographical ordering of resources) | Medium (depends on lock lease expiration / release logic) |
 
-![Figure 8.3: Database Deadlock Cycle — Circular Wait Conditions](visuals/deadlock_diagram.jpg){width=85%}
+![Database Deadlock Cycle — Circular Wait Conditions](visuals/deadlock_diagram.jpg){width=85%}
 
 
 ## Caching Patterns & Consistency Architectural Overview
@@ -220,7 +220,7 @@ Setting the pool size to 17 will yield *higher* overall throughput than setting 
 
 **Important Context:** This formula was derived empirically by the PostgreSQL community for spinning disk (HDD) workloads where 'Effective Spindle Count' represents physical disk heads. For modern NVMe SSDs and cloud-managed databases (e.g., Aurora, Cloud SQL), this formula is a starting point, not a universal law. Cloud databases often recommend pool sizes of 2-5× CPU cores. Always benchmark with your specific database engine and storage backend.
 
-![Figure 8.4: HikariCP Connection Pool Sizing](visuals/hikaricp_formula.png){width=85%}
+![HikariCP Connection Pool Sizing](visuals/hikaricp_formula.png){width=85%}
 
 
 

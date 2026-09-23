@@ -11,7 +11,7 @@ If you stop there, you fail to show architectural maturity. An interviewer wants
 
 In this chapter, we will implement the core processing pipeline of AuraPay using a design that strictly conforms to all five SOLID principles.
 
-![Figure 5.1: The Five SOLID Principles — Quick Reference](visuals/solid_summary.png){width=70%}
+![The Five SOLID Principles — Quick Reference](visuals/solid_summary.png){width=70%}
 
 ## The SOLID Transaction Pipeline
 
@@ -202,7 +202,7 @@ In senior technical interviews, candidates frequently conflate these three conce
 | **Inversion of Control (IoC)** | **Architectural Paradigm** | The framework controls the runtime lifecycle and flow of control, calling user application code (*"Hollywood Principle: Don't call us, we'll call you"*). | Spring Boot runtime invokes application `@Controller` methods when HTTP requests arrive. |
 | **Dependency Injection (DI)** | **Tactical Design Pattern** | The mechanism of providing dependent objects to a class from an external assembler via constructors, setters, or interfaces. | `new TransactionProcessor(mockRepo, feeCalc)` or `@Autowired constructor`. |
 
-![Figure 5.2: SOLID Dependency Inversion Principle — Before and After](visuals/solid_dip.png){width=85%}
+![SOLID Dependency Inversion Principle — Before and After](visuals/solid_dip.png){width=85%}
 
 
 ## SOLID Violation Detector & Remedies

@@ -8,7 +8,7 @@ In enterprise software engineering and senior-level technical interviews, Object
 
 When designing large-scale enterprise systems, core OOP principles map directly to **Domain-Driven Design (DDD)** tactical patterns. Understanding this bridge prevents code from degenerating into unmaintainable scripts:
 
-![Figure 4.1: The OOP to DDD Architectural Bridge](visuals/oop_to_ddd_bridge.png){width=90%}
+![The OOP to DDD Architectural Bridge](visuals/oop_to_ddd_bridge.png){width=90%}
 
 ### Core DDD Definitions Every Candidate Must Master:
 
@@ -23,7 +23,7 @@ Despite understanding basic OOP syntax, many enterprise applications fall into a
 
 When domain models are anemic, business logic escapes into external, stateless service classes (e.g., `LedgerService`). The service pulls raw data out of the domain object, validates it externally, mutates the fields via setters, and pushes the modified object back to storage.
 
-![Figure 4.2: Anemic vs Rich Domain Model Architecture](visuals/anemic_vs_rich_architecture.png){width=90%}
+![Anemic vs Rich Domain Model Architecture](visuals/anemic_vs_rich_architecture.png){width=90%}
 
 The following code illustrates this fragile, anemic design:
 
@@ -311,21 +311,11 @@ Giant aggregates cause catastrophic concurrency contention: every time an order 
 
 Adhere to the **3 Golden Invariant Rules of Aggregate Design** (Vernon, 2013):
 
-```text
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                        THE 3 GOLDEN RULES OF AGGREGATE BOUNDARIES                      │
-├────────────────────────────────┬───────────────────────────────────────────────────────┤
-│ Rule                           │ Architectural Mandate & Enforcement Mechanism         │
-├────────────────────────────────┼───────────────────────────────────────────────────────┤
-│ 1. Model True Invariants       │ An aggregate encapsulates only those fields that must │
-│                                │ remain consistently valid in real time. If data can   │
-│                                │ be eventually consistent, it belongs in another aggregate.│
-│ 2. Design Small Aggregates     │ Small aggregates maximize throughput and eliminate    │
-│                                │ multi-row database lock contention.                   │
-│ 3. Reference by Identity Only  │ Aggregates never hold direct object references to     │
-│                                │ other aggregates; they reference them solely by ID.   │
-└────────────────────────────────┴───────────────────────────────────────────────────────┘
-```
+| Rule | Architectural Mandate & Enforcement Mechanism |
+| :--- | :--- |
+| **1. Model True Invariants** | An aggregate encapsulates only those fields that must remain consistently valid in real time. If data can be eventually consistent, it belongs in another aggregate. |
+| **2. Design Small Aggregates** | Small aggregates maximize throughput and eliminate multi-row database lock contention. |
+| **3. Reference by Identity Only** | Aggregates never hold direct object references to other aggregates; they reference them solely by ID. |
 
 > **The Single-Transaction Rule:** *A single database transaction should modify exactly ONE aggregate instance.* If a business workflow spans multiple aggregates (e.g., deducting inventory from `Product` and charging `LedgerAccount`), use asynchronous Domain Events and a Saga Orchestrator to achieve eventual consistency rather than distributed two-phase locking.
 
@@ -342,18 +332,8 @@ In compiled and managed runtimes (JVM HotSpot, .NET CLR, C++), every class defin
   2. It performs an indexed array lookup at a fixed method offset (e.g., `vtable[3]`).
   3. It executes an indirect jump instruction (`CALL [vtable + offset]`) to the concrete method implementation.
 
-```text
-Object Memory Layout & VTable Dispatch:
-[Route Instance in Heap]
-┌─────────────────────────┐
-│ *vptr (Offset 0)        │───────► [VTable for VisaSettlementRoute]
-├─────────────────────────┤         ┌─────────────────────────────────┐
-│ accountId (Offset 8)    │         │ Index 0: hashCode()             │
-├─────────────────────────┤         │ Index 1: equals()               │
-│ networkId (Offset 16)   │         │ Index 2: toString()             │
-└─────────────────────────┘         │ Index 3: settle() ──────────────┼──► Machine Code
-                                    └─────────────────────────────────┘
-```
+![Object Memory Layout & VTable Dispatch Mechanics](visuals/vtable_memory_layout.png){width=90%}
+
 
 ### JIT Call-Site Optimization: Monomorphic vs. Bimorphic vs. Megamorphic
 
@@ -387,7 +367,7 @@ This introduces tight coupling and brittle hierarchies:
 
 The golden rule of enterprise OOP design is to **favor composition over inheritance**. Instead of subclassing, compose the routing engine by injecting a collection of independent strategy routes:
 
-![Figure 4.3: Composition over Inheritance](visuals/composition_vs_inheritance.png){width=85%}
+![Composition over Inheritance](visuals/composition_vs_inheritance.png){width=85%}
 
 
 ## Polymorphism over Conditional Branching

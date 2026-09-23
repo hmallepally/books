@@ -1,4 +1,4 @@
-# Annotated Scholarly Bibliography & Practitioner Canon {.unnumbered}
+# Annotated Scholarly Bibliography & Practitioner Canon
 
 > *"If I have seen further, it is by standing on the shoulders of giants."* — Sir Isaac Newton
 

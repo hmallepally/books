@@ -33,7 +33,7 @@ Notice what happened:
 - The single monotonically increasing sequence is split into **two sorted sub-arrays**: $[4, 5, 6, 7]$ (the left segment) and $[0, 1, 2]$ (the right segment).
 - The array is no longer sorted overall, so standard Binary Search (which assumes `nums[left] <= nums[right]`) fails if implemented naively.
 
-![Figure 13.1: Binary Search on Rotated Sorted Array — Two Sorted Halves](visuals/rotated_sorted_array.png){width=85%}
+![Binary Search on Rotated Sorted Array — Two Sorted Halves](visuals/rotated_sorted_array.png){width=85%}
 
 * * *
 
@@ -271,7 +271,7 @@ Why it matters: It allows O(1) get and put operations by seamlessly combining ha
 This refers to identifying when a problem's state perfectly maps to the linear recurrence `dp[i] = dp[i-1] + dp[i-2]`. The entire array state can be compressed into two variables.
 Why it matters: Problems like climbing stairs, decode ways, and tiling can be instantly recognized and compressed to O(1) space.
 
-![Figure 13.2: DP State Transition — Climbing Stairs with Space Optimization](visuals/dp_climbing_stairs.png){width=85%}
+![DP State Transition — Climbing Stairs with Space Optimization](visuals/dp_climbing_stairs.png){width=85%}
 
 ## Reusable Code Templates
 
@@ -512,7 +512,7 @@ public int[] MaxSlidingWindow(int[] nums, int k) {
 >
 > A **substring** must be contiguous (`"BCD"` from `"ABCDE"`). A **subsequence** can skip characters but must preserve order (`"ACE"` from `"ABCDE"` — pick A, skip B, pick C, skip D, pick E). The order matters: `"ECA"` is **not** a valid subsequence of `"ABCDE"` because the characters appear in the wrong order.
 
-![Figure 13.3: Subsequence vs Substring](visuals/subsequence_vs_substring.png){width=85%}
+![Subsequence vs Substring](visuals/subsequence_vs_substring.png){width=85%}
 
 **Trace-Through:** For `text1 = "CAT"`, `text2 = "CART"`, the DP table builds the answer cell by cell. Each cell asks: "What is the longest common subsequence using only the first *i* characters of text1 and first *j* characters of text2?"
 
@@ -526,7 +526,7 @@ public int[] MaxSlidingWindow(int[] nums, int k) {
 > 
 > *Rule of thumb:* Substring problems use **Sliding Window** (Chapter 12). Subsequence problems use **2D Dynamic Programming** (this chapter).
 
-![Figure 13.4: Longest Common Subsequence — 2D DP Table](visuals/lcs_dp_table.png){width=85%}
+![Longest Common Subsequence — 2D DP Table](visuals/lcs_dp_table.png){width=85%}
 
 **Trace-Through (`text1 = "abcde"`, `text2 = "ace"`):**
 
@@ -578,7 +578,7 @@ public int LongestCommonSubsequence(string text1, string text2) {
 >
 > The natural instinct is to simulate bursting balloons left-to-right, but that introduces variable neighbor dependencies — bursting balloon `i` changes the adjacent neighbors of balloon `i+1`. Instead, determine **which balloon is burst LAST** in the interval `(i, j)`. If balloon `k` is the *last* to burst in interval `(i, j)`, then at that moment only `arr[i]` and `arr[j]` remain as its neighbors. This makes the left and right subproblems *independent*.
 
-![Figure 13.5: Burst Balloons — Think Backwards](visuals/burst_balloons_trace.png){width=85%}
+![Burst Balloons — Think Backwards](visuals/burst_balloons_trace.png){width=85%}
 
 **Trace-Through:** For `nums = [3, 1, 5, 8]`, we pad with 1s: `arr = [1, 3, 1, 5, 8, 1]`.
 
@@ -779,7 +779,7 @@ public int[] DailyTemperatures(int[] temperatures) {
 >
 > At each cell, you choose the cheapest of three operations: **Replace** (↖ diagonal + 1), **Delete** from word1 (↑ up + 1), **Insert** into word1 (← left + 1). If characters already match, the diagonal costs 0 (no operation needed).
 
-![Figure 13.6: Edit Distance Trace](visuals/edit_distance_trace.png){width=85%}
+![Edit Distance Trace](visuals/edit_distance_trace.png){width=85%}
 
 **Trace-Through:** Convert `"CAT"` → `"CUT"` (answer: 1 — just replace A with U).
 
@@ -838,7 +838,7 @@ public int MinDistance(string word1, string word2) {
 >
 > A common question is: "Shouldn't we store a timestamp for when each item was last used?" The answer is no — the **position in the linked list** is the timestamp. The node closest to HEAD was used most recently. The node closest to TAIL was used longest ago. Every `get()` or `put()` moves that node to the HEAD. No clock needed — the list order *is* the chronological record.
 
-![Figure 13.7: LRU Cache — Position is the Timestamp](visuals/lru_cache_diagram.png){width=85%}
+![LRU Cache — Position is the Timestamp](visuals/lru_cache_diagram.png){width=85%}
 
 **Trace-Through:** Cache capacity = 2.
 
@@ -942,7 +942,7 @@ public class LRUCache {
 > - $\text{Width} = i - \text{stack.peek()} - 1$. $\text{Area} = h \times \text{width}$.
 > - A dummy bar of height `0` at `i = n` forces all remaining bars off the stack at the end.
 
-![Figure 13.8: Maximal Rectangle & Histogram Stack](visuals/maximal_rectangle_histogram.png){width=85%}
+![Maximal Rectangle & Histogram Stack](visuals/maximal_rectangle_histogram.png){width=85%}
 
 **Trace-Through (Monotonic Stack for Heights `[3, 1, 3, 2, 2]`):**
 
